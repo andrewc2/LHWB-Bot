@@ -15,7 +15,6 @@ bot.on('ready', function() {
 var songs = [];
 var names = [];
 var queue = [];
-var max = 5;
 
 fillArrays();
 
@@ -47,6 +46,10 @@ bot.on('message', function(user, userID, channelID, message, rawEvent) {
 			current(channelID);break;
 		case "!q":
 			q(message,channelID,user,userID,cmd);break;
+		case "!updatesonglist":
+			if(user === mods[0])
+				update(message);
+			break;
 		default:
 	}	
 });
@@ -66,7 +69,7 @@ function play(){
 	bot.testAudio({ channel:chan , stereo: true}, function(stream) {
 		if(queue.length > 0){
 			var temp = queue.shift();
-			if(temp === "random"){
+			if(temp === "Random.mp3"){
 				rand = Math.floor(Math.random()*(100));
 				currentSong = names[rand];
 				stream.playAudioFile('../music/' + songs[rand]);
@@ -107,7 +110,7 @@ function stop(){
 }
 
 function q(message, channelID, user, userID, cmd){
-	if((message.length === 6) || (message.length === 2)){
+	if((message === "!queue") || (message === "!q")){
 		printQ(message,channelID);
 	}else{	
 		var title = message.substring(cmd.length + 1).toLowerCase();
@@ -122,7 +125,7 @@ function q(message, channelID, user, userID, cmd){
 			}
 		}else{
 			if(title === "random"){
-				queue.push("random");
+				queue.push("Random.mp3");
 			}else{
 				bot.sendMessage({to:channelID,message: "<@" + userID + ">, That song could not be found. Please check your spelling or ask Historicc to add the song."});
 			}
@@ -151,7 +154,7 @@ function skip(user){
 		setTimeout(function(){
 			play();
 		},2000);
-		console.log("skiped");
+		console.log("skipped");
 	}
 }
 
@@ -175,7 +178,21 @@ function fillArrays(){
 	});
 }
 
-
+function update(message){
+	var index = message.indexOf(" ");
+	var title = message.substring(index + 1);
+	fs.appendFile("Songs.txt", "\n" + title + ".mp3", function (err) {
+		if (err) throw err;
+		console.log("Updated");
+	});
+	fs.appendFile("names.txt", "\n" + title, function (err) {
+		if (err) throw err;
+		console.log("Updated");
+	});
+	songs = [];
+	names = [];
+	fillArrays();
+}
 
 
 
