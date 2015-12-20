@@ -212,6 +212,7 @@ var pollCreator;
 var pollRes = [];
 var pollUsers = [];
 var votes = 0;
+var timeLeft;
 
 function poll(msg){
 	//Create poll
@@ -245,6 +246,9 @@ function poll(msg){
 			mybot.reply(msg, "A poll is already active on this server. Close the previous poll with '!poll' and try again");
 		}else if((msg.author == pollCreator) || ((endTime - pollTimer) > 120000) || (msg.author.username === "Historicc")){
 			closePoll();
+		} else {
+			timeLeft = 120 - ((endTime - pollTimer) / 1000);
+			mybot.reply(msg, "this poll needs to be closed by " + pollCreator.username + " or by anyone in " + timeLeft + " seconds.");
 		}
 
 	}
