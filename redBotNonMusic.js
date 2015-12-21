@@ -12,10 +12,10 @@ mybot.on("ready", function(){
 	console.log("Ready to begin! Serving in " + mybot.channels.length + " channels");
 });
 
-/*fs.readFile('ts', function(err, data) {
+fs.readFile('ts', function(err, data) {
     if(err) throw err;
     gifs = data.toString().split("\n");
-});*/
+});
 
 var creds = require("./auth.json");
 mybot.login(creds.email, creds.password);
@@ -185,11 +185,11 @@ function checkTable(msg) {
 	}
 }
 function addFlip() {
-	/*var flips = parseInt(fs.readFileSync('flips','utf8'));
+	var flips = parseInt(fs.readFileSync('flips','utf8'));
 	flips++;
 	fs.writeFile('flips',flips,function(err){
 		if(err)throw err;
-	});*/
+	});
 }
 function inRole(server, user, needle) {
     var roles = server.rolesOfUser(user);
