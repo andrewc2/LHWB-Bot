@@ -18,7 +18,7 @@ var queue = [];
 
 fillArrays();
 
-var chan ="";
+var chan = "";
 var mods = [];
 
 bot.on('message', function(user, userID, channelID, message, rawEvent) {
