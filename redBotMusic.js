@@ -18,7 +18,7 @@ var queue = [];
 
 fillArrays();
 
-var chan = "115332333745340416";
+var chan = "125790296641503232";
 var mods = [];
 
 bot.on('message', function(user, userID, channelID, message, rawEvent) {
