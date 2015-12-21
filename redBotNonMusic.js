@@ -1,13 +1,14 @@
 var Discord = require('discord.js');
 var giphy = require('apigiphy');
 var fs = require('fs');
-var gifs;
-var mybot = new Discord.Client();
+var creds = require("../auth.json");
 var Poll = require('./polls.js');
+var mybot = new Discord.Client();
 var polls = [];
-giphy = giphy({api_key:'dc6zaTOxFJmzC'});
+var gifs;
 var serverid = 115332333745340416;
 
+giphy = giphy({api_key:'dc6zaTOxFJmzC'});
 mybot.on("ready", function(){
 	console.log("Ready to begin! Serving in " + mybot.channels.length + " channels");
 });
@@ -17,7 +18,6 @@ fs.readFile('ts', function(err, data) {
     gifs = data.toString().split("\n");
 });
 
-var creds = require("../auth.json");
 mybot.login(creds.email, creds.password);
 
 mybot.on("message", function(msg) {

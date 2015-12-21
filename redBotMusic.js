@@ -2,8 +2,8 @@ var DiscordClient = require('discord.io');
 var fs = require('fs');
 var creds = require("../auth.json");
 var bot = new DiscordClient({
-	email: "creds.email",
-	password: "creds.password",
+	email: creds.email,
+	password: creds.password,
 	autorun: true
 });
 
@@ -70,7 +70,7 @@ function play(){
 		if(queue.length > 0){
 			var temp = queue.shift();
 			if(temp === "Random.mp3"){
-				rand = Math.floor(Math.random() * songs.length);
+				rand = Math.floor(Math.random() * 125);
 				currentSong = names[rand];
 				stream.playAudioFile('../music/' + songs[rand]);
 				console.log(songs[rand] + " is now playing");
@@ -81,7 +81,7 @@ function play(){
 				console.log(temp + " is now playing");
 			}
 		}else{
-			rand = Math.floor(Math.random() * songs.length);
+			rand = Math.floor(Math.random() * 125);
 			currentSong = names[rand];
 			stream.playAudioFile('../music/' + songs[rand]);
 			console.log(songs[rand] + " is now playing");
@@ -168,7 +168,7 @@ function clear(user){
 
 /* Currently using text files to store song list. Will probably change that once i have more time */
 function fillArrays(){
-	fs.readFile("Songs.txt",function(err, data){
+	fs.readFile("songs.txt",function(err, data){
 		if(err) throw err;
 		songs = data.toString().split("\n");
 	});
@@ -181,7 +181,7 @@ function fillArrays(){
 function update(message){
 	var index = message.indexOf(" ");
 	var title = message.substring(index + 1);
-	fs.appendFile("Songs.txt", "\n" + title + ".mp3", function (err) {
+	fs.appendFile("songs.txt", "\n" + title + ".mp3", function (err) {
 		if (err) throw err;
 		console.log("Updated");
 	});
