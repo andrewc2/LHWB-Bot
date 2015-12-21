@@ -1,9 +1,9 @@
 var DiscordClient = require('discord.io');
 var fs = require('fs');
-
+var creds = require("../auth.json");
 var bot = new DiscordClient({
-	email: "",
-	password: "",
+	email: "creds.email",
+	password: "creds.password",
 	autorun: true
 });
 
@@ -18,7 +18,7 @@ var queue = [];
 
 fillArrays();
 
-var chan = "";
+var chan = "115332333745340416";
 var mods = [];
 
 bot.on('message', function(user, userID, channelID, message, rawEvent) {

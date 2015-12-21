@@ -17,7 +17,7 @@ fs.readFile('ts', function(err, data) {
     gifs = data.toString().split("\n");
 });
 
-var creds = require("./auth.json");
+var creds = require("../auth.json");
 mybot.login(creds.email, creds.password);
 
 mybot.on("message", function(msg) {

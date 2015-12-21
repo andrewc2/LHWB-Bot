@@ -60,14 +60,15 @@ Poll.prototype.closePoll = function() {
 		this.poll["text"] += "There were no votes for this poll\n";
 	} else {
 		for(i = 1 ; i < this.poll["optionsNum"] + 1; i++) {
-			this.poll["text"] += Math.round(this.poll["res"][i-1]/this.poll["votes"]*100);
-			if((this.poll["res"][i-1]/this.poll["votes"]*100) < 10) {
+
+			var percentage = this.poll["res"][i-1]/this.poll["votes"]*100;
+			this.poll["text"] += Math.round(percentage);
+
+			if(percentage < 10) {
 				this.poll["text"] += "%\t\t\t"
-			}
-			if((this.poll["res"][i-1]/this.poll["votes"]*100) === 100) {
+			} else if(percentage === 100) {
 				this.poll["text"] += "%\t\t"
-			}
-			if(((this.poll["res"][i-1]/this.poll["votes"]*100) < 100) && ((this.poll["res"][i-1]/this.poll["votes"]*100) >= 10)) {
+			} else if((percentage < 100) && (percentage >= 10)) {
 				this.poll["text"] += "%\t\t\t"
 			}
 			if(this.poll["res"][i-1] === 1) {
