@@ -9,6 +9,7 @@ For questions you can pm Historicc in the server.
 - Add local song names and paths to names.txt and songs.txt respectively
 - Add voice channel id to the chan variable
 - Fill the mods array with user names
+- Join a voice channel with !join [channel name]
 
 ### Coming Soon
 - Join voice channel by name
