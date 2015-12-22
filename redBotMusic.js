@@ -3,7 +3,7 @@ var fs = require('fs');
 var creds = require("../auth.json");
 var bot = new DiscordClient({
 	email: creds.email,
-	password: creds.password,
+	password: cread.password,
 	autorun: true
 });
 
@@ -18,7 +18,7 @@ var queue = [];
 
 fillArrays();
 
-var chan = "125790296641503232";
+var chan = "";
 var mods = [];
 
 bot.on('message', function(user, userID, channelID, message, rawEvent) {
@@ -27,7 +27,7 @@ bot.on('message', function(user, userID, channelID, message, rawEvent) {
 	switch(cmd){
 		case "!join":
 			if(mods.indexOf(user) > -1)
-				join();
+				join(channelID,message);
 			break;
 		case "!play":
 			if(mods.indexOf(user) > -1)
@@ -54,14 +54,22 @@ bot.on('message', function(user, userID, channelID, message, rawEvent) {
 		default:
 	}	
 });
+function join(channelID,message){
+	var channel = message.substring(message.indexOf(" ") + 1);
+	var server = bot.serverFromChannel(channelID);
+	var channels = bot.servers[server].channels;
 
-var stopped = false;
-function join(){
-	bot.joinVoiceChannel(chan, function(){
-		console.log("joined");
+	Object.keys(channels).forEach(function(key) {
+		if(channels[key].name === channel){
+			bot.joinVoiceChannel(channels[key].id, function(){
+				console.log("joined");
+				chan = channels[key].id;
+			});
+		}
 	});
-
 }
+var stopped = false;
+
 
 var currentSong;
 function play(){
@@ -71,7 +79,7 @@ function play(){
 		if(queue.length > 0){
 			var temp = queue.shift();
 			if(temp === "Random.mp3"){
-				rand = Math.floor(Math.random() * songs.length);
+				rand = Math.floor(Math.random() * 125);
 				currentSong = names[rand];
 				stream.playAudioFile('../music/' + songs[rand]);
 				console.log(songs[rand] + " is now playing");
@@ -82,7 +90,7 @@ function play(){
 				console.log(temp + " is now playing");
 			}
 		}else{
-			rand = Math.floor(Math.random() * songs.length);
+			rand = Math.floor(Math.random() * 125);
 			currentSong = names[rand];
 			stream.playAudioFile('../music/' + songs[rand]);
 			console.log(songs[rand] + " is now playing");
