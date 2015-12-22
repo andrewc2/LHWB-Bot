@@ -3,7 +3,7 @@ var fs = require('fs');
 var creds = require("../auth.json");
 var bot = new DiscordClient({
 	email: creds.email,
-	password: cread.password,
+	password: creds.password,
 	autorun: true
 });
 
