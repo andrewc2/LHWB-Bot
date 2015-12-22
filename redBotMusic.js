@@ -22,6 +22,7 @@ var chan = "125790296641503232";
 var mods = [];
 
 bot.on('message', function(user, userID, channelID, message, rawEvent) {
+	
 	var cmd = message.split(" ")[0].toLowerCase();
 	switch(cmd){
 		case "!join":
@@ -70,7 +71,7 @@ function play(){
 		if(queue.length > 0){
 			var temp = queue.shift();
 			if(temp === "Random.mp3"){
-				rand = Math.floor(Math.random() * 125);
+				rand = Math.floor(Math.random() * songs.length);
 				currentSong = names[rand];
 				stream.playAudioFile('../music/' + songs[rand]);
 				console.log(songs[rand] + " is now playing");
@@ -81,7 +82,7 @@ function play(){
 				console.log(temp + " is now playing");
 			}
 		}else{
-			rand = Math.floor(Math.random() * 125);
+			rand = Math.floor(Math.random() * songs.length);
 			currentSong = names[rand];
 			stream.playAudioFile('../music/' + songs[rand]);
 			console.log(songs[rand] + " is now playing");
