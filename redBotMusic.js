@@ -301,5 +301,5 @@ function request(channelID, message, userID, user) {
 	var req = message.substring(message.indexOf(" ") + 1);
 	db.query("INSERT INTO requested (user, request) VALUES (?,?)", [user,req]);
 	bot.sendMessage({to:channelID,message: "<@" + userID + ">, Request submitted."});	
-	
+
 }

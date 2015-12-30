@@ -8,7 +8,7 @@ var polls = [];
 var gifs;
 //var serverid = '115332333745340416';
 
-giphy = giphy({api_key:'dc6zaTOxFJmzC'});
+giphy = giphy({api_key:creds.api});
 mybot.on("ready", function(){
 	console.log("Ready to begin! Serving in " + mybot.channels.length + " channels");
 });

@@ -72,9 +72,9 @@ Poll.prototype.closePoll = function() {
 				this.poll["text"] += "%\t\t\t"
 			}
 			if(this.poll["res"][i-1] === 1) {
-				this.poll["text"] += this.poll["options"][i-1] + "(" + this.poll["res"][i-1] + " vote)" +"\n";
+				this.poll["text"] += this.poll["options"][i-1] + " (" + this.poll["res"][i-1] + " vote)" +"\n";
 			} else {
-				this.poll["text"] += this.poll["options"][i-1] + "(" + this.poll["res"][i-1] + " votes)" +"\n";
+				this.poll["text"] += this.poll["options"][i-1] + " (" + this.poll["res"][i-1] + " votes)" +"\n";
 			}
 			
 		}
