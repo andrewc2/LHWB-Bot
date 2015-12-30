@@ -6,7 +6,7 @@ var Poll = require('./polls.js');
 var mybot = new Discord.Client();
 var polls = [];
 var gifs;
-var serverid = 115332333745340416;
+//var serverid = '115332333745340416';
 
 giphy = giphy({api_key:'dc6zaTOxFJmzC'});
 mybot.on("ready", function(){
@@ -22,8 +22,8 @@ mybot.login(creds.email, creds.password);
 
 mybot.on("message", function(msg) {
 	//This bot is for a specific server
-	if(msg.channel.server.id != serverid)
-		return;
+	//if(msg.channel.server.id != serverid)
+		//return;
 
 
 	var args = msg.content.split(" ");

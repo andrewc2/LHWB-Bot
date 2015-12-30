@@ -1,6 +1,13 @@
 var DiscordClient = require('discord.io');
 var fs = require('fs');
-var creds = require("../auth.json");
+var creds = require('../auth.json');
+var mysql = require('mysql');
+var db = mysql.createConnection({
+	host: creds.mysqlHost,
+	user: creds.mysqlUser,
+	password: creds.mysqlPassword,
+	database: creds.database
+});
 var bot = new DiscordClient({
 	email: creds.email,
 	password: creds.password,
@@ -12,44 +19,57 @@ bot.on('ready', function() {
 });
 
 
-var songs = [];
-var names = [];
 var queue = [];
-
-fillArrays();
-
-var chan = "";
-var mods = [];
+var queuedBy = "";
+var recent = [];
 
 bot.on('message', function(user, userID, channelID, message, rawEvent) {
 	
 	var cmd = message.split(" ")[0].toLowerCase();
 	switch(cmd){
 		case "!join":
-			if(mods.indexOf(user) > -1)
+			if(isMod(channelID,userID))
 				join(channelID,message);
 			break;
 		case "!play":
-			if(mods.indexOf(user) > -1)
+			if(isMod(channelID,userID))
 				play();
 			break;
 		case "!stop":
-			if(mods.indexOf(user) > -1)
+			if(isMod(channelID,userID))
 				stop();
 			break;
-		case "!queue":
-			q(message,channelID,user,userID,cmd);break;
-		case "!skip":
-			skip(user);break;
-		case "!clearqueue":
-			clear(user);break;
-		case "!current":
-			current(channelID);break;
 		case "!q":
-			q(message,channelID,user,userID,cmd);break;
-		case "!updatesonglist":
-			if(user === mods[0])
-				update(message);
+		case "!queue":
+			q(message,channelID,user,userID,cmd);
+			break;
+		case "!dq":
+		case "!dequeue":
+			if(isMod(channelID,userID))
+				dequeue(message, channelID, userID);
+			break;
+		case "!skip":
+			if(isMod(channelID,userID))
+				skip(user);
+			break;
+		case "!cq":
+		case "!clearqueue":
+			if(isMod(channelID,userID))
+				clear(channelID,userID);
+			break;
+		case "!current":
+			current(channelID,userID);break;
+		case "!recentlyplayed":
+			recentlyPlayed(channelID);
+			break;
+		case "!playcount":
+			playCount(channelID, message, userID);
+			break;
+		case "!rankplays":
+			rankPlays(channelID, message, userID);
+			break;
+		case "!redbotrequest":
+			request(channelID, message, userID,user);
 			break;
 		default:
 	}	
@@ -58,7 +78,6 @@ function join(channelID,message){
 	var channel = message.substring(message.indexOf(" ") + 1);
 	var server = bot.serverFromChannel(channelID);
 	var channels = bot.servers[server].channels;
-
 	Object.keys(channels).forEach(function(key) {
 		if(channels[key].name === channel){
 			bot.joinVoiceChannel(channels[key].id, function(){
@@ -67,6 +86,24 @@ function join(channelID,message){
 			});
 		}
 	});
+}
+function isMod(channelID,userID){
+	var server = bot.serverFromChannel(channelID);
+	var roles = bot.servers[server].roles;
+	var roleId = "";
+	var bool = false;
+	Object.keys(roles).forEach (function(key) {
+		if( (roles[key].name === "chat mods") || (roles[key].name === "admins") ){
+			roleId = roles[key].id;
+			var userRole = bot.servers[server].members[userID].roles;
+			if(userRole.indexOf(roleId) != -1){
+				console.log("this guys is totes mod");
+				bool = true;
+			}
+		}
+	});
+	return bool;
+	
 }
 var stopped = false;
 
@@ -77,23 +114,40 @@ function play(){
 	var rand;
 	bot.testAudio({ channel:chan , stereo: true}, function(stream) {
 		if(queue.length > 0){
+			console.log("test");
 			var temp = queue.shift();
 			if(temp === "Random.mp3"){
-				rand = Math.floor(Math.random() * songs.length);
-				currentSong = names[rand];
-				stream.playAudioFile('../music/' + songs[rand]);
-				console.log(songs[rand] + " is now playing");
+				db.query("SELECT path FROM music WHERE type != ? ORDER BY RAND() LIMIT 1",["unreleased"], function(err,result) {
+					if(result != null) {
+						queuedBy = temp.user;
+						currentSong = result[0]['path'];
+						console.log(currentSong.slice(0,-4) + " is now playing");
+						addPlay(currentSong);
+						addToRecent(currentSong.slice(0,-4));
+						stream.playAudioFile('../music/' + currentSong);
+					}
+				});
 
 			}else{
-				currentSong = names[songs.indexOf(temp)];
-				stream.playAudioFile('../music/' + temp);
-				console.log(temp + " is now playing");
+				currentSong = temp.path;
+				queuedBy = temp.user;
+				console.log(queuedBy);
+				addPlay(currentSong);
+				addToRecent(currentSong.slice(0,-4));
+				stream.playAudioFile('../music/' + currentSong);
+				console.log(currentSong.slice(0,-4) + " is now playing");
 			}
 		}else{
-			rand = Math.floor(Math.random() * songs.length);
-			currentSong = names[rand];
-			stream.playAudioFile('../music/' + songs[rand]);
-			console.log(songs[rand] + " is now playing");
+			db.query("SELECT path FROM music WHERE type != ? ORDER BY RAND() LIMIT 1",["unreleased"], function(err,result) {
+				if(result != null) {
+					queuedBy = "";
+					currentSong = result[0]['path'];
+					console.log(currentSong.slice(0,-4) + " is now playing");
+					addPlay(currentSong);
+					addToRecent(currentSong.slice(0,-4));
+					stream.playAudioFile('../music/' + currentSong);
+				}
+			});
 		}	
 		stream.once('fileEnd',function(){
 			if(!stopped){
@@ -104,8 +158,15 @@ function play(){
 		});
 	});
 }
-function current(channelID){
-	bot.sendMessage({to:channelID,message: currentSong + ", is currently playing."});
+function addPlay(song){
+	db.query("UPDATE music SET playcount = playcount + 1 WHERE path = ?",[song])	
+}
+function current(channelID,userID){
+	if(queuedBy != "") {
+		bot.sendMessage({to:channelID,message: "<@" + userID + ">, '" + currentSong.slice(0,-4) + "' is currently playing and was queued by " + queuedBy });	
+	} else {
+		bot.sendMessage({to:channelID,message: "<@" + userID + ">, '" + currentSong.slice(0,-4) + "' is currently playing."});	
+	}
 }
 
 /* The reason for the stopped bool is because stoping the song will emit 
@@ -119,26 +180,22 @@ function stop(){
 }
 
 function q(message, channelID, user, userID, cmd){
+	queueObj = { };
 	if((message === "!queue") || (message === "!q")){
 		printQ(message,channelID);
 	}else{	
-		var title = message.substring(cmd.length + 1).toLowerCase();
+		var title = message.substring(cmd.length + 1);
 		console.log("title: " + title);
-		var index = names.indexOf(title);
-		if(index  > -1){
-			if(queue.indexOf(songs[index]) === -1){
-				queue.push(songs[index]);
-				bot.sendMessage({to:channelID,message: "<@" + userID + ">, " + songs[index].slice(0,-4) + " has been added to the queue."});
+		db.query("SELECT path FROM music WHERE name = ?", [title], function (err, result) {
+			if(result[0] != null) {
+				queueObj.path = result[0]['path'];
+				queueObj.user = user;
+				queue.push(queueObj);
+				bot.sendMessage({to:channelID,message: "<@" + userID + ">," + " '" + queueObj.path.slice(0,-4) + "' has been added to the queue"});	
 			}else{
-				bot.sendMessage({to:channelID,message: "<@" + userID + ">, " + songs[index].slice(0,-4) + " is already in the queue and will not be added."});
+				bot.sendMessage({to:channelID,message: "<@" + userID + ">, That song could not be found. Please check your spelling or ask Historicc to add the song."});	
 			}
-		}else{
-			if(title === "random"){
-				queue.push("Random.mp3");
-			}else{
-				bot.sendMessage({to:channelID,message: "<@" + userID + ">, That song could not be found. Please check your spelling or ask Historicc to add the song."});
-			}
-		}
+		});
 	}
 }	
 
@@ -148,9 +205,9 @@ function printQ(msg,channelID){
 		message = "There are currently no songs in the queue.";
 	}else{
 		var i;
-		message = "The current song queue is:\n";
+		message = "'" + currentSong.slice(0,-4) + "'"  + " is currently playing.\n\n" + "The queue is:\n";
 		for(i = 0; i < queue.length; i++){
-			message = message + (i+1) + ". "+queue[i].slice(0,-4) + "\n"
+			message = message + (i+1) + ". "+queue[i].path.slice(0,-4) + "\n"
 		}
 	}	
 	bot.sendMessage({to: channelID, message: message});
@@ -158,55 +215,91 @@ function printQ(msg,channelID){
 
 function skip(user){
 	console.log(user);	
-	if(mods.indexOf(user) > -1){
-		stop();
-		setTimeout(function(){
-			play();
-		},2000);
-		console.log("skipped");
+	stop();
+	setTimeout(function(){
+		play();
+	},2000);
+	console.log("skipped");
+}
+
+
+function clear(channelID,userID){
+	queue = [];
+	bot.sendMessage({to:channelID,message: "<@" + userID + ">, The queue has been cleared."});	
+}
+
+
+function dequeue(message,channelID,userID){
+	message = message.substring(message.indexOf(" ") + 1).toLowerCase();
+	var i;
+	for(i = 0; i < queue.length; i++) {
+		if(queue[i].path.toLowerCase() == (message + ".mp3") ){
+			var removed = queue.splice(i,1)[0].path;
+			bot.sendMessage({to:channelID,message: "<@" + userID + ">, " + "'" + removed.slice(0,-4) + "'"  + " has been removed from the queue."});	
+			return;
+		}
+	}
+	bot.sendMessage({to:channelID,message: "<@" + userID + ">, That song could not be located in the queue."});	
+}
+
+function addToRecent(song){
+	if(recent.length > 11) {
+		recent.shift();	
+		recent.push(song);
+	} else {
+		recent.push(song);
 	}
 }
+function recentlyPlayed(channelID){
+	var message;
+	if(recent.length < 1){
+		message = "There are currently no recently played songs.";
+	}else{
+		var i,j;
+		message = "'" + currentSong.slice(0,-4) + "'"  + " is currently playing.\n\n" + "The recently played songs are:\n";
+		for(i = recent.length - 2, j = 1; i > 0; i--, j++){
+			message = message + j + ". " + recent[i] + "\n"
+		}
+	}	
+	bot.sendMessage({to: channelID, message: message});
+}
 
-
-function clear(user){
-	if(mods.indexOf(user) > -1){
-		queue = [];
-		console.log("queue has been cleared");
+function rankPlays(channelID,message){
+	var listSize = 5;
+	var output = "Song Play Count Rankings:\n";
+	var args = message.split(" ");
+	if(args.length == 2){
+		listSize = parseInt(args[1]);
 	}
+	db.query("SELECT path, SUM(playcount) AS plays FROM music WHERE playcount > 0 GROUP BY path ORDER BY playcount DESC LIMIT ?", [listSize], function (err, result) {
+		var count = 1;
+		result.forEach(function (songs) {
+			output = output + count + ". " + songs.path.slice(0,-4) + " - " + songs.plays + " plays\n";
+			count++;
+		});
+		bot.sendMessage({to: channelID, message: output});
+	});
+
 }
 
-/* Currently using text files to store song list. Will probably change that once i have more time */
-function fillArrays(){
-	fs.readFile("songs.txt",function(err, data){
-		if(err) throw err;
-		songs = data.toString().split("\n");
-	});
-	fs.readFile("names.txt",function(err, data){
-		if(err) throw err;
-		names = data.toString().toLowerCase().split("\n");
+function playCount(channelID,message,userID) {
+	var output = "";
+	var title = message.substring(message.indexOf(" ") + 1);
+	db.query("SELECT path FROM music WHERE name = ?", [title], function (err, result) {	
+		if(result[0] != null){
+			db.query("SELECT SUM(playcount) AS plays FROM music WHERE path = ?", [result[0].path], function (err, result) {
+				output = "'" + title + "' has been played " + result[0].plays + " times.";
+				bot.sendMessage({to:channelID,message: "<@" + userID + ">, " + output});	
+			});
+		}else{
+			bot.sendMessage({to:channelID,message: "<@" + userID + ">, That song could not be found"});	
+		}	
 	});
 }
 
-function update(message){
-	var index = message.indexOf(" ");
-	var title = message.substring(index + 1);
-	fs.appendFile("songs.txt", "\n" + title + ".mp3", function (err) {
-		if (err) throw err;
-		console.log("Updated");
-	});
-	fs.appendFile("names.txt", "\n" + title, function (err) {
-		if (err) throw err;
-		console.log("Updated");
-	});
-	songs = [];
-	names = [];
-	fillArrays();
+function request(channelID, message, userID, user) {
+	var req = message.substring(message.indexOf(" ") + 1);
+	db.query("INSERT INTO requested (user, request) VALUES (?,?)", [user,req]);
+	bot.sendMessage({to:channelID,message: "<@" + userID + ">, Request submitted."});	
+	
 }
-
-
-
-
-
-
-
-
