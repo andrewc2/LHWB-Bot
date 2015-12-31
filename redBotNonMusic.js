@@ -24,9 +24,6 @@ mybot.on("message", function(msg) {
 	//This bot is for a specific server
 	//if(msg.channel.server.id != serverid)
 		//return;
-	if(msg.channel.id != "130759361902542848") {
-		return;
-	}
 
 
 	var args = msg.content.split(" ");
