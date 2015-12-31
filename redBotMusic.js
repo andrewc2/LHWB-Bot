@@ -88,10 +88,14 @@ function join(channelID,message){
 	});
 }
 function isMod(channelID,userID){
+	var bool = false;
 	var server = bot.serverFromChannel(channelID);
+
+    if(bot.servers[server] === undefined)
+        return bool;
+
 	var roles = bot.servers[server].roles;
 	var roleId = "";
-	var bool = false;
 	Object.keys(roles).forEach (function(key) {
 		if( (roles[key].name === "chat mods") || (roles[key].name === "admins") ){
 			roleId = roles[key].id;
@@ -181,7 +185,7 @@ function stop(){
 
 function q(message, channelID, user, userID, cmd){
 	queueObj = { };
-	if((message === "!queue") || (message === "!q")){
+	if((message.toLowerCase() === "!queue") || (message.toLowerCase() === "!q")){
 		printQ(message,channelID);
 	}else{	
 		var title = message.substring(cmd.length + 1);
@@ -271,7 +275,7 @@ function rankPlays(channelID,message){
 	if(args.length == 2){
 		listSize = parseInt(args[1]);
 	}
-	db.query("SELECT path, SUM(playcount) AS plays FROM music WHERE playcount > 0 GROUP BY path ORDER BY playcount DESC LIMIT ?", [listSize], function (err, result) {
+	db.query("SELECT path, SUM(playcount) AS plays FROM music WHERE playcount > 0 GROUP BY path ORDER BY plays DESC LIMIT ?", [listSize], function (err, result) {
 		var count = 1;
 		result.forEach(function (songs) {
 			output = output + count + ". " + songs.path.slice(0,-4) + " - " + songs.plays + " plays\n";

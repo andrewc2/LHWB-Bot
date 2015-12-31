@@ -1,4 +1,9 @@
 {
 	"email":"",
 	"password": ""
+	"mysqlUser":"",
+	"mysqlPassword":"",
+	"database":"",
+    "api":""
+
 }
