@@ -1,7 +1,7 @@
 var Discord = require('discord.js');
 var giphy = require('apigiphy');
 var fs = require('fs');
-var creds = require("../auth.json");
+var creds = require("./auth.json");
 var Poll = require('./polls.js');
 var mybot = new Discord.Client();
 var polls = [];
@@ -57,6 +57,13 @@ mybot.on("message", function(msg) {
 			jelly(msg);break;
 		case "!tablesrespected":
 			tablesrespected(msg);break;
+		case "!showpoll":
+			if(polls[msg.channel.id] != undefined) {
+				mybot.reply(msg, polls[msg.channel.id].showPoll());
+			} else {
+				mybot.reply(msg, "No poll is active, start a poll by typing !poll option1, option2, option3...");
+			}
+			break;
 		case "!poll":
 			if(polls[msg.channel.id] != undefined) {
 				mybot.sendMessage(msg.channel, polls[msg.channel.id].pollCommand(msg, isMod(msg.channel.server, msg.author)));
