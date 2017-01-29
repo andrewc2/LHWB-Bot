@@ -106,7 +106,7 @@ function isMod(channelID,userID){
             }
         }
     });
-    if (userID === "###"){
+    if (userID === creds.iandrewc){
         console.log("this guys is totes iandrewc");
         bool = true;
     }
