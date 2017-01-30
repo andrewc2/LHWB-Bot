@@ -237,7 +237,7 @@ function q(message, channelID, user, userID, cmd){
                 bot.sendMessage({to:channelID,message: "<@" + userID + ">," + " '" + queueObj.path.slice(0,-4) + "' has been added to the queue"});
             }else{
 			fuzzySearch(title.toLowerCase(), function(result){
-				if(result != ""){
+				if(result){
 					queueObj.path = result['path'];
 					queueObj.user = user;
 					queue.push(queueObj);
