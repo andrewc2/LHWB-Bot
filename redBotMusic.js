@@ -19,7 +19,7 @@ var bot = new Discord.Client({
 bot.on('ready', function(event) {
     console.log('Logged in as %s - %s\n', bot.username, bot.id);
     console.log('Joining voice chat and playing after 5 seconds');
-	join("130759361902542848", " testing");
+    join("130759361902542848", " testing");
     setTimeout(play, 5000);
 });
 
