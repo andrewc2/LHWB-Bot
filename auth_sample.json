@@ -1,9 +1,7 @@
 {
-	"email":"",
-	"password": "",
-	"mysqlUser":"",
-	"mysqlPassword":"",
-	"database":"",
+    "token":"",
+    "mysqlUser":"",
+    "mysqlPassword":"",
+    "database":"",
     "api":""
-
 }
