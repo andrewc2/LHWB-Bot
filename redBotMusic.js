@@ -15,8 +15,19 @@ var bot = new Discord.Client({
     token: creds.token
 });
 
+// Announce bot has logged in after connecting to discord, then joining main voice chat and starting playing after 5 sec delay
 bot.on('ready', function(event) {
     console.log('Logged in as %s - %s\n', bot.username, bot.id);
+    console.log('Joining voice chat and playing after 5 seconds');
+    join("130759361902542848", " testing");
+    setTimeout(play, 5000);
+});
+
+// Automatically reconnect if the bot disconnects from Discord
+bot.on('disconnect', function(err, event) {
+    console.log('-- Bot Disconnected from Discord with code', event, 'for reason:', err, '--');
+    stop();
+    setTimeout(bot.connect, 5000);
 });
 
 var queue = [];
@@ -27,7 +38,7 @@ bot.on('message', function(user, userID, channelID, message, event) {
     
     var cmd = message.split(" ")[0].toLowerCase();
     switch(cmd){
-        case "!join":
+        case "!rjoin":
             if(isMod(channelID,userID))
                 join(channelID,message);
             break;
@@ -68,6 +79,9 @@ bot.on('message', function(user, userID, channelID, message, event) {
         case "!rankplays":
             rankPlays(channelID, message, userID);
             break;
+         case "!tracks":
+            tracks(channelID, message, userID,user);
+            break;
         /* case "!redbotrequest":
             request(channelID, message, userID,user);
             break; */
@@ -81,7 +95,7 @@ function join(channelID,message){
     Object.keys(channels).forEach(function(key) {
         if(channels[key].name === channel){
             bot.joinVoiceChannel(channels[key].id, function(){
-                console.log("joined");
+                console.log("Joined " + channel);
                 chan = channels[key].id;
             });
         }
@@ -111,20 +125,19 @@ function isMod(channelID,userID){
         bool = true;
     }
     return bool;
-    
 }
 var stopped = false;
-
 
 var currentSong;
 function play(){
     stopped = false;
     var rand;
+
     bot.getAudioContext(chan, function(err,stream) {
         if (err) return console.error(err);
-        
+                      
         if(queue.length > 0){
-            console.log("test");
+            console.log("There is a queue.");
             var temp = queue.shift();
             if(temp.path === "Random.mp3"){ //Allows for queueing a random song when Random.mp3 is queued
                 db.getConnection(function(err, connection){
@@ -136,7 +149,8 @@ function play(){
                             addPlay(currentSong);
                             addToRecent(currentSong.slice(0,-4));
                             stream.playAudioFile('/home/redbot/music/' + currentSong);
-                            console.log("poop first if");
+                            bot.setPresence( {game: {name:currentSong.slice(0,-4)}} ); //sets Playing to current song
+                            console.log("Played random song");
                         }
                     });
                     connection.release();
@@ -148,8 +162,9 @@ function play(){
                 addPlay(currentSong);
                 addToRecent(currentSong.slice(0,-4));
                 stream.playAudioFile('/home/redbot/music/' + currentSong);
+                bot.setPresence( {game: {name:currentSong.slice(0,-4)}} ); //sets Playing to current song
                 console.log(currentSong.slice(0,-4) + " is now playing");
-                console.log("poop else after first if");
+                console.log("Played user requested song, not random");
             }
         }else{
             db.getConnection(function(err, connection){
@@ -159,12 +174,13 @@ function play(){
                         if(result != null) {
                             queuedBy = "";
                             currentSong = result[0]['path'];
-                            console.log(currentSong.slice(0,-4) + " is now playing queue Empty");
+                            console.log(currentSong.slice(0,-4) + " is now playing");
                             addPlay(currentSong);
                             addToRecent(currentSong.slice(0,-4));
                             //fs.createReadStream('/home/redbot/music/Viva La Vida.mp3').pipe(stream, {end:false}); new version of playAudioFile
                             stream.playAudioFile('/home/redbot/music/' + currentSong);
-                            console.log("poop no queue");
+                            bot.setPresence( {game: {name:currentSong.slice(0,-4)}} ); //sets Playing to current song
+                            console.log("Queue empty, Playing songs randomly");
                         }
                     });
                     connection.release();
@@ -174,12 +190,12 @@ function play(){
             });
         };
         stream.once('fileEnd',function(){
-            console.log("file ended");
+            console.log("Song Ended");
             if(!stopped){
                 setTimeout(function(){
                     play();
                 }, 2000);
-                console.log("play more stuff");
+                console.log("Playing next song");
             }
         });
     });
@@ -241,12 +257,12 @@ function printQ(msg,channelID){
 }   
 
 function skip(user){
-    console.log(user);  
+    console.log(user + " requested the song be skipped");  
     stop();
     setTimeout(function(){
         play();
     },2000);
-    console.log("skipped");
+    console.log("Skipping Song");
 }
 
 
@@ -306,7 +322,6 @@ function rankPlays(channelID,message){
         });
         bot.sendMessage({to: channelID, message: output});
     });
-
 }
 
 function playCount(channelID,message,userID) {
@@ -328,5 +343,8 @@ function request(channelID, message, userID, user) {
     var req = message.substring(message.indexOf(" ") + 1);
     db.query("INSERT INTO requested (user, request) VALUES (?,?)", [user,req]);
     bot.sendMessage({to:channelID,message: "<@" + userID + ">, Request submitted."});   
-
+}
+function tracks(channelID, message, userID, user) {
+    var tra = message.substring(message.indexOf(" ") + 1);
+    bot.sendMessage({to:channelID,message: "<@" + userID + ">, http://redbot.tay.rocks/redbot.php"});   
 }
