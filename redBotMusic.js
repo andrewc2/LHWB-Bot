@@ -4,10 +4,10 @@ var creds = require('../auth.json');
 var mysql = require('mysql');
 
 var db = mysql.createPool({
-  host: creds.mysqlHost,
-  user: creds.mysqlUser,
-  password: creds.mysqlPassword,
-  database: creds.database
+    host: creds.mysqlHost,
+    user: creds.mysqlUser,
+    password: creds.mysqlPassword,
+    database: creds.database
 });
 
 var bot = new Discord.Client({
@@ -19,8 +19,6 @@ var bot = new Discord.Client({
 bot.on('ready', function(event) {
     console.log('Logged in as %s - %s\n', bot.username, bot.id);
     console.log('Joining voice chat and playing after 5 seconds');
-    join("130759361902542848", " testing");
-    setTimeout(play, 5000);
 });
 
 // Automatically reconnect if the bot disconnects from Discord
@@ -35,7 +33,7 @@ var queuedBy = "";
 var recent = [];
 
 bot.on('message', function(user, userID, channelID, message, event) {
-    
+
     var cmd = message.split(" ")[0].toLowerCase();
     switch(cmd){
         case "!rjoin":
@@ -86,7 +84,7 @@ bot.on('message', function(user, userID, channelID, message, event) {
             request(channelID, message, userID,user);
             break; */
         default:
-    }   
+    }
 });
 function join(channelID,message){
     var channel = message.substring(message.indexOf(" ") + 1);
@@ -135,7 +133,7 @@ function play(){
 
     bot.getAudioContext(chan, function(err,stream) {
         if (err) return console.error(err);
-                      
+
         if(queue.length > 0){
             console.log("There is a queue.");
             var temp = queue.shift();
@@ -186,7 +184,7 @@ function play(){
                     connection.release();
                 } else {
                     console.log(err);
-                }  
+                }
             });
         };
         stream.once('fileEnd',function(){
@@ -202,17 +200,17 @@ function play(){
 }
 
 function addPlay(song){
-    db.query("UPDATE music SET playcount = playcount + 1 WHERE path = ?",[song])    
+    db.query("UPDATE music SET playcount = playcount + 1 WHERE path = ?",[song])
 }
 function current(channelID,userID){
     if(queuedBy != "") {
-        bot.sendMessage({to:channelID,message: "<@" + userID + ">, '" + currentSong.slice(0,-4) + "' is currently playing and was queued by " + queuedBy });    
+        bot.sendMessage({to:channelID,message: "<@" + userID + ">, '" + currentSong.slice(0,-4) + "' is currently playing and was queued by " + queuedBy });
     } else {
-        bot.sendMessage({to:channelID,message: "<@" + userID + ">, '" + currentSong.slice(0,-4) + "' is currently playing."});  
+        bot.sendMessage({to:channelID,message: "<@" + userID + ">, '" + currentSong.slice(0,-4) + "' is currently playing."});
     }
 }
 
-/* The reason for the stopped bool is because stopping the song will emit 
+/* The reason for the stopped bool is because stopping the song will emit
  * 'fileEnd' which will automatically play a song.
  */
 function stop(){
@@ -226,7 +224,7 @@ function q(message, channelID, user, userID, cmd){
     queueObj = { };
     if((message.toLowerCase() === "!queue") || (message.toLowerCase() === "!q")){
         printQ(message,channelID);
-    }else{  
+    }else{
         var title = message.substring(cmd.length + 1);
         console.log("title: " + title);
         db.query("SELECT path FROM music WHERE name = ?", [title], function (err, result) {
@@ -234,13 +232,23 @@ function q(message, channelID, user, userID, cmd){
                 queueObj.path = result[0]['path'];
                 queueObj.user = user;
                 queue.push(queueObj);
-                bot.sendMessage({to:channelID,message: "<@" + userID + ">," + " '" + queueObj.path.slice(0,-4) + "' has been added to the queue"}); 
+                bot.sendMessage({to:channelID,message: "<@" + userID + ">," + " '" + queueObj.path.slice(0,-4) + "' has been added to the queue"});
             }else{
-                bot.sendMessage({to:channelID,message: "<@" + userID + ">, That song could not be found. Please check your spelling or ask iandrewc to add the song."});    
+			fuzzySearch(title.toLowerCase(), function(result){
+				if(result != ""){
+					queueObj.path = result['path'];
+					queueObj.user = user;
+					queue.push(queueObj);
+					bot.sendMessage({to:channelID,message: "<@" + userID + ">," + " '" + queueObj.path.slice(0,-4) + "' has been added to the queue"});
+				}else{
+					bot.sendMessage({to:channelID,message: "<@" + userID + ">, That song could not be found. Please check your spelling or ask iandrewc to add the song."});
+				}
+			});
+
             }
         });
     }
-}   
+}
 
 function printQ(msg,channelID){
     var message;
@@ -252,12 +260,12 @@ function printQ(msg,channelID){
         for(i = 0; i < queue.length; i++){
             message = message + (i+1) + ". "+queue[i].path.slice(0,-4) + "\n"
         }
-    }   
+    }
     bot.sendMessage({to: channelID, message: message});
-}   
+}
 
 function skip(user){
-    console.log(user + " requested the song be skipped");  
+    console.log(user + " requested the song be skipped");
     stop();
     setTimeout(function(){
         play();
@@ -268,7 +276,7 @@ function skip(user){
 
 function clear(channelID,userID){
     queue = [];
-    bot.sendMessage({to:channelID,message: "<@" + userID + ">, The queue has been cleared."});  
+    bot.sendMessage({to:channelID,message: "<@" + userID + ">, The queue has been cleared."});
 }
 
 
@@ -278,16 +286,16 @@ function dequeue(message,channelID,userID){
     for(i = 0; i < queue.length; i++) {
         if(queue[i].path.toLowerCase() == (message + ".mp3") ){
             var removed = queue.splice(i,1)[0].path;
-            bot.sendMessage({to:channelID,message: "<@" + userID + ">, " + "'" + removed.slice(0,-4) + "'"  + " has been removed from the queue."});    
+            bot.sendMessage({to:channelID,message: "<@" + userID + ">, " + "'" + removed.slice(0,-4) + "'"  + " has been removed from the queue."});
             return;
         }
     }
-    bot.sendMessage({to:channelID,message: "<@" + userID + ">, That song could not be located in the queue."}); 
+    bot.sendMessage({to:channelID,message: "<@" + userID + ">, That song could not be located in the queue."});
 }
 
 function addToRecent(song){
     if(recent.length > 11) {
-        recent.shift(); 
+        recent.shift();
         recent.push(song);
     } else {
         recent.push(song);
@@ -303,7 +311,7 @@ function recentlyPlayed(channelID){
         for(i = recent.length - 2, j = 1; i > 0; i--, j++){
             message = message + j + ". " + recent[i] + "\n"
         }
-    }   
+    }
     bot.sendMessage({to: channelID, message: message});
 }
 
@@ -327,24 +335,78 @@ function rankPlays(channelID,message){
 function playCount(channelID,message,userID) {
     var output = "";
     var title = message.substring(message.indexOf(" ") + 1);
-    db.query("SELECT path FROM music WHERE name = ?", [title], function (err, result) { 
+    db.query("SELECT path FROM music WHERE name = ?", [title], function (err, result) {
         if(result[0] != null){
             db.query("SELECT SUM(playcount) AS plays FROM music WHERE path = ?", [result[0].path], function (err, result) {
                 output = "'" + title + "' has been played " + result[0].plays + " times.";
-                bot.sendMessage({to:channelID,message: "<@" + userID + ">, " + output});    
+                bot.sendMessage({to:channelID,message: "<@" + userID + ">, " + output});
             });
         }else{
-            bot.sendMessage({to:channelID,message: "<@" + userID + ">, That song could not be found"}); 
-        }   
+            bot.sendMessage({to:channelID,message: "<@" + userID + ">, That song could not be found"});
+        }
     });
 }
 
 function request(channelID, message, userID, user) {
     var req = message.substring(message.indexOf(" ") + 1);
     db.query("INSERT INTO requested (user, request) VALUES (?,?)", [user,req]);
-    bot.sendMessage({to:channelID,message: "<@" + userID + ">, Request submitted."});   
+    bot.sendMessage({to:channelID,message: "<@" + userID + ">, Request submitted."});
 }
 function tracks(channelID, message, userID, user) {
     var tra = message.substring(message.indexOf(" ") + 1);
-    bot.sendMessage({to:channelID,message: "<@" + userID + ">, http://redbot.tay.rocks/redbot.php"});   
+    bot.sendMessage({to:channelID,message: "<@" + userID + ">, http://redbot.tay.rocks/redbot.php"});
+}
+function fuzzySearch(title, callback){
+	var result;
+	var maxEditDist = 5;
+	var minEditDist = maxEditDist;
+
+	db.query("SELECT path,name FROM music", function(err, songList) {
+		var i;
+
+		for(i = 0; i < songList.length; i++){
+			editDistance(title, songList[i]['name'].toLowerCase(), function(tempDist){
+				if(tempDist < minEditDist && tempDist <= maxEditDist){
+					minEditDist = tempDist;
+					result = songList[i]
+				}
+			});
+		}
+		callback(result);
+	});
+}
+
+function editDistance(source, target, callback){
+	n = source.length + 1;
+	m = target.length + 1;
+
+
+	var distMatrix = [];
+	var min = 0;
+	var i,j;
+
+	for(i = 0; i < n; i++){
+		distMatrix[i] = [];
+	}
+
+	for(i = 0; i < n; i++){
+		distMatrix[i][0] = i;
+	}
+
+	for(i = 0; i < m; i++){
+		distMatrix[0][i] = i;
+	}
+
+	for(i = 1; i < n; i++){
+		for (j = 1; j < m; j++){
+			if(source.charAt(j-1) === target.charAt(i-1)){
+				min = distMatrix[i-1][j-1];
+			}else{
+				min = Math.min(distMatrix[i-1][j-1] + 1, distMatrix[i-1][j] + 1, distMatrix[i][j-1] + 1);
+
+			}
+			distMatrix[i][j] = min;
+		}
+	}
+	callback(distMatrix[n-1][m-1]);
 }
