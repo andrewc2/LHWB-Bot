@@ -337,15 +337,27 @@ function rankPlays(channelID,message){
 function playCount(channelID,message,userID) {
     var output = "";
     var title = message.substring(message.indexOf(" ") + 1);
-    db.query("SELECT path FROM music WHERE name = ?", [title], function (err, result) {
+    db.query("SELECT path FROM music WHERE name = ?", [title], function (err, result) { 
         if(result[0] != null){
             db.query("SELECT SUM(playcount) AS plays FROM music WHERE path = ?", [result[0].path], function (err, result) {
                 output = "'" + title + "' has been played " + result[0].plays + " times.";
-                bot.sendMessage({to:channelID,message: "<@" + userID + ">, " + output});
+                bot.sendMessage({to:channelID,message: "<@" + userID + ">, " + output});    
+
             });
         }else{
-            bot.sendMessage({to:channelID,message: "<@" + userID + ">, That song could not be found"});
-        }
+			fuzzySearch(title.toLowerCase(), function(result){
+				if(result){
+					title = result['name']
+					db.query("SELECT SUM(playcount) AS plays FROM music WHERE path = ?", [result.path], function (err, result) {
+						output = "'" + title + "' has been played " + result[0].plays + " times.";
+						bot.sendMessage({to:channelID,message: "<@" + userID + ">, " + output});    
+
+					});
+				}else{
+					bot.sendMessage({to:channelID,message: "<@" + userID + ">, That song could not be found"}); 
+				}
+			});
+        }   
     });
 }
 
@@ -354,10 +366,12 @@ function request(channelID, message, userID, user) {
     db.query("INSERT INTO requested (user, request) VALUES (?,?)", [user,req]);
     bot.sendMessage({to:channelID,message: "<@" + userID + ">, Request submitted."});
 }
+
 function tracks(channelID, message, userID, user) {
     var tra = message.substring(message.indexOf(" ") + 1);
     bot.sendMessage({to:channelID,message: "<@" + userID + ">, http://redbot.tay.rocks/redbot.php"});
 }
+
 function fuzzySearch(title, callback){
 	var result;
 	var maxEditDist = 5;
