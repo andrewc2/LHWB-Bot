@@ -1,7 +1,7 @@
 var Discord = require('discord.js');
 var giphy = require('apigiphy');
 var fs = require('fs');
-var creds = require("./auth.json");
+var creds = require("../auth.json");
 var Poll = require('./polls.js');
 var mybot = new Discord.Client();
 var polls = [];
@@ -18,7 +18,7 @@ fs.readFile('ts', function(err, data) {
     gifs = data.toString().split("\n");
 });
 
-mybot.login(creds.email, creds.password);
+mybot.login(creds.token);
 
 mybot.on("message", function(msg) {
 	//This bot is for a specific server
@@ -55,21 +55,21 @@ mybot.on("message", function(msg) {
 			upvote(msg);break;
 		case "!jelly":
 			jelly(msg);break;
-		case "!tablesrespected":
+		 case "!tablesrespected":
 			tablesrespected(msg);break;
 		case "!showpoll":
 			if(polls[msg.channel.id] != undefined) {
-				mybot.reply(msg, polls[msg.channel.id].showPoll());
+				msg.channel.sendMessage(polls[msg.channel.id].showPoll());
 			} else {
-				mybot.reply(msg, "No poll is active, start a poll by typing !poll option1, option2, option3...");
+				msg.channel.sendMessage("No poll is active, start a poll by typing !poll option1, option2, option3...");
 			}
 			break;
 		case "!poll":
 			if(polls[msg.channel.id] != undefined) {
-				mybot.sendMessage(msg.channel, polls[msg.channel.id].pollCommand(msg, isMod(msg.channel.server, msg.author)));
+				msg.channel.sendMessage(polls[msg.channel.id].pollCommand(msg, isMod(msg.channel.server, msg.author)));
 			} else {
 				polls[msg.channel.id] = new Poll();
-				mybot.sendMessage(msg.channel, polls[msg.channel.id].pollCommand(msg, isMod(msg.channel.server, msg.author)));
+				msg.channel.sendMessage(polls[msg.channel.id].pollCommand(msg, isMod(msg.channel.server, msg.author)));
 			}break;
 		default:
 			if(polls[msg.channel.id] != undefined && polls[msg.channel.id].poll["active"])
@@ -86,17 +86,17 @@ function gif(msg){
 
 	if(args.length === 1){
 		random = Math.floor(Math.random()*len);	
-		mybot.sendMessage(msg.channel, "http://i.imgur.com/" + gifs[random] + "\n#" + random + " beep boop");
+		msg.channel.sendMessage("http://i.imgur.com/" + gifs[random] + "\n#" + random + " beep boop");
 	}else if (parseInt(args[1]) < len + 1){
-		mybot.sendMessage(msg.channel, "http://i.imgur.com/" + gifs[parseInt(args[1])] + "\n#" + args[1] + " beep boop");
+		msg.channel.sendMessage("http://i.imgur.com/" + gifs[parseInt(args[1])] + "\n#" + args[1] + " beep boop");
 	}else{
 		giphy.search({q:"taylor swift " + msg.content.substring(5)})
 		 .then(function(response){
 		  		if(response.data.length === 0){
-			  		mybot.reply(msg, "Search returned no results");
+			  		msg.channel.sendMessage("Search returned no results");
 		  		}else{
 		 			rand = Math.floor(Math.random()*response.data.length);
-		  			mybot.sendMessage(msg.channel, response.data[rand].url);
+		  			msg.channel.sendMessage(response.data[rand].url);
 				}
 			}, function(error){
 		  		console.log(error);  
@@ -107,33 +107,29 @@ function gif(msg){
 function celsius(msg){
 	var f = parseFloat(msg.content.substring(msg.content.indexOf(' ')+1));
 	var c = (5/9)*(f - 32);
-	mybot.reply(msg, Number(c.toFixed(1)));
+	msg.channel.sendMessage(Number(c.toFixed(1)));
 }
 
 function farenheit(msg){
 	var c = parseFloat(msg.content.substring(msg.content.indexOf(' ')+1));
 	var f = (9/5)*c + 32;
-	mybot.reply(msg, Number(f.toFixed(1)));
+	msg.channel.sendMessage(Number(f.toFixed(1)));
 }
 
 function kanye(msg){
-	mybot.sendMessage(msg.channel, "http://i.imgur.com/SXdC0AF.png");
+	msg.channel.sendMessage("http://i.imgur.com/SXdC0AF.png");
 }
 
 function olivia(msg){
-	mybot.sendMessage(msg.channel, "http://www.eonline.com/eol_images/Entire_Site/201492/rs_560x368-141002154506-1024.olivia-benson-keds.jpg");
+	msg.channel.sendMessage("http://www.eonline.com/eol_images/Entire_Site/201492/rs_560x368-141002154506-1024.olivia-benson-keds.jpg");
 }
 
 function meredith(msg){
-	mybot.sendMessage(msg.channel, "http://i.imgur.com/qrfeiAN.png");
-}
-
-function penis(msg){
-	mybot.sendMessage(msg.channel, "http://i.imgur.com/Ad5O21v.png");
+	msg.channel.sendMessage("http://i.imgur.com/qrfeiAN.png");
 }
 
 function hhelp(msg){
-	mybot.sendMessage(msg.channel, "Beep Boop bop\n"
+	msg.channel.sendMessage("Beep Boop bop\n"
 		+"---------------------\n"
 		+"!poll [option 1],[option 2],[option 3]\n"
 		+"gif : Displays a random gif\n"
@@ -149,10 +145,10 @@ function hhelp(msg){
 		+"jelly : Jelly school diploma\nPlease respect tables.");
 }
 function rip(msg){
-	mybot.sendMessage(msg.channel, "http://i.imgur.com/nL6tQLj.gif");
+	msg.channel.sendMessage("http://i.imgur.com/nL6tQLj.gif");
 }
 function twoAM(msg){
-	mybot.sendMessage(msg.channel, "The 2am playlist\n"
+	msg.channel.sendMessage("The 2am playlist\n"
 		+"---------------------\n"
 		+"Enchanted\n"
 		+"Mine\n"
@@ -164,19 +160,19 @@ function twoAM(msg){
 }
 
 function spam(msg){
-	mybot.sendMessage(msg.channel, "http://i.imgur.com/ae91blN.png");
+	msg.channel.sendMessage("http://i.imgur.com/ae91blN.png");
 }
 
 function upvote(msg){
-	mybot.sendMessage(msg.channel, "http://i.imgur.com/H41gR8K.gif");
+	msg.channel.sendMessage("http://i.imgur.com/H41gR8K.gif");
 }
 
 function jelly(msg){
-	mybot.sendMessage(msg.channel, "http://jelly-school.com/i/IPpkYx.png");
+	msg.channel.sendMessage("http://jelly-school.com/i/IPpkYx.png");
 }
 
 function tablesrespected(msg){
-	mybot.reply(msg,parseInt(fs.readFileSync('flips','utf8')) + " tables have been respected");
+	msg.channel.sendMessage(parseInt(fs.readFileSync('flips','utf8')) + " tables have been respected");
 }
 
 function checkTable(msg) {
@@ -185,7 +181,7 @@ function checkTable(msg) {
 	var differentTableLegs = ["┻", "╝","╘","╙","╨","└"];
 	for(var i = 0;i< differentTableLegs.length;i++) {
 		if(msg.content.toLowerCase().indexOf(differentTableLegs[i]) > -1) {
-			mybot.reply(msg, table);
+			msg.channel.sendMessage(table);
 			addFlip();
 			break;
 		}
