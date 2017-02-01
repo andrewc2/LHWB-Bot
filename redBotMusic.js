@@ -27,7 +27,7 @@ bot.on('ready', function(event) {
 bot.on('disconnect', function(err, event) {
     console.log('-- Bot Disconnected from Discord with code', event, 'for reason:', err, '--');
     stop();
-    setTimeout(bot.connect, 10000);
+    setTimeout(bot.connect, 20000);
 });
 
 // If bot throws an uncaughtException save error to file and exit
@@ -44,10 +44,9 @@ bot.on('message', function(user, userID, channelID, message, event) {
 
     var cmd = message.split(" ");
     //Checks the channel before responding to a command, if the channel is not #bots then user requests will be ignored
-    var allowedCmds = ["!rjoin", "!play", "!stop", "!q", "!queue", "!dq", "!dequeue",
-    "!dequeue", "!skip", "!cq", "!clearqueue", "!current", "!rankplays", "!tracks"];
+    var allowedCmds = ["!q", "!queue", "!current", "!recentlyplayed", "!recent", "!rankplays", "!playcount"];
     if (channelID == "115332333745340416" || channelID == "119490967253286912" || channelID == "131994567602995200" && allowedCmds.indexOf(cmd[0])) {
-        console.log("tay");
+        console.log("Not in Bots/BotDev");
         return;
     }
 	
@@ -83,7 +82,9 @@ bot.on('message', function(user, userID, channelID, message, event) {
                 clear(channelID,userID);
             break;
         case "!current":
-            current(channelID,userID);break;
+            current(channelID,userID);
+            break;
+        case "!recent":
         case "!recentlyplayed":
             recentlyPlayed(channelID);
             break;
@@ -93,7 +94,7 @@ bot.on('message', function(user, userID, channelID, message, event) {
         case "!rankplays":
             rankPlays(channelID, message, userID);
             break;
-         case "!tracks":
+        case "!tracks":
             tracks(channelID, message, userID,user);
             break;
         /* case "!redbotrequest":
@@ -261,7 +262,7 @@ function q(message, channelID, user, userID, cmd){
         });
 	} else {
             bot.sendMessage({to:channelID,message: "<@" + userID + ">, You must be in the Red voice channel to queue music."});
-            console.log("le");
+            console.log("User not in Voice Channel");
 	}
     }
 }
