@@ -237,26 +237,20 @@ function q(message, channelID, user, userID, cmd){
     }else{
         var title = message.substring(cmd.length + 1);
         console.log("title: " + title);
-        db.query("SELECT path FROM music WHERE name = ?", [title], function (err, result) {
-            if(result[0] != null) {
-                queueObj.path = result[0]['path'];
-                queueObj.user = user;
-                queue.push(queueObj);
-                bot.sendMessage({to:channelID,message: "<@" + userID + ">," + " '" + queueObj.path.slice(0,-4) + "' has been added to the queue"});
-            }else{
-			fuzzySearch(title.toLowerCase(), function(result){
-				if(result){
-					queueObj.path = result['path'];
+		fuzzySearch(title.toLowerCase(), function(result){
+			if(result){
+				queueObj.path = result['path'];
+				if(queue.findIndex(item => item.path === queueObj.path) === -1){    // not in queue
 					queueObj.user = user;
 					queue.push(queueObj);
 					bot.sendMessage({to:channelID,message: "<@" + userID + ">," + " '" + queueObj.path.slice(0,-4) + "' has been added to the queue"});
 				}else{
-					bot.sendMessage({to:channelID,message: "<@" + userID + ">, That song could not be found. Please check your spelling or ask iandrewc to add the song."});
+					bot.sendMessage({to:channelID,message: "<@" + userID + ">," + " '" + queueObj.path.slice(0,-4) + "' is already in the queue and was not added"});
 				}
-			});
-
-            }
-        });
+			}else{
+				bot.sendMessage({to:channelID,message: "<@" + userID + ">, That song could not be found. Please check your spelling or ask iandrewc to add the song."});
+			}
+		});
     }
 }
 
@@ -345,28 +339,17 @@ function rankPlays(channelID,message){
 function playCount(channelID,message,userID) {
     var output = "";
     var title = message.substring(message.indexOf(" ") + 1);
-    db.query("SELECT path FROM music WHERE name = ?", [title], function (err, result) { 
-        if(result[0] != null){
-            db.query("SELECT SUM(playcount) AS plays FROM music WHERE path = ?", [result[0].path], function (err, result) {
-                output = "'" + title + "' has been played " + result[0].plays + " times.";
-                bot.sendMessage({to:channelID,message: "<@" + userID + ">, " + output});    
-
-            });
-        }else{
-			fuzzySearch(title.toLowerCase(), function(result){
-				if(result){
-					title = result['name']
-					db.query("SELECT SUM(playcount) AS plays FROM music WHERE path = ?", [result.path], function (err, result) {
-						output = "'" + title + "' has been played " + result[0].plays + " times.";
-						bot.sendMessage({to:channelID,message: "<@" + userID + ">, " + output});    
-
-					});
-				}else{
-					bot.sendMessage({to:channelID,message: "<@" + userID + ">, That song could not be found"}); 
-				}
+	fuzzySearch(title.toLowerCase(), function(result){
+		if(result){
+			title = result['name']
+			db.query("SELECT SUM(playcount) AS plays FROM music WHERE path = ?", [result.path], function (err, result) {
+				output = "'" + title + "' has been played " + result[0].plays + " times.";
+				bot.sendMessage({to:channelID,message: "<@" + userID + ">, " + output});    
 			});
-        }   
-    });
+		}else{
+			bot.sendMessage({to:channelID,message: "<@" + userID + ">, That song could not be found"}); 
+		}
+	});
 }
 
 function request(channelID, message, userID, user) {
