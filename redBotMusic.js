@@ -260,7 +260,7 @@ function q(message, channelID, user, userID, cmd){
             }
         });
 	} else {
-            bot.sendMessage({to:channelID,message: "<@" + userID + ">, You must be in the Red channel to queue music."});
+            bot.sendMessage({to:channelID,message: "<@" + userID + ">, You must be in the Red voice channel to queue music."});
             console.log("le");
 	}
     }
