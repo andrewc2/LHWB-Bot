@@ -27,7 +27,7 @@ bot.on('ready', function(event) {
 bot.on('disconnect', function(err, event) {
     console.log('-- Bot Disconnected from Discord with code', event, 'for reason:', err, '--');
     stop();
-    setTimeout(bot.connect, 5000);
+    setTimeout(bot.connect, 10000);
 });
 
 // If bot throws an uncaughtException save error to file and exit
