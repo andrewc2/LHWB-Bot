@@ -19,7 +19,7 @@ var bot = new Discord.Client({
 bot.on('ready', function(event) {
     console.log('Logged in as %s - %s\n', bot.username, bot.id);
     console.log('Joining voice chat and playing after 5 seconds');
-    join("130759361902542848", " testing");
+    join("130759361902542848", " Red");
     setTimeout(play, 5000);
 });
 
@@ -28,6 +28,12 @@ bot.on('disconnect', function(err, event) {
     console.log('-- Bot Disconnected from Discord with code', event, 'for reason:', err, '--');
     stop();
     setTimeout(bot.connect, 5000);
+});
+
+// If bot throws an uncaughtException save error to file and exit
+process.on('uncaughtException', (err) => {
+  fs.writeFileSync("red_error_log.txt",JSON.stringify(err));
+  process.exit(0);
 });
 
 var queue = [];
@@ -141,7 +147,8 @@ function play(){
             var temp = queue.shift();
             if(temp.path === "Random.mp3"){ //Allows for queueing a random song when Random.mp3 is queued
                 db.getConnection(function(err, connection){
-                    db.query("SELECT path FROM music WHERE type != ? ORDER BY RAND() LIMIT 1",["unreleased"], function(err,result) {
+                    db.query("SELECT DISTINCT path FROM music WHERE type != ? ORDER BY RAND() LIMIT 1",["unreleased"], function(err,result) {
+                    //db.query("SELECT path FROM music WHERE type != ? ORDER BY RAND() LIMIT 1",["unreleased"], function(err,result) {
                         if(result != null) {
                             queuedBy = temp.user;
                             currentSong = result[0]['path'];
@@ -169,7 +176,8 @@ function play(){
         }else{
             db.getConnection(function(err, connection){
                 if(!err){
-                    db.query("SELECT path FROM music WHERE type != ? ORDER BY RAND() LIMIT 1",["unreleased"], function(err,result) {
+                    db.query("SELECT DISTINCT path FROM music WHERE type != ? ORDER BY RAND() LIMIT 1",["unreleased"], function(err,result) {
+                    //db.query("SELECT path FROM music WHERE type != ? ORDER BY RAND() LIMIT 1",["unreleased"], function(err,result) {
                     //gets path from the music db, and randomly selects a non-unreleased track
                         if(result != null) {
                             queuedBy = "";
