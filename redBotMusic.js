@@ -31,10 +31,10 @@ bot.on('disconnect', function(err, event) {
 });
 
 // If bot throws an uncaughtException save error to file and exit
-process.on('uncaughtException', (err) => {
-  fs.writeFileSync("red_error_log.txt",JSON.stringify(err));
+/*process.on('uncaughtException', (err) => {
+  fs.writeFileSync("red_error_log.txt",err);
   process.exit(0);
-});
+});*/
 
 var queue = [];
 var queuedBy = "";
@@ -147,8 +147,7 @@ function play(){
             var temp = queue.shift();
             if(temp.path === "Random.mp3"){ //Allows for queueing a random song when Random.mp3 is queued
                 db.getConnection(function(err, connection){
-                    db.query("SELECT DISTINCT path FROM music WHERE type != ? ORDER BY RAND() LIMIT 1",["unreleased"], function(err,result) {
-                    //db.query("SELECT path FROM music WHERE type != ? ORDER BY RAND() LIMIT 1",["unreleased"], function(err,result) {
+                    db.query("SELECT DISTINCT path FROM music WHERE type != ? ORDER BY RAND() LIMIT 1",["unreleased"], function(err,result)
                         if(result != null) {
                             queuedBy = temp.user;
                             currentSong = result[0]['path'];
@@ -177,7 +176,6 @@ function play(){
             db.getConnection(function(err, connection){
                 if(!err){
                     db.query("SELECT DISTINCT path FROM music WHERE type != ? ORDER BY RAND() LIMIT 1",["unreleased"], function(err,result) {
-                    //db.query("SELECT path FROM music WHERE type != ? ORDER BY RAND() LIMIT 1",["unreleased"], function(err,result) {
                     //gets path from the music db, and randomly selects a non-unreleased track
                         if(result != null) {
                             queuedBy = "";
@@ -237,20 +235,20 @@ function q(message, channelID, user, userID, cmd){
     }else{
         var title = message.substring(cmd.length + 1);
         console.log("title: " + title);
-		fuzzySearch(title.toLowerCase(), function(result){
-			if(result){
-				queueObj.path = result['path'];
-				if(queue.findIndex(item => item.path === queueObj.path) === -1){    // not in queue
-					queueObj.user = user;
-					queue.push(queueObj);
-					bot.sendMessage({to:channelID,message: "<@" + userID + ">," + " '" + queueObj.path.slice(0,-4) + "' has been added to the queue"});
-				}else{
-					bot.sendMessage({to:channelID,message: "<@" + userID + ">," + " '" + queueObj.path.slice(0,-4) + "' is already in the queue and was not added"});
-				}
-			}else{
-				bot.sendMessage({to:channelID,message: "<@" + userID + ">, That song could not be found. Please check your spelling or ask iandrewc to add the song."});
-			}
-		});
+        fuzzySearch(title.toLowerCase(), function(result){
+            if(result){
+                queueObj.path = result['path'];
+                if(queue.findIndex(item => item.path === queueObj.path) === -1){    // not in queue
+                    queueObj.user = user;
+                    queue.push(queueObj);
+                    bot.sendMessage({to:channelID,message: "<@" + userID + ">," + " '" + queueObj.path.slice(0,-4) + "' has been added to the queue"});
+                }else{
+                    bot.sendMessage({to:channelID,message: "<@" + userID + ">," + " '" + queueObj.path.slice(0,-4) + "' is already in the queue and was not added"});
+                }
+            }else{
+                bot.sendMessage({to:channelID,message: "<@" + userID + ">, That song could not be found. Please check your spelling or ask iandrewc to add the song."});
+            }
+        });
     }
 }
 
@@ -277,12 +275,10 @@ function skip(user){
     console.log("Skipping Song");
 }
 
-
 function clear(channelID,userID){
     queue = [];
     bot.sendMessage({to:channelID,message: "<@" + userID + ">, The queue has been cleared."});
 }
-
 
 function dequeue(message,channelID,userID){
     message = message.substring(message.indexOf(" ") + 1).toLowerCase();
@@ -360,7 +356,7 @@ function request(channelID, message, userID, user) {
 
 function tracks(channelID, message, userID, user) {
     var tra = message.substring(message.indexOf(" ") + 1);
-    bot.sendMessage({to:channelID,message: "<@" + userID + ">, http://redbot.tay.rocks/redbot.php"});
+    bot.sendMessage({to:channelID,message: "<@" + userID + ">, http://redbot.tay.rocks/redbot.php?theme=dark"});
 }
 
 function fuzzySearch(title, callback){
