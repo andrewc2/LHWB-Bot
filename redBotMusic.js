@@ -147,7 +147,7 @@ function play(){
             var temp = queue.shift();
             if(temp.path === "Random.mp3"){ //Allows for queueing a random song when Random.mp3 is queued
                 db.getConnection(function(err, connection){
-                    db.query("SELECT DISTINCT path FROM music WHERE type != ? ORDER BY RAND() LIMIT 1",["unreleased"], function(err,result)
+                    db.query("SELECT DISTINCT path FROM music WHERE type != ? ORDER BY RAND() LIMIT 1",["unreleased"], function(err,result) {
                         if(result != null) {
                             queuedBy = temp.user;
                             currentSong = result[0]['path'];
