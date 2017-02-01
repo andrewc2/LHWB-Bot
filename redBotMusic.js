@@ -42,8 +42,15 @@ var recent = [];
 
 bot.on('message', function(user, userID, channelID, message, event) {
 
-    var cmd = message.split(" ")[0].toLowerCase();
-    switch(cmd){
+var cmd = message.split(" ");
+    var allowedCmds = ["!rjoin", "!play", "!stop", "!q", "!queue", "!dq", "!dequeue",
+    "!dequeue", "!skip", "!cq", "!clearqueue", "!current", "!rankplays", "!tracks"];
+    if (channelID != "132026417725702145" || channelID != "130759361902542848" && allowedCmds.indexOf(cmd[0])) {
+        console.log("tay");
+        return;
+    }
+	
+    switch(cmd[0].toLowerCase()){
         case "!rjoin":
             if(isMod(channelID,userID))
                 join(channelID,message);
@@ -233,9 +240,11 @@ function q(message, channelID, user, userID, cmd){
     if((message.toLowerCase() === "!queue") || (message.toLowerCase() === "!q")){
         printQ(message,channelID);
     }else{
+	var voiceChannel = bot.servers[bot.channels[channelID].guild_id].members[userID].voice_channel_id;
         var title = message.substring(cmd.length + 1);
-        console.log("title: " + title);
-        fuzzySearch(title.toLowerCase(), function(result){
+	if (voiceChannel) { //Checks if the user is in the same voice channel as the bot
+		console.log("title: " + title);
+		fuzzySearch(title.toLowerCase(), function(result){
             if(result){
                 queueObj.path = result['path'];
                 if(queue.findIndex(item => item.path === queueObj.path) === -1){    // not in queue
@@ -249,6 +258,10 @@ function q(message, channelID, user, userID, cmd){
                 bot.sendMessage({to:channelID,message: "<@" + userID + ">, That song could not be found. Please check your spelling or ask iandrewc to add the song."});
             }
         });
+	} else {
+            bot.sendMessage({to:channelID,message: "<@" + userID + ">, You must be in the Red channel to queue music."});
+            console.log("le");
+	}
     }
 }
 
