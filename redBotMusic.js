@@ -42,8 +42,16 @@ var recent = [];
 
 bot.on('message', function(user, userID, channelID, message, event) {
 
-    var cmd = message.split(" ")[0].toLowerCase();
-    switch(cmd){
+    var cmd = message.split(" ");
+    //Checks the channel before responding to a command, if the channel is not #bots then user requests will be ignored
+    var allowedCmds = ["!rjoin", "!play", "!stop", "!q", "!queue", "!dq", "!dequeue",
+    "!dequeue", "!skip", "!cq", "!clearqueue", "!current", "!rankplays", "!tracks"];
+    if (channelID == "115332333745340416" || channelID == "119490967253286912" || channelID == "131994567602995200" && allowedCmds.indexOf(cmd[0])) {
+        console.log("tay");
+        return;
+    }
+	
+    switch(cmd[0].toLowerCase()){
         case "!rjoin":
             if(isMod(channelID,userID))
                 join(channelID,message);
@@ -233,9 +241,11 @@ function q(message, channelID, user, userID, cmd){
     if((message.toLowerCase() === "!queue") || (message.toLowerCase() === "!q")){
         printQ(message,channelID);
     }else{
+	var voiceChannel = bot.servers[bot.channels[channelID].guild_id].members[userID].voice_channel_id;
         var title = message.substring(cmd.length + 1);
-        console.log("title: " + title);
-        fuzzySearch(title.toLowerCase(), function(result){
+	if (voiceChannel) { //Checks if the user is in the same voice channel as the bot
+		console.log("title: " + title);
+		fuzzySearch(title.toLowerCase(), function(result){
             if(result){
                 queueObj.path = result['path'];
                 if(queue.findIndex(item => item.path === queueObj.path) === -1){    // not in queue
@@ -249,6 +259,10 @@ function q(message, channelID, user, userID, cmd){
                 bot.sendMessage({to:channelID,message: "<@" + userID + ">, That song could not be found. Please check your spelling or ask iandrewc to add the song."});
             }
         });
+	} else {
+            bot.sendMessage({to:channelID,message: "<@" + userID + ">, You must be in the Red voice channel to queue music."});
+            console.log("le");
+	}
     }
 }
 
