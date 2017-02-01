@@ -235,28 +235,33 @@ function q(message, channelID, user, userID, cmd){
     if((message.toLowerCase() === "!queue") || (message.toLowerCase() === "!q")){
         printQ(message,channelID);
     }else{
+        var voiceChannel = bot.servers[bot.channels[channelID].guild_id].members[userID].voice_channel_id;
         var title = message.substring(cmd.length + 1);
-        console.log("title: " + title);
-        db.query("SELECT path FROM music WHERE name = ?", [title], function (err, result) {
-            if(result[0] != null) {
-                queueObj.path = result[0]['path'];
-                queueObj.user = user;
-                queue.push(queueObj);
-                bot.sendMessage({to:channelID,message: "<@" + userID + ">," + " '" + queueObj.path.slice(0,-4) + "' has been added to the queue"});
-            }else{
-			fuzzySearch(title.toLowerCase(), function(result){
-				if(result){
-					queueObj.path = result['path'];
-					queueObj.user = user;
-					queue.push(queueObj);
-					bot.sendMessage({to:channelID,message: "<@" + userID + ">," + " '" + queueObj.path.slice(0,-4) + "' has been added to the queue"});
-				}else{
-					bot.sendMessage({to:channelID,message: "<@" + userID + ">, That song could not be found. Please check your spelling or ask iandrewc to add the song."});
-				}
-			});
-
-            }
-        });
+        if (voiceChannel) { //Checks if the user is in the same voice channel as the bot
+            console.log("title: " + title);
+            db.query("SELECT path FROM music WHERE name = ?", [title], function (err, result) {
+                if(result[0] != null) {
+                    queueObj.path = result[0]['path'];
+                    queueObj.user = user;
+                    queue.push(queueObj);
+                    bot.sendMessage({to:channelID,message: "<@" + userID + ">," + " '" + queueObj.path.slice(0,-4) + "' has been added to the queue"});
+                }else{
+                    fuzzySearch(title.toLowerCase(), function(result){
+                        if(result){
+                            queueObj.path = result['path'];
+                            queueObj.user = user;
+                            queue.push(queueObj);
+                            bot.sendMessage({to:channelID,message: "<@" + userID + ">," + " '" + queueObj.path.slice(0,-4) + "' has been added to the queue"});
+                        }else{
+                            bot.sendMessage({to:channelID,message: "<@" + userID + ">, That song could not be found. Please check your spelling or ask iandrewc to add the song."});
+                        }
+                    });
+                }
+            });
+        } else {
+            bot.sendMessage({to:channelID,message: "<@" + userID + ">," + " You must be in the Red channel to queue music."});
+            console.log("le");
+        }
     }
 }
 
