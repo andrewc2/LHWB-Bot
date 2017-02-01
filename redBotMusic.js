@@ -42,10 +42,11 @@ var recent = [];
 
 bot.on('message', function(user, userID, channelID, message, event) {
 
-var cmd = message.split(" ");
+    var cmd = message.split(" ");
+    //Checks the channel before responding to a command, if the channel is not #bots then user requests will be ignored
     var allowedCmds = ["!rjoin", "!play", "!stop", "!q", "!queue", "!dq", "!dequeue",
     "!dequeue", "!skip", "!cq", "!clearqueue", "!current", "!rankplays", "!tracks"];
-    if (channelID != "132026417725702145" || channelID != "130759361902542848" && allowedCmds.indexOf(cmd[0])) {
+    if (channelID == "115332333745340416" || channelID == "119490967253286912" || channelID == "131994567602995200" && allowedCmds.indexOf(cmd[0])) {
         console.log("tay");
         return;
     }
