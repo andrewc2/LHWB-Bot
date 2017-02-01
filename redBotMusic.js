@@ -42,8 +42,15 @@ var recent = [];
 
 bot.on('message', function(user, userID, channelID, message, event) {
 
-    var cmd = message.split(" ")[0].toLowerCase();
-    switch(cmd){
+    var cmd = message.split(" ");
+    var allowedCmds = ["!rjoin", "!play", "!stop", "!q", "!queue", "!dq", "!dequeue",
+    "!dequeue", "!skip", "!cq", "!clearqueue", "!current", "!rankplays", "!tracks"];
+    if (channelID != "132026417725702145" && allowedCmds.indexOf(cmd[0])) {
+        console.log("tay");
+        return;
+    }
+
+    switch(cmd[0].toLowerCase()){
         case "!rjoin":
             if(isMod(channelID,userID))
                 join(channelID,message);
