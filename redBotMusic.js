@@ -42,7 +42,7 @@ var recent = [];
 
 bot.on('message', function(user, userID, channelID, message, event) {
 
-    var cmd = message.split(" ");
+    var cmd = message.split(" ")[0].toLowerCase();
     //Checks the channel before responding to a command, if the channel is not #bots then user requests will be ignored
     var allowedCmds = ["!q", "!queue", "!current", "!recentlyplayed", "!recent", "!rankplays", "!playcount"];
     if (channelID == "115332333745340416" || channelID == "119490967253286912" || channelID == "131994567602995200" && allowedCmds.indexOf(cmd[0])) {
@@ -50,7 +50,7 @@ bot.on('message', function(user, userID, channelID, message, event) {
         return;
     }
 	
-    switch(cmd[0].toLowerCase()){
+    switch(cmd){
         case "!rjoin":
             if(isMod(channelID,userID))
                 join(channelID,message);
