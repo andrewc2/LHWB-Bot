@@ -376,7 +376,7 @@ function tracks(channelID, message, userID, user) {
 
 function fuzzySearch(title, callback){
 	var result;
-	var maxEditDist = 5;
+	var maxEditDist = 3;
 	var minEditDist = maxEditDist;
 
 	db.query("SELECT path,name FROM music", function(err, songList) {
