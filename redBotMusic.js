@@ -109,9 +109,19 @@ function join(channelID,message){
     var channels = bot.servers[server].channels;
     Object.keys(channels).forEach(function(key) {
         if(channels[key].name === channel){
-            bot.joinVoiceChannel(channels[key].id, function(){
+            bot.joinVoiceChannel(channels[key].id, function(err, event){
                 console.log("Joined " + channel);
                 chan = channels[key].id;
+                if (err) return console.log(`Unable to join ${channelID} \n ${err}`); //prints voice errors
+                event.once('disconnect', function(channelID) { //handles voice disconnects
+                    var voiceChannel = bot.channels[channelID];
+                    var voiceServer = bot.servers[channel.guild_id];
+                    console.log(`Disconnected from voiceChannel: ${voiceChannel.name}, in voiceServer ${voiceServer.name}`);
+                    //stops music, and rejoins Red voice channel, and beings playing
+                    stop();
+                    join("130759361902542848", " Red");
+                    setTimeout(play, 5000);
+                });
             });
         }
     });
