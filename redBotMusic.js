@@ -19,9 +19,13 @@ var bot = new Discord.Client({
 bot.on('ready', function(event) {
     console.log('Logged in as %s - %s\n', bot.username, bot.id);
     console.log('Joining voice chat and playing after 5 seconds');
+    setTimeout(joinRed, 5000);
+});
+
+function joinRed(){
     join("130759361902542848", " Red");
     setTimeout(play, 5000);
-});
+}
 
 // Automatically reconnect if the bot disconnects from Discord
 bot.on('disconnect', function(err, event) {
@@ -42,15 +46,15 @@ var recent = [];
 
 bot.on('message', function(user, userID, channelID, message, event) {
 
-    var cmd = message.split(" ");
+    var cmd = message.split(" ")[0].toLowerCase();
     //Checks the channel before responding to a command, if the channel is not #bots then user requests will be ignored
     var allowedCmds = ["!q", "!queue", "!current", "!recentlyplayed", "!recent", "!rankplays", "!playcount"];
     if (channelID == "115332333745340416" || channelID == "119490967253286912" || channelID == "131994567602995200" && allowedCmds.indexOf(cmd[0])) {
-        console.log("Not in Bots/BotDev");
+        //console.log("Not in Bots/BotDev");
         return;
     }
 	
-    switch(cmd[0].toLowerCase()){
+    switch(cmd){
         case "!rjoin":
             if(isMod(channelID,userID))
                 join(channelID,message);
@@ -59,7 +63,7 @@ bot.on('message', function(user, userID, channelID, message, event) {
             if(isMod(channelID,userID))
                 setTimeout(play, 5000);
             break;
-        case "!stop":
+        case "!rstop":
             if(isMod(channelID,userID))
                 stop();
             break;
@@ -115,12 +119,11 @@ function join(channelID,message){
                 if (err) return console.log(`Unable to join ${channelID} \n ${err}`); //prints voice errors
                 event.once('disconnect', function(channelID) { //handles voice disconnects
                     var voiceChannel = bot.channels[channelID];
-                    var voiceServer = bot.servers[channel.guild_id];
+                    var voiceServer = bot.servers[voiceChannel.guild_id];
                     console.log(`Disconnected from voiceChannel: ${voiceChannel.name}, in voiceServer ${voiceServer.name}`);
                     //stops music, and rejoins Red voice channel, and beings playing
                     stop();
-                    join("130759361902542848", " Red");
-                    setTimeout(play, 5000);
+                    joinRed();
                 });
             });
         }
@@ -157,7 +160,6 @@ var currentSong;
 function play(){
     stopped = false;
     var rand;
-
     bot.getAudioContext(chan, function(err,stream) {
         if (err) return console.error(err);
 
@@ -237,8 +239,7 @@ function current(channelID,userID){
     }
 }
 
-/* The reason for the stopped bool is because stopping the song will emit
- * 'fileEnd' which will automatically play a song.
+/* The reason for the stopped bool is because stopping the song will emit 'fileEnd' which will automatically play a song.
  */
 function stop(){
     bot.getAudioContext(chan, function(err,stream) {
@@ -253,7 +254,7 @@ function q(message, channelID, user, userID, cmd){
         printQ(message,channelID);
     }else{
 	var voiceChannel = bot.servers[bot.channels[channelID].guild_id].members[userID].voice_channel_id;
-        var title = cmd.slice(1, cmd.length).join(" ");
+    var title = message.substring(cmd.length + 1);
 	if (voiceChannel) { //Checks if the user is in the same voice channel as the bot
 		console.log("title: " + title);
 		fuzzySearch(title.toLowerCase(), function(result){
