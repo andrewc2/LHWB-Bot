@@ -233,9 +233,38 @@ function addPlay(song){
 }
 function current(channelID,userID){
     if(queuedBy != "") {
-        bot.sendMessage({to:channelID,message: "<@" + userID + ">, '" + currentSong.slice(0,-4) + "' is currently playing and was queued by " + queuedBy });
+        db.query("SELECT album, albumart FROM music WHERE name = ?",[currentSong.slice(0,-4)], function(err,result) {
+            var currentAlbum = result[0]['album'];
+            var albumArt = result[0]['albumart'];
+            bot.sendMessage({ to:channelID,
+                embed: {
+                    color: 0x442691,
+                    title: currentSong.slice(0,-4),
+                    description: currentAlbum,
+                    thumbnail: {
+                        url: albumArt,
+                    },
+                    footer: {
+                        text: "Queued by: " + queuedBy,
+                    },
+                }
+            });
+        });
     } else {
-        bot.sendMessage({to:channelID,message: "<@" + userID + ">, '" + currentSong.slice(0,-4) + "' is currently playing."});
+        db.query("SELECT album, albumart FROM music WHERE name = ?",[currentSong.slice(0,-4)], function(err,result) {
+            var currentAlbum = result[0]['album'];
+            var albumArt = result[0]['albumart'];
+            bot.sendMessage({ to:channelID,
+                embed: {
+                    color: 0x442691,
+                    title: currentSong.slice(0,-4),
+                    description: currentAlbum,
+                    thumbnail: {
+                        url: albumArt,
+                    },
+                }
+            });
+        });
     }
 }
 
