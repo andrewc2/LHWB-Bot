@@ -2,6 +2,7 @@
 table[data-sortable] {
   border-collapse: collapse;
   border-spacing: 0;
+  margin: 0 auto;
 }
 /* line 6, ../sass/_sortable.sass */
 table[data-sortable] th {
@@ -67,3 +68,4 @@ table[data-sortable].sortable-theme-dark tbody td {
 table[data-sortable].sortable-theme-dark th[data-sorted="true"] {
   background: #2e2e2e;
 }
+body{font-family: arial;}

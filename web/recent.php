@@ -8,7 +8,7 @@ $server = empty($_GET['server']) ? PRIMARY_GUILD : $_GET['server'];
 <!DOCTYPE html>
 <html>
     <head>
-        <title>RedBot Song Listing</title>
+        <title>RedBot Recently Played</title>
         <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 
         <?php
@@ -32,24 +32,24 @@ $server = empty($_GET['server']) ? PRIMARY_GUILD : $_GET['server'];
     </head>
     <body>
         <div id="dataStore">
-            <h1>RedBot Song Listing</h1>
+            <h1>RedBot Recently Played Songs</h1>
             <table class="<?php echo $theme; ?>" data-sortable>
                 <thead>
                 <tr>
                     <th>Song Name</th>
                     <th>Album</th>
-                    <th>Play Count</th>
+                    <th>Queued By</th>
                 </tr>
                 </thead>
                 <tbody>
                 <?php
-                $stmt = $db->prepare("SELECT name, album, playcount FROM music WHERE 1 ORDER BY name");
+                $stmt = $db->prepare("SELECT id, name, album, queuedby FROM recent WHERE 1 ORDER BY id DESC");
                 $stmt->bind_param("s", $server);
                 $stmt->execute();
-                $stmt->bind_result($name, $album, $playcount);
+                $stmt->bind_result($id, $name, $album, $queuedby);
                 while ($stmt->fetch())
                 {
-                    echo "<tr><td>".htmlspecialchars($name)."</td><td>".htmlspecialchars($album)."</td><td>".$playcount."</td></tr>";
+                    echo "<tr><td>".htmlspecialchars($name)."</td><td>".htmlspecialchars($album)."</td><td>".$queuedby."</td></tr>";
                 }
                 ?>
                 </tbody>

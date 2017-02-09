@@ -2,6 +2,7 @@
 table[data-sortable] {
   border-collapse: collapse;
   border-spacing: 0;
+  margin: 0 auto;
 }
 /* line 6, ../sass/_sortable.sass */
 table[data-sortable] th {
@@ -88,3 +89,5 @@ table[data-sortable].sortable-theme-bootstrap th[data-sorted="true"][data-sorted
 table[data-sortable].sortable-theme-bootstrap.sortable-theme-bootstrap-striped tbody > tr:nth-child(odd) > td {
   background-color: #f9f9f9;
 }
+
+body{font-family: arial;}
