@@ -12,13 +12,13 @@ $server = empty($_GET['server']) ? PRIMARY_GUILD : $_GET['server'];
         <meta http-equiv="content-type" content="text/html; charset=UTF-8">
 
         <?php
-        if ($_GET['theme']=="dark") {
+        if ($_GET['theme']=="light") {
+            echo '<link rel="stylesheet" href="sortable-theme-bootstrap.css" />';
+            $theme = "sortable-theme-bootstrap";
+        } else {
             echo '<link rel="stylesheet" href="sortable-theme-dark.css" />';
             echo '<link rel="stylesheet" href="dark.css" />';
             $theme = "sortable-theme-dark";
-        } else {
-            echo '<link rel="stylesheet" href="sortable-theme-bootstrap.css" />';
-            $theme = "sortable-theme-bootstrap";
         }
         ?>
         <style type="text/css">
@@ -33,6 +33,7 @@ $server = empty($_GET['server']) ? PRIMARY_GUILD : $_GET['server'];
     <body>
         <div id="dataStore">
             <h1>RedBot Song Listing</h1>
+            <a href="http://redbot.tay.rocks/">Home</a><br /><br />
             <table class="<?php echo $theme; ?>" data-sortable>
                 <thead>
                 <tr>
