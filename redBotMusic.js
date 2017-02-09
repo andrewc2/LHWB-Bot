@@ -358,7 +358,20 @@ function addToRecent(song){
     } else {
         recent.push(song);
     }
+    console.log("recent " + song);
+    if(queuedBy != "") {
+        db.query("SELECT album FROM music WHERE name = ?",[song], function(err,result) {
+            var currentAlbum = result[0]['album'];
+            db.query("INSERT INTO recent (name, album, queuedby) VALUES (?,?,?)", [song, currentAlbum, queuedBy]);
+        });
+    } else {
+        db.query("SELECT album FROM music WHERE name = ?",[song], function(err,result) {
+            var currentAlbum = result[0]['album'];
+            db.query("INSERT INTO recent (name, album) VALUES (?,?)", [song, currentAlbum]);
+        });
+    }
 }
+
 function recentlyPlayed(channelID){
     var message;
     if(recent.length < 1){
