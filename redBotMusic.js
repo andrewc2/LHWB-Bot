@@ -23,8 +23,8 @@ bot.on('ready', function(event) {
 });
 
 function joinRed(){
-    join("130759361902542848", " Red");
-    setTimeout(play, 5000);
+    join("130759361902542848", " Red"); //Passes a text channel ID and voice channel to simulate a chat user entering !join Red
+    setTimeout(play, 5000); //Delays playing to make sure the bot is in the voice channel
 }
 
 // Automatically reconnect if the bot disconnects from Discord
@@ -34,12 +34,6 @@ bot.on('disconnect', function(err, event) {
     setTimeout(bot.connect, 20000);
 });
 
-// If bot throws an uncaughtException save error to file and exit
-/*process.on('uncaughtException', (err) => {
-  fs.writeFileSync("red_error_log.txt",err);
-  process.exit(0);
-});*/
-
 var queue = [];
 var queuedBy = "";
 var recent = [];
@@ -47,15 +41,6 @@ var recent = [];
 bot.on('message', function(user, userID, channelID, message, event) {
 
     var cmd = message.split(" ");
-    //Checks for channel, if channel is not #bots, commands are ignored, except mods
-    //allowedCmds is a whitelist
-    var allowedCmds = ["!tracks", "!current"];
-    if (!isMod(channelID, userID)) {
-        if (channelID != "132026417725702145" && allowedCmds.indexOf(cmd[0]) == -1) {
-            //console.log("Not in Bots");
-            return;
-        }
-    }
     
     switch(cmd[0].toLowerCase()){
         case "!rjoin":
@@ -72,7 +57,9 @@ bot.on('message', function(user, userID, channelID, message, event) {
             break;
         case "!q":
         case "!queue":
-            q(message,channelID,user,userID,cmd);
+            if(channelID == "132026417725702145" || isMod(channelID,userID)) { //check if user is in bots or mod
+                q(message,channelID,user,userID,cmd);
+            }
             break;
         case "!dq":
         case "!dequeue":
@@ -93,13 +80,19 @@ bot.on('message', function(user, userID, channelID, message, event) {
             break;
         case "!recent":
         case "!recentlyplayed":
-            recentlyPlayed(channelID);
+            if(channelID == "132026417725702145" || isMod(channelID,userID)) {
+                recentlyPlayed(channelID);
+            }
             break;
         case "!playcount":
-            playCount(channelID, message, userID);
+            if(channelID == "132026417725702145" || isMod(channelID,userID)) {
+                playCount(channelID, message, userID);
+            }
             break;
         case "!rankplays":
-            rankPlays(channelID, message, userID);
+            if(channelID == "132026417725702145" || isMod(channelID,userID)) {
+                rankPlays(channelID, message, userID);
+            }
             break;
         case "!tracks":
             tracks(channelID, message, userID,user);
@@ -111,9 +104,10 @@ bot.on('message', function(user, userID, channelID, message, event) {
     }
 });
 function join(channelID,message){
-    var channel = message.substring(message.indexOf(" ") + 1);
+    var channel = message.substring(message.indexOf(" ") + 1); //voice channel to be joined
     var server = bot.channels[channelID].guild_id;
     var channels = bot.servers[server].channels;
+            
     Object.keys(channels).forEach(function(key) {
         if(channels[key].name === channel){
             bot.joinVoiceChannel(channels[key].id, function(err, event){
@@ -132,31 +126,25 @@ function join(channelID,message){
         }
     });
 }
-function isMod(channelID,userID){
-    var bool = false;
-    var server = bot.channels[channelID].guild_id;
 
-    if(bot.servers[server] === undefined)
-        return bool;
+function isMod(channelID, userID){
+    var serverID = bot.channels[channelID] && bot.channels[channelID].guild_id;
+    if (!serverID) return console.log("This message was probably sent as a DM");
 
-    var roles = bot.servers[server].roles;
-    var roleId = "";
-    Object.keys(roles).forEach (function(key) {
-        if( (roles[key].name === "admins") || (roles[key].name === "mods") ){
-            roleId = roles[key].id;
-            var userRole = bot.servers[server].members[userID].roles;
-            if(userRole.indexOf(roleId) != -1){
-                console.log("this guys is totes mod");
-                bool = true;
-            }
-        }
-    });
-    if (userID === creds.iandrewc){
-        console.log("this guys is totes iandrewc");
-        bool = true;
-    }
-    return bool;
+    if(!bot.servers[serverID]) return console.log('Woah, the bot isnt even on this server?');
+
+    if(!bot.servers[serverID].members[userID]) return console.log('Is this guy even on the server?');
+
+    var roleIdsAsArray = bot.servers[serverID].members[userID].roles; //adds all server roles to array
+
+    if(roleIdsAsArray.indexOf('115334158892531719') > -1 || roleIdsAsArray.indexOf('115333509580718080') > -1) return true; //makes sure user fits one of these roles before saying they're a mod
+
+    if (userID === creds.iandrewc) return true; //lets iandrewc use his own bot
+    
+    //If nothing matches, the user is not mod
+    return false;
 }
+
 var stopped = false;
 
 var currentSong;
@@ -234,6 +222,7 @@ function play(){
 function addPlay(song){
     db.query("UPDATE music SET playcount = playcount + 1 WHERE path = ?",[song])
 }
+
 function current(channelID,userID){
     if(queuedBy != "") {
         db.query("SELECT album, albumart FROM music WHERE name = ?",[currentSong.slice(0,-4)], function(err,result) {
@@ -358,7 +347,8 @@ function addToRecent(song){
     } else {
         recent.push(song);
     }
-    console.log("recent " + song);
+    
+    //Adds recently played songs to database
     if(queuedBy != "") {
         db.query("SELECT album FROM music WHERE name = ?",[song], function(err,result) {
             var currentAlbum = result[0]['album'];
@@ -427,17 +417,15 @@ function request(channelID, message, userID, user) {
 
 function tracks(channelID, message, userID, user) {
     var tra = message.substring(message.indexOf(" ") + 1);
-    bot.sendMessage({to:channelID,message: "<@" + userID + ">, http://redbot.tay.rocks/redbot.php?theme=dark"});
+    bot.sendMessage({to:channelID,message: "<@" + userID + ">, http://redbot.tay.rocks/redbot.php"});
 }
 
 function fuzzySearch(title, callback){
 	var result;
 	var maxEditDist = 3;
 	var minEditDist = maxEditDist;
-
 	db.query("SELECT path,name FROM music", function(err, songList) {
 		var i;
-
 		for(i = 0; i < songList.length; i++){
 			editDistance(title, songList[i]['name'].toLowerCase(), function(tempDist){
 				if(tempDist < minEditDist && tempDist <= maxEditDist){
@@ -453,24 +441,18 @@ function fuzzySearch(title, callback){
 function editDistance(source, target, callback){
 	n = source.length + 1;
 	m = target.length + 1;
-
-
 	var distMatrix = [];
 	var min = 0;
 	var i,j;
-
 	for(i = 0; i < n; i++){
 		distMatrix[i] = [];
 	}
-
 	for(i = 0; i < n; i++){
 		distMatrix[i][0] = i;
 	}
-
 	for(i = 0; i < m; i++){
 		distMatrix[0][i] = i;
 	}
-
 	for(i = 1; i < n; i++){
 		for (j = 1; j < m; j++){
 			if(source.charAt(j-1) === target.charAt(i-1)){
