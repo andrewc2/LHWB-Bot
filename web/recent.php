@@ -49,7 +49,7 @@ $db->set_charset("utf8");
         </thead>
         <tbody>
             <?php
-            $stmt = $db->prepare("SELECT id, name, album, queuedby FROM recent WHERE 1 ORDER BY id DESC");
+            $stmt = $db->prepare("SELECT id, name, album, queuedby FROM recent WHERE 1 ORDER BY id DESC LIMIT 26");
             $stmt->execute();
             $stmt->bind_result($id, $name, $album, $queuedby);
             while ($stmt->fetch()) {
@@ -67,13 +67,5 @@ $db->set_charset("utf8");
 </div>
 </div>
 <script type="text/javascript" src="https://cdn.datatables.net/v/bs-3.3.7/jq-2.2.4/dt-1.10.13/datatables.min.js"></script>
-<script>
-    $(document).ready(function() {
-       $('#recentList').DataTable({
-           "iDisplayLength": 25,
-           "lengthMenu": [[10, 25, 50, 100, -1], [10, 25, 50, 100, "All"]]
-       });
-    });
-</script>
 </body>
 </html>
