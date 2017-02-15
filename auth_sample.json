@@ -3,5 +3,6 @@
     "mysqlUser":"",
     "mysqlPassword":"",
     "database":"",
-    "api":""
+    "api":"",
+    "voice_channel":""
 }
