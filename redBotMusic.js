@@ -23,14 +23,24 @@ bot.on('ready', function(event) {
 });
 
 function joinRed(){
-    join("130759361902542848", " Red"); //Passes a text channel ID and voice channel to simulate a chat user entering !join Red
+    chan = creds.voice_channel;
+    bot.joinVoiceChannel(chan, function(err, event){
+        if (err) return console.log(`Unable to join ${chan} \n ${err}`); //prints voice errors
+        console.log("Joined Red " + chan);
+        event.once('disconnect', function(chan) { //handles voice disconnects
+            console.log("Disconnected from " + chan);
+            stop(); //stops music, and rejoins Red voice channel, and beings playing
+            bot.leaveVoiceChannel(creds.voice_channel);
+            bot.joinVoiceChannel(creds.voice_channel); //Tells the bot to leave Red
+        });
+    });
     setTimeout(play, 5000); //Delays playing to make sure the bot is in the voice channel
 }
 
 // Automatically reconnect if the bot disconnects from Discord
 bot.on('disconnect', function(err, event) {
     console.log('-- Bot Disconnected from Discord with code', event, 'for reason:', err, '--');
-    stop();
+    bot.leaveVoiceChannel(creds.voice_channel); //Tells the bot to leave Red
     setTimeout(bot.connect, 20000);
 });
 
@@ -97,19 +107,19 @@ bot.on('message', function(user, userID, channelID, message, event) {
         case "!tracks":
             tracks(channelID, message, userID,user);
             break;
-        /* case "!redbotrequest":
+        case "!redbotrequest":
             request(channelID, message, userID,user);
-            break; */
+            break;
         default:
     }
 });
 function join(channelID,message){
     var channel = message.substring(message.indexOf(" ") + 1); //voice channel to be joined
-    var server = bot.channels[channelID].guild_id;
-    var channels = bot.servers[server].channels;
+    var server = bot.channels[channelID].guild_id; //server bot is in
+    var channels = bot.servers[server].channels; //channels on the server
             
     Object.keys(channels).forEach(function(key) {
-        if(channels[key].name === channel){
+        if(channels[key].name === channel){ //checks every voice channel if it's what the user entered
             bot.joinVoiceChannel(channels[key].id, function(err, event){
                 console.log("Joined " + channel);
                 chan = channels[key].id;
@@ -120,6 +130,7 @@ function join(channelID,message){
                     console.log(`Disconnected from voiceChannel: ${voiceChannel.name}, in voiceServer ${voiceServer.name}`);
                     //stops music, and rejoins Red voice channel, and beings playing
                     stop();
+                    bot.leaveVoiceChannel(creds.voice_channel); //Tells the bot to leave Red
                     joinRed();
                 });
             });
