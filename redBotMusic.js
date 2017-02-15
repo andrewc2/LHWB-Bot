@@ -22,7 +22,7 @@ bot.on('ready', function(event) {
     setTimeout(joinRed, 5000);
 });
 
-function joinRed(){
+/* function joinRed(){
     chan = creds.voice_channel;
     bot.joinVoiceChannel(chan, function(err, event){
         if (err) return console.log(`Unable to join ${chan} \n ${err}`); //prints voice errors
@@ -34,6 +34,11 @@ function joinRed(){
             bot.joinVoiceChannel(creds.voice_channel); //Tells the bot to leave Red
         });
     });
+    setTimeout(play, 5000); //Delays playing to make sure the bot is in the voice channel
+} */
+
+function joinRed(){
+    join("130759361902542848", " Red"); //Passes a text channel ID and voice channel to simulate a chat user entering !join Red
     setTimeout(play, 5000); //Delays playing to make sure the bot is in the voice channel
 }
 
