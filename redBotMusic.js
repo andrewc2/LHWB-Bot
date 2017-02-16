@@ -357,13 +357,6 @@ function dequeue(message,channelID,userID){
 }
 
 function addToRecent(song){
-    if(recent.length > 11) {
-        recent.shift();
-        recent.push(song);
-    } else {
-        recent.push(song);
-    }
-    
     //Adds recently played songs to database
     if(queuedBy != "") {
         db.query("SELECT album FROM music WHERE name = ?",[song], function(err,result) {
