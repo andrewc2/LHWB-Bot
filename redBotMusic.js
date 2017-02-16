@@ -90,7 +90,7 @@ bot.on('message', function(user, userID, channelID, message, event) {
 			break;
 		case "!redbotrequest":
 			request(channelID, message, userID,user);
-			break; */
+			break;
 		default:
 	}
 });
