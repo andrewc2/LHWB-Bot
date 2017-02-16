@@ -248,7 +248,7 @@ function q(message, channelID, user, userID, cmd){
 					bot.sendMessage({to:channelID,message: "<@" + userID + ">," + " '" + queueObj.path.slice(0,-4) + "' is already in the queue and was not added"});
 				}
 			}else{
-				bot.sendMessage({to:channelID,message: "<@" + userID + ">, That song could not be found. Please check your spelling or ask iandrewc to add the song."});
+				bot.sendMessage({to:channelID,message: "<@" + userID + ">, That song could not be found"});
 			}
 		});
 	}
