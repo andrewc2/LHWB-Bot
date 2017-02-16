@@ -19,7 +19,7 @@ var bot = new Discord.Client({
 bot.on('ready', function(event) {
     console.log('Logged in as %s - %s\n', bot.username, bot.id);
     console.log('Joining voice chat and playing after 5 seconds');
-    join("130759361902542848", " Red");
+    join("", " Red");
     setTimeout(play, 5000);
 });
 
@@ -358,10 +358,6 @@ function request(channelID, message, userID, user) {
     bot.sendMessage({to:channelID,message: "<@" + userID + ">, Request submitted."});
 }
 
-function tracks(channelID, message, userID, user) {
-    var tra = message.substring(message.indexOf(" ") + 1);
-    bot.sendMessage({to:channelID,message: "<@" + userID + ">, http://redbot.tay.rocks/redbot.php"});
-}
 
 function fuzzySearch(title, callback){
 	var result;
