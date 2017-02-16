@@ -380,16 +380,22 @@ function addToRecent(song){
 
 function recentlyPlayed(channelID){
     var message;
-    if(recent.length < 1){
-        message = "There are currently no recently played songs.";
-    }else{
-        var i,j;
-        message = "'" + currentSong.slice(0,-4) + "'"  + " is currently playing.\n\n" + "The recently played songs are:\n";
-        for(i = recent.length - 2, j = 1; i > 0; i--, j++){
-            message = message + j + ". " + recent[i] + "\n"
+    db.query("SELECT id, name FROM recent WHERE 1 ORDER BY id DESC LIMIT 11", function(err, result)
+    {
+        var j;
+        recentSongs = "";
+        for(j = 1; j < result.length; j++){ //starts with song 1 which was the most recent played before current
+            recentSongs = recentSongs + j + ". " + result[j]['name'] + "\n"
         }
-    }
-    bot.sendMessage({to: channelID, message: message});
+        bot.sendMessage({ to:channelID,
+                embed: {
+                    color: 0x1c2e6e,
+                    title: "Currently playing: " + result[0]['name'],
+                    description: "Recently Played:\n" + recentSongs,
+                    url: "http://redbot.tay.rocks/recent.php",
+                }
+            });
+    });
 }
 
 function rankPlays(channelID,message){
