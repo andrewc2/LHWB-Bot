@@ -29,7 +29,6 @@ bot.on('ready', function(event) {
         console.log("Joined Red " + chan);
         event.once('disconnect', function(chan) { //handles voice disconnects
             console.log("Disconnected from " + chan);
-            stop(); //stops music, and rejoins Red voice channel, and beings playing
             bot.leaveVoiceChannel(creds.voice_channel);
             bot.joinVoiceChannel(creds.voice_channel); //Tells the bot to leave Red
         });
@@ -134,7 +133,6 @@ function join(channelID,message){
                     var voiceServer = bot.servers[voiceChannel.guild_id];
                     console.log(`Disconnected from voiceChannel: ${voiceChannel.name}, in voiceServer ${voiceServer.name}`);
                     //stops music, and rejoins Red voice channel, and beings playing
-                    stop();
                     bot.leaveVoiceChannel(creds.voice_channel); //Tells the bot to leave Red
                     joinRed();
                 });
@@ -321,12 +319,19 @@ function printQ(msg,channelID){
         message = "There are currently no songs in the queue.";
     }else{
         var i;
-        message = "'" + currentSong.slice(0,-4) + "'"  + " is currently playing.\n\n" + "The queue is:\n";
+        message = "The queue is:\n";
         for(i = 0; i < queue.length; i++){
             message = message + (i+1) + ". "+queue[i].path.slice(0,-4) + "\n"
         }
     }
-    bot.sendMessage({to: channelID, message: message});
+    bot.sendMessage({ to:channelID,
+        embed: {
+            color: 0xddcaac,
+            title: "Currently playing: " + currentSong.slice(0,-4),
+            description: message,
+            url: "http://redbot.tay.rocks/recent.php",
+        }
+    });
 }
 
 function skip(user){
@@ -381,13 +386,13 @@ function recentlyPlayed(channelID){
             recentSongs = recentSongs + j + ". " + result[j]['name'] + "\n"
         }
         bot.sendMessage({ to:channelID,
-                embed: {
-                    color: 0x1c2e6e,
-                    title: "Currently playing: " + result[0]['name'],
-                    description: "Recently Played:\n" + recentSongs,
-                    url: "http://redbot.tay.rocks/recent.php",
-                }
-            });
+            embed: {
+                color: 0x1c2e6e,
+                title: "Currently playing: " + result[0]['name'],
+                description: "Recently Played:\n" + recentSongs,
+                url: "http://redbot.tay.rocks/recent.php",
+            }
+        });
     });
 }
 
