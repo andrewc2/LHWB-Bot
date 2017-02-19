@@ -17,7 +17,7 @@ var bot = new Discord.Client({
 
 // Announce bot has logged in after connecting to discord, then joining main voice chat and starting playing after 5 sec delay
 bot.on('ready', function(event) {
-    console.log('Logged in as %s - %s\n', bot.username, bot.id);
+    console.log(time() + ' Logged in as %s - %s\n', bot.username, bot.id);
     console.log('Joining voice chat and playing after 5 seconds');
     setTimeout(joinRed, 5000);
 });
@@ -43,7 +43,7 @@ function joinRed(){
 
 // Automatically reconnect if the bot disconnects from Discord
 bot.on('disconnect', function(err, event) {
-    console.log('-- Bot Disconnected from Discord with code', event, 'for reason:', err, '--');
+    console.log(time() + ' -- Bot Disconnected from Discord with code', event, 'for reason:', err, '--');
     bot.leaveVoiceChannel(creds.voice_channel); //Tells the bot to leave Red
     stream.stopAudioFile(); //stops the audio stream
     setTimeout(bot.connect, 20000);
@@ -132,7 +132,7 @@ function join(channelID,message){
                 event.once('disconnect', function(channelID) { //handles voice disconnects
                     var voiceChannel = bot.channels[channelID];
                     var voiceServer = bot.servers[voiceChannel.guild_id];
-                    console.log(`Disconnected from voiceChannel: ${voiceChannel.name}, in voiceServer ${voiceServer.name}`);
+                    console.log(time() + ` -- Disconnected from voiceChannel: ${voiceChannel.name}, in voiceServer ${voiceServer.name} --`);
                     //stops music, and rejoins Red voice channel, and beings playing
                     stream.stopAudioFile();
                     bot.leaveVoiceChannel(creds.voice_channel); //Tells the bot to leave Red
@@ -489,4 +489,10 @@ function editDistance(source, target, callback){
 		}
 	}
 	callback(distMatrix[n-1][m-1]);
+}
+
+function time() {
+    var date = new Date();
+    var time = date.toLocaleString();
+    return time;
 }
