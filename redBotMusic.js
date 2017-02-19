@@ -45,6 +45,7 @@ function joinRed(){
 bot.on('disconnect', function(err, event) {
     console.log('-- Bot Disconnected from Discord with code', event, 'for reason:', err, '--');
     bot.leaveVoiceChannel(creds.voice_channel); //Tells the bot to leave Red
+    stream.stopAudioFile(); //stops the audio stream
     setTimeout(bot.connect, 20000);
 });
 
@@ -133,6 +134,7 @@ function join(channelID,message){
                     var voiceServer = bot.servers[voiceChannel.guild_id];
                     console.log(`Disconnected from voiceChannel: ${voiceChannel.name}, in voiceServer ${voiceServer.name}`);
                     //stops music, and rejoins Red voice channel, and beings playing
+                    stream.stopAudioFile();
                     bot.leaveVoiceChannel(creds.voice_channel); //Tells the bot to leave Red
                     joinRed();
                 });
@@ -209,7 +211,7 @@ function play(){
                             console.log(currentSong.slice(0,-4) + " is now playing");
                             addPlay(currentSong);
                             addToRecent(currentSong.slice(0,-4));
-                            //fs.createReadStream('/home/redbot/music/Viva La Vida.mp3').pipe(stream, {end:false}); new version of playAudioFile
+                            //fs.createReadStream('/home/redbot/music/' + currentSong).pipe(stream, {end:false}); new version of playAudioFile
                             stream.playAudioFile('/home/redbot/music/' + currentSong);
                             bot.setPresence( {game: {name:currentSong.slice(0,-4)}} ); //sets Playing to current song
                             console.log("Queue empty, Playing songs randomly");
@@ -221,6 +223,7 @@ function play(){
                 }
             });
         };
+        //stream.once('done',function(){ //new stream output
         stream.once('fileEnd',function(){
             console.log("Song Ended");
             if(!stopped){
@@ -279,6 +282,7 @@ function current(channelID,userID){
 function stop(){
     bot.getAudioContext(chan, function(err,stream) {
         stopped = true;
+        //setTimeout(function(){ stream.unpipe();},1000);
         setTimeout(function(){ stream.stopAudioFile();},1000); //new version stream.unpipe()
     });
 }
