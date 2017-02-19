@@ -128,11 +128,11 @@ function join(channelID,message){
             bot.joinVoiceChannel(channels[key].id, function(err, event){
                 console.log("Joined " + channel);
                 chan = channels[key].id;
-                if (err) return console.log(time() + 'Unable to join ' + channelID +' \n' + err); //prints voice errors
+                if (err) return console.log(time() + ` Unable to join ${channelID} \n ${err}`); //prints voice errors
                 event.once('disconnect', function(channelID) { //handles voice disconnects
                     var voiceChannel = bot.channels[channelID];
                     var voiceServer = bot.servers[voiceChannel.guild_id];
-                    console.log(time() + ' -- Disconnected from voiceChannel: ' + voiceChannel.name + ' in voiceServer ' + voiceServer.name ' --');
+                    console.log(time() + ` -- Disconnected from voiceChannel: ${voiceChannel.name}, in voiceServer ${voiceServer.name} --`);
                     //stops music, and rejoins Red voice channel, and beings playing
                     stream.stopAudioFile();
                     bot.leaveVoiceChannel(creds.voice_channel); //Tells the bot to leave Red
