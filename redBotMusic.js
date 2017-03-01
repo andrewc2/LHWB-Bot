@@ -15,37 +15,29 @@ var bot = new Discord.Client({
     token: creds.token
 });
 
-// Announce bot has logged in after connecting to discord, then joining main voice chat and starting playing after 5 sec delay
+
 bot.on('ready', function(event) {
+    bot.getAllUsers();
+});
+
+var firstJoin = true;
+// Announce bot has logged in after connecting to discord, then joining main voice chat and starting playing after 5 sec delay
+bot.on('allUsers', function(event) {
     console.log(time() + ' Logged in as %s - %s\n', bot.username, bot.id);
     console.log('Joining voice chat and playing after 5 seconds');
     setTimeout(joinRed, 5000);
 });
 
-/* function joinRed(){
-    chan = creds.voice_channel;
-    bot.joinVoiceChannel(chan, function(err, event){
-        if (err) return console.log(`Unable to join ${chan} \n ${err}`); //prints voice errors
-        console.log("Joined Red " + chan);
-        event.once('disconnect', function(chan) { //handles voice disconnects
-            console.log("Disconnected from " + chan);
-            bot.leaveVoiceChannel(creds.voice_channel);
-            bot.joinVoiceChannel(creds.voice_channel); //Tells the bot to leave Red
-        });
-    });
-    setTimeout(play, 5000); //Delays playing to make sure the bot is in the voice channel
-} */
-
 function joinRed(){
     join("130759361902542848", " Red"); //Passes a text channel ID and voice channel to simulate a chat user entering !join Red
-    setTimeout(play, 5000); //Delays playing to make sure the bot is in the voice channel
+    if (firstJoin) setTimeout(play, 5000); //Delays playing to make sure the bot is in the voice channel
+    firstJoin = false;
 }
 
 // Automatically reconnect if the bot disconnects from Discord
 bot.on('disconnect', function(err, event) {
     console.log(time() + ' -- Bot Disconnected from Discord with code' + event + ' for reason: ' + err + ' --');
     bot.leaveVoiceChannel(creds.voice_channel); //Tells the bot to leave Red
-    stream.stopAudioFile(); //stops the audio stream
     setTimeout(bot.connect, 20000);
 });
 
@@ -134,7 +126,6 @@ function join(channelID,message){
                     var voiceServer = bot.servers[voiceChannel.guild_id];
                     console.log(time() + ` -- Disconnected from voiceChannel: ${voiceChannel.name}, in voiceServer ${voiceServer.name} --`);
                     //stops music, and rejoins Red voice channel, and beings playing
-                    stream.stopAudioFile();
                     bot.leaveVoiceChannel(creds.voice_channel); //Tells the bot to leave Red
                     joinRed();
                 });
@@ -446,7 +437,7 @@ function tracks(channelID, message, userID, user) {
 
 function fuzzySearch(title, callback){
 	var result;
-	var maxEditDist = 3;
+	var maxEditDist = 5;
 	var minEditDist = maxEditDist;
 	db.query("SELECT path,name FROM music", function(err, songList) {
 		var i;
