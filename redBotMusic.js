@@ -30,7 +30,7 @@ bot.on('allUsers', function(event) {
 
 function joinRed(){
     join("130759361902542848", " Red"); //Passes a text channel ID and voice channel to simulate a chat user entering !join Red
-    if (firstJoin) setTimeout(play, 5000); //Delays playing to make sure the bot is in the voice channel
+    if (firstJoin) setTimeout(play, 5000); //Delays playing to make sure the bot is in the voice channel doesn't play if it wasn't the first join
     firstJoin = false;
 }
 
@@ -283,28 +283,28 @@ function q(message, channelID, user, userID, cmd){
     if((message.toLowerCase() === "!queue") || (message.toLowerCase() === "!q")){
         printQ(message,channelID);
     }else{
-	var voiceChannel = bot.servers[bot.channels[channelID].guild_id].members[userID].voice_channel_id;
-    var title = cmd.slice(1, cmd.length).join(" ");
-	if (voiceChannel) { //Checks if the user is in the same voice channel as the bot
-		console.log("title: " + title);
-		fuzzySearch(title.toLowerCase(), function(result){
-            if(result){
-                queueObj.path = result['path'];
-                if(queue.findIndex(item => item.path === queueObj.path) === -1){    // not in queue
-                    queueObj.user = user;
-                    queue.push(queueObj);
-                    bot.sendMessage({to:channelID,message: "<@" + userID + ">," + " '" + queueObj.path.slice(0,-4) + "' has been added to the queue"});
-                }else{
-                    bot.sendMessage({to:channelID,message: "<@" + userID + ">," + " '" + queueObj.path.slice(0,-4) + "' is already in the queue and was not added"});
-                }
-            }else{
-                bot.sendMessage({to:channelID,message: "<@" + userID + ">, That song could not be found. Please check your spelling or ask iandrewc to add the song."});
+            var voiceChannel = bot.channels[creds.voice_channel] //assumes using the default voice channel
+            var title = cmd.slice(1, cmd.length).join(" ");
+            if (userID in voiceChannel.members) { //Checks if the user is in the same voice channel as the bot
+                console.log("title: " + title);
+                fuzzySearch(title.toLowerCase(), function(result){
+                    if(result){
+                        queueObj.path = result['path'];
+                        if(queue.findIndex(item => item.path === queueObj.path) === -1){    // not in queue
+                            queueObj.user = user;
+                            queue.push(queueObj);
+                            bot.sendMessage({to:channelID,message: "<@" + userID + ">," + " '" + queueObj.path.slice(0,-4) + "' has been added to the queue"});
+                        }else{
+                            bot.sendMessage({to:channelID,message: "<@" + userID + ">," + " '" + queueObj.path.slice(0,-4) + "' is already in the queue and was not added"});
+                        }
+                    }else{
+                        bot.sendMessage({to:channelID,message: "<@" + userID + ">, That song could not be found. Please check your spelling or ask iandrewc to add the song."});
+                    }
+                });
+            } else {
+                    bot.sendMessage({to:channelID,message: "<@" + userID + ">, You must be in the Red voice channel to queue music."});
+                    console.log("User not in Voice Channel");
             }
-        });
-	} else {
-            bot.sendMessage({to:channelID,message: "<@" + userID + ">, You must be in the Red voice channel to queue music."});
-            console.log("User not in Voice Channel");
-	}
     }
 }
 
