@@ -15,12 +15,13 @@ var bot = new Discord.Client({
     token: creds.token
 });
 
-
 bot.on('ready', function(event) {
     bot.getAllUsers();
 });
 
 var firstJoin = true;
+var chan = creds.voice_channel;
+
 // Announce bot has logged in after connecting to discord, then joining main voice chat and starting playing after 5 sec delay
 bot.on('allUsers', function(event) {
     console.log(time() + ' Logged in as %s - %s\n', bot.username, bot.id);
@@ -29,8 +30,19 @@ bot.on('allUsers', function(event) {
 });
 
 function joinRed(){
-    join("130759361902542848", " Red"); //Passes a text channel ID and voice channel to simulate a chat user entering !join Red
-    if (firstJoin) setTimeout(play, 5000); //Delays playing to make sure the bot is in the voice channel doesn't play if it wasn't the first join
+    bot.joinVoiceChannel(chan, function(err, event){
+        if (err) return console.log(time() + ` Unable to join ${channelID} \n ${err}` + " " + event); //prints voice errors
+        event.once('disconnect', function(channelID) { //handles voice disconnects
+            var voiceChannel = bot.channels[channelID];
+            var voiceServer = bot.servers[voiceChannel.guild_id];
+            console.log(time() + ` -- Disconnected from voiceChannel: ${voiceChannel.name}, in voiceServer ${voiceServer.name} --`);
+            //stops music, and rejoins Red voice channel, and beings playing
+            bot.leaveVoiceChannel(creds.voice_channel); //Tells the bot to leave Red
+            setTimeout(joinRed, 5000);
+        });
+    });
+    //join("130759361902542848", " Red"); //Passes a text channel ID and voice channel to simulate a chat user entering !join Red
+    if (firstJoin) setTimeout(play, 5000); //Delays playing to make sure the bot is in the voice channel and doesn't play if it wasn't the first join
     firstJoin = false;
 }
 
@@ -120,32 +132,32 @@ function join(channelID,message){
             bot.joinVoiceChannel(channels[key].id, function(err, event){
                 console.log("Joined " + channel);
                 chan = channels[key].id;
-                if (err) return console.log(time() + ` Unable to join ${channelID} \n ${err}`); //prints voice errors
+                if (err) { //prints voice errors
+                    bot.sendMessage({to:channelID,message: "Cannot join voice channel, tell iAndrewC to restart the bot"});
+                    return console.log(time() + ` Unable to join ${channelID} \n ${err}` + " " + event);
+                }
                 event.once('disconnect', function(channelID) { //handles voice disconnects
                     var voiceChannel = bot.channels[channelID];
                     var voiceServer = bot.servers[voiceChannel.guild_id];
                     console.log(time() + ` -- Disconnected from voiceChannel: ${voiceChannel.name}, in voiceServer ${voiceServer.name} --`);
                     //stops music, and rejoins Red voice channel, and beings playing
                     bot.leaveVoiceChannel(creds.voice_channel); //Tells the bot to leave Red
-                    joinRed();
+                    setTimeout(joinRed, 5000);
                 });
             });
         }
     });
+
+
 }
 
 function isMod(channelID, userID){
     var serverID = bot.channels[channelID] && bot.channels[channelID].guild_id;
     if (!serverID) return console.log("This message was probably sent as a DM");
-
     if(!bot.servers[serverID]) return console.log('Woah, the bot isnt even on this server?');
-
     if(!bot.servers[serverID].members[userID]) return console.log('Is this guy even on the server?');
-
     var roleIdsAsArray = bot.servers[serverID].members[userID].roles; //adds all server roles to array
-
     if(roleIdsAsArray.indexOf('115334158892531719') > -1 || roleIdsAsArray.indexOf('115333509580718080') > -1) return true; //makes sure user fits one of these roles before saying they're a mod
-
     if (userID === creds.iandrewc) return true; //lets iandrewc use his own bot
     
     //If nothing matches, the user is not mod
@@ -285,6 +297,8 @@ function q(message, channelID, user, userID, cmd){
     }else{
             var voiceChannel = bot.channels[creds.voice_channel] //assumes using the default voice channel
             var title = cmd.slice(1, cmd.length).join(" ");
+            if (userID == "283927068792717314")
+                console.log(voiceChannel.members);
             if (userID in voiceChannel.members) { //Checks if the user is in the same voice channel as the bot
                 console.log("title: " + title);
                 fuzzySearch(title.toLowerCase(), function(result){
@@ -360,11 +374,13 @@ function addToRecent(song){
     //Adds recently played songs to database
     if(queuedBy != "") {
         db.query("SELECT album FROM music WHERE name = ?",[song], function(err,result) {
+            if (err) return console.log(err + " " + result);
             var currentAlbum = result[0]['album'];
             db.query("INSERT INTO recent (name, album, queuedby) VALUES (?,?,?)", [song, currentAlbum, queuedBy]);
         });
     } else {
         db.query("SELECT album FROM music WHERE name = ?",[song], function(err,result) {
+            if (err) return console.log(err);
             var currentAlbum = result[0]['album'];
             db.query("INSERT INTO recent (name, album) VALUES (?,?)", [song, currentAlbum]);
         });
