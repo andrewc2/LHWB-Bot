@@ -116,6 +116,14 @@ bot.on('message', function(user, userID, channelID, message, event) {
         case "!tracks":
             tracks(channelID, message, userID,user);
             break;
+        case "!lversion":
+            if(isMod(channelID,userID))
+                version(channelID, message, userID,user);
+            break;
+        case "!lrestart":
+            if(isMod(channelID,userID))
+                restart(channelID, message, userID,user);
+            break;
         case "!redbotrequest":
             request(channelID, message, userID,user);
             break;
@@ -447,8 +455,18 @@ function request(channelID, message, userID, user) {
 }
 
 function tracks(channelID, message, userID, user) {
-    var tra = message.substring(message.indexOf(" ") + 1);
     bot.sendMessage({to:channelID,message: "<@" + userID + ">, http://redbot.tay.rocks/redbot.php"});
+}
+
+function version(channelID, message, userID, user) {
+    bot.sendMessage({to:channelID,message: "<@" + userID + ">, running version: 2017.07.14b"});
+}
+
+function restart(channelID, message, userID, user) {
+    bot.sendMessage({to:channelID,message: "<@" + userID + ">, LHWB restarting!"});
+    bot.leaveVoiceChannel(creds.voice_channel);
+    bot.setPresence( {game: "Restarting..."} ); //sets Playing to restarting
+    process.exit(-1);
 }
 
 function fuzzySearch(title, callback){
