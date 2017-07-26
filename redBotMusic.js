@@ -20,6 +20,7 @@ bot.on('ready', function(event) {
 });
 
 var firstJoin = true;
+var versionNum = "2017.07.21";
 var chan = creds.voice_channel;
 
 // Announce bot has logged in after connecting to discord, then joining main voice chat and starting playing after 5 sec delay
@@ -156,7 +157,6 @@ function join(channelID,message){
         }
     });
 
-
 }
 
 function isMod(channelID, userID){
@@ -166,7 +166,7 @@ function isMod(channelID, userID){
     if(!bot.servers[serverID].members[userID]) return console.log('Is this guy even on the server?');
     var roleIdsAsArray = bot.servers[serverID].members[userID].roles; //adds all server roles to array
     if(roleIdsAsArray.indexOf('115334158892531719') > -1 || roleIdsAsArray.indexOf('115333509580718080') > -1) return true; //makes sure user fits one of these roles before saying they're a mod
-    if (userID === creds.iandrewc) return true; //lets iandrewc use his own bot
+    if (userID === creds.iandrewc || creds.neonz) return true; //lets iandrewc use his own bot
     
     //If nothing matches, the user is not mod
     return false;
@@ -320,7 +320,7 @@ function q(message, channelID, user, userID, cmd){
                             bot.sendMessage({to:channelID,message: "<@" + userID + ">," + " '" + queueObj.path.slice(0,-4) + "' is already in the queue and was not added"});
                         }
                     }else{
-                        bot.sendMessage({to:channelID,message: "<@" + userID + ">, That song could not be found. Please check your spelling or ask iandrewc to add the song."});
+                        bot.sendMessage({to:channelID,message: "<@" + userID + ">, That song could not be found. Please search the track listings - !tracks or ask iandrewc to add the song."});
                     }
                 });
             } else {
@@ -459,14 +459,15 @@ function tracks(channelID, message, userID, user) {
 }
 
 function version(channelID, message, userID, user) {
-    bot.sendMessage({to:channelID,message: "<@" + userID + ">, running version: 2017.07.14b"});
+    bot.sendMessage({to:channelID,message: "<@" + userID + ">, running version: " + versionNum});
 }
 
 function restart(channelID, message, userID, user) {
-    bot.sendMessage({to:channelID,message: "<@" + userID + ">, LHWB restarting!"});
     bot.leaveVoiceChannel(creds.voice_channel);
-    bot.setPresence( {game: "Restarting..."} ); //sets Playing to restarting
-    process.exit(-1);
+    bot.sendMessage({to: channelID, message: "<@"+userID+">, LHWB restarting!"},
+        function() {
+            process.exit(-1);
+        });
 }
 
 function fuzzySearch(title, callback){
