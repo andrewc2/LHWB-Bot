@@ -20,7 +20,7 @@ bot.on('ready', function(event) {
 });
 
 var firstJoin = true;
-var versionNum = "2017.07.21";
+var versionNum = "2017.09.18 ...Ready For It?";
 var chan = creds.voice_channel;
 
 // Announce bot has logged in after connecting to discord, then joining main voice chat and starting playing after 5 sec delay
@@ -142,8 +142,11 @@ function join(channelID,message){
                 console.log("Joined " + channel);
                 chan = channels[key].id;
                 if (err) { //prints voice errors
-                    bot.sendMessage({to:channelID,message: "Cannot join voice channel, tell iAndrewC to restart the bot"});
-                    return console.log(time() + ` Unable to join ${channelID} \n ${err}` + " " + event);
+                    console.log(time() + ` Unable to join ${channelID} \n ${err}` + " " + event);
+                    bot.sendMessage({to: channelID, message: "Cannot join voice channel, LHWB restarting!"},
+                        function() {
+                            process.exit(-1);
+                        });
                 }
                 event.once('disconnect', function(channelID) { //handles voice disconnects
                     var voiceChannel = bot.channels[channelID];
@@ -166,7 +169,7 @@ function isMod(channelID, userID){
     if(!bot.servers[serverID].members[userID]) return console.log('Is this guy even on the server?');
     var roleIdsAsArray = bot.servers[serverID].members[userID].roles; //adds all server roles to array
     if(roleIdsAsArray.indexOf('115334158892531719') > -1 || roleIdsAsArray.indexOf('115333509580718080') > -1) return true; //makes sure user fits one of these roles before saying they're a mod
-    if (userID === creds.iandrewc || creds.neonz) return true; //lets iandrewc use his own bot
+    if (userID === creds.iandrewc || userID === creds.neonz) return true; //lets iandrewc use his own bot
     
     //If nothing matches, the user is not mod
     return false;
