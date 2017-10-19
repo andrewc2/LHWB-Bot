@@ -1,8 +1,10 @@
 {
-    "token":"",
-    "mysqlUser":"",
-    "mysqlPassword":"",
-    "database":"",
-    "api":"",
-    "voice_channel":""
+	"bot" : {
+    	"mainServer" : "",
+		"token" : "",
+		"version" : ""
+    },
+    "discord" : {
+    	"ownerID" : ""
+    }
 }
