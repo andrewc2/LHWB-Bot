@@ -4,7 +4,7 @@ const mysql = require("mysql");
 
 const bot = new Discord.Client();
 
-var db = mysql.createConnection({
+var db = mysql.createPool({
 	host: config.sql.host,
 	user: config.sql.user,
 	password: config.sql.pass,
@@ -27,12 +27,24 @@ bot.on('message', message => {
 			case "!lrestart":
 				restartCommand(message);
 				break;
-
-			case "!rjoin":
+                
+            case "!tracks":
+				trackCommand(message);
+				break;
+                
+            case "!uh":
+				huhCommand(message);
+				break;
+            
+            case "!lrequest":
+				requestCommand(message, params);
+				break;
+            
+			case "!ljoin":
 				join(message, params);
 				break;
 
-			case "!rleave":
+			case "!lleave":
 				leave(message, params);
 				break;
 		}
@@ -54,12 +66,27 @@ function leave(message, channelID) {
 	console.log(time() + " LHWB left " + channelID + " by " + message.author.tag + ".");
 }
 
+function trackCommand(message) {
+	message.reply("https://lhwb.tay.rocks/lhwb.php");
+}
+
+function huhCommand(message) {
+	message.reply("huh");
+}
+
+function requestCommand(message, req) {
+    var user = message.author.username;
+    console.log(user + " - " + req);
+    db.query("INSERT INTO requested (user, request) VALUES (?,?)", [user,req]);
+	message.reply("Request submitted.");
+}
+
 function versionCommand(message) {
 	message.channel.send("Running version: " + config.bot.version);
 }
 
 function restartCommand(message) {
-    //leave voice channel before restarting
+    //todo: leave voice channel before restarting
     message.channel.send("LHWB restarting!").then(() => process.exit(-1));
 }
 
