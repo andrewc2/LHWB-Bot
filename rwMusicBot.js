@@ -1,5 +1,5 @@
-const Discord = require('discord.js');
-const config = require('./auth.json');
+const Discord = require("discord.js");
+const config = require("./auth.json");
 const mysql = require("mysql");
 
 const bot = new Discord.Client();
@@ -11,11 +11,13 @@ var db = mysql.createPool({
 	database: config.sql.db
 });
 
-bot.on('ready', () => {
-	console.log(time() + ' LHWB is ready!');
+bot.on("ready", () => {
+	console.log(time() + " LHWB is ready!");
 });
 
-bot.on('message', message => {
+var firstJoin = true;
+
+bot.on("message", message => {
 	var command = message.content.split(" ");
 	var params = command.slice(1, command.length).join(" ");
 
@@ -47,8 +49,34 @@ bot.on('message', message => {
 			case "!lleave":
 				leave(message, params);
 				break;
+			case "!eval":
+            	if (message.author.id == config.discord.ownerID) {
+                	if (command[1] == null) {
+                    	message.reply ("You have not specified what you want me to evaluate! :(");
+                	} else {
+                    	try {
+                        	var evaled = eval(params);
+                        	if (typeof evaled !== "string")
+                            	evaled = require("util").inspect(evaled);
+                            	message.channel.send("```xl\n" + clean(evaled) + "\n```");
+	                    } catch (err) {
+    	                    message.channel.send("`ERROR` ```xl\n" + clean(err) + "\n```");
+        	            }
+            	    }
+            	} else {
+                	message.reply("lol no :rolling_eyes:");
+            	}
+            	break;
 		}
 });
+
+function clean(text) {
+    if (typeof(text) === "string") {
+        return text.replace(/` /g, "`" + String.fromCharCode(8203)).replace(/@/g, "@" + String.fromCharCode(8203));
+    } else {
+        return text;
+    }
+}
 
 function join(message, channelID) {
 	//todo: accept channel name as param and catch err
