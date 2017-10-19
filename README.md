@@ -1,24 +1,22 @@
 # Red-Bot
 A bot for the our Discord server.
 
-I do not guarantee stability when used on any other server, though it should work. It currently will only play music on one server at a time. Not using the redBotNonMusic.js portion, it may not be fully functional.
+I do not guarantee stability when used on any other server, though it should work. It currently will only play music on one server at a time. Fully rewritten using discord.js.
 
 ### Requirements
 node.js
 
-Discord.io for music
-
-Discord.js for gifs/polls/etc
+Discord.js
 
 ffmpeg for music
 
-mysql for songs
+mysql for songs and queues
 
 ### Usage
-Uses mysql for storage of song information and playcount data. Updated to use token login.
+Uses mysql for storage of song information and playcount data, as well as recently played songs, and queues.
 
 ### Install Music Bot (using Ubuntu)
-`npm install discord.io`
+`npm install discord.js node-opus --save`
 
 `npm install mysql`
 
@@ -32,19 +30,12 @@ Uses mysql for storage of song information and playcount data. Updated to use to
 `apt-get install ffmpeg`
 
 ### Point ffmpeg to PATH
-Edit .bashrc and add `export PATH="/usr/bin/ffmpeg:$PATH"` assuming ffmpeg was installed in the default location
+Edit `.bashrc` and add `export PATH="/usr/bin/ffmpeg:$PATH"` assuming ffmpeg was installed in the default location
 
 `source .bashrc` to save PATH
 
-### Install Chat Bot
-`npm install --save discord.js`
-
-`npm install apigiphy`
-
 ### Running
-`node redBotMusic.js`
-
-`node redBotNonMusic.js`
+`node redBot.js`
 
 ### Thanks to:
-@FearlessSwiftie, @richmoj3, and the Discord.io people for all the help!
+@swiftlyanerd, @richmoj3 for all the help!
