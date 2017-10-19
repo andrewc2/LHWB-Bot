@@ -1,8 +1,16 @@
 {
-    "token":"",
-    "mysqlUser":"",
-    "mysqlPassword":"",
-    "database":"",
-    "api":"",
-    "voice_channel":""
+    "bot" : {
+        "mainServer" : "",
+		"token" : "",
+		"version" : ""
+	},
+    "discord" : {
+        "ownerID" : ""
+    },
+	"sql" : {
+		"host" : "l",
+		"user" : "",
+		"pass" : "",
+		"db" : ""
+	}
 }
