@@ -20,7 +20,7 @@ bot.on('ready', function(event) {
 });
 
 var firstJoin = true;
-var versionNum = "2017.09.18 ...Ready For It?";
+var versionNum = "2017.10.18b #huh";
 var chan = creds.voice_channel;
 
 // Announce bot has logged in after connecting to discord, then joining main voice chat and starting playing after 5 sec delay
@@ -116,6 +116,9 @@ bot.on('message', function(user, userID, channelID, message, event) {
             break;
         case "!tracks":
             tracks(channelID, message, userID,user);
+            break;
+        case "!uh":
+            huh(channelID, message, userID,user);
             break;
         case "!lversion":
             if(isMod(channelID,userID))
@@ -458,7 +461,11 @@ function request(channelID, message, userID, user) {
 }
 
 function tracks(channelID, message, userID, user) {
-    bot.sendMessage({to:channelID,message: "<@" + userID + ">, http://redbot.tay.rocks/redbot.php"});
+    bot.sendMessage({to:channelID,message: "<@" + userID + ">, https://lhwb.tay.rocks/redbot.php"});
+}
+
+function huh(channelID, message, userID, user) {
+    bot.sendMessage({to:channelID,message: "<@" + userID + ">, huh"});
 }
 
 function version(channelID, message, userID, user) {
