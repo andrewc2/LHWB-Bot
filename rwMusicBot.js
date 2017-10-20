@@ -47,8 +47,9 @@ bot.on("message", message => {
 				break;
 
 			case "!lleave":
-				leave(message, params);
+				leave(message);
 				break;
+			//temporary command to aid the re-write
 			case "!eval":
             	if (message.author.id == config.discord.ownerID) {
                 	if (command[1] == null) {
@@ -78,20 +79,23 @@ function clean(text) {
     }
 }
 
-function join(message, channelID) {
-	//todo: accept channel name as param and catch err
-	//currently only accepts channel id as parameter
-	bot.channels.get(channelID).join();
-	//test log
-	console.log(time() + " LHWB joined " + channelID + " by " + message.author.tag + ".");
+function join(message, channelName) {
+	//todo: catch err
+	bot.channels.find("name", channelName).join();
+	//tests
+	message.reply("joined " + channelName + " successfully!");
+	console.log(time() + " LHWB joined " + channelName + " by " + message.author.tag + ".");
 }
 
-function leave(message, channelID) {
-	//todo: require no parameter and catch err
-	//currently only works if parameter is given
-	bot.channels.get(channelID).leave();
-	//test log
-	console.log(time() + " LHWB left " + channelID + " by " + message.author.tag + ".");
+function leave(message) {
+	//checks to see if the bot is in a voice channel
+	var voiceConnection = bot.voiceConnections.get(message.guild.id);
+	//todo:catch err
+	if(voiceConnection != null)
+		voiceConnection.disconnect();
+	//tests
+	message.reply("successfully left Red");
+	console.log(time() + " LHWB left " + message.channel.name + " by " + message.author.tag + ".");
 }
 
 function trackCommand(message) {
