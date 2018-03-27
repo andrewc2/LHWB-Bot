@@ -38,6 +38,10 @@ bot.on("message", message => {
 				huhCommand(message);
 				break;
             
+            case "!eyeroll":
+				eyerollCommand(message);
+				break;
+            
             case "!taylorswift":
 				albumDebutCommand(message);
 				break;
@@ -128,6 +132,10 @@ function trackCommand(message) {
 
 function huhCommand(message) {
 	message.reply("huh");
+}
+
+function eyerollCommand(message) {
+	message.channel.send(":rolling_eyes:");
 }
 
 function albumDebutCommand(message) {
