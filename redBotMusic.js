@@ -20,7 +20,7 @@ bot.on('ready', function(event) {
 });
 
 var firstJoin = true;
-var versionNum = "2017.11.07d #rep";
+var versionNum = "2018.03.26a";
 var chan = creds.voice_channel;
 
 // Announce bot has logged in after connecting to discord, then joining main voice chat and starting playing after 5 sec delay
@@ -119,6 +119,9 @@ bot.on('message', function(user, userID, channelID, message, event) {
             break;
         case "!uh":
             huh(channelID, message, userID,user);
+            break;
+        case "!eyeroll":
+            eyeroll(channelID, message, userID,user);
             break;
         case "!taylorswift":
             albumDebut(channelID, message, userID,user);
@@ -484,6 +487,10 @@ function tracks(channelID, message, userID, user) {
 
 function huh(channelID, message, userID, user) {
     bot.sendMessage({to:channelID,message: "<@" + userID + ">, huh"});
+}
+
+function eyeroll(channelID, message, userID, user) {
+    bot.sendMessage({to:channelID,message: ":rolling_eyes:"});
 }
 
 function albumDebut(channelID, message, userID, user) {
