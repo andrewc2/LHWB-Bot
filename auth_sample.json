@@ -1,16 +1,17 @@
 {
     "bot" : {
         "mainServer" : "",
-		"token" : "",
-		"version" : ""
+		"token"      : "",
+		"version"    : ""
 	},
     "discord" : {
-        "ownerID" : ""
+		"ownerID"    : "",
+		"patootie"   : ""
     },
 	"sql" : {
-		"host" : "",
-		"user" : "",
-		"pass" : "",
-		"db" : ""
+		"host"       : "",
+		"user"       : "",
+		"pass"       : "",
+		"db"         : ""
 	}
 }
