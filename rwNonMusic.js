@@ -1,6 +1,8 @@
 const Discord = require("discord.js");
-const config = require("./auth.json");
 const mysql = require("mysql");
+
+const config = require("./auth.json");
+const stan = require ("./stan.json");
 
 const bot = new Discord.Client();
 
@@ -19,32 +21,42 @@ bot.on("message", message => {
     let command = message.content.split(" ");
     let params = command.slice(1, command.length).join(" ");
 
-    // If Patootie's message contains the word oof at least once, the counter will increment by one.
-    if(message.content.match(/oof/i) && message.author.id == config.discord.patootie)
+    // If Patootie's message contains the word oof at least once, and it is not in #bots, the counter will increment by one.
+    if(message.content.match(/oof/i) && message.author.id == config.discord.patootie && message.channel.id != config.discord.botsChannel)
         updateOofCounter(message);
     
     switch(command[0].toLowerCase()) {
-        case "!oofcounter":
+        case "!debtcounter":
             getOofCounter(message);
             break;
 
-        case "!lversion":
-            versionCommand(message);
+        case "!lnversion":
+			versionCommand(message);
             break;
 
-        case "!lrestart":
-            restartCommand(message);
+        case "!lnrestart":
+            if(isMod(message))
+                restartCommand(message);
+            break;
+
+        case "!stan":
+            stanCommand(message);
             break;
 
         case "!uh":
-	    huhCommand(message);
+			huhCommand(message);
             break;
             
         case "!eyeroll":
-	    eyerollCommand(message);
-	    break;
+			eyerollCommand(message);
+			break;
     }
 });
+
+function isMod(message) {
+    return (message.member.roles.has("115333509580718080") || message.member.roles.has("115334158892531719") ||
+            message.author.id == config.discord.fs || message.author.id == config.discord.iandrewc || message.author.id == config.discord.neonz);
+}
 
 function updateOofCounter(message) {
     db.query("SELECT * FROM counters WHERE word='oof' AND userID=?", [config.discord.patootie], function(err, rows) {
@@ -55,12 +67,6 @@ function updateOofCounter(message) {
     });
 }
 
-/*function updateOofTimestamp(message) {
-    db.query("SELECT * FROM counters WHERE word='oof' AND userID=?", [config.discord.patootie], function(err, rows) {
-        db.query("UPDATE counters SET lastUsed=CURRENT_TIMESTAMP WHERE word='oof' AND userID=?", [config.discord.patootie]);
-    });
-}*/
-
 function getOofCounter(message) {
     let command = message.content.split(" ");
 
@@ -68,9 +74,14 @@ function getOofCounter(message) {
         if(rows[0] == null) {
            message.reply(`there was an error retrieving the oof counter.`);
         } else {
-            message.reply(`${rows[0]['nickname']}'s \`oof\` counter is at \`${rows[0]['counter']}\` as of \`${rows[0]['lastUsed']}\`.`);
+            message.reply(`${rows[0]['user']}'s \`oof\` counter is at \`${rows[0]['counter']}\` as of \`${rows[0]['lastUsed']}\`.`);
         }
     });
+}
+
+function stanCommand(message) {
+    let reply = stan['media'];
+    message.channel.send(reply[Math.floor(Math.random() * reply.length)]);
 }
 
 function huhCommand(message) {
@@ -87,7 +98,7 @@ function versionCommand(message) {
 
 function restartCommand(message) {
     //todo: leave voice channel before restarting
-    message.channel.send(`LHWB restarting!`).then(() => process.exit(-1));
+    message.channel.send(`LHWB non-music restarting!`).then(() => process.exit(-1));
 }
 
 function time() {
