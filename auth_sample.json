@@ -1,17 +1,19 @@
 {
-    "bot" : {
-        "mainServer" : "",
-		"token"      : "",
-		"version"    : ""
+	"bot"             : {
+		"token"       : "",
+		"version"     : ""
 	},
-    "discord" : {
-		"ownerID"    : "",
-		"patootie"   : ""
-    },
-	"sql" : {
-		"host"       : "",
-		"user"       : "",
-		"pass"       : "",
-		"db"         : ""
+	"discord"         : {
+		"botsChannel" : "",
+		"fs"          : "",
+		"iandrewc"    : "",
+		"neonz"       : "",
+		"patootie"    : ""
+	},
+	"sql"             : {
+		"host"        : "",
+		"user"        : "",
+		"pass"        : "",
+		"db"          : ""
 	}
 }
