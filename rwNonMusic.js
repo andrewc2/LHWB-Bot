@@ -31,7 +31,7 @@ bot.on("message", message => {
             break;
 
         case "!lnversion":
-			versionCommand(message);
+	    versionCommand(message);
             break;
 
         case "!lnrestart":
@@ -44,12 +44,12 @@ bot.on("message", message => {
             break;
 
         case "!uh":
-			huhCommand(message);
+	    huhCommand(message);
             break;
             
         case "!eyeroll":
-			eyerollCommand(message);
-			break;
+	    eyerollCommand(message);
+	    break;
     }
 });
 
