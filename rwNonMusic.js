@@ -43,9 +43,9 @@ bot.on("message", message => {
             trackCommand(message);
             break;
 
-        /* case "!stan":
+        case "!stan":
             stanCommand(message);
-            break; */
+            break;
             
         case "!gif":
             gifCommand(message);
@@ -55,6 +55,20 @@ bot.on("message", message => {
             huhCommand(message);
             break;
             
+        case "!secretsong":
+        case "!secretsongs":
+            secretSongCommand(message);
+            break;
+                  
+        case "!setlist":
+            setlistCommand(message);
+            break;
+                  
+        case "!guests":
+        case "!specialguests":
+            guestsCommand(message);
+            break;
+                
         case "!eyeroll":
             eyerollCommand(message);
             break;
@@ -62,7 +76,11 @@ bot.on("message", message => {
         case "!taylorswift":
             albumDebutCommand(message);
             break;
-                
+            
+        case "!beautifuleyes":
+            albumBeautifulEyesCommand(message);
+            break;
+                       
         case "!fearless":
             albumFearlessCommand(message);
             break;
@@ -115,7 +133,7 @@ function getOofCounter(message) {
 function stanCommand(message) {
     /* let reply = stan['stans'];
     message.channel.send(reply[Math.floor(Math.random() * reply.length)]); */
-    message.channel.send(`This command has been disabled due to DMCA by mods pending resolution`);
+    message.channel.send(`Honestly I'd rather not see stan drama in here but it is what it is...`);
 }
 
 function gifCommand(message) {
@@ -136,6 +154,54 @@ function eyerollCommand(message) {
 	message.channel.send(`:rolling_eyes:`);
 }
 
+function secretSongCommand(message) {
+    if (message.channel.id == "440701706846601217")
+        message.channel.send({embed: {
+            description: "1. All Too Well (Glendale)\n2. Wildest Dreams (Santa Clara)\n3. The Best Day (Santa Clara)\n4. Red (Pasadena)\n5. All Too Well (Pasadena)\n6. Holy Ground (Seattle)\n7. Teardrops on My Guitar (Denver)\n8. Our Song (Chicago)\n9. 22 (Chicago)\n10. I Knew You Were Trouble (Manchester)\n11. I Don't Wanna Live Forever (Manchester)\n12. Mean (Dublin)\n13. How You Get The Girl (Dublin)\n14. So It Goes...(London)\n15. Fifteen (London)",
+            color: 568027,
+            thumbnail: {
+                url: "https://i.imgur.com/Zhg0oXF.jpg"
+            },
+            author: {
+                name: "Secret Songs",
+                url: "https://docs.google.com/spreadsheets/d/1Yt0_VqcPczB9GxKf9BGCpNcSWXTROlpdrEcTP1wmevs/edit",
+                icon_url: "https://red.ghst.in/ts.png"
+            }
+        }});
+}
+
+function setlistCommand(message) {
+    if (message.channel.id == "440701706846601217")
+        message.channel.send({embed: {
+            description: "Before Taylor: Bad Reputation\n\nreputation Video\n\n1. ...Ready for It?\n2. I Did Something Bad\n3. Gorgeous\n4. Style / Love Story / You Belong With Me\n\nLook What You Made Me Do Video\n\n5. Look What You Made Me Do\n6. End Game (no verses)\n7. King of My Heart\n8. Delicate (left bstage)\n9. Shake It Off (left bstage)\n10. Dancing With Our Hands Tied (left bstage)\n11. !secretsong (left bstage)\n12. Blank Space (right bstage)\n13. Dress (right bstage)\n14. Bad Blood / Should've Said No\n15. Don't Blame Me\n16. Long Live / New Year's Day\n\nWhy She Disappeared video\n\n17. Getaway Car\n18. Call It What You Want\n19. We Are Never Ever Getting Back Together / This Is Why We Can't Have Nice Things",
+            color: 568027,
+            thumbnail: {
+                url: "https://i.imgur.com/Zhg0oXF.jpg"
+            },
+            author: {
+                name: "Typical Setlist",
+                url: "https://www.setlist.fm/stats/average-setlist/taylor-swift-3bd6bc5c.html?tour=3d0a56f",
+                icon_url: "https://red.ghst.in/ts.png"
+            }
+        }});
+}
+
+function guestsCommand(message) {
+    if (message.channel.id == "440701706846601217")
+        message.channel.send({embed: {
+            description: "5-18-18 (Pasadena) There's Nothing Holdin' Me Back - Shawn Mendes\n5-19-18 (Pasadena) My My My! - Troye Sivan; Hands to Myself - Selena Gomez\n6-22-18 (London) Slow Hands - Niall Horan\n6-23-18 (London) Angels - Robbie Williams",
+            color: 568027,
+            thumbnail: {
+                url: "https://i.imgur.com/Zhg0oXF.jpg"
+            },
+            author: {
+                name: "Special Guests",
+                url: "https://en.wikipedia.org/wiki/Taylor_Swift%27s_Reputation_Stadium_Tour#Shows",
+                icon_url: "https://red.ghst.in/ts.png"
+            }
+        }});
+}
+
 function albumDebutCommand(message) {
 	message.channel.send({embed: {
         description: "**Taylor Swift** was released on __October 24, 2006__ \n\n1. Tim McGraw\n2. Picture to Burn\n3. Teardrops on My Guitar\n4. A Place in This World\n5. Cold as You\n6. The Outside\n7. Tied Together with a Smile\n8. Stay Beautiful\n9. Should've Said No\n10. Mary's Song (Oh My My My)\n11. Our Song\n\n__Deluxe Version__\n12. I'm Only Me When I'm with You\n13. Invisible\n14. A Perfectly Good Heart",
@@ -146,6 +212,21 @@ function albumDebutCommand(message) {
         author: {
             name: "Taylor Swift",
             url: "https://taylorswift.com/releases/#/release/2812",
+            icon_url: "https://red.ghst.in/ts.png"
+        }
+    }});
+}
+
+function albumBeautifulEyesCommand(message) {
+	message.channel.send({embed: {
+        description: "**Beautiful Eyes** was released on __July 15, 2008__ \n\n1. Beautiful Eyes\n2. Should've Said No (Alternate version)\n3. Teardrops on My Guitar (Acoustic version)\n4. Picture to Burn (Radio edit)\n5. I'm Only Me When I'm with You\n6. I Heart ?\n\n__Disk Two (DVD)__\n1. Beautiful Eyes (music video)\n2. Picture to Burn (music video)\n3. I'm Only Me When I'm with You (music video)\n4. Tim McGraw (music video)\n5. Teardrops on My Guitar (Pop version music video)\n6. Our Song (music video)\n7. Making of 'Picture to Burn' Video\n8. GAC New Artist Interview\n9. 2008 ACM Awards Performance of 'Should've Said No",
+        color: 0xe78234,
+        thumbnail: {
+            url: "https://i.imgur.com/sN5DToG.jpg"
+        },
+        author: {
+            name: "Taylor Swift",
+            url: "https://en.wikipedia.org/wiki/Beautiful_Eyes",
             icon_url: "https://red.ghst.in/ts.png"
         }
     }});
