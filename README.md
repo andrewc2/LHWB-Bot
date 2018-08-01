@@ -18,7 +18,7 @@ mysql for songs
 Uses mysql for storage of song information and playcount data. Updated to use token login.
 
 ### Install Music Bot (using Ubuntu)
-`npm install discord.io`
+`npm install Woor/discord.io#gateway_v6`
 
 `npm install mysql`
 
