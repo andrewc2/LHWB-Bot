@@ -38,14 +38,29 @@ bot.on("message", message => {
             if(isMod(message))
                 restartCommand(message);
             break;
+        
+        case "!ldelete":
+            if(isMod(message))
+                deleteCommand(message, params);
+            break;
+        
+        case "!ltest":
+            if(isMod(message))
+                testPermissionsCommand(message);
+            break;
+           
+        case "!lsay":
+            if(isMod(message))
+                lsayCommand(message, params);
+            break;
             
         case "!tracks":
             trackCommand(message);
             break;
 
-        case "!stan":
+        /* case "!stan":
             stanCommand(message);
-            break;
+            break; */
             
         case "!gif":
             gifCommand(message);
@@ -57,7 +72,12 @@ bot.on("message", message => {
             
         case "!secretsong":
         case "!secretsongs":
+        case "!ss":
             secretSongCommand(message);
+            break;
+            
+        case "!fullss":
+            fullSecretSongCommand(message);
             break;
                   
         case "!setlist":
@@ -74,6 +94,7 @@ bot.on("message", message => {
             break;
             
         case "!taylorswift":
+        case "!debut":
             albumDebutCommand(message);
             break;
             
@@ -100,6 +121,12 @@ bot.on("message", message => {
         case "!reputation":
             albumReputationCommand(message);
             break;
+               
+        /* case "!lottethinking":
+            lotteCommand(message);
+            break; */
+        default:
+            checkTable(message);
                 
     }
 });
@@ -130,21 +157,28 @@ function getOofCounter(message) {
     });
 }
 
-function stanCommand(message) {
-    /* let reply = stan['stans'];
-    message.channel.send(reply[Math.floor(Math.random() * reply.length)]); */
+/*function stanCommand(message) {
+     let reply = stan['stans'];
+    message.channel.send(reply[Math.floor(Math.random() * reply.length)]); 
     message.channel.send(`Honestly I'd rather not see stan drama in here but it is what it is...`);
-}
+}*/
 
 function gifCommand(message) {
     let reply = stan['gif'];
     message.channel.send(reply[Math.floor(Math.random() * reply.length)]);
 }
 
-
 function trackCommand(message) {
 	message.reply("https://lhwb.tay.rocks/lhwb.php");
 }
+
+function lotteCommand(message) {
+	message.channel.send("https://i.imgur.com/TH0HzSs.png");
+}
+
+/* function addSSCommand(message) {
+	db.query("INSERT INTO secretSongs (user, request) VALUES (?,?)", [user,req]);
+} */
 
 function huhCommand(message) {
 	message.reply(`huh`);
@@ -154,10 +188,38 @@ function eyerollCommand(message) {
 	message.channel.send(`:rolling_eyes:`);
 }
 
+function checkTable(message) {
+	var table = "\t┬─┬ノ(ಠ_ಠノ)";
+	var t = message.content.toLowerCase().indexOf("┻"); 
+	var differentTableLegs = ["┻", "╝","╘","╙","╨","└"];
+	for(var i = 0;i< differentTableLegs.length;i++) {
+		if(message.content.toLowerCase().indexOf(differentTableLegs[i]) > -1) {
+			message.channel.send(table);
+			//addFlip();
+			break;
+		}
+	}
+}
+
+function fullSecretSongCommand(message) {
+    message.author.send({embed: {
+        description: "1. All Too Well (Glendale)\n2. Wildest Dreams (Santa Clara)\n3. The Best Day (Santa Clara)\n4. Red (Pasadena)\n5. All Too Well (Pasadena)\n6. Holy Ground (Seattle)\n7. Teardrops on My Guitar (Denver)\n8. Our Song (Chicago)\n9. 22 (Chicago)\n10. I Knew You Were Trouble (Manchester)\n11. I Don't Wanna Live Forever (Manchester)\n12. Mean (Dublin)\n13. How You Get The Girl (Dublin)\n14. So It Goes...(London)\n15. Fifteen (London)\n16. Mine (Louisville)\n17. Sparks Fly (Columbus)\n18. State of Grace (DC)\n19. Haunted (DC)\n20. Never Grow Up (Philadelphia)\n21. Broken Gondola Songs - [Our Song / Wildest Dreams],\nTreacherous right b-stage (Philadelphia)\n22. Babe (Cleveland)\n23. Welcome to New York (East Rutherford)\n24. Fearless [b-stage],\nClean [Piano before Long Live / NYD]\n(East Rutherford Rain Show)\n25. Enchanted (East Rutherford)\n26. 22 (Foxborough)\n27. Change (Foxborough)\n28. Ours (Foxborough)\n29. Out of the Woods (Toronto)\n30. Come Back... Be Here (Toronto)\n31. A Place In This World (Pittsburgh)\n32. This Love (Atlanta)\n33. The Lucky One (Atlanta)\n34. Invisible (Tampa)\n35. Breathe (Miami)\n36. Better Man [b-stage]\n Tim McGraw [with Faith Hill and Tim McGraw] (Nashville)\n37. Jump Then Fall (Detroit)\n38. Begin Again (Minneapolis)\n39. Tied Together With A Smile (Minneapolis)",
+        color: 568027,
+        thumbnail: {
+            url: "https://i.imgur.com/Zhg0oXF.jpg"
+        },
+        author: {
+            name: "Secret Songs",
+            url: "https://docs.google.com/spreadsheets/d/1Yt0_VqcPczB9GxKf9BGCpNcSWXTROlpdrEcTP1wmevs/edit",
+            icon_url: "https://red.ghst.in/ts.png"
+        }
+    }});
+}
+
 function secretSongCommand(message) {
-    if (message.channel.id == "440701706846601217")
+    if (message.channel.id == "440701706846601217" || message.channel.id == "468602606869020672")
         message.channel.send({embed: {
-            description: "1. All Too Well (Glendale)\n2. Wildest Dreams (Santa Clara)\n3. The Best Day (Santa Clara)\n4. Red (Pasadena)\n5. All Too Well (Pasadena)\n6. Holy Ground (Seattle)\n7. Teardrops on My Guitar (Denver)\n8. Our Song (Chicago)\n9. 22 (Chicago)\n10. I Knew You Were Trouble (Manchester)\n11. I Don't Wanna Live Forever (Manchester)\n12. Mean (Dublin)\n13. How You Get The Girl (Dublin)\n14. So It Goes...(London)\n15. Fifteen (London)",
+            description: "Last 5: use !fullss to get a PM of the full list\n\n34. Invisible (Tampa)\n35. Breathe (Miami)\n36. Better Man [b-stage]\n Tim McGraw [with Faith Hill and Tim McGraw] (Nashville)\n37. Jump Then Fall (Detroit)\n38. Begin Again (Minneapolis)\n39. Tied Together With A Smile (Minneapolis)",
             color: 568027,
             thumbnail: {
                 url: "https://i.imgur.com/Zhg0oXF.jpg"
@@ -171,9 +233,9 @@ function secretSongCommand(message) {
 }
 
 function setlistCommand(message) {
-    if (message.channel.id == "440701706846601217")
+    if (message.channel.id == "440701706846601217" || message.channel.id == "468602606869020672")
         message.channel.send({embed: {
-            description: "Before Taylor: Bad Reputation\n\nreputation Video\n\n1. ...Ready for It?\n2. I Did Something Bad\n3. Gorgeous\n4. Style / Love Story / You Belong With Me\n\nLook What You Made Me Do Video\n\n5. Look What You Made Me Do\n6. End Game (no verses)\n7. King of My Heart\n8. Delicate (left bstage)\n9. Shake It Off (left bstage)\n10. Dancing With Our Hands Tied (left bstage)\n11. !secretsong (left bstage)\n12. Blank Space (right bstage)\n13. Dress (right bstage)\n14. Bad Blood / Should've Said No\n15. Don't Blame Me\n16. Long Live / New Year's Day\n\nWhy She Disappeared video\n\n17. Getaway Car\n18. Call It What You Want\n19. We Are Never Ever Getting Back Together / This Is Why We Can't Have Nice Things",
+            description: "Before Taylor: Bad Reputation\n\nreputation Video\n\n1. ...Ready for It?\n2. I Did Something Bad\n3. Gorgeous\n4. Style / Love Story / You Belong With Me\n\nLook What You Made Me Do Video\n\n5. Look What You Made Me Do\n6. End Game (no verses)\n7. King of My Heart\n8. Delicate (flying to bstage)\n9. Shake It Off (left bstage)\n10. Dancing With Our Hands Tied [Exchanges with So It Goes...] (left bstage)\n11. !secretsong (left bstage)\n12. Blank Space (right bstage)\n13. Dress (right bstage)\n14. Bad Blood / Should've Said No\n15. Don't Blame Me\n16. Long Live / New Year's Day\n\nWhy She Disappeared video\n\n17. Getaway Car\n18. Call It What You Want\n19. We Are Never Ever Getting Back Together / This Is Why We Can't Have Nice Things",
             color: 568027,
             thumbnail: {
                 url: "https://i.imgur.com/Zhg0oXF.jpg"
@@ -187,9 +249,9 @@ function setlistCommand(message) {
 }
 
 function guestsCommand(message) {
-    if (message.channel.id == "440701706846601217")
+    if (message.channel.id == "440701706846601217" || message.channel.id == "468602606869020672")
         message.channel.send({embed: {
-            description: "5-18-18 (Pasadena) There's Nothing Holdin' Me Back - Shawn Mendes\n5-19-18 (Pasadena) My My My! - Troye Sivan; Hands to Myself - Selena Gomez\n6-22-18 (London) Slow Hands - Niall Horan\n6-23-18 (London) Angels - Robbie Williams",
+            description: "5-18-18 (Pasadena) There's Nothing Holdin' Me Back - Shawn Mendes\n5-19-18 (Pasadena) My My My! - Troye Sivan; Hands to Myself - Selena Gomez\n6-22-18 (London) Slow Hands - Niall Horan\n6-23-18 (London) Angels - Robbie Williams\n7-27-18 (Foxborough) Curious - Hayley Kiyoko\n8-04-18 (Toronto) Summer of 69 - Bryan Adams\n8-25-18 (Nashville) Tim McGraw - Faith Hill / Tim McGraw",
             color: 568027,
             thumbnail: {
                 url: "https://i.imgur.com/Zhg0oXF.jpg"
@@ -309,6 +371,22 @@ function albumReputationCommand(message) {
 
 function versionCommand(message) {
 	message.channel.send(`Running version: ${config.bot.version}`);
+}
+
+function deleteCommand(message, params) {
+    //message.channel.fetchMessage(params).delete();
+}
+
+function testPermissionsCommand(message) {
+    //message.channel.fetchMessage(params).delete();
+    //console.log(message.channel.permissionsFor("182878095919939584"));
+    //console.log(message.guild.channels);
+}
+
+function lsayCommand(message, params)
+{
+    message.channel.send(params);
+    message.delete();
 }
 
 function restartCommand(message) {
