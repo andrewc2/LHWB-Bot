@@ -3,7 +3,7 @@
 		"token"       : "",
 		"version"     : "",
 		"patchnotes"  : "",
-        "prefix"      : "!"
+        	"prefix"      : "!"
 	},
 	"discord"             : {
 		"botsChannel" : "",
