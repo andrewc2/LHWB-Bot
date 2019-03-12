@@ -1,19 +1,23 @@
 {
-	"bot"             : {
+	"bot"                 : {
 		"token"       : "",
-		"version"     : ""
+		"version"     : "",
+		"patchnotes"  : "",
+        "prefix"      : "!"
 	},
-	"discord"         : {
+	"discord"             : {
 		"botsChannel" : "",
-		"fs"          : "",
-		"iandrewc"    : "",
-		"neonz"       : "",
-		"patootie"    : ""
+		"adminuser1"  : "",
+		"adminuser2"  : ""
 	},
-	"sql"             : {
+	"sql"                 : {
 		"host"        : "",
 		"user"        : "",
 		"pass"        : "",
 		"db"          : ""
+	},
+    	"lastfm"                 : {
+		"lfmAPIKey"      : "",
+		"lfmAPISecret"   : ""
 	}
 }
