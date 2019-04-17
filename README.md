@@ -25,9 +25,6 @@ Uses mysql for storage of song information and playcount data. Updated to use to
 `npm install fs`
 
 ### Install FFMPEG
-`add-apt-repository ppa:jon-severinsson/ffmpeg`
-
-`apt-get update`
 
 `apt-get install ffmpeg`
 
