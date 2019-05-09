@@ -41,6 +41,11 @@ bot.on("message", message => {
     if(message.content.match(/oof/i) && message.author.id == config.discord.patootie && message.channel.id != config.discord.botsChannel)
         updateOofCounter(message);
     
+    /* if (message.content === '!q egg' || message.content === '!q 🥚') {
+        updateEggCounter(message);
+        message.author.send("here's your hint https://www.youtube.com/watch?v=Smwrw4sNCxE");
+    } */
+    
     switch(command[0].toLowerCase()) {
         case "!debtcounter":
             getOofCounter(message);
@@ -84,6 +89,10 @@ bot.on("message", message => {
         
         case "!livestream":
             liveStreamCommand(message);
+            break;
+
+        case "!countdown":
+            ts7CountdownCommand(message);
             break;
 
         /* case "!stan":
@@ -164,18 +173,18 @@ bot.on("message", message => {
 
 function isMod(message) {
     if (message.guild != null)
-        return (message.member.roles.has("115333509580718080") || message.member.roles.has("115334158892531719") || message.author.id == config.discord.fs || message.author.id == config.discord.iandrewc || message.author.id == config.discord.neonz);
+        return (message.member.roles.has("115333509580718080") || message.member.roles.has("115334158892531719") || message.author.id == config.discord.fs || message.author.id == config.discord.iandrewc);
     else
         return (message.author.id == config.discord.fs || message.author.id == config.discord.iandrewc);
 }
 
+/* function updateEggCounter(message) {
+    db.query("UPDATE counters SET counter=counter+1, lastUsed=CURRENT_TIMESTAMP WHERE word='egg'");
+    db.query("INSERT INTO eggs (user, userID) VALUES (?,?)", [message.author.username, message.author.id]);
+} */
+
 function updateOofCounter(message) {
-    db.query("SELECT * FROM counters WHERE word='oof' AND userID=?", [config.discord.patootie], function(err, rows) {
-        if (rows[0] != null) {
-            rows[0].counter++;
-            db.query("UPDATE counters SET counter=counter+1, lastUsed=CURRENT_TIMESTAMP WHERE word='oof' AND userID=?", [config.discord.patootie]);
-        }
-    });
+    db.query("UPDATE counters SET counter=counter+1, lastUsed=CURRENT_TIMESTAMP WHERE word='oof' AND userID=?", [config.discord.patootie]);
 }
 
 function getOofCounter(message) {
@@ -257,7 +266,7 @@ function checkTable(message) {
 
 function liveStreamCommand(message) {
 	message.channel.send({embed: {
-        description: "[New HLS Player](https://speaknow.rocks:1989/)\n[Alt Player 2](https://speaknow.rocks:1989/hls.html)\n[Alt Player 3](https://speaknow.rocks:1989/flow.html)\n\n**SSL ENABLED 👌**\n\nThose who are interested can plug the following link into `network stream` of VLC to watch the stream.\nhttps://speaknow.rocks:1989/main/Swiftie.m3u8",
+        description: "[HLS Player 1](https://speaknow.rocks:1989/)\n[Alt Player 2](https://speaknow.rocks:1989/hls.html)\n[Alt Player 3](https://speaknow.rocks:1989/flow.html)\n\n**SSL ENABLED 👌**\nStream will be minimum 30sec behind from live\nIf you have issues please refresh your browser first.\n\nPlease do not share this stream outside of this discord server.",
         color: 5218488,
         author: {
             name: "Live Stream",
@@ -472,6 +481,43 @@ function lsayCommand(message, command)
         }
 }
 
+function ts7CountdownCommand(message)
+{
+    let end = new Date('04/26/2019 12:00 AM');
+
+    let _second = 1000;
+    let _minute = _second * 60;
+    let _hour = _minute * 60;
+    let _day = _hour * 24;
+    let timer;
+
+    let now = new Date();
+    let distance = end - now;
+    if (distance < 0) {
+        clearInterval(timer);
+        const embed = new Discord.RichEmbed()
+            .setColor(16711680)
+            .setDescription(`There is no active countdown.`);
+
+        message.channel.send({embed});
+        return;
+    }
+
+    let days = Math.floor(distance / _day);
+    let hours = Math.floor((distance % _day) / _hour);
+    let minutes = Math.floor((distance % _hour) / _minute);
+    let seconds = Math.floor((distance % _minute) / _second);
+
+    const embed = new Discord.RichEmbed()
+        .setColor(16711680)
+        .setTitle(`#TaylorSwiftApril26`)
+        .setURL(`https://taylorswift.com`)
+        .setDescription(days + " Days " + hours + " Hours " + minutes + " Minutes " + seconds + " Seconds");
+
+    message.channel.send({embed});           
+        
+}
+
 function lfmCommand(message, params, param2) {
     const lfm = new lfmAPI({
         api_key : config.lastfm.lfmAPIKey,
@@ -506,7 +552,6 @@ function lfmCommand(message, params, param2) {
                 const embed = new Discord.RichEmbed()
                     .setColor(message.member.displayHexColor)
                     .setAuthor(target, `https://i.imgur.com/x5AhTlq.png`, `https://www.last.fm/user/${recentTracks["@attr"].user}`)
-                    .setThumbnail("http://i.imgur.com/p2qNFag.png")
                     .addField(`${status} Song`, `${recentTracks.track[0].name}`, true)
                     .addField(`${status} Artist`, `${recentTracks.track[0].artist["#text"]}\u200B`, true)
                     .addField("Previous Song", `${recentTracks.track[1].name}`, true)
