@@ -1,8 +1,25 @@
 {
-    "token":"",
-    "mysqlUser":"",
-    "mysqlPassword":"",
-    "database":"",
-    "api":"",
-    "voice_channel":""
+	"bot"             : {
+		"token"       : "",
+		"version"     : "",
+		"patchnotes"  : "",
+        "prefix"      : "!"
+	},
+	"discord"         : {
+		"botsChannel" : "",
+		"admin1"      : "",
+		"admin2"      : "",
+		"admin3"      : "",
+		"tracked_user": ""
+	},
+	"sql"             : {
+		"host"        : "localhost",
+		"user"        : "",
+		"pass"        : "",
+		"db"          : ""
+	},
+    "lastfm"             : {
+		"lfmAPIKey"      : "",
+		"lfmAPISecret"   : ""
+	}
 }
