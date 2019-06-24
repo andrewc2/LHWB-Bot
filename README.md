@@ -44,4 +44,4 @@ Edit .bashrc and add `export PATH="/usr/bin/ffmpeg:$PATH"` assuming ffmpeg was i
 `node redBotNonMusic.js`
 
 ### Thanks to:
-@FearlessSwiftie, @richmoj3, and the Discord.io people for all the help!
+@FearlessSwiftie, @richmoj3, @Donran and the Discord.io people for all the help!
