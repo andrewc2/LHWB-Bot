@@ -1,0 +1,12 @@
+{
+    "discord" : {
+        "default_vc" : ""
+        "token" : ""
+    },
+    "mysql" : {
+        "username" : "",
+        "password" : "",
+        "database" : "",
+        "host" : ""
+    }
+}
