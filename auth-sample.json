@@ -1,6 +1,7 @@
 {
     "discord" : {
-        "default_vc" : ""
+        "vc" : "",
+        "server" : "",
         "token" : ""
     },
     "mysql" : {
