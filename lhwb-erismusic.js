@@ -39,7 +39,7 @@ lhwb.on("messageCreate", msg => {
 /*lhwb.on("disconnect", (err, event) => {
     log(`Bot disconnected from Discord with code ${event} for reason: ${err}`);
     lhwb.leaveVoiceChannel(defaultVC);
-    setTimeout(bot.connect, 20000);
+    setTimeout(lhwb.connect, 20000);
 });*/ // unsure of how to test this
 
 let firstJoin = true;
