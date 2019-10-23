@@ -88,6 +88,7 @@ bot.on("message", message => {
             break;
         
         case "!livestream":
+        case "!stream":
             liveStreamCommand(message);
             break;
 
@@ -161,6 +162,24 @@ bot.on("message", message => {
         case "!reputation":
             albumReputationCommand(message);
             break;
+                  
+        case "!lover":
+            albumLoverCommand(message);
+            break;
+        
+        /*disabled until new music bot running
+        case "!current":
+            currentCommand(message);
+            break;
+                    
+        case "!recent":
+        case "!recentlyplayed":
+            recentlyPlayedCommand(message);
+            break;*/
+        
+        case "!rankplays":
+            rankPlaysCommand(message, params);
+            break;
                
         /* case "!lottethinking":
             lotteCommand(message);
@@ -211,7 +230,7 @@ function gifCommand(message) {
 }
 
 function trackCommand(message) {
-    const embed = new Discord.RichEmbed()
+    const embed = new Discord.MessageEmbed()
         .setColor(message.member.displayHexColor)
         .setAuthor("LosingHimWasBlue TrackList", bot.user.avatarURL)
         .setDescription("The full requestable track list is here: https://lhwb.tay.rocks/lhwb.php");
@@ -220,7 +239,7 @@ function trackCommand(message) {
 }
 
 function helpCommand(message) {
-    const embed = new Discord.RichEmbed()
+    const embed = new Discord.MessageEmbed()
         .setColor(message.member.displayHexColor)
         .setAuthor("LosingHimWasBlue Commands", bot.user.avatarURL)
         .setDescription("The full command list is available here: https://lhwb.tay.rocks/");
@@ -250,10 +269,10 @@ function checkTable(message) {
 	var differentTableLegs = ["┻", "╝","╘","╙","╨","└"];
 	for(var i = 0;i< differentTableLegs.length;i++) {
 		if(message.content.toLowerCase().indexOf(differentTableLegs[i]) > -1) {
-			message.channel.send({files: ["https://i.imgur.com/CRSa6W2.png"]});
-            //message.channel.send(table);
+			//message.channel.send({files: ["https://i.imgur.com/CRSa6W2.png"]});
+            message.channel.send(table);
             
-            //const embed = new Discord.RichEmbed()
+            //const embed = new Discord.MessageEmbed()
                 //.setColor(message.member.displayHexColor)
                 //.setDescription(table);
 
@@ -428,7 +447,7 @@ function album1989Command(message) {
 
 function albumReputationCommand(message) {
 	message.channel.send({embed: {
-        description: "**reputation** was released on __November 10, 2017__ \n\n1. ...Ready For It\n2. End Game (ft. Ed Sheeran and Future)\n3. I Did Something Bad\n4. Don't Blame Me\n5. Delicate\n6. Look What You Made Me Do\n7. So It Goes...\n8. Gorgeous\n9. Getaway Car\n10. King Of My Heart\n11. Dancing With Our Hands Tied\n12. Dress\n13. This Is Why We Can't Have Nice Things\n14. Call It What You Want\n15. New Year's Day",
+        description: "**reputation** was released on __November 10, 2017__ \n\n1. ...Ready For It?\n2. End Game (ft. Ed Sheeran and Future)\n3. I Did Something Bad\n4. Don't Blame Me\n5. Delicate\n6. Look What You Made Me Do\n7. So It Goes...\n8. Gorgeous\n9. Getaway Car\n10. King Of My Heart\n11. Dancing With Our Hands Tied\n12. Dress\n13. This Is Why We Can't Have Nice Things\n14. Call It What You Want\n15. New Year's Day",
         color: 12040119,
         thumbnail: {
             url: "https://i.imgur.com/o2v3b7E.jpg"
@@ -439,6 +458,18 @@ function albumReputationCommand(message) {
             icon_url: "https://red.ghst.in/ts.png"
         }
     }});
+}
+
+function albumLoverCommand(message) {
+    const embed = new Discord.MessageEmbed()
+        .setColor(15651566)
+        .setAuthor("Taylor Swift", "https://red.ghst.in/ts.png")
+        .setThumbnail("https://i.imgur.com/cNnUR0M.jpg")
+        .setFooter("(18 Tracks)")
+        .setDescription("**Lover** was released on __August 23, 2019__ \n\n1. I Forgot That You Existed\n2. Cruel Summer\n3. Lover\n4. The Man\n5. The Archer\n6. I Think He Knows\n7. Miss Americana & The Heartbreak Prince\n8. Paper Rings\n9. Cornelia Street\n10. Death By A Thousand Cuts\n11. London Boy\n12. Soon You'll Get Better (ft. Dixie Chicks)\n13. False God\n14. You Need To Calm Down\n15. Afterglow\n16. ME! (ft. Brendon Urie)\n17. It's Nice To Have A Friend\n18. Daylight");
+
+    message.channel.send({embed});
+
 }
 
 function versionCommand(message) {
@@ -473,7 +504,7 @@ function lsayCommand(message, command)
     }
     catch (err) {
             console.log(`${time()} - ${err}`);
-            const embed = new Discord.RichEmbed()
+            const embed = new Discord.MessageEmbed()
                 .setColor(16711680)
                 .setDescription(`Uh oh! Looks like you sent a message to an invalid channel id. I might not be in that server?`);
 
@@ -481,41 +512,89 @@ function lsayCommand(message, command)
         }
 }
 
+//variables for handling the countdown anti-spam coolodown
+const countdownCooldownMS = 120 * 1000;
+let lastCountdownUsage = Date.now() - countdownCooldownMS;
+let cooldownMsgSent = false;
+
 function ts7CountdownCommand(message)
 {
-    let end = new Date('04/26/2019 12:00 AM');
+    /* if (lastCountdownUsage > Date.now() - countdownCooldownMS) {
+        if(cooldownMsgSent != true) {
+            const embed = new Discord.MessageEmbed()
+                .setColor(16711680)
+                .setDescription(`Please do not spam countdown, it will be available again in 2 minutes`);
+
+            message.channel.send({ embed });
+            cooldownMsgSent = true;
+            return;
+        } else
+            return;
+    } */
+
+    lastCountdownUsage = Date.now();
+
+    let end = new Date('10/28/2019 8:00 PM');
+    let end2 = new Date('10/29/2019 8:00 PM');
+    let end3 = new Date('10/30/2019 4:00 PM');
+
+    //11/04/2019 8:00PM The Voice Mega Mentor N3
+    //11/05/2019 8:00PM The Voice Mega Mentor N4
+    //11/06/2019 Japan Promo Event
+    //11/11/2019 China Promo Event
+    //12/13/2019 z100 Jingle Ball (Streamed)
+    //12/20/2019 Cats Movie Releases
 
     let _second = 1000;
+    let _second2 = 1000;
+    let _second3 = 1000;
     let _minute = _second * 60;
+    let _minute2 = _second * 60;
+    let _minute3 = _second * 60;
     let _hour = _minute * 60;
+    let _hour2 = _minute * 60;
+    let _hour3 = _minute * 60;
     let _day = _hour * 24;
+    let _day2 = _hour * 24;
+    let _day3 = _hour * 24;
     let timer;
 
     let now = new Date();
     let distance = end - now;
-    if (distance < 0) {
+    let distance2 = end2 - now;
+    let distance3 = end3 - now;
+    /* if (distance < 0) {
         clearInterval(timer);
-        const embed = new Discord.RichEmbed()
-            .setColor(16711680)
+        const embed = new Discord.MessageEmbed()
+            .setColor(14381275)
             .setDescription(`There is no active countdown.`);
 
-        message.channel.send({embed});
+        message.channel.send({ embed });
         return;
-    }
+    } */
 
     let days = Math.floor(distance / _day);
+    let days2 = Math.floor(distance2 / _day2);
+    let days3 = Math.floor(distance3 / _day3);
     let hours = Math.floor((distance % _day) / _hour);
+    let hours2 = Math.floor((distance2 % _day2) / _hour2);
+    let hours3 = Math.floor((distance3 % _day3) / _hour3);
     let minutes = Math.floor((distance % _hour) / _minute);
+    let minutes2 = Math.floor((distance2 % _hour2) / _minute2);
+    let minutes3 = Math.floor((distance3 % _hour3) / _minute3);
     let seconds = Math.floor((distance % _minute) / _second);
+    let seconds2 = Math.floor((distance2 % _minute2) / _second2);
+    let seconds3 = Math.floor((distance3 % _minute3) / _second3);
 
-    const embed = new Discord.RichEmbed()
+    const embed = new Discord.MessageEmbed()
         .setColor(16711680)
-        .setTitle(`#TaylorSwiftApril26`)
+        .setTitle(`Lover Countdowns`)
         .setURL(`https://taylorswift.com`)
-        .setDescription(days + " Days " + hours + " Hours " + minutes + " Minutes " + seconds + " Seconds");
-
-    message.channel.send({embed});           
-        
+        .setDescription("The Voice Mega Mentor N1 - 10/28 8PM EST\n" + days + " Days " + hours + " Hours " + minutes + " Minutes " + seconds + " Seconds\n\nThe Voice Mega Mentor N2 - 10/29 8PM EST\n" + days2 + " Days " + hours2 + " Hours " + minutes2 + " Minutes " + seconds2 + " Seconds\n\nBBC Documentary - 10/30 Time unknown\n" + days3 + " Days " + hours3 + " Hours " + minutes3 + " Minutes " + seconds3 + " Seconds");
+        //.setDescription("Lover Fest West N1 - 7/25/20\n" + days + " Days " + hours + " Hours " + minutes + " Minutes " + seconds + " Seconds\n\nLover Fest West N2 - 7/25/20\n" + days2 + " Days " + hours2 + " Hours " + minutes2 + " Minutes " + seconds2 + " Seconds");
+    
+    message.channel.send({embed});
+    cooldownMsgSent = false;
 }
 
 function lfmCommand(message, params, param2) {
@@ -549,7 +628,7 @@ function lfmCommand(message, params, param2) {
                         status = "Most Recent";
                         break;
                 }
-                const embed = new Discord.RichEmbed()
+                const embed = new Discord.MessageEmbed()
                     .setColor(message.member.displayHexColor)
                     .setAuthor(target, `https://i.imgur.com/x5AhTlq.png`, `https://www.last.fm/user/${recentTracks["@attr"].user}`)
                     .addField(`${status} Song`, `${recentTracks.track[0].name}`, true)
@@ -569,7 +648,7 @@ function lfmCommand(message, params, param2) {
                 
             } catch (unf) { // user not found
                 console.log(unf);              
-                const embed = new Discord.RichEmbed()
+                const embed = new Discord.MessageEmbed()
                     .setColor(message.member.displayHexColor)
                     .setDescription(`${target} is either not a last.fm user, has not scrobbled any songs yet, or the API is down, try again later if the user is definitely correct!`);
 
@@ -580,7 +659,7 @@ function lfmCommand(message, params, param2) {
     if (param2[1] == null) {
         db.query("SELECT * FROM lastfm WHERE discordID=?", [message.author.id], function(err, rows) {
             if (rows[0] == null) {
-                const embed = new Discord.RichEmbed()
+                const embed = new Discord.MessageEmbed()
                     .setColor(message.member.displayHexColor)
                     .setDescription(`Uh oh! Looks like you have not saved your last.fm username.\nYou can set it by typing \`!lfm set <username>\`.`);
 
@@ -590,7 +669,7 @@ function lfmCommand(message, params, param2) {
             }
         });
     } else if (param2[1] == "-h" || param2[1] == "--help") {
-        const embed = new Discord.RichEmbed()
+        const embed = new Discord.MessageEmbed()
         .setColor(message.member.displayHexColor)
         .setAuthor(`!lfm help`, bot.user.avatarURL)
         .setDescription(`All availble parameters are listed below. \n`)
@@ -604,14 +683,14 @@ function lfmCommand(message, params, param2) {
         message.channel.send({embed});
     } else if (param2[1] == "clear") {
         db.query("DELETE FROM lastfm WHERE discordID=?", [message.author.id]);
-        const embed = new Discord.RichEmbed()
+        const embed = new Discord.MessageEmbed()
             .setColor(message.member.displayHexColor)
             .setDescription(`Your last.fm username has been successfully cleared!`);
 
         message.channel.send({embed});
     } else if (param2[1] == "search") {
         if (param2[2] == null) {
-            const embed = new Discord.RichEmbed()
+            const embed = new Discord.MessageEmbed()
                 .setColor(message.member.displayHexColor)
                 .setDescription(`Uh oh! Looks like you forgot to give me a last.fm username to look up.\nTry \`!lfm search <username>\``);
 
@@ -624,7 +703,7 @@ function lfmCommand(message, params, param2) {
         console.log("Tag: " + message.author.tag);
         console.log("ID: " + message.author.id);
         if (param2[2] == null) {
-            const embed = new Discord.RichEmbed()
+            const embed = new Discord.MessageEmbed()
                 .setColor(message.member.displayHexColor)
                 .setDescription(`Uh oh! Looks like you forgot to give me a last.fm username to look up.\nTry \`!lfm search <username>\``);
 
@@ -637,7 +716,7 @@ function lfmCommand(message, params, param2) {
                 if (err) throw err;
                     console.log(result);
             });
-            const embed = new Discord.RichEmbed()
+            const embed = new Discord.MessageEmbed()
                 .setColor(message.member.displayHexColor)
                 .setDescription(`Your last.fm username has been set to ${param2[2]}.`);
 
@@ -649,7 +728,7 @@ function lfmCommand(message, params, param2) {
 
             db.query("SELECT * FROM lastfm WHERE discordID=?", [mentionedUser.user.id], function(err, rows) {
                 if (rows[0] == null) {
-                    const embed = new Discord.RichEmbed()
+                    const embed = new Discord.MessageEmbed()
                         .setColor(message.member.displayHexColor)
                         .setDescription(`Uh oh! Looks like ${message.guild.member(mentionedUser).displayName} has not saved their last.fm username.\nThey may set it by typing \`!lfm set <username\`.`);
 
@@ -660,7 +739,7 @@ function lfmCommand(message, params, param2) {
             });
         } catch (err) {
             console.log(`${time()} - ${err}`);
-            const embed = new Discord.RichEmbed()
+            const embed = new Discord.MessageEmbed()
                 .setColor(message.member.displayHexColor)
                 .setDescription(`Uh oh! Looks like you forgot to mention the user you want to look up.\nIf you don't want to mention a user, try using \`!lfm search <username>\``);
 
@@ -670,8 +749,85 @@ function lfmCommand(message, params, param2) {
     
 }
 
+//Pulls most recently played song from the recently played database
+function currentCommand(message) {
+    db.query("SELECT id, name, album, queuedby FROM recent WHERE 1 ORDER BY id DESC LIMIT 1", function(err, rows) {
+        var currentAlbum = rows[0]['album'];
+        var currentSong = rows[0]['name'];
+        var queuedBy = rows[0]['queuedby'];
+        
+        db.query("SELECT name, albumart FROM music where name = ?",[currentSong], function(err, rows2) {
+            var albumArt = rows2[0]['albumart'];
+            if(queuedBy != null) {
+                message.channel.send({embed: {
+                    color: 0x442691,
+                    title: currentSong,
+                    description: currentAlbum,
+                    thumbnail: {
+                        url: albumArt,
+                    },
+                    footer: {
+                        text: "Queued by: " + queuedBy,
+                    }
+                }});
+            } else {
+                message.channel.send({embed: {
+                    color: 0x442691,
+                    title: currentSong,
+                    description: currentAlbum,
+                    thumbnail: {
+                        url: albumArt,
+                    }
+                }});
+            }
+        });
+    });
+}
+
+//displays last 10 songs from recently played database
+function recentlyPlayedCommand(message) {
+    db.query("SELECT id, name FROM recent WHERE 1 ORDER BY id DESC LIMIT 11", function(err, rows) {
+        var num;
+        var playingSong = rows[0]['name'];
+        var recentSongs = "";
+        
+        for(num = 1; num < rows.length; num++){ //starts with song 1 which was the most recent played before current
+            recentSongs = recentSongs + num + ". " + rows[num]['name'] + "\n"
+        }
+        message.channel.send({embed: {
+            color: 0x1c2e6e,
+            title: "Currently playing: " + playingSong,
+            description: "Recently Played:\n" + recentSongs,
+            url: "https://lhwb.tay.rocks/recent.php",
+        }});
+    });
+}
+
+//displays last 5 ranked songs, user selectable number
+function rankPlaysCommand(message, listNum) {
+    var listSize = 5; //defaults to 5
+    if (listNum > 0)
+        listSize = parseInt(listNum); //makes the string an number and then updates to that number
+    
+    db.query("SELECT ANY_VALUE(name) AS song, path, MAX(playcount) AS plays FROM music WHERE playcount > 0 GROUP BY path ORDER BY plays DESC LIMIT ?", [listSize], function(err, rows) {
+        var num;
+        var rankedPlays = "";
+        var count = 1; //allows numbers to start at 1 for list while db iterates from 0
+        
+        for(num = 0; num < rows.length; num++){ 
+            rankedPlays = rankedPlays + count + ". " + rows[num]['song'] + " - " + rows[num]['plays'] + " plays\n";
+            count++;
+        }
+        message.channel.send({embed: {
+            color: 0x1c2e6e,
+            title: "Ranked Plays:",
+            description: rankedPlays,
+            url: "https://lhwb.tay.rocks/recent.php",
+        }});
+    });
+}
+
 function restartCommand(message) {
-    //todo: leave voice channel before restarting
     message.channel.send(`LHWB non-music restarting!`).then(() => process.exit(-1));
 }
 
