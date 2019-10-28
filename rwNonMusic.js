@@ -167,7 +167,13 @@ bot.on("message", message => {
             albumLoverCommand(message);
             break;
         
-        /*disabled until new music bot running
+        case "!queue":
+        case "!q":
+            if(message.channel.id == "132026417725702145" || isMod(channelID,userID)) { //check if user is in bots or mod
+                queueSong(message, command, params);
+            }
+            break;
+
         case "!current":
             currentCommand(message);
             break;
@@ -175,7 +181,12 @@ bot.on("message", message => {
         case "!recent":
         case "!recentlyplayed":
             recentlyPlayedCommand(message);
-            break;*/
+            break;
+      
+        case "!dq":
+        case "!dequeue":
+            removeQueue(message, params);
+            break;
         
         case "!rankplays":
             rankPlaysCommand(message, params);
@@ -748,6 +759,99 @@ function lfmCommand(message, params, param2) {
     }
     
 }
+//puts puts songs into a queue database
+function queueSong(message, cmd, song){
+    var voiceServerID = message.guild.id;
+    var user = message.author.username;
+
+    console.log(voiceServerID)
+    console.log(config.discord.server)
+    if (voiceServerID != config.discord.server) { //makes sure message is coming from the bot's voice server, prevents other places the main bot is in from interacting on the music side
+        console.log("Not correct voice server");
+        return;
+    }
+    console.log(cmd);
+    console.log(cmd[1]);
+    if(cmd[1] == null){
+        if((cmd[0].toLowerCase() === "!queue") || (cmd[0].toLowerCase() === "!q")){
+            printQueue(message);
+        }
+    }else{
+        var title = song;
+        if (message.member.voice.channel) { //Checks if the user is in the same voice channel as the bot
+            console.log("title: " + title);
+            fuzzySearch(title.toLowerCase(), function(result){
+                if(result){ //song found in db after fuzzy search
+                    console.log(result);
+                    console.log("In DB")
+                    console.log(result['path']);
+                    db.query("SELECT * FROM queue WHERE path LIKE ? ORDER BY path ASC", [result['path']], function(err, rows2){
+                        console.log(rows2);
+                        if(rows2[0] != null)
+                            message.reply(result['name'] + " is already in the queue and was not added");
+                        else {
+                            db.query("INSERT INTO queue (name, path, queuedby) VALUES (?,?,?)", [result['name'], result['path'], user]);
+                            message.reply(result['name'] + " has been added to the queue.")
+                            console.log(result['name'] + " " + result['path'] + " " + user);
+                        }
+                    })
+                }else{
+                    message.reply("That song could not be found. Please search the track listings - !tracks or ask iandrewc to add the song.");
+                }
+            });
+        } else {
+                message.reply("You must be in the Red voice channel to queue music.");
+                console.log("User not in Voice Channel");
+        }
+    }
+}
+
+function printQueue(message){
+    db.query("SELECT id, name FROM recent WHERE 1 ORDER BY id DESC", function(err, rows) {
+        var playingSong = rows[0]['name'];
+        db.query("SELECT id, name FROM queue WHERE 1 ORDER BY id ASC", function(err, rows2) {
+            if(rows2.length > 0){
+                var num;
+                var count = 1;
+                var songQueue = "";
+                
+                console.log(rows2);
+                console.log(rows2[0]['name']);
+                for(num = 0; num < rows2.length; num++){ 
+                    songQueue = songQueue + count + ". " + rows2[num]['name'] + "\n";
+                    count++;
+                }
+                message.channel.send({embed: {
+                    color: 0x1c2e6e,
+                    title: "Currently playing: " + playingSong,
+                    description: "Queued for play:\n" + songQueue,
+                    url: "https://lhwb.tay.rocks/queue.php",
+                }});
+            } else {
+                message.reply("There are currently no songs in the queue.");
+            }
+        });
+    });
+}
+
+function removeQueue(message, song){
+    if (message.guild.id != config.discord.server) { //makes sure message is coming from the bot's voice server, prevents other places the main bot is in from interacting on the music side
+        console.log("Not correct voice server");
+        return;
+    }
+    db.query("SELECT COUNT(*) AS queueCount FROM queue WHERE name = ?", [song], function(err, result){
+        if (err) throw err;
+            //console.log(err + "\n" + result);
+        if(result[0].queueCount > 0) {
+            db.query("DELETE FROM queue WHERE name = ?", [song]); //deletes the song from the queue.
+            message.reply(song + " has been removed from the queue.");
+            console.log(song + " removed from queue.");
+        } else {
+            message.reply(song + " was not in the queue.");
+            console.log(song + " not in queue.");
+        }
+    });
+}
 
 //Pulls most recently played song from the recently played database
 function currentCommand(message) {
@@ -825,6 +929,53 @@ function rankPlaysCommand(message, listNum) {
             url: "https://lhwb.tay.rocks/recent.php",
         }});
     });
+}
+
+function fuzzySearch(title, callback){
+	var result;
+	var maxEditDist = 5;
+	var minEditDist = maxEditDist;
+	db.query("SELECT path,name FROM music", function(err, songList) {
+		var i;
+		for(i = 0; i < songList.length; i++){
+			editDistance(title, songList[i]['name'].toLowerCase(), function(tempDist){
+				if(tempDist < minEditDist && tempDist <= maxEditDist){
+					minEditDist = tempDist;
+					result = songList[i]
+				}
+			});
+		}
+		callback(result);
+	});
+}
+
+function editDistance(source, target, callback){
+	n = source.length + 1;
+	m = target.length + 1;
+	var distMatrix = [];
+	var min = 0;
+	var i,j;
+	for(i = 0; i < n; i++){
+		distMatrix[i] = [];
+	}
+	for(i = 0; i < n; i++){
+		distMatrix[i][0] = i;
+	}
+	for(i = 0; i < m; i++){
+		distMatrix[0][i] = i;
+	}
+	for(i = 1; i < n; i++){
+		for (j = 1; j < m; j++){
+			if(source.charAt(j-1) === target.charAt(i-1)){
+				min = distMatrix[i-1][j-1];
+			}else{
+				min = Math.min(distMatrix[i-1][j-1] + 1, distMatrix[i-1][j] + 1, distMatrix[i][j-1] + 1);
+
+			}
+			distMatrix[i][j] = min;
+		}
+	}
+	callback(distMatrix[n-1][m-1]);
 }
 
 function restartCommand(message) {
