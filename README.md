@@ -6,7 +6,7 @@ I do not guarantee stability when used on any other server, though it should wor
 ### Requirements
 node.js
 
-Discord.js
+Discord.js and Eris
 
 ffmpeg for music
 
@@ -16,9 +16,9 @@ mysql for songs and queues
 Uses mysql for storage of song information and playcount data, as well as recently played songs, and queues.
 
 ### Install Music Bot (using Ubuntu)
-`npm install discord.js node-opus --save`
+`npm install discord.js --save`
 
-`npm install mysql`
+`npm install eris mysql node-opus`
 
 `npm install fs`
 
@@ -32,7 +32,8 @@ Edit `.bashrc` and add `export PATH="/usr/bin/ffmpeg:$PATH"` assuming ffmpeg was
 `source .bashrc` to save PATH
 
 ### Running
-`node redBot.js`
+`node rwNonMusic.js`
+`node lhwb-music.js`
 
 ### Thanks to:
-@swiftlyanerd, @richmoj3 for all the help!
+FS(@swiftlyanerd), Adam (@louistio) for all the help!
