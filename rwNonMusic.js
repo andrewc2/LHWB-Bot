@@ -15,6 +15,10 @@ let db = mysql.createPool({
     charset: "utf8mb4"
 });
 
+process.on('unhandledRejection', error => {
+  throw error;
+}); 
+
 bot.on("ready", () => {
 	console.log(`${time()} - LHWB non-music is ready!`);
 });
@@ -545,16 +549,15 @@ function ts7CountdownCommand(message)
 
     lastCountdownUsage = Date.now();
 
-    let end = new Date('10/28/2019 8:00 PM');
-    let end2 = new Date('10/29/2019 8:00 PM');
-    let end3 = new Date('10/30/2019 4:00 PM');
+    let end = new Date('11/24/2019 8:00 PM');
+    let event1 = "Performing on AMAs - 11/24 8PM EST\n";
+    let end2 = new Date('12/08/2019 8:00 PM');
+    let event2 = "capitalFM Jingle Ball London - 12/8 1:30 PM EST (Taylor closer to 4pm)\n";
+    let end3 = new Date('12/13/2019 8:00 PM');
+    let event3 = "z100 Jingle Ball (Streamed) - 12/13 8PM EST\n";
 
-    //11/04/2019 8:00PM The Voice Mega Mentor N3
-    //11/05/2019 8:00PM The Voice Mega Mentor N4
-    //11/06/2019 Japan Promo Event
-    //11/11/2019 China Promo Event
-    //12/13/2019 z100 Jingle Ball (Streamed)
     //12/20/2019 Cats Movie Releases
+    //04/05/2020 Capital One JamFest
 
     let _second = 1000;
     let _second2 = 1000;
@@ -601,7 +604,7 @@ function ts7CountdownCommand(message)
         .setColor(16711680)
         .setTitle(`Lover Countdowns`)
         .setURL(`https://taylorswift.com`)
-        .setDescription("The Voice Mega Mentor N1 - 10/28 8PM EST\n" + days + " Days " + hours + " Hours " + minutes + " Minutes " + seconds + " Seconds\n\nThe Voice Mega Mentor N2 - 10/29 8PM EST\n" + days2 + " Days " + hours2 + " Hours " + minutes2 + " Minutes " + seconds2 + " Seconds\n\nBBC Documentary - 10/30 Time unknown\n" + days3 + " Days " + hours3 + " Hours " + minutes3 + " Minutes " + seconds3 + " Seconds");
+        .setDescription(event1 + days + " Days " + hours + " Hours " + minutes + " Minutes " + seconds + " Seconds\n\n" + event2 + days2 + " Days " + hours2 + " Hours " + minutes2 + " Minutes " + seconds2 + " Seconds\n\n" + event3 + days3 + " Days " + hours3 + " Hours " + minutes3 + " Minutes " + seconds3 + " Seconds");
         //.setDescription("Lover Fest West N1 - 7/25/20\n" + days + " Days " + hours + " Hours " + minutes + " Minutes " + seconds + " Seconds\n\nLover Fest West N2 - 7/25/20\n" + days2 + " Days " + hours2 + " Hours " + minutes2 + " Minutes " + seconds2 + " Seconds");
     
     message.channel.send({embed});
