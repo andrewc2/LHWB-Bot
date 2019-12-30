@@ -63,7 +63,8 @@ function initVC() {
 }
 
 function isMod(msg) {
-    if(msg.member.roles.includes("482738450722848809")) return true; // rep role
+    if(msg.member.roles.includes("482738450722848809")) return true; // mod role rep role
+    // if(msg.member.roles.includes("636425021622845450")) return true; // (test role in leo server)
     return false;
 }
 
@@ -93,7 +94,7 @@ function play() {
                             db.query("DELETE FROM queue WHERE path = ?", [songpath]); //deletes the song from the queue.
                             vConnection.once("end", () => {
                                 log("Song ended, moving on...");
-                                if(!stopped) setTimeout(function() { play(); }, 2000);
+                                if(!stopped) setTimeout(function() { play(); }, 1000);
                             });
                             addPlay(songpath);
                             addToRecent(songname, queuedby);
@@ -101,24 +102,27 @@ function play() {
                         }
                     });
                 } else {
-                    db.query("SELECT DISTINCT path FROM music WHERE type != ? ORDER BY RAND() LIMIT 1",["unreleased"], function(err,result) {
+                    db.query("SELECT DISTINCT path, name FROM music WHERE type != ? ORDER BY RAND() LIMIT 1",["unreleased"], function(err,result) {
                         //gets path from the music db, and randomly selects a released track
                         if(result != null) {
+                            songpath = result[0].path;
+                            songname = result[0].name;
                             queuedBy = "";
-                            currentSong = result[0]['path'];
-                            log(`${currentSong.slice(0,-4)} is now playing.`);
+
+                            log(songpath + " " + songname + " is now playing.");
                             if (vConnection) {
                                 if(vConnection.playing) vConnection.stopPlaying();
                                 log("connection playing: yes")
                             }
-                            vConnection.play(`/home/redbot/music/${currentSong}`);
-                            lhwb.editStatus("online", { name: currentSong.slice(0, -4), type: 2 });
+                            vConnection.play(`/home/redbot/music/${songpath}`);
+                            lhwb.editStatus("online", { name: songname, type: 2 });
                             vConnection.once("end", () => {
                                 log("Song ended, moving on...");
-                                if(!stopped) setTimeout(function() { play(); }, 2000);
+                                if(!stopped) setTimeout(function() { play(); }, 1000);
                             });
-                            addPlay(currentSong);
-                            addToRecent(currentSong.slice(0,-4));
+                            addPlay(songpath);
+                            addToRecent(songname);
+
                             log("Queue empty, Playing songs randomly");
                         }
                     });
@@ -163,7 +167,17 @@ function stop() {
     }
 }
 
+//variables for handling the skip coolodown
+const skipCool = 5 * 1000;
+let lastSkip = Date.now() - skipCool;
+
 function skip() {
+    if (lastSkip > Date.now() - skipCool) {
+        log("Skip cooldown activated.")
+        return;
+    }
+
+    lastSkip = Date.now();
     stop();
     setTimeout(function() { play(); }, 2000);
 }
