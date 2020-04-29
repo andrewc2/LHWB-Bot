@@ -16,11 +16,7 @@ mysql for songs and queues
 Uses mysql for storage of song information and playcount data, as well as recently played songs, and queues.
 
 ### Install Music Bot (using Ubuntu)
-<<<<<<< HEAD
-`npm install Woor/discord.io#gateway_v6`
-=======
 `npm install discord.js --save`
->>>>>>> 00c09078328ccb05b1d00a4a6854f011e9e0bdd9
 
 `npm install eris mysql node-opus`
 
@@ -40,8 +36,4 @@ Edit `.bashrc` and add `export PATH="/usr/bin/ffmpeg:$PATH"` assuming ffmpeg was
 `node lhwb-music.js`
 
 ### Thanks to:
-<<<<<<< HEAD
-@FearlessSwiftie, @richmoj3, @Donran and the Discord.io people for all the help!
-=======
 FS(@swiftlyanerd), Adam (@louistio) for all the help!
->>>>>>> 00c09078328ccb05b1d00a4a6854f011e9e0bdd9
