@@ -19,9 +19,13 @@ process.on('unhandledRejection', error => {
   throw error;
 }); 
 
-bot.on("ready", () => {
+bot.on("ready", async () => {
 	console.log(`${time()} - LHWB non-music is ready!`);
 });
+
+/* bot.on("debug", async (err) => {
+	console.log(err)
+}) */
 
 bot.on("error", (e) => console.error(e));
 bot.on("warn", (e) => console.warn(e));
@@ -99,10 +103,6 @@ bot.on("message", message => {
         case "!countdown":
             ts7CountdownCommand(message);
             break;
-
-        /* case "!stan":
-            stanCommand(message);
-            break; */
             
         case "!gif":
             gifCommand(message);
@@ -173,7 +173,7 @@ bot.on("message", message => {
         
         case "!queue":
         case "!q":
-            if(message.channel.id == "132026417725702145" || isMod(channelID,userID)) { //check if user is in bots or mod
+            if(message.channel.id == config.discord.botsChannel || message.channel.id == config.discord.vcChannel || isMod(message)) { //check if user is in bots or mod
                 queueSong(message, command, params);
             }
             break;
@@ -195,10 +195,7 @@ bot.on("message", message => {
         case "!rankplays":
             rankPlaysCommand(message, params);
             break;
-               
-        /* case "!lottethinking":
-            lotteCommand(message);
-            break; */
+
         default:
             checkTable(message);
                 
@@ -207,7 +204,7 @@ bot.on("message", message => {
 
 function isMod(message) {
     if (message.guild != null)
-        return (message.member.roles.has("115333509580718080") || message.member.roles.has("115334158892531719") || message.author.id == config.discord.fs || message.author.id == config.discord.iandrewc);
+        return (message.member.roles.cache.has(config.discord.rTSSubMod) || message.member.roles.cache.has(config.discord.rTSMod) || message.author.id == config.discord.fs || message.author.id == config.discord.iandrewc);
     else
         return (message.author.id == config.discord.fs || message.author.id == config.discord.iandrewc);
 }
@@ -228,7 +225,14 @@ function getOofCounter(message) {
         if(rows[0] == null) {
            message.reply(`there was an error retrieving the oof counter.`);
         } else {
-            message.reply(`${rows[0]['user']}'s \`oof\` counter is at \`${rows[0]['counter']}\` as of \`${rows[0]['lastUsed']}\`.`);
+            const embed = new Discord.MessageEmbed()
+                .setColor("#eb4034")
+                .setAuthor(`${rows[0]['user']}'s oof counter`, 'https://red.ghst.in/ts.png', 'https://turtlebyte.github.io/oofdebt/')
+                .setDescription(`Total: ${rows[0]['counter']}`)
+                .setFooter(`As of ${rows[0]['lastUsed']}`);
+
+            message.channel.send({embed});
+            //message.reply(`${rows[0]['user']}'s \`oof\` counter is at \`${rows[0]['counter']}\` as of \`${rows[0]['lastUsed']}\`.`);
         }
     });
 }
@@ -260,10 +264,6 @@ function helpCommand(message) {
         .setDescription("The full command list is available here: https://lhwb.tay.rocks/");
 
     message.channel.send({embed});
-}
-
-function lotteCommand(message) {
-	message.channel.send("https://i.imgur.com/TH0HzSs.png");
 }
 
 function huhCommand(message) {
@@ -299,15 +299,22 @@ function checkTable(message) {
 }
 
 function liveStreamCommand(message) {
-	message.channel.send({embed: {
-        description: "[HLS Player 1](https://speaknow.rocks:1989/)\n[Alt Player 2](https://speaknow.rocks:1989/hls.html)\n[Alt Player 3](https://speaknow.rocks:1989/flow.html)\n\n**SSL ENABLED 👌**\nStream will be minimum 30sec behind from live\nIf you have issues please refresh your browser first.\n\nPlease do not share this stream outside of this discord server.",
-        color: 5218488,
-        author: {
-            name: "Live Stream",
-            url: "https://speaknow.rocks:1989/player/",
-            icon_url: "https://red.ghst.in/ts.png"
-        }
-    }});
+    const embed = new Discord.MessageEmbed()
+        .setColor(5218488)
+        .setAuthor('Live Stream', 'https://red.ghst.in/ts.png', 'https://speaknow.rocks:1989/player/')
+        .setURL(`https://speaknow.rocks:1989/player/`)
+        .setDescription("[HLS Stream Player](https://speaknow.rocks:1989/)\n\nStream will be minimum 30sec behind from live\nIf you have issues please refresh your browser first.")
+        .setFooter("Please do not share this stream outside of this discord server.");
+        message.channel.send({embed});
+}
+
+function oneWorldCommand(message) {
+	const embed = new Discord.MessageEmbed()
+        .setColor(16711680)
+        .setTitle(`One World Together At Home TV`)
+        .setURL(`https://youtu.be/87-ZFjLfBAQ`)
+        .setDescription("Happening Now\nhttps://youtu.be/87-ZFjLfBAQ");
+    message.channel.send({embed});
 }
 
 function repFullSecretSongCommand(message) {
@@ -327,7 +334,7 @@ function repFullSecretSongCommand(message) {
 
  function secretSongCommand(message) {
     message.channel.send({embed: {
-        description: "As the tour is now over, !ss is sunsetting please use !repSS to get a PM of the full list.\nSoon I will be working on adding previous tour info, guests etc.",
+        description: "Please use !repSS to get a PM of the full list.",
         color: 568027,
         thumbnail: {
             url: "https://i.imgur.com/Zhg0oXF.jpg"
@@ -480,7 +487,6 @@ function albumLoverCommand(message) {
         .setColor(15651566)
         .setAuthor("Taylor Swift", "https://red.ghst.in/ts.png")
         .setThumbnail("https://i.imgur.com/cNnUR0M.jpg")
-        .setFooter("(18 Tracks)")
         .setDescription("**Lover** was released on __August 23, 2019__ \n\n1. I Forgot That You Existed\n2. Cruel Summer\n3. Lover\n4. The Man\n5. The Archer\n6. I Think He Knows\n7. Miss Americana & The Heartbreak Prince\n8. Paper Rings\n9. Cornelia Street\n10. Death By A Thousand Cuts\n11. London Boy\n12. Soon You'll Get Better (ft. Dixie Chicks)\n13. False God\n14. You Need To Calm Down\n15. Afterglow\n16. ME! (ft. Brendon Urie)\n17. It's Nice To Have A Friend\n18. Daylight");
 
     message.channel.send({embed});
@@ -549,15 +555,13 @@ function ts7CountdownCommand(message)
 
     lastCountdownUsage = Date.now();
 
-    let end = new Date('11/24/2019 8:00 PM');
-    let event1 = "Performing on AMAs - 11/24 8PM EST\n";
-    let end2 = new Date('12/08/2019 8:00 PM');
-    let event2 = "capitalFM Jingle Ball London - 12/8 1:30 PM EST (Taylor closer to 4pm)\n";
-    let end3 = new Date('12/13/2019 8:00 PM');
-    let event3 = "z100 Jingle Ball (Streamed) - 12/13 8PM EST\n";
+    let end1 = new Date('06/01/2021 7:00 PM');
+    let event1 = "LoverFest 2021 - June 2021\n";
+    let end2 = new Date('04/18/2020 8:00 PM');
+    let event2 = "One World Together at Home Telecast - 8PM EDT 4/18\n";
+    let end3 = new Date('06/01/2021 7:00 PM');
+    let event3 = "LoverFest 2021 - June 2021\n";
 
-    //12/20/2019 Cats Movie Releases
-    //04/05/2020 Capital One JamFest
 
     let _second = 1000;
     let _second2 = 1000;
@@ -574,9 +578,10 @@ function ts7CountdownCommand(message)
     let timer;
 
     let now = new Date();
-    let distance = end - now;
+    let distance = end1 - now;
     let distance2 = end2 - now;
     let distance3 = end3 - now;
+
     /* if (distance < 0) {
         clearInterval(timer);
         const embed = new Discord.MessageEmbed()
@@ -602,11 +607,9 @@ function ts7CountdownCommand(message)
 
     const embed = new Discord.MessageEmbed()
         .setColor(16711680)
-        .setTitle(`Lover Countdowns`)
-        .setURL(`https://taylorswift.com`)
-        .setDescription(event1 + days + " Days " + hours + " Hours " + minutes + " Minutes " + seconds + " Seconds\n\n" + event2 + days2 + " Days " + hours2 + " Hours " + minutes2 + " Minutes " + seconds2 + " Seconds\n\n" + event3 + days3 + " Days " + hours3 + " Hours " + minutes3 + " Minutes " + seconds3 + " Seconds");
-        //.setDescription("Lover Fest West N1 - 7/25/20\n" + days + " Days " + hours + " Hours " + minutes + " Minutes " + seconds + " Seconds\n\nLover Fest West N2 - 7/25/20\n" + days2 + " Days " + hours2 + " Hours " + minutes2 + " Minutes " + seconds2 + " Seconds");
-    
+        .setTitle(`Countdowns`)
+        .setURL(`https://taylorswift.com`)     
+        .setDescription(event1 + days + " Days " + hours + " Hours " + minutes + " Minutes " + seconds + " Seconds \n\n" /* + event2 + days2 + " Days " + hours2 + " Hours " + minutes2 + " Minutes " + seconds2 + " Seconds\n\n" + event3 + days3 + " Days " + hours3 + " Hours " + minutes3 + " Minutes " + seconds3 + " Seconds" */);
     message.channel.send({embed});
     cooldownMsgSent = false;
 }
@@ -646,9 +649,11 @@ function lfmCommand(message, params, param2) {
                     .setColor(message.member.displayHexColor)
                     .setAuthor(target, `https://i.imgur.com/x5AhTlq.png`, `https://www.last.fm/user/${recentTracks["@attr"].user}`)
                     .addField(`${status} Song`, `${recentTracks.track[0].name}`, true)
-                    .addField(`${status} Artist`, `${recentTracks.track[0].artist["#text"]}\u200B`, true)
+                    .addField(`${status} Artist`, `${recentTracks.track[0].artist["#text"]}`, true)
+                    .addField('\u200b', '\u200b', true)
                     .addField("Previous Song", `${recentTracks.track[1].name}`, true)
                     .addField("Previous Artist", `${recentTracks.track[1].artist["#text"]}`, true)
+                    .addField('\u200b', '\u200b', true)
                     .setThumbnail(`${recentTracks.track[0].image[3]["#text"]}`);
                     if(nowPlaying) {
                         embed.setFooter(`Total Scrobbles: ${recentTracks["@attr"].total} - Currently Scrobbling`);
@@ -744,7 +749,7 @@ function lfmCommand(message, params, param2) {
                 if (rows[0] == null) {
                     const embed = new Discord.MessageEmbed()
                         .setColor(message.member.displayHexColor)
-                        .setDescription(`Uh oh! Looks like ${message.guild.member(mentionedUser).displayName} has not saved their last.fm username.\nThey may set it by typing \`!lfm set <username\`.`);
+                        .setDescription(`Uh oh! Looks like ${message.guild.cache.member(mentionedUser).displayName} has not saved their last.fm username.\nThey may set it by typing \`!lfm set <username\`.`);
 
                     message.channel.send({embed});
                 } else {
@@ -982,7 +987,15 @@ function editDistance(source, target, callback){
 }
 
 function restartCommand(message) {
-    message.channel.send(`LHWB non-music restarting!`).then(() => process.exit(-1));
+    log("LHWB non-music restarting!");
+    const embed = new Discord.MessageEmbed()
+        .setColor(16711680)
+        .setDescription(`LHWB non-music restarting!`);
+    message.channel.send({embed}).then(() => process.exit(-1));
+}
+
+function log(content) {
+    console.log(`${time()} - ${content}`);
 }
 
 function time() {
@@ -991,4 +1004,9 @@ function time() {
     return time;
 }
 
-bot.login(config.bot.token);
+bot.login(config.bot.token).then((tok) => {
+	console.log('Bot logged in successfully!')
+  }, err => {
+	console.log(`The bot failed to login due to an error! The error follows:\n\n${err}\n\n`)
+	bot.destroy()
+  })
