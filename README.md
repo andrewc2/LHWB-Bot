@@ -35,5 +35,5 @@ Edit `.bashrc` and add `export PATH="/usr/bin/ffmpeg:$PATH"` assuming ffmpeg was
 `node rwNonMusic.js`
 `node lhwb-music.js`
 
-### Thanks to:
-FS(@swiftlyanerd), Adam (@louistio) for all the help with the rewrite! Thanks to Historicc and Donran for the work on the original bot. 
+### Special Thanks to:
+FS(@swiftlyanerd), Adam (@louistio) for all the help with the rewrite, and to Historicc (@richmoj3) and Donran (@Donran) for the work on the original bot, that resulted in where we are today. 
