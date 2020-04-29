@@ -1,0 +1,13 @@
+{
+    "discord" : {
+        "vc" : "",
+        "server" : "",
+        "token" : ""
+    },
+    "mysql" : {
+        "username" : "",
+        "password" : "",
+        "database" : "",
+        "host" : ""
+    }
+}
