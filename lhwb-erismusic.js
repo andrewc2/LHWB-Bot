@@ -1,5 +1,5 @@
 const Eris = require("eris");
-const config = require("./authMusicMain.json");
+const config = require("./authmusic.json");
 const mysql = require("mysql");
 
 const db = mysql.createPool({
