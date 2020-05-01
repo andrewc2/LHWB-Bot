@@ -43,4 +43,4 @@ FS(@swiftlyanerd), Adam (@louistio) for all the help with the rewrite, and to Hi
 * Queue full albums for events
 * Allow songs to be marked as un-queueable, w/ possible mod override (for example non-taylor songs added for an event)
 * Allow songs to be queued with short name versions, under one single database entry for the song (for example "YBWM" triggers the "You Belong With Me" database entry, currently done having 2 database lines pointing to the same file path) 
-* Track queued songs separate from random play, and don't add songs to playcount if voice chat is empty
+* Track queued songs separate from random play
