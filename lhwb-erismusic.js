@@ -1,6 +1,7 @@
 const Eris = require("eris");
 const config = require("./authmusic.json");
 const mysql = require("mysql");
+const fs = require('fs');
 
 const db = mysql.createPool({
     host: config.mysql.host,
@@ -58,12 +59,12 @@ function initVC() {
         log(`Attempting to reconnect in 5 seconds...`);
         setTimeout(initVC, 5000);
     }
-    if(firstJoin) setTimeout(play, 5000);
+    if(firstJoin) setTimeout(play, 2000); // 5000
     firstJoin = false;
 }
 
 function isMod(msg) {
-    if(msg.member.roles.includes("482738450722848809")) return true; // mod role rep role
+    if(msg.member.roles.includes(config.discord.mod_role)) return true; // mod role rep role
     // if(msg.member.roles.includes("636425021622845450")) return true; // (test role in leo server)
     return false;
 }
@@ -72,72 +73,62 @@ function play() {
     stopped = false;
 
     let vConnection = lhwb.voiceConnections.get(defaultServer);
+    db.query("SELECT COUNT(*) AS total FROM queue", function(error, result, fields) {
+        let sql = "SELECT name, path, queuedby FROM queue";
 
-    db.getConnection(function(err,connection){
-        if(!err) {
-            db.query("SELECT COUNT(*) AS total FROM queue", function(err,length) {
-                if(length['0'].total > 0){
-                    log("There is a queue.");
-                    db.query("SELECT name, path, queuedby FROM queue", function(err, result){
-                        if(result != null) {
-                            songpath = result[0].path;
-                            songname = result[0].name;
-                            queuedby = result[0].queuedby;
-                            log(songpath + " " + songname + " " + queuedby);
+        if(result[0].total <= 0) 
+            sql = "SELECT DISTINCT path, name FROM music WHERE type != 'unreleased' ORDER BY RAND() LIMIT 1";
 
-                            if (vConnection) {
-                                if(vConnection.playing) vConnection.stopPlaying();
-                                log("connection playing: yes");
-                            }
-                            vConnection.play(`/home/redbot/music/${songpath}`);
-                            lhwb.editStatus("online", { name: songname, type: 2 });
-                            db.query("DELETE FROM queue WHERE path = ?", [songpath]); //deletes the song from the queue.
-                            vConnection.once("end", () => {
-                                log("Song ended, moving on...");
-                                if(!stopped) setTimeout(function() { play(); }, 1000);
-                            });
-                            addPlay(songpath);
-                            addToRecent(songname, queuedby);
-                            log(songname + " is now playing.\nPlayed user requested song, not random");
-                        }
-                    });
-                } else {
-                    db.query("SELECT DISTINCT path, name FROM music WHERE type != ? ORDER BY RAND() LIMIT 1",["unreleased"], function(err,result) {
-                        //gets path from the music db, and randomly selects a released track
-                        if(result != null) {
-                            songpath = result[0].path;
-                            songname = result[0].name;
-                            queuedBy = "";
+        db.query(sql, function(error, result, fields) {
+                        console.log("reee0");
 
-                            log(songpath + " " + songname + " is now playing.");
-                            if (vConnection) {
-                                if(vConnection.playing) vConnection.stopPlaying();
-                                log("connection playing: yes")
-                            }
-                            vConnection.play(`/home/redbot/music/${songpath}`);
-                            lhwb.editStatus("online", { name: songname, type: 2 });
-                            vConnection.once("end", () => {
-                                log("Song ended, moving on...");
-                                if(!stopped) setTimeout(function() { play(); }, 1000);
-                            });
-                            addPlay(songpath);
-                            addToRecent(songname);
+            if(result == null) return;
 
-                            log("Queue empty, Playing songs randomly");
-                        }
-                    });
+            let songpath = result[0].path;
+            let songname = result[0].name;
+            let queuedBy = result[0].queuedby ? result[0].queuedby : null;
+            //detele queue item
+            if(queuedBy) db.query("DELETE FROM queue WHERE path = ?", [songpath]);
+
+            //Make sure file eixsts to minimize runtime fatals
+            try {
+                if(fs.existsSync(config.discord.music_path + `/${songpath}`))
+                    console.log("song exists");
+                else {
+                    console.log("song doesnt exists, retrying..");
+                    play();
+                    return;
                 }
+            } catch(err) { console.error(err); }
+
+            //Can't play music unless we're connected can we?
+            if(!vConnection) {
+                log("Not connected to voice");
+                initVC();
+                return;
+            }
+
+            //Start the sogn and set status
+            if(vConnection.playing) vConnection.stopPlaying();
+            vConnection.play(config.discord.music_path + `/${songpath}`);
+            lhwb.editStatus("online", { name: songname, type: 2 });
+
+            //When song ends we play another, and when we disconnect we reconnect
+            vConnection.once("end", () => {
+                log("Song ended, moving on...");
+                if(!stopped) setTimeout(() => play(), 1000);
             });
-            connection.release();
-        } else {
-            log(err);
-        }
+            vConnection.once("disconnect", () => setTimeout(() => initVC(), 10000));
 
+            //if we're the only member in the channel we don't update playcount
+            if(lhwb.getChannel(vConnection.channelID).voiceMembers.size > 1) {
+                db.query("UPDATE music SET playcount = playcount + 1 WHERE path = ?",[songpath]);
+            }
+            addToRecent(songname, queuedBy);
+
+            log(songpath + " " + songname + " is now playing " + ( queuedBy == null ? "" : `(queued by ${queuedBy})`));
+        });
     });
-}
-
-function addPlay(song){
-    db.query("UPDATE music SET playcount = playcount + 1 WHERE path = ?",[song])
 }
 
 function addToRecent(song, queuedBy){
