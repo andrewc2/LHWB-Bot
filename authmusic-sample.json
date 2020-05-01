@@ -1,8 +1,10 @@
 {
     "discord" : {
-        "vc" : "",
-        "server" : "",
-        "token" : ""
+        "vc"         : "",
+        "server"     : "",
+        "token"      : "",
+        "music_path" : "",
+        "mod_role"   : "",
     },
     "mysql" : {
         "username" : "",
