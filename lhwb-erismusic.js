@@ -80,8 +80,6 @@ function play() {
             sql = "SELECT DISTINCT path, name FROM music WHERE type != 'unreleased' ORDER BY RAND() LIMIT 1";
 
         db.query(sql, function(error, result, fields) {
-                        console.log("reee0");
-
             if(result == null) return;
 
             let songpath = result[0].path;
