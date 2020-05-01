@@ -91,9 +91,9 @@ function play() {
             //Make sure file eixsts to minimize runtime fatals
             try {
                 if(fs.existsSync(config.discord.music_path + `/${songpath}`))
-                    console.log("song exists");
+                    log("song exists");
                 else {
-                    console.log("song doesnt exists, retrying..");
+                    log("song doesnt exists, retrying..");
                     play();
                     return;
                 }
