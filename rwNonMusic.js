@@ -112,8 +112,20 @@ bot.on("message", message => {
             wtnyCommand(message);
             break;
 
-        case "!uh":
-            huhCommand(message);
+        case "!danc":
+            dancCommand(message);
+            break;
+
+        case "!1989ss":
+            WT1989SecretSongCommand(message);
+            break;
+
+        case "!1989setlist":
+            WT1989SetlistCommand(message);
+            break;
+
+        case "!1989guests":
+            WT1989GuestsCommand(message);
             break;
             
         case "!secretsong":
@@ -164,6 +176,7 @@ bot.on("message", message => {
             break;
             
         case "!reputation":
+        case "!rep":
             albumReputationCommand(message);
             break;
                   
@@ -173,7 +186,7 @@ bot.on("message", message => {
         
         case "!queue":
         case "!q":
-            if(message.channel.id == config.discord.botsChannel || message.channel.id == config.discord.vcChannel || isMod(message)) { //check if user is in bots or mod
+            if(message.channel.id == config.discord.botsChannel || (message.member.roles.cache.has(config.discord.repRole) && message.channel.id == config.discord.vcChannel) || isMod(message)) { //check if user is in bots or mod
                 queueSong(message, command, params);
             }
             break;
@@ -189,15 +202,21 @@ bot.on("message", message => {
       
         case "!dq":
         case "!dequeue":
-            removeQueue(message, params);
+            if(cmdRestrictions(message)){
+                removeQueue(message, params);
+            }
+            break;
+            
+        case "!cq":
+        case "!clearqueue":
+            if(cmdRestrictions(message)){
+                clearQueue(message, params);
+            }
             break;
         
         case "!rankplays":
             rankPlaysCommand(message, params);
             break;
-
-        default:
-            checkTable(message);
                 
     }
 });
@@ -205,6 +224,13 @@ bot.on("message", message => {
 function isMod(message) {
     if (message.guild != null)
         return (message.member.roles.cache.has(config.discord.rTSSubMod) || message.member.roles.cache.has(config.discord.rTSMod) || message.author.id == config.discord.fs || message.author.id == config.discord.iandrewc);
+    else
+        return (message.author.id == config.discord.fs || message.author.id == config.discord.iandrewc);
+}
+
+function cmdRestrictions(message) {
+    if (message.guild != null) //bots, reprole, submod, mod, or FS/iAndrewC
+        return (message.channel.id == config.discord.botsChannel || message.member.roles.cache.has(config.discord.repRole) || message.member.roles.cache.has(config.discord.rTSSubMod) || message.member.roles.cache.has(config.discord.rTSMod) || message.author.id == config.discord.fs || message.author.id == config.discord.iandrewc);
     else
         return (message.author.id == config.discord.fs || message.author.id == config.discord.iandrewc);
 }
@@ -266,8 +292,8 @@ function helpCommand(message) {
     message.channel.send({embed});
 }
 
-function huhCommand(message) {
-	message.reply(`huh`);
+function dancCommand(message) {
+	message.reply(`:thinking:`);
 }
 
 function wtnyCommand(message) {
@@ -278,26 +304,6 @@ function eyerollCommand(message) {
 	message.channel.send(`:rolling_eyes:`);
 }
 
-function checkTable(message) {
-	var table = "\t┳━┳ ヽ( ಠل͜ಠ)ﾉ";
-	var t = message.content.toLowerCase().indexOf("┻"); 
-	var differentTableLegs = ["┻", "╝","╘","╙","╨","└"];
-	for(var i = 0;i< differentTableLegs.length;i++) {
-		if(message.content.toLowerCase().indexOf(differentTableLegs[i]) > -1) {
-			//message.channel.send({files: ["https://i.imgur.com/CRSa6W2.png"]});
-            message.channel.send(table);
-            
-            //const embed = new Discord.MessageEmbed()
-                //.setColor(message.member.displayHexColor)
-                //.setDescription(table);
-
-            //message.channel.send({embed});
-			//addFlip();
-			break;
-		}
-	}
-}
-
 function liveStreamCommand(message) {
     const embed = new Discord.MessageEmbed()
         .setColor(5218488)
@@ -306,15 +312,6 @@ function liveStreamCommand(message) {
         .setDescription("[HLS Stream Player](https://speaknow.rocks:1989/)\n\nStream will be minimum 30sec behind from live\nIf you have issues please refresh your browser first.")
         .setFooter("Please do not share this stream outside of this discord server.");
         message.channel.send({embed});
-}
-
-function oneWorldCommand(message) {
-	const embed = new Discord.MessageEmbed()
-        .setColor(16711680)
-        .setTitle(`One World Together At Home TV`)
-        .setURL(`https://youtu.be/87-ZFjLfBAQ`)
-        .setDescription("Happening Now\nhttps://youtu.be/87-ZFjLfBAQ");
-    message.channel.send({embed});
 }
 
 function repFullSecretSongCommand(message) {
@@ -347,173 +344,144 @@ function repFullSecretSongCommand(message) {
     }});
 }
 
+function WT1989SecretSongCommand(message) {
+    const embed = new Discord.MessageEmbed()
+        .setColor(568027)
+        .setAuthor("1989 World Tour Secret Songs", "https://red.ghst.in/ts.png", "https://www.setlist.fm/stats/average-setlist/taylor-swift-3bd6bc5c.html?tour=3d0a56f")
+        .setThumbnail("https://i.imgur.com/tIO68fu.jpg")
+        .setDescription("6-30-15 Holy Ground (Dublin N2)\n7-19-15 Mean (Chicago N2)\n8-1-15 Sparks Fly (Vancouver)\n8-8-15 Mean (Seattle)\n8-14-15 Should've Said No (Santa Clara N1)\n8-15-15 Never Grow Up (Santa Clara N2)\n8-17-15 Ronan (Glendale N1)\n8-22-15 All Too Well (LA N1)\n8-23-15 White Horse (Duet with Uzo Aduba) (LA N2)\n8-26-15 Mean (LA N5)\n9-9-15 Mean (Houston)\n9-12-15 Mean (St. Paul)\n9-17-15 Red (Columbus N1)\n12-5-15 Mine (Brisbane)\n\nMost other shows alternated between 1 or 2 of these three songs: (All You Had to Do Was Stay / Fifteen / You Belong With Me) ");
+    message.channel.send({embed});
+}
+
+function WT1989SetlistCommand(message) {
+    const embed = new Discord.MessageEmbed()
+        .setColor(568027)
+        .setAuthor("Typical 1989 World Tour Setlist", "https://red.ghst.in/ts.png", "https://www.setlist.fm/stats/average-setlist/taylor-swift-3bd6bc5c.html?tour=3d0a56f")
+        .setThumbnail("https://i.imgur.com/tIO68fu.jpg")
+        .setDescription("1. Welcome to New York\n2. New Romantics\n3. Blank Space\n4. I Knew You Were Trouble (Rock Version)\n5. I Wish You Would\n6. How You Get the Girl\n7. I Know Places\n8. All You Had to Do Was Stay or Fifteen or You Belong With Me (some cities got two of these)\n9. Special Guest (!1989guests) / Some cities got Wonderland\n10. You Are In Love (Acoustic - some early cities)\n11. Clean\n12. Love Story (Synth Version)\n13. Style\n14. This Love\n15. Bad Blood\n16. We Are Never Ever Getting Back Together (Rock Version)\n17. Enchanted / Wildest Dreams\n18. Out of the Woods\n19. Shake It Off");
+    message.channel.send({embed});
+}
+
+function WT1989GuestsCommand(message) {
+    if (message.guild != null){
+        const embed = new Discord.MessageEmbed()
+            .setColor(568027)
+            .setAuthor("1989 World Tour Special Guests", "https://red.ghst.in/ts.png", "https://en.wikipedia.org/wiki/The_1989_World_Tour#Shows")
+            .setThumbnail("https://i.imgur.com/tIO68fu.jpg")
+            .setDescription("Due to the number of guests I've DM'd you the full list!");
+        message.channel.send({embed});
+    }
+
+    const embed2 = new Discord.MessageEmbed()
+        .setColor(568027)
+        .setAuthor("1989 World Tour Special Guests", "https://red.ghst.in/ts.png", "https://en.wikipedia.org/wiki/The_1989_World_Tour#Shows")
+        .setThumbnail("https://i.imgur.com/tIO68fu.jpg")
+        .addFields(
+            { name: 'Leg 2 - North America', value: '5-15-15 (Las Vegas) Ed Sheeran - Tenerife Sea\n5-30-15 (Detroit) Dan Reynolds (Imagine Dragons) - Radioactive\n6-6-15 (Pittsburgh) Little Big Town - Pontoon\n6-12-15 (Philadelphia N1) Sydney Sierota (Echosmith) - Cool Kids\n6-13-15 (Philadelphia N2) Rachel Platten - Fight Song' },
+            { name: 'Leg 4a - North America', value: '7-10-15 (East Rutherford N1) The Weeknd - Can\'t Feel My Face\n7-11-15 (East Rutherford N2) Nick Jonas - Jealous\n7-13-15 (DC N1) Lorde - Royals\n7-14-15 (DC N2) Jason Derulo - Want to Want Me\n7-18-15 (Chicago N1) Andy Grammer - Honey, I\'m Good\n7-19-15 (Chicago N2) Sam Hunt - Steal My Show\n7-24-15 (Foxborough N1) Walk The Moon - Shut Up and Dance\n7-25-15 (Foxborough N2) MKTO - Classic\n8-1-15 (Vancouver) Nico & Vinz - Am I Wrong\n8-8-15 (Seattle) Shawn Mendes - Happy Birthday; Fetty Wap - Trap Queen\n8-14-15 (Santa Clara N1) Fifth Harmony - Worth It\n8-15-15 (Santa Clara N2) Little Mix (Black Magic\n8-22-15 (LA N1) Ryan Tedder - Counting Stars; Kobe Bryant - Most Sold Out Shows Banner\n8-23-15 (LA N2) Mary J Blige - Doubt / Family Affair\n8-24-15 (LA N3) Natalie Maines (Dixie Chicks) - Goodbye Earl; Alanis Morissette - You Oughta Know\n8-25-15 (LA N4) Beck w/ St. Vincent - Dreams; John Legend - All Of Me\n8-26-15 (LA N5) Selena Gomez - Good For You; Lisa Kudrow - Smelly Cat; Justin Timberlake - Mirrors' },
+            { name: 'Leg 4b - North America', value: '8-29-15 (San Diego) OMI - Cheerleader; Avril Lavigne - Complicated\n9-9-15 (Houston) Wiz Khalifa - See You Again\n9-16-15 (Indianapolis) The Band Perry - If I Die Young\n9-18-15 (Columbus N2) Sydney Sierota (Echosmith) - Cool Kids\n9-21-15 (Kansas City) Dierks Bentley - Every Mile a Memory\n9-25-15 (Nashville N1) Kelsea Ballerini - Love Me Like You Mean It; Steven Tyler - I Don\'t Want to Miss a Thing; Alison Krause - When You Say Nothing at All\n9-26-15 (Nashville N2) Leona Lewis - Bleeding Love; Mick Jagger - Satisfaction\n9-29-15 (St. Louis) Nelly - The Fix / Hot in Herre w/ HAIM\n10-2-15 (Toronto N1) Keith Urban - John Cougar, John Deere, John 3:16 / Somebody Like You\n10-3-15 (Toronto N2) Charli XCX - Boom Clap' },
+        )
+        .setFooter('Only North America had special guests')
+    message.author.send({ embed: embed2 });
+}
+
 function repSetlistCommand(message) {
-    message.channel.send({embed: {
-        description: "Before Taylor: Bad Reputation\n\nreputation Video\n\n1. ...Ready for It?\n2. I Did Something Bad\n3. Gorgeous\n4. Style / Love Story / You Belong With Me\n\nLook What You Made Me Do Video\n\n5. Look What You Made Me Do\n6. End Game (no verses)\n7. King of My Heart\n8. Delicate (flying to bstage)\n9. Shake It Off (left bstage)\n10. Dancing With Our Hands Tied [Exchanges with So It Goes...] (left bstage)\n11. !secretsong (left bstage)\n12. Blank Space (right bstage)\n13. Dress (right bstage)\n14. Bad Blood / Should've Said No\n15. Don't Blame Me\n16. Long Live / New Year's Day\n\nWhy She Disappeared video\n\n17. Getaway Car\n18. Call It What You Want\n19. We Are Never Ever Getting Back Together / This Is Why We Can't Have Nice Things",
-        color: 568027,
-        thumbnail: {
-            url: "https://i.imgur.com/Zhg0oXF.jpg"
-        },
-        author: {
-            name: "Typical Setlist",
-            url: "https://www.setlist.fm/stats/average-setlist/taylor-swift-3bd6bc5c.html?tour=3d0a56f",
-            icon_url: "https://red.ghst.in/ts.png"
-        }
-    }});
+    const embed = new Discord.MessageEmbed()
+        .setColor(568027)
+        .setAuthor("Typical reputation Stadium Tour Setlist", "https://red.ghst.in/ts.png", "https://www.setlist.fm/stats/average-setlist/taylor-swift-3bd6bc5c.html?tour=3d0a56f")
+        .setThumbnail("https://i.imgur.com/Zhg0oXF.jpg")
+        .setDescription("Before Taylor: Bad Reputation\n\nreputation Video\n\n1. ...Ready for It?\n2. I Did Something Bad\n3. Gorgeous\n4. Style / Love Story / You Belong With Me\n\nLook What You Made Me Do Video\n\n5. Look What You Made Me Do\n6. End Game (no verses)\n7. King of My Heart\n8. Delicate (flying to bstage)\n9. Shake It Off (left bstage)\n10. Dancing With Our Hands Tied [Exchanges with So It Goes...] (left bstage)\n11. !secretsong (left bstage)\n12. Blank Space (right bstage)\n13. Dress (right bstage)\n14. Bad Blood / Should've Said No\n15. Don't Blame Me\n16. Long Live / New Year's Day\n\nWhy She Disappeared video\n\n17. Getaway Car\n18. Call It What You Want\n19. We Are Never Ever Getting Back Together / This Is Why We Can't Have Nice Things");
+    message.channel.send({embed});
 }
 
 function repGuestsCommand(message) {
-    message.channel.send({embed: {
-        description: "5-18-18 (Pasadena) There's Nothing Holdin' Me Back - Shawn Mendes\n5-19-18 (Pasadena) My My My! - Troye Sivan; Hands to Myself - Selena Gomez\n6-22-18 (London) Slow Hands - Niall Horan\n6-23-18 (London) Angels - Robbie Williams\n7-27-18 (Foxborough) Curious - Hayley Kiyoko\n8-04-18 (Toronto) Summer of 69 - Bryan Adams\n8-25-18 (Nashville) Tim McGraw - Faith Hill / Tim McGraw\n10-5-18 (Dallas) The Middle - Maren Morris\n10-6-18 (Dallas) Sugarland - Babe [full production]",
-        color: 568027,
-        thumbnail: {
-            url: "https://i.imgur.com/Zhg0oXF.jpg"
-        },
-        author: {
-            name: "Special Guests",
-            url: "https://en.wikipedia.org/wiki/Taylor_Swift%27s_Reputation_Stadium_Tour#Shows",
-            icon_url: "https://red.ghst.in/ts.png"
-        }
-    }});
+    const embed = new Discord.MessageEmbed()
+        .setColor(568027)
+        .setAuthor("Special Guests", "https://red.ghst.in/ts.png", "https://en.wikipedia.org/wiki/Taylor_Swift%27s_Reputation_Stadium_Tour#Shows")
+        .setThumbnail("https://i.imgur.com/Zhg0oXF.jpg")
+        .setDescription("5-18-18 (Pasadena) There's Nothing Holdin' Me Back - Shawn Mendes\n5-19-18 (Pasadena) My My My! - Troye Sivan; Hands to Myself - Selena Gomez\n6-22-18 (London) Slow Hands - Niall Horan\n6-23-18 (London) Angels - Robbie Williams\n7-27-18 (Foxborough) Curious - Hayley Kiyoko\n8-04-18 (Toronto) Summer of 69 - Bryan Adams\n8-25-18 (Nashville) Tim McGraw - Faith Hill / Tim McGraw\n10-5-18 (Dallas) The Middle - Maren Morris\n10-6-18 (Dallas) Sugarland - Babe [full production]");
+    message.channel.send({embed});
 }
 
 function albumDebutCommand(message) {
-	message.channel.send({embed: {
-        description: "**Taylor Swift** was released on __October 24, 2006__ \n\n1. Tim McGraw\n2. Picture to Burn\n3. Teardrops on My Guitar\n4. A Place in This World\n5. Cold as You\n6. The Outside\n7. Tied Together with a Smile\n8. Stay Beautiful\n9. Should've Said No\n10. Mary's Song (Oh My My My)\n11. Our Song\n\n__Deluxe Version__\n12. I'm Only Me When I'm with You\n13. Invisible\n14. A Perfectly Good Heart",
-        color: 568027,
-        thumbnail: {
-            url: "https://i.imgur.com/w0bksSN.jpg"
-        },
-        author: {
-            name: "Taylor Swift",
-            url: "https://taylorswift.com/releases/#/release/2812",
-            icon_url: "https://red.ghst.in/ts.png"
-        }
-    }});
+    const embed = new Discord.MessageEmbed()
+        .setColor(568027)
+        .setAuthor("Taylor Swift", "https://red.ghst.in/ts.png", "https://en.wikipedia.org/wiki/Taylor_Swift_(album)")
+        .setThumbnail("https://i.imgur.com/w0bksSN.jpg")
+        .setDescription("**Taylor Swift** was released on __October 24, 2006__ \n\n1. Tim McGraw\n2. Picture to Burn\n3. Teardrops on My Guitar\n4. A Place in This World\n5. Cold as You\n6. The Outside\n7. Tied Together with a Smile\n8. Stay Beautiful\n9. Should've Said No\n10. Mary's Song (Oh My My My)\n11. Our Song\n\n__Deluxe Version__\n12. I'm Only Me When I'm with You\n13. Invisible\n14. A Perfectly Good Heart");
+    message.channel.send({embed});
 }
 
 function albumBeautifulEyesCommand(message) {
-	message.channel.send({embed: {
-        description: "**Beautiful Eyes** was released on __July 15, 2008__ \n\n1. Beautiful Eyes\n2. Should've Said No (Alternate version)\n3. Teardrops on My Guitar (Acoustic version)\n4. Picture to Burn (Radio edit)\n5. I'm Only Me When I'm with You\n6. I Heart ?\n\n__Disk Two (DVD)__\n1. Beautiful Eyes (music video)\n2. Picture to Burn (music video)\n3. I'm Only Me When I'm with You (music video)\n4. Tim McGraw (music video)\n5. Teardrops on My Guitar (Pop version music video)\n6. Our Song (music video)\n7. Making of 'Picture to Burn' Video\n8. GAC New Artist Interview\n9. 2008 ACM Awards Performance of 'Should've Said No",
-        color: 0xe78234,
-        thumbnail: {
-            url: "https://i.imgur.com/sN5DToG.jpg"
-        },
-        author: {
-            name: "Taylor Swift",
-            url: "https://en.wikipedia.org/wiki/Beautiful_Eyes",
-            icon_url: "https://red.ghst.in/ts.png"
-        }
-    }});
+    const embed = new Discord.MessageEmbed()
+        .setColor(0xe78234)
+        .setAuthor("Taylor Swift", "https://red.ghst.in/ts.png", "https://en.wikipedia.org/wiki/Beautiful_Eyes")
+        .setThumbnail("https://i.imgur.com/sN5DToG.jpg")
+        .setDescription("**Beautiful Eyes** was released on __July 15, 2008__ \n\n1. Beautiful Eyes\n2. Should've Said No (Alternate version)\n3. Teardrops on My Guitar (Acoustic version)\n4. Picture to Burn (Radio edit)\n5. I'm Only Me When I'm with You\n6. I Heart ?\n\n__Disk Two (DVD)__\n1. Beautiful Eyes (music video)\n2. Picture to Burn (music video)\n3. I'm Only Me When I'm with You (music video)\n4. Tim McGraw (music video)\n5. Teardrops on My Guitar (Pop version music video)\n6. Our Song (music video)\n7. Making of 'Picture to Burn' Video\n8. GAC New Artist Interview\n9. 2008 ACM Awards Performance of 'Should've Said No");
+    message.channel.send({embed});
 }
 
 function albumFearlessCommand(message) {
-	message.channel.send({embed: {
-        description: "**Fearless** was released on __November 11, 2008__ \n\n1. Fearless\n2. Fifteen\n3. Love Story\n4. Hey Stephen\n5. White Horse\n6. You Belong with Me\n7. Breathe (featuring Colbie Caillat)\n8. Tell Me Why\n9. You're Not Sorry\n10. The Way I Loved You\n11. Forever and Always\n12. The Best Day\n13. Change\n\n__Platinum Edition Tracks:__\nJump Then Fall\nUntouchable\nCome in with the Rain\nSuperstar\nThe Other Side of the Door\nForever And Always (Piano Version)",
-        color: 14929032,
-        thumbnail: {
-            url: "https://i.imgur.com/TPL7mge.jpg"
-        },
-        author: {
-            name: "Taylor Swift",
-            url: "https://taylorswift.com/releases/#/release/2822",
-            icon_url: "https://red.ghst.in/ts.png"
-        }
-    }});
+    const embed = new Discord.MessageEmbed()
+        .setColor(14929032)
+        .setAuthor("Taylor Swift", "https://red.ghst.in/ts.png", "https://en.wikipedia.org/wiki/Fearless_(Taylor_Swift_album)")
+        .setThumbnail("https://i.imgur.com/TPL7mge.jpg")
+        .setDescription("**Fearless** was released on __November 11, 2008__ \n\n1. Fearless\n2. Fifteen\n3. Love Story\n4. Hey Stephen\n5. White Horse\n6. You Belong with Me\n7. Breathe (featuring Colbie Caillat)\n8. Tell Me Why\n9. You're Not Sorry\n10. The Way I Loved You\n11. Forever and Always\n12. The Best Day\n13. Change\n\n__Platinum Edition Tracks:__\nJump Then Fall\nUntouchable\nCome in with the Rain\nSuperstar\nThe Other Side of the Door\nForever And Always (Piano Version)");
+    message.channel.send({embed});
 }
 
 function albumSpeakNowCommand(message) {
-	message.channel.send({embed: {
-        description: "**Speak Now** was released on __October 25, 2010__ \n\n1. Mine\n2. Sparks Fly\n3. Back to December\n4. Speak Now\n5. Dear John\n6. Mean\n7. The Story of Us\n8. Never Grow Up\n9. Enchanted\n10. Better Than Revenge\n11. Innocent\n12. Haunted\n13. Last Kiss\n14. Long Live\n\n__Deluxe Version__\n15. Ours\n16. If This Was A Movie\n17. Superman",
-        color: 6892915,
-        thumbnail: {
-            url: "https://i.imgur.com/TNKbt8Y.jpg"
-        },
-        author: {
-            name: "Taylor Swift",
-            url: "https://taylorswift.com/releases/#/release/2832",
-            icon_url: "https://red.ghst.in/ts.png"
-        }
-    }});
+    const embed = new Discord.MessageEmbed()
+        .setColor(6892915)
+        .setAuthor("Taylor Swift", "https://red.ghst.in/ts.png", "https://en.wikipedia.org/wiki/Speak_Now")
+        .setThumbnail("https://i.imgur.com/TNKbt8Y.jpg")
+        .setDescription("**Speak Now** was released on __October 25, 2010__ \n\n1. Mine\n2. Sparks Fly\n3. Back to December\n4. Speak Now\n5. Dear John\n6. Mean\n7. The Story of Us\n8. Never Grow Up\n9. Enchanted\n10. Better Than Revenge\n11. Innocent\n12. Haunted\n13. Last Kiss\n14. Long Live\n\n__Deluxe Version__\n15. Ours\n16. If This Was A Movie\n17. Superman");
+    message.channel.send({embed});
 }
 
 function albumRedCommand(message) {
-	message.channel.send({embed: {
-        description: "**Red** was released on __October 22, 2012__ \n\n1. State of Grace\n2. Red\n3. Treacherous\n4. I Knew You Were Trouble.\n5. All Too Well\n6. 22\n7. I Almost Do\n8. We Are Never Ever Getting Back Together\n9. Stay Stay Stay\n10. The Last Time (featuring Gary Lightbody)\n11. Holy Ground\n12. Sad Beautiful Tragic\n13. The Lucky One\n14 Everything Has Changed (featuring Ed Sheeran)\n15. Starlight\n16. Begin Again\n\n__Deluxe Version__\n17. The Moment I Knew\n18. Come Back... Be Here\n19. Girl At Home",
-        color: 11476553,
-        thumbnail: {
-            url: "http://i.imgur.com/as6dlgi.jpg"
-        },
-        author: {
-            name: "Taylor Swift",
-            url: "https://taylorswift.com/releases/#/release/7301",
-            icon_url: "https://red.ghst.in/ts.png"
-        }
-    }});
+    const embed = new Discord.MessageEmbed()
+        .setColor(11476553)
+        .setAuthor("Taylor Swift", "https://red.ghst.in/ts.png", "https://en.wikipedia.org/wiki/Red_(Taylor_Swift_album)")
+        .setThumbnail("http://i.imgur.com/as6dlgi.jpg")
+        .setDescription("**Red** was released on __October 22, 2012__ \n\n1. State of Grace\n2. Red\n3. Treacherous\n4. I Knew You Were Trouble.\n5. All Too Well\n6. 22\n7. I Almost Do\n8. We Are Never Ever Getting Back Together\n9. Stay Stay Stay\n10. The Last Time (featuring Gary Lightbody)\n11. Holy Ground\n12. Sad Beautiful Tragic\n13. The Lucky One\n14 Everything Has Changed (featuring Ed Sheeran)\n15. Starlight\n16. Begin Again\n\n__Deluxe Version__\n17. The Moment I Knew\n18. Come Back... Be Here\n19. Girl At Home");
+    message.channel.send({embed});
 }
 
 function album1989Command(message) {
-	message.channel.send({embed: {
-        description: "**1989** was released on __October 27, 2014__ \n\n1. Welcome to New York\n2. Blank Space\n3. Style\n4. Out of the Woods\n5. All You Had to Do Was Stay\n6. Shake It Off\n7. I Wish You Would\n8. Bad Blood\n9. Wildest Dreams\n10. How You Get the Girl\n11. This Love\n12. I Know Places\n13. Clean\n\n__Deluxe Version__\n14. Wonderland\n15. You Are In Love\n16. New Romantics",
-        color: 13484710,
-        thumbnail: {
-            url: "https://i.imgur.com/i1QDoZR.jpg"
-        },
-        author: {
-            name: "Taylor Swift",
-            url: "https://taylorswift.com/releases/#/release/12453",
-            icon_url: "https://red.ghst.in/ts.png"
-        }
-    }});
+    const embed = new Discord.MessageEmbed()
+        .setColor(13484710)
+        .setAuthor("Taylor Swift", "https://red.ghst.in/ts.png", "https://en.wikipedia.org/wiki/1989_(Taylor_Swift_album)")
+        .setThumbnail("https://i.imgur.com/i1QDoZR.jpg")
+        .setDescription("**1989** was released on __October 27, 2014__ \n\n1. Welcome to New York\n2. Blank Space\n3. Style\n4. Out of the Woods\n5. All You Had to Do Was Stay\n6. Shake It Off\n7. I Wish You Would\n8. Bad Blood\n9. Wildest Dreams\n10. How You Get the Girl\n11. This Love\n12. I Know Places\n13. Clean\n\n__Deluxe Version__\n14. Wonderland\n15. You Are In Love\n16. New Romantics");
+    message.channel.send({embed});
 }
 
 function albumReputationCommand(message) {
-	message.channel.send({embed: {
-        description: "**reputation** was released on __November 10, 2017__ \n\n1. ...Ready For It?\n2. End Game (ft. Ed Sheeran and Future)\n3. I Did Something Bad\n4. Don't Blame Me\n5. Delicate\n6. Look What You Made Me Do\n7. So It Goes...\n8. Gorgeous\n9. Getaway Car\n10. King Of My Heart\n11. Dancing With Our Hands Tied\n12. Dress\n13. This Is Why We Can't Have Nice Things\n14. Call It What You Want\n15. New Year's Day",
-        color: 12040119,
-        thumbnail: {
-            url: "https://i.imgur.com/o2v3b7E.jpg"
-        },
-        author: {
-            name: "Taylor Swift",
-            url: "https://taylorswift.com/releases/#/release/15193",
-            icon_url: "https://red.ghst.in/ts.png"
-        }
-    }});
+    const embed = new Discord.MessageEmbed()
+        .setColor(12040119)
+        .setAuthor("Taylor Swift", "https://red.ghst.in/ts.png", "https://en.wikipedia.org/wiki/Reputation_(Taylor_Swift_album)")
+        .setThumbnail("https://i.imgur.com/o2v3b7E.jpg")
+        .setDescription("**reputation** was released on __November 10, 2017__ \n\n1. ...Ready For It?\n2. End Game (ft. Ed Sheeran and Future)\n3. I Did Something Bad\n4. Don't Blame Me\n5. Delicate\n6. Look What You Made Me Do\n7. So It Goes...\n8. Gorgeous\n9. Getaway Car\n10. King Of My Heart\n11. Dancing With Our Hands Tied\n12. Dress\n13. This Is Why We Can't Have Nice Things\n14. Call It What You Want\n15. New Year's Day");
+    message.channel.send({embed});
 }
 
 function albumLoverCommand(message) {
     const embed = new Discord.MessageEmbed()
         .setColor(15651566)
-        .setAuthor("Taylor Swift", "https://red.ghst.in/ts.png")
+        .setAuthor("Taylor Swift", "https://red.ghst.in/ts.png", "https://en.wikipedia.org/wiki/Lover_(album)")
         .setThumbnail("https://i.imgur.com/cNnUR0M.jpg")
         .setDescription("**Lover** was released on __August 23, 2019__ \n\n1. I Forgot That You Existed\n2. Cruel Summer\n3. Lover\n4. The Man\n5. The Archer\n6. I Think He Knows\n7. Miss Americana & The Heartbreak Prince\n8. Paper Rings\n9. Cornelia Street\n10. Death By A Thousand Cuts\n11. London Boy\n12. Soon You'll Get Better (ft. Dixie Chicks)\n13. False God\n14. You Need To Calm Down\n15. Afterglow\n16. ME! (ft. Brendon Urie)\n17. It's Nice To Have A Friend\n18. Daylight");
-
     message.channel.send({embed});
-
 }
 
 function versionCommand(message) {
-	message.channel.send({embed: {
-        description: `${config.bot.patchnotes}`,
-        title: "Patch Notes:",
-        color: 5218488,
-        author: {
-            name: `Version: ${config.bot.version}`,
-            url: "https://lhwb.tay.rocks/",
-            icon_url: "https://red.ghst.in/ts.png"
-        }
-    }});
-}
-
-function deleteCommand(message, params) {
-    //message.channel.fetchMessage(params).delete();
-}
-
-function testPermissionsCommand(message) {
-    //message.channel.fetchMessage(params).delete();
-    //console.log(message.channel.permissionsFor("182878095919939584"));
-    //console.log(message.guild.channels);
+    const embed = new Discord.MessageEmbed()
+        .setColor(5218488)
+        .setTitle("Patch Notes:")
+        .setAuthor(`Version: ${config.bot.version}`, 'https://red.ghst.in/ts.png', 'https://lhwb.tay.rocks/')
+        .setDescription(`${config.bot.patchnotes}`);
+    message.channel.send({embed});
 }
 
 function lsayCommand(message, command)
@@ -521,14 +489,13 @@ function lsayCommand(message, command)
     try {
         let params = command.slice(2, command.length).join(" ");
         //console.log("2nd Params: " + params);
-        bot.channels.get(command[1]).send(params);
+        bot.channels.cache.get(command[1]).send(params);
     }
     catch (err) {
             console.log(`${time()} - ${err}`);
             const embed = new Discord.MessageEmbed()
                 .setColor(16711680)
                 .setDescription(`Uh oh! Looks like you sent a message to an invalid channel id. I might not be in that server?`);
-
             message.author.send({embed});
         }
 }
@@ -555,10 +522,11 @@ function ts7CountdownCommand(message)
 
     lastCountdownUsage = Date.now();
 
-    let end1 = new Date('06/01/2021 7:00 PM');
-    let event1 = "LoverFest 2021 - June 2021\n";
-    let end2 = new Date('04/18/2020 8:00 PM');
-    let event2 = "One World Together at Home Telecast - 8PM EDT 4/18\n";
+    
+    let end1 = new Date('06/19/2020 5:00 PM');
+    let event1 = "Swiftie Fest - 5PM EDT 6/19\n";
+    let end2 = new Date('06/01/2021 7:00 PM');
+    let event2 = "LoverFest 2021 - June 2021\n";
     let end3 = new Date('06/01/2021 7:00 PM');
     let event3 = "LoverFest 2021 - June 2021\n";
 
@@ -609,7 +577,7 @@ function ts7CountdownCommand(message)
         .setColor(16711680)
         .setTitle(`Countdowns`)
         .setURL(`https://taylorswift.com`)     
-        .setDescription(event1 + days + " Days " + hours + " Hours " + minutes + " Minutes " + seconds + " Seconds \n\n" /* + event2 + days2 + " Days " + hours2 + " Hours " + minutes2 + " Minutes " + seconds2 + " Seconds\n\n" + event3 + days3 + " Days " + hours3 + " Hours " + minutes3 + " Minutes " + seconds3 + " Seconds" */);
+        .setDescription(event1 + days + " Days " + hours + " Hours " + minutes + " Minutes " + seconds + " Seconds \n\n" + event2 + days2 + " Days " + hours2 + " Hours " + minutes2 + " Minutes " + seconds2 + " Seconds\n\n" /*+ event3 + days3 + " Days " + hours3 + " Hours " + minutes3 + " Minutes " + seconds3 + " Seconds" */);
     message.channel.send({embed});
     cooldownMsgSent = false;
 }
@@ -772,14 +740,14 @@ function queueSong(message, cmd, song){
     var voiceServerID = message.guild.id;
     var user = message.author.username;
 
-    console.log(voiceServerID)
-    console.log(config.discord.server)
+    //console.log(voiceServerID)
+    //console.log(config.discord.server)
     if (voiceServerID != config.discord.server) { //makes sure message is coming from the bot's voice server, prevents other places the main bot is in from interacting on the music side
-        console.log("Not correct voice server");
+        log("Not correct voice server");
         return;
     }
-    console.log(cmd);
-    console.log(cmd[1]);
+    //console.log(cmd);
+    //console.log(cmd[1]);
     if(cmd[1] == null){
         if((cmd[0].toLowerCase() === "!queue") || (cmd[0].toLowerCase() === "!q")){
             printQueue(message);
@@ -787,29 +755,38 @@ function queueSong(message, cmd, song){
     }else{
         var title = song;
         if (message.member.voice.channel) { //Checks if the user is in the same voice channel as the bot
-            console.log("title: " + title);
             fuzzySearch(title.toLowerCase(), function(result){
                 if(result){ //song found in db after fuzzy search
-                    console.log(result);
-                    console.log("In DB")
-                    console.log(result['path']);
                     db.query("SELECT * FROM queue WHERE path LIKE ? ORDER BY path ASC", [result['path']], function(err, rows2){
-                        console.log(rows2);
-                        if(rows2[0] != null)
-                            message.reply(result['name'] + " is already in the queue and was not added");
+                        //console.log(rows2);
+                        if(rows2[0] != null){
+                            const embed = new Discord.MessageEmbed()
+                                .setColor(16711680) //red
+                                .setDescription(`${result['name']} is already in the queue and was not added.`)
+                            message.channel.send({embed});
+                        }
                         else {
                             db.query("INSERT INTO queue (name, path, queuedby) VALUES (?,?,?)", [result['name'], result['path'], user]);
-                            message.reply(result['name'] + " has been added to the queue.")
-                            console.log(result['name'] + " " + result['path'] + " " + user);
+                            const embed = new Discord.MessageEmbed()
+                                .setColor('#FF69B4') //pink
+                                .setDescription(`${result['name']} has been added to the queue.`)
+                            message.channel.send({embed});
+                            log(`Song: ${result['name']} Path: ${result['path']} Queued By: ${user}`);
                         }
                     })
                 }else{
-                    message.reply("That song could not be found. Please search the track listings - !tracks or ask iandrewc to add the song.");
+                    const embed = new Discord.MessageEmbed()
+                        .setColor(16711680) //red
+                        .setDescription(`That song could not be found.\nPlease check the track listings (!tracks).\nIf it's not there iandrewc to add the song.`);
+                    message.channel.send({embed});
                 }
             });
         } else {
-                message.reply("You must be in the Red voice channel to queue music.");
-                console.log("User not in Voice Channel");
+            const embed = new Discord.MessageEmbed()
+                .setColor(16711680) //red
+                .setDescription(`You must be in the Red voice channel to queue music.`);
+            message.channel.send({embed});
+            log("Attempting to queue while not in the Voice Channel.");
         }
     }
 }
@@ -822,21 +799,23 @@ function printQueue(message){
                 var num;
                 var count = 1;
                 var songQueue = "";
-                
-                console.log(rows2);
-                console.log(rows2[0]['name']);
+
                 for(num = 0; num < rows2.length; num++){ 
                     songQueue = songQueue + count + ". " + rows2[num]['name'] + "\n";
                     count++;
                 }
-                message.channel.send({embed: {
-                    color: 0x1c2e6e,
-                    title: "Currently playing: " + playingSong,
-                    description: "Queued for play:\n" + songQueue,
-                    url: "https://lhwb.tay.rocks/queue.php",
-                }});
+                
+                const embed = new Discord.MessageEmbed()
+                    .setColor('#FF69B4') //pink
+                    .setTitle(`Currently playing: ${playingSong}`)
+                    .setDescription(`Queued for play:\n${songQueue}`)
+                    .setURL('https://lhwb.tay.rocks/queue.php')
+                message.channel.send({embed});
             } else {
-                message.reply("There are currently no songs in the queue.");
+                const embed = new Discord.MessageEmbed()
+                    .setColor(16711680) //red
+                    .setDescription(`There are currently no songs in the queue.`);
+                message.channel.send({embed});
             }
         });
     });
@@ -844,19 +823,49 @@ function printQueue(message){
 
 function removeQueue(message, song){
     if (message.guild.id != config.discord.server) { //makes sure message is coming from the bot's voice server, prevents other places the main bot is in from interacting on the music side
-        console.log("Not correct voice server");
+        log("Not correct voice server");
         return;
     }
     db.query("SELECT COUNT(*) AS queueCount FROM queue WHERE name = ?", [song], function(err, result){
         if (err) throw err;
-            //console.log(err + "\n" + result);
+
         if(result[0].queueCount > 0) {
             db.query("DELETE FROM queue WHERE name = ?", [song]); //deletes the song from the queue.
-            message.reply(song + " has been removed from the queue.");
-            console.log(song + " removed from queue.");
+            const embed = new Discord.MessageEmbed()
+                .setColor('GREEN')
+                .setDescription(`${song} has been removed from the queue.`);
+            message.channel.send({embed});
+            log(song + " removed from queue.");
         } else {
-            message.reply(song + " was not in the queue.");
-            console.log(song + " not in queue.");
+            const embed = new Discord.MessageEmbed()
+                .setColor(16711680) //red
+                .setDescription(`${song} was not in the queue.`);
+            message.channel.send({embed});
+            log(song + " not in queue.");
+        }
+    });
+}
+
+function clearQueue(message){
+    if (message.guild.id != config.discord.server) { //makes sure message is coming from the bot's voice server, prevents other places the main bot is in from interacting on the music side
+        log("Not correct voice server");
+        return;
+    }
+    db.query("SELECT COUNT(*) AS queueCount FROM queue", function(err, result){
+        if (err) throw err;
+        if(result[0].queueCount > 0) {
+            db.query("DELETE FROM queue"); //deletes entire queue.
+            const embed = new Discord.MessageEmbed()
+                .setColor('GREEN')
+                .setDescription(`The queue has been cleared.`);
+            message.channel.send({embed});
+            log("Queue Purged at user request.");
+        } else {
+            const embed = new Discord.MessageEmbed()
+                .setColor('RED')
+                .setDescription(`The queue is already empty.`);
+            message.channel.send({embed});
+            log("Queue empty, nothing to purge.");
         }
     });
 }
@@ -871,26 +880,20 @@ function currentCommand(message) {
         db.query("SELECT name, albumart FROM music where name = ?",[currentSong], function(err, rows2) {
             var albumArt = rows2[0]['albumart'];
             if(queuedBy != null) {
-                message.channel.send({embed: {
-                    color: 0x442691,
-                    title: currentSong,
-                    description: currentAlbum,
-                    thumbnail: {
-                        url: albumArt,
-                    },
-                    footer: {
-                        text: "Queued by: " + queuedBy,
-                    }
-                }});
+                const embed = new Discord.MessageEmbed()
+                    .setColor('#FF69B4') //pink
+                    .setTitle(currentSong)
+                    .setDescription(currentAlbum)
+                    .setThumbnail(albumArt)
+                    .setFooter(`Queued by: ${queuedBy}`);
+                message.channel.send({embed});
             } else {
-                message.channel.send({embed: {
-                    color: 0x442691,
-                    title: currentSong,
-                    description: currentAlbum,
-                    thumbnail: {
-                        url: albumArt,
-                    }
-                }});
+                const embed = new Discord.MessageEmbed()
+                    .setColor('#FF69B4') //pink
+                    .setTitle(currentSong)
+                    .setDescription(currentAlbum)
+                    .setThumbnail(albumArt)
+                message.channel.send({embed});
             }
         });
     });
@@ -906,12 +909,12 @@ function recentlyPlayedCommand(message) {
         for(num = 1; num < rows.length; num++){ //starts with song 1 which was the most recent played before current
             recentSongs = recentSongs + num + ". " + rows[num]['name'] + "\n"
         }
-        message.channel.send({embed: {
-            color: 0x1c2e6e,
-            title: "Currently playing: " + playingSong,
-            description: "Recently Played:\n" + recentSongs,
-            url: "https://lhwb.tay.rocks/recent.php",
-        }});
+        const embed = new Discord.MessageEmbed()
+            .setColor('#FF69B4') //pink
+            .setTitle(`Currently playing: ${playingSong}`)
+            .setDescription(`Recently Played:\n${recentSongs}`)
+            .setURL('https://lhwb.tay.rocks/recent.php')
+        message.channel.send({embed});
     });
 }
 
@@ -930,12 +933,12 @@ function rankPlaysCommand(message, listNum) {
             rankedPlays = rankedPlays + count + ". " + rows[num]['song'] + " - " + rows[num]['plays'] + " plays\n";
             count++;
         }
-        message.channel.send({embed: {
-            color: 0x1c2e6e,
-            title: "Ranked Plays:",
-            description: rankedPlays,
-            url: "https://lhwb.tay.rocks/recent.php",
-        }});
+        const embed = new Discord.MessageEmbed()
+            .setColor('#FF69B4')
+            .setTitle('Ranked Plays:')
+            .setDescription(rankedPlays)
+            .setURL('https://lhwb.tay.rocks/recent.php')
+        message.channel.send({embed});
     });
 }
 
@@ -989,7 +992,7 @@ function editDistance(source, target, callback){
 function restartCommand(message) {
     log("LHWB non-music restarting!");
     const embed = new Discord.MessageEmbed()
-        .setColor(16711680)
+        .setColor(16711680) //red
         .setDescription(`LHWB non-music restarting!`);
     message.channel.send({embed}).then(() => process.exit(-1));
 }
@@ -1005,8 +1008,8 @@ function time() {
 }
 
 bot.login(config.bot.token).then((tok) => {
-	console.log('Bot logged in successfully!')
+	log('Bot logged in successfully!')
   }, err => {
-	console.log(`The bot failed to login due to an error! The error follows:\n\n${err}\n\n`)
+	log(`The bot failed to login due to an error! The error follows:\n\n${err}\n\n`)
 	bot.destroy()
   })
