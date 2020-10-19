@@ -15,6 +15,9 @@ let db = mysql.createPool({
     charset: "utf8mb4"
 });
 
+
+let qDisable = false;
+
 process.on('unhandledRejection', error => {
   throw error;
 }); 
@@ -116,6 +119,14 @@ bot.on("message", message => {
             dancCommand(message);
             break;
 
+        case "!redguests":
+            redTourGuestsCommand(message);
+            break;
+
+        case "!redsetlist":
+            redSetlistCommand(message);
+            break;
+                
         case "!1989ss":
             WT1989SecretSongCommand(message);
             break;
@@ -123,7 +134,7 @@ bot.on("message", message => {
         case "!1989setlist":
             WT1989SetlistCommand(message);
             break;
-
+            
         case "!1989guests":
             WT1989GuestsCommand(message);
             break;
@@ -183,6 +194,10 @@ bot.on("message", message => {
         case "!lover":
             albumLoverCommand(message);
             break;
+                  
+        case "!folklore":
+            albumFolkloreCommand(message);
+            break;
         
         case "!queue":
         case "!q":
@@ -217,6 +232,10 @@ bot.on("message", message => {
         case "!rankplays":
             rankPlaysCommand(message, params);
             break;
+
+        case "!togglequeue":
+            if(isOwner(message)) toggleQ(message);
+            break;
                 
     }
 });
@@ -228,9 +247,13 @@ function isMod(message) {
         return (message.author.id == config.discord.fs || message.author.id == config.discord.iandrewc);
 }
 
+function isOwner(message) {
+    return (message.author.id == config.discord.iandrewc);
+}
+
 function cmdRestrictions(message) {
     if (message.guild != null) //bots, reprole, submod, mod, or FS/iAndrewC
-        return (message.channel.id == config.discord.botsChannel || message.member.roles.cache.has(config.discord.repRole) || message.member.roles.cache.has(config.discord.rTSSubMod) || message.member.roles.cache.has(config.discord.rTSMod) || message.author.id == config.discord.fs || message.author.id == config.discord.iandrewc);
+        return ((message.member.roles.cache.has(config.discord.repRole) && message.channel.id == config.discord.botsChannel) || message.member.roles.cache.has(config.discord.rTSSubMod) || message.member.roles.cache.has(config.discord.rTSMod) || message.author.id == config.discord.fs || message.author.id == config.discord.iandrewc);
     else
         return (message.author.id == config.discord.fs || message.author.id == config.discord.iandrewc);
 }
@@ -314,34 +337,22 @@ function liveStreamCommand(message) {
         message.channel.send({embed});
 }
 
-function repFullSecretSongCommand(message) {
-    message.author.send({embed: {
-        description: "1. All Too Well (Glendale)\n2. Wildest Dreams (Santa Clara)\n3. The Best Day (Santa Clara)\n4. Red (Pasadena)\n5. All Too Well (Pasadena)\n6. Holy Ground (Seattle)\n7. Teardrops on My Guitar (Denver)\n8. Our Song (Chicago)\n9. 22 (Chicago)\n10. I Knew You Were Trouble (Manchester)\n11. I Don't Wanna Live Forever (Manchester)\n12. Mean (Dublin)\n13. How You Get The Girl (Dublin)\n14. So It Goes...(London)\n15. Fifteen (London)\n16. Mine (Louisville)\n17. Sparks Fly (Columbus)\n18. State of Grace (DC)\n19. Haunted (DC)\n20. Never Grow Up (Philadelphia)\n21. Broken Gondola Songs - [Our Song / Wildest Dreams],\nTreacherous right b-stage (Philadelphia)\n22. Babe [Guitar] (Cleveland)\n23. Welcome to New York (East Rutherford)\n24. Fearless [b-stage],\nClean [Piano before Long Live / NYD]\n(East Rutherford Rain Show)\n25. Enchanted (East Rutherford minor rain show)\n26. 22 (Foxborough)\n27. Change (Foxborough)\n28. Ours (Foxborough)\n29. Out of the Woods (Toronto)\n30. Come Back... Be Here (Toronto)\n31. A Place In This World (Pittsburgh)\n32. This Love (Atlanta)\n33. The Lucky One (Atlanta)\n34. Invisible (Tampa)\n35. Breathe (Miami)\n36. Better Man [b-stage]\n Tim McGraw [with Faith Hill and Tim McGraw] (Nashville)\n37. Jump Then Fall (Detroit)\n38. Begin Again (Minneapolis)\n39. Tied Together With A Smile (Minneapolis)\n40. The Story of Us (Kansas City)\n41. Forever and Always (Indianapolis)\n42. Hey Stephen (St. Louis)\n43. Speak Now (New Orleans)\n44. Wonderland (Houston)\n45. White Horse (Dallas)\n46. All Too Well (Dallas)\n47. I Knew You Were Trouble (Perth minor rain show)\n48. I'm Only Me When I'm With You (Melbourne)\n49. 22 (Sydney rain show / skipped DWOHT)\n50. Starlight (Brisbane)\n51. Out Of The Woods (Auckland)\n52. I Know Places (Tokyo)\n53. Wildest Dreams (Tokyo)",
-        color: 568027,
-        thumbnail: {
-            url: "https://i.imgur.com/Zhg0oXF.jpg"
-        },
-        author: {
-            name: "Secret Songs",
-            url: "https://docs.google.com/spreadsheets/d/1Yt0_VqcPczB9GxKf9BGCpNcSWXTROlpdrEcTP1wmevs/edit",
-            icon_url: "https://red.ghst.in/ts.png"
-        }
-    }});
+function redTourGuestsCommand(message) {
+    const embed = new Discord.MessageEmbed()
+        .setColor(11476553)
+        .setAuthor("The Red Tour - Special Guests", "https://red.ghst.in/ts.png", "https://en.wikipedia.org/wiki/The_Red_Tour#Tour_dates")
+        .setThumbnail("https://upload.wikimedia.org/wikipedia/en/9/99/The_Red_Tour.png")
+        .setDescription("3-19-13 (St. Louis N2) Hey Porsche - Nelly\n3-28-13 (Newark N2) Everybody Talks - Neon Trees (Tyler Glenn)\n3-29-13 (Newark N3) Drive By - Train (Pat Monahan)\n4-19-13 (Atlanta N2) Both of Us - B.o.B\n7-13-13 (East Rutherford) My Songs Know What You Did in the Dark (Light Em Up) - Fall Out Boy (Patrick Stump) \n7-27-13 (Foxborough N2) You're So Vain - Carly Simon\n8-19-13 (Los Angeles N1) Want U Back - Cher Lloyd; Brave - Sara Bareilles\n8-20-13 (Los Angeles N2) Closer - Tegan and Sara\n8-23-13 (Los Angeles N3) Anything Could Happen - Ellie Goulding\n8-24-13 (Los Angeles N4) Jenny From the Block - Jennifer Lopez\n8-27-13 (Sacramento) The Last Time - Gary Lightbody\n9-19-13 (Nashville N1) I Don't Want This Night to End - Luke Bryan\n9-20-13 (Nashville N2) What Hurts the Most - Jeffrey Steele (Rascal Flatts)\n9-21-13 (Nashville N3) I Want Crazy - Hunter Hayes\n2-1-14 (London N1) Lego House - Ed Sheeran (Normally Ed performs Everything Has Changed with Taylor)\n2-2-14 (London N2) Money on My Mind - Sam Smith\n2-4-14 (London N3) Breakeven - The Script (Danny O'Donoghue)\n2-7-14 (Berlin) I See Fire - Ed Sheeran (Normally Ed performs Everything Has Changed with Taylor)\n2-10-14 (London N4) Next to Me - Emeli Sandé\n2-11-14 (London N5) Burn - Ellie Goulding");
+    message.channel.send({embed});
 }
 
- function secretSongCommand(message) {
-    message.channel.send({embed: {
-        description: "Please use !repSS to get a PM of the full list.",
-        color: 568027,
-        thumbnail: {
-            url: "https://i.imgur.com/Zhg0oXF.jpg"
-        },
-        author: {
-            name: "Secret Songs",
-            url: "https://docs.google.com/spreadsheets/d/1Yt0_VqcPczB9GxKf9BGCpNcSWXTROlpdrEcTP1wmevs/edit",
-            icon_url: "https://red.ghst.in/ts.png"
-        }
-    }});
+function redSetlistCommand(message) {
+    const embed = new Discord.MessageEmbed()
+        .setColor(11476553)
+        .setAuthor("The Red Tour - Typical Setlist", "https://red.ghst.in/ts.png", "https://www.setlist.fm/stats/average-setlist/taylor-swift-3bd6bc5c.html?tour=bd6adba")
+        .setThumbnail("https://upload.wikimedia.org/wikipedia/en/9/99/The_Red_Tour.png")
+        .setDescription("1. State of Grace\n2. Holy Ground\n3. Red\n4. You Belong with Me\n5. The Lucky One\n6. Mean\n7. Stay Stay Stay (contains elements of 'Ho Hey')\n8. 22\n9. I Almost Do\n10. Everything Has Changed (with Ed Sheeran)\n11. Begin Again\n12. Sparks Fly\n13. I Knew You Were Trouble\n14. All Too Well\n15. Love Story\n16. Treacherous\n\nEncore\n17. We Are Never Ever Getting Back Together\n\nStarting on May 30, 2014 (Asia Leg), 'You Belong With Me' replaced 'Begin Again'. Additionally, 'Everything Has Changed' and 'Treacherous' were removed from the set list.");
+    message.channel.send({embed});
 }
 
 function WT1989SecretSongCommand(message) {
@@ -377,12 +388,42 @@ function WT1989GuestsCommand(message) {
         .setAuthor("1989 World Tour Special Guests", "https://red.ghst.in/ts.png", "https://en.wikipedia.org/wiki/The_1989_World_Tour#Shows")
         .setThumbnail("https://i.imgur.com/tIO68fu.jpg")
         .addFields(
-            { name: 'Leg 2 - North America', value: '5-15-15 (Las Vegas) Ed Sheeran - Tenerife Sea\n5-30-15 (Detroit) Dan Reynolds (Imagine Dragons) - Radioactive\n6-6-15 (Pittsburgh) Little Big Town - Pontoon\n6-12-15 (Philadelphia N1) Sydney Sierota (Echosmith) - Cool Kids\n6-13-15 (Philadelphia N2) Rachel Platten - Fight Song' },
+            { name: 'Leg 2 - North America', value: '5-15-15 (Las Vegas) Ed Sheeran - Tenerife Sea\n5-30-15 (Detroit) Dan Reynolds (Imagine Dragons) - Radioactive\n6-6-15 (Pittsburgh) Little Big Town - Pontoon\n6-12-15 (Philadelphia N1) Echosmith - Cool Kids\n6-13-15 (Philadelphia N2) Rachel Platten - Fight Song' },
             { name: 'Leg 4a - North America', value: '7-10-15 (East Rutherford N1) The Weeknd - Can\'t Feel My Face\n7-11-15 (East Rutherford N2) Nick Jonas - Jealous\n7-13-15 (DC N1) Lorde - Royals\n7-14-15 (DC N2) Jason Derulo - Want to Want Me\n7-18-15 (Chicago N1) Andy Grammer - Honey, I\'m Good\n7-19-15 (Chicago N2) Sam Hunt - Steal My Show\n7-24-15 (Foxborough N1) Walk The Moon - Shut Up and Dance\n7-25-15 (Foxborough N2) MKTO - Classic\n8-1-15 (Vancouver) Nico & Vinz - Am I Wrong\n8-8-15 (Seattle) Shawn Mendes - Happy Birthday; Fetty Wap - Trap Queen\n8-14-15 (Santa Clara N1) Fifth Harmony - Worth It\n8-15-15 (Santa Clara N2) Little Mix (Black Magic\n8-22-15 (LA N1) Ryan Tedder - Counting Stars; Kobe Bryant - Most Sold Out Shows Banner\n8-23-15 (LA N2) Mary J Blige - Doubt / Family Affair\n8-24-15 (LA N3) Natalie Maines (Dixie Chicks) - Goodbye Earl; Alanis Morissette - You Oughta Know\n8-25-15 (LA N4) Beck w/ St. Vincent - Dreams; John Legend - All Of Me\n8-26-15 (LA N5) Selena Gomez - Good For You; Lisa Kudrow - Smelly Cat; Justin Timberlake - Mirrors' },
-            { name: 'Leg 4b - North America', value: '8-29-15 (San Diego) OMI - Cheerleader; Avril Lavigne - Complicated\n9-9-15 (Houston) Wiz Khalifa - See You Again\n9-16-15 (Indianapolis) The Band Perry - If I Die Young\n9-18-15 (Columbus N2) Sydney Sierota (Echosmith) - Cool Kids\n9-21-15 (Kansas City) Dierks Bentley - Every Mile a Memory\n9-25-15 (Nashville N1) Kelsea Ballerini - Love Me Like You Mean It; Steven Tyler - I Don\'t Want to Miss a Thing; Alison Krause - When You Say Nothing at All\n9-26-15 (Nashville N2) Leona Lewis - Bleeding Love; Mick Jagger - Satisfaction\n9-29-15 (St. Louis) Nelly - The Fix / Hot in Herre w/ HAIM\n10-2-15 (Toronto N1) Keith Urban - John Cougar, John Deere, John 3:16 / Somebody Like You\n10-3-15 (Toronto N2) Charli XCX - Boom Clap' },
+            { name: 'Leg 4b - North America', value: '8-29-15 (San Diego) OMI - Cheerleader; Avril Lavigne - Complicated\n9-9-15 (Houston) Wiz Khalifa - See You Again\n9-16-15 (Indianapolis) The Band Perry - If I Die Young\n9-18-15 (Columbus N2) Echosmith - Cool Kids\n9-21-15 (Kansas City) Dierks Bentley - Every Mile a Memory\n9-25-15 (Nashville N1) Kelsea Ballerini - Love Me Like You Mean It; Steven Tyler - I Don\'t Want to Miss a Thing; Alison Krause - When You Say Nothing at All\n9-26-15 (Nashville N2) Leona Lewis - Bleeding Love; Mick Jagger - Satisfaction\n9-29-15 (St. Louis) Nelly - The Fix / Hot in Herre w/ HAIM\n10-2-15 (Toronto N1) Keith Urban - John Cougar, John Deere, John 3:16 / Somebody Like You\n10-3-15 (Toronto N2) Charli XCX - Boom Clap' },
         )
         .setFooter('Only North America had special guests')
     message.author.send({ embed: embed2 });
+}
+
+function repFullSecretSongCommand(message) {
+    message.author.send({embed: {
+        description: "1. All Too Well (Glendale)\n2. Wildest Dreams (Santa Clara)\n3. The Best Day (Santa Clara)\n4. Red (Pasadena)\n5. All Too Well (Pasadena)\n6. Holy Ground (Seattle)\n7. Teardrops on My Guitar (Denver)\n8. Our Song (Chicago)\n9. 22 (Chicago)\n10. I Knew You Were Trouble (Manchester)\n11. I Don't Wanna Live Forever (Manchester)\n12. Mean (Dublin)\n13. How You Get The Girl (Dublin)\n14. So It Goes...(London)\n15. Fifteen (London)\n16. Mine (Louisville)\n17. Sparks Fly (Columbus)\n18. State of Grace (DC)\n19. Haunted (DC)\n20. Never Grow Up (Philadelphia)\n21. Broken Gondola Songs - [Our Song / Wildest Dreams],\nTreacherous right b-stage (Philadelphia)\n22. Babe [Guitar] (Cleveland)\n23. Welcome to New York (East Rutherford)\n24. Fearless [b-stage],\nClean [Piano before Long Live / NYD]\n(East Rutherford Rain Show)\n25. Enchanted (East Rutherford minor rain show)\n26. 22 (Foxborough)\n27. Change (Foxborough)\n28. Ours (Foxborough)\n29. Out of the Woods (Toronto)\n30. Come Back... Be Here (Toronto)\n31. A Place In This World (Pittsburgh)\n32. This Love (Atlanta)\n33. The Lucky One (Atlanta)\n34. Invisible (Tampa)\n35. Breathe (Miami)\n36. Better Man [b-stage]\n Tim McGraw [with Faith Hill and Tim McGraw] (Nashville)\n37. Jump Then Fall (Detroit)\n38. Begin Again (Minneapolis)\n39. Tied Together With A Smile (Minneapolis)\n40. The Story of Us (Kansas City)\n41. Forever and Always (Indianapolis)\n42. Hey Stephen (St. Louis)\n43. Speak Now (New Orleans)\n44. Wonderland (Houston)\n45. White Horse (Dallas)\n46. All Too Well (Dallas)\n47. I Knew You Were Trouble (Perth minor rain show)\n48. I'm Only Me When I'm With You (Melbourne)\n49. 22 (Sydney rain show / skipped DWOHT)\n50. Starlight (Brisbane)\n51. Out Of The Woods (Auckland)\n52. I Know Places (Tokyo)\n53. Wildest Dreams (Tokyo)",
+        color: 568027,
+        thumbnail: {
+            url: "https://i.imgur.com/Zhg0oXF.jpg"
+        },
+        author: {
+            name: "Secret Songs",
+            url: "https://docs.google.com/spreadsheets/d/1Yt0_VqcPczB9GxKf9BGCpNcSWXTROlpdrEcTP1wmevs/edit",
+            icon_url: "https://red.ghst.in/ts.png"
+        }
+    }});
+}
+
+ function secretSongCommand(message) {
+    message.channel.send({embed: {
+        description: "Please use !repSS to get a PM of the full list.",
+        color: 568027,
+        thumbnail: {
+            url: "https://i.imgur.com/Zhg0oXF.jpg"
+        },
+        author: {
+            name: "Secret Songs",
+            url: "https://docs.google.com/spreadsheets/d/1Yt0_VqcPczB9GxKf9BGCpNcSWXTROlpdrEcTP1wmevs/edit",
+            icon_url: "https://red.ghst.in/ts.png"
+        }
+    }});
 }
 
 function repSetlistCommand(message) {
@@ -471,7 +512,16 @@ function albumLoverCommand(message) {
         .setColor(15651566)
         .setAuthor("Taylor Swift", "https://red.ghst.in/ts.png", "https://en.wikipedia.org/wiki/Lover_(album)")
         .setThumbnail("https://i.imgur.com/cNnUR0M.jpg")
-        .setDescription("**Lover** was released on __August 23, 2019__ \n\n1. I Forgot That You Existed\n2. Cruel Summer\n3. Lover\n4. The Man\n5. The Archer\n6. I Think He Knows\n7. Miss Americana & The Heartbreak Prince\n8. Paper Rings\n9. Cornelia Street\n10. Death By A Thousand Cuts\n11. London Boy\n12. Soon You'll Get Better (ft. Dixie Chicks)\n13. False God\n14. You Need To Calm Down\n15. Afterglow\n16. ME! (ft. Brendon Urie)\n17. It's Nice To Have A Friend\n18. Daylight");
+        .setDescription("**Lover** was released on __August 23, 2019__ \n\n1. I Forgot That You Existed\n2. Cruel Summer\n3. Lover\n4. The Man\n5. The Archer\n6. I Think He Knows\n7. Miss Americana & The Heartbreak Prince\n8. Paper Rings\n9. Cornelia Street\n10. Death By A Thousand Cuts\n11. London Boy\n12. Soon You'll Get Better (ft. The Chicks)\n13. False God\n14. You Need To Calm Down\n15. Afterglow\n16. ME! (ft. Brendon Urie)\n17. It's Nice To Have A Friend\n18. Daylight");
+    message.channel.send({embed});
+}
+
+function albumFolkloreCommand(message) {
+    const embed = new Discord.MessageEmbed()
+        .setColor(12040119)
+        .setAuthor("Taylor Swift", "https://red.ghst.in/ts.png", "https://en.wikipedia.org/wiki/Folklore_(Taylor_Swift_album)")
+        .setThumbnail("https://i.imgur.com/oZvDEky.jpg")
+        .setDescription("**folklore** was released on __July 24, 2020__ \n\n1. the 1\n2. cardigan\n3. the last great american dynasty\n4. exile (featuring bon iver)\n5. my tears ricochet\n6. mirrorball\n7. seven\n8. august\n9. this is me trying\n10. illicit affairs\n11. invisible string\n12. mad woman\n13. epiphany\n14. betty\n15. peace\n16. hoax\nDeluxe 17. the lakes");
     message.channel.send({embed});
 }
 
@@ -523,10 +573,10 @@ function ts7CountdownCommand(message)
     lastCountdownUsage = Date.now();
 
     
-    let end1 = new Date('06/19/2020 5:00 PM');
-    let event1 = "Swiftie Fest - 5PM EDT 6/19\n";
+    let end1 = new Date('10/21/2020 8:00 PM');
+    let event1 = "CMT Awards's (Taylor's Presenting) Wed 10/21 - 8PM-10:20PM EDT\n";
     let end2 = new Date('06/01/2021 7:00 PM');
-    let event2 = "LoverFest 2021 - June 2021\n";
+    let event2 = "LoverFest? LoverFolkFest? FolkerFest? 2021 - June 2021\n";
     let end3 = new Date('06/01/2021 7:00 PM');
     let event3 = "LoverFest 2021 - June 2021\n";
 
@@ -577,7 +627,7 @@ function ts7CountdownCommand(message)
         .setColor(16711680)
         .setTitle(`Countdowns`)
         .setURL(`https://taylorswift.com`)     
-        .setDescription(event1 + days + " Days " + hours + " Hours " + minutes + " Minutes " + seconds + " Seconds \n\n" + event2 + days2 + " Days " + hours2 + " Hours " + minutes2 + " Minutes " + seconds2 + " Seconds\n\n" /*+ event3 + days3 + " Days " + hours3 + " Hours " + minutes3 + " Minutes " + seconds3 + " Seconds" */);
+        .setDescription(event1 + days + " Days " + hours + " Hours " + minutes + " Minutes " + seconds + " Seconds \n\n" + event2 + days2 + " Days " + hours2 + " Hours " + minutes2 + " Minutes " + seconds2 + " Seconds\n\n"/*  + event3 + days3 + " Days " + hours3 + " Hours " + minutes3 + " Minutes " + seconds3 + " Seconds" */);
     message.channel.send({embed});
     cooldownMsgSent = false;
 }
@@ -733,8 +783,25 @@ function lfmCommand(message, params, param2) {
             message.channel.send({embed});
         }
     }
-    
 }
+
+function toggleQ(message) {
+    qDisable = !qDisable;
+    if(qDisable){
+        log("disabled queue " + qDisable);
+        const embed = new Discord.MessageEmbed()
+            .setColor(0xFF0000)
+            .setDescription(`Viewing the queue has been disabled.`);
+        message.channel.send({embed});
+    } else {
+        log("skip enabled " + qDisable);
+        const embed = new Discord.MessageEmbed()
+            .setColor(0x00FF5A)
+            .setDescription(`Viewing the queue has been enabled.`);
+        message.channel.send({embed});
+    }
+}
+
 //puts puts songs into a queue database
 function queueSong(message, cmd, song){
     var voiceServerID = message.guild.id;
@@ -792,33 +859,40 @@ function queueSong(message, cmd, song){
 }
 
 function printQueue(message){
-    db.query("SELECT id, name FROM recent WHERE 1 ORDER BY id DESC", function(err, rows) {
-        var playingSong = rows[0]['name'];
-        db.query("SELECT id, name FROM queue WHERE 1 ORDER BY id ASC", function(err, rows2) {
-            if(rows2.length > 0){
-                var num;
-                var count = 1;
-                var songQueue = "";
+    if (!qDisable) {    
+        db.query("SELECT id, name FROM recent WHERE 1 ORDER BY id DESC", function(err, rows) {
+            var playingSong = rows[0]['name'];
+            db.query("SELECT id, name FROM queue WHERE 1 ORDER BY id ASC", function(err, rows2) {
+                if(rows2.length > 0){
+                    var num;
+                    var count = 1;
+                    var songQueue = "";
 
-                for(num = 0; num < rows2.length; num++){ 
-                    songQueue = songQueue + count + ". " + rows2[num]['name'] + "\n";
-                    count++;
+                    for(num = 0; num < rows2.length; num++){ 
+                        songQueue = songQueue + count + ". " + rows2[num]['name'] + "\n";
+                        count++;
+                    }
+                    
+                    const embed = new Discord.MessageEmbed()
+                        .setColor('#FF69B4') //pink
+                        .setTitle(`Currently playing: ${playingSong}`)
+                        .setDescription(`Queued for play:\n${songQueue}`)
+                        .setURL('https://lhwb.tay.rocks/queue.php')
+                    message.channel.send({embed});
+                } else {
+                    const embed = new Discord.MessageEmbed()
+                        .setColor(16711680) //red
+                        .setDescription(`There are currently no songs in the queue.`);
+                    message.channel.send({embed});
                 }
-                
-                const embed = new Discord.MessageEmbed()
-                    .setColor('#FF69B4') //pink
-                    .setTitle(`Currently playing: ${playingSong}`)
-                    .setDescription(`Queued for play:\n${songQueue}`)
-                    .setURL('https://lhwb.tay.rocks/queue.php')
-                message.channel.send({embed});
-            } else {
-                const embed = new Discord.MessageEmbed()
-                    .setColor(16711680) //red
-                    .setDescription(`There are currently no songs in the queue.`);
-                message.channel.send({embed});
-            }
+            });
         });
-    });
+    } else {
+        const embed = new Discord.MessageEmbed()
+            .setColor(0xFF0000)
+            .setDescription(`Displaying the queue is temporarily disabled, likely due to an event.`);
+        message.channel.send({embed});
+    }
 }
 
 function removeQueue(message, song){
