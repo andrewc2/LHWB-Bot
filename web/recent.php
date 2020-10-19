@@ -2,12 +2,13 @@
 require_once "config.php";
 
 $db = new mysqli(DB_HOST,DB_USERNAME,DB_PASSWORD,DB_NAME);
-$db->set_charset("utf8");
+$db->set_charset("utf8mb4");
+$server = empty($_GET['server']) ? PRIMARY_GUILD : $_GET['server'];
 ?>
 <!DOCTYPE html>
 <html>
 <head>
-    <title>RedBot Song Listing</title>
+    <title>LHWB Recently Played</title>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs-3.3.7/jq-2.2.4/dt-1.10.13/datatables.min.css"/>
     <link rel="stylesheet" type="text/css" href="darkly.css"/>
@@ -24,15 +25,16 @@ $db->set_charset("utf8");
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                 </button>
-                <a class="navbar-brand" href="#">RedBot</a>
+                <a class="navbar-brand" href="#">LHWB</a>
             </div>
 
             <!-- Collect the nav links, forms, and other content for toggling -->
             <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                 <ul class="nav navbar-nav">
                     <li><a href="index.php">Home</a></li>
-                    <li><a href="redbot.php">Song List</a></li>
+                    <li><a href="lhwb.php">Song List</a></li>
                     <li><a href="recent.php">Recently Played Songs</a></li>
+                    <li><a href="calendar.php">Event Calendar</a></li>
                 </ul>
             </div><!-- /.navbar-collapse -->
         </div><!-- /.container-fluid -->
@@ -50,19 +52,13 @@ $db->set_charset("utf8");
         <tbody>
             <?php
             $stmt = $db->prepare("SELECT id, name, album, queuedby FROM recent WHERE 1 ORDER BY id DESC LIMIT 26");
+            $stmt->bind_param("s", $server);
             $stmt->execute();
             $stmt->bind_result($id, $name, $album, $queuedby);
             while ($stmt->fetch()) {
                 echo "<tr><td>".htmlspecialchars($name)."</td><td>".htmlspecialchars($album)."</td><td>".htmlspecialchars($queuedby)."</td></tr>";
             }
             ?>
-        <tfoot>
-        <tr>
-            <th>Song Name</th>
-            <th>Album</th>
-            <th>Queued By</th>
-        </tr>
-        </tfoot>
     </table>
 </div>
 </div>
