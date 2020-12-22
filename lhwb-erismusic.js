@@ -181,6 +181,7 @@ function play(message) {
                                 else {
                                     log(`${songpath} doesn't exist retrying`);
                                     db.query("INSERT INTO requested (user, request) VALUES (?,?)", ["LHWB Song Missing", songpath]);
+                                    db.query("DELETE FROM queue WHERE path = ?", [songpath]); //deletes the song from the queue.
                                     play(null);
                                     return;
                                 }
