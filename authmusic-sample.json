@@ -2,7 +2,13 @@
     "discord" : {
         "vc" : "",
         "server" : "",
-        "token" : ""
+        "token" : "",
+        "music_path" : "",
+        "mod_role"   : "",
+        "owner"   : "",
+        "banned"   : "",
+        "version"     : "",
+        "patchnotes"  : ""
     },
     "mysql" : {
         "username" : "",
