@@ -1,0 +1,21 @@
+{
+  "name": "lhwb",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "bot": "./start.sh"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@discordjs/opus": "^0.3.3",
+    "discord-akairo": "^8.1.0",
+    "discord.js": "^12.5.1",
+    "mysql2": "^2.2.5",
+    "sequelize": "^6.3.5",
+    "sqlite": "^4.0.18",
+    "sqlite3": "^5.0.0"
+  }
+}
