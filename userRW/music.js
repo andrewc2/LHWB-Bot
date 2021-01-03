@@ -47,13 +47,16 @@ async function updatePlayCount(name) {
 
 async function autoPlay(result, client) {
     await updateRecent(result.song, result.queuedBy);
-    await client.user.setActivity(result.song, { type: "LISTENING" })
-    const dispatcher = client.voice.broadcasts[0].play(`${config.discord.music_path}${result.path}`, { bitrate: 192000 });
+    const vc = client.channels.cache.get(client.voice.connections.array()[0].channel.id);
+    await client.user.setActivity(result.song, { type: "LISTENING" });
+    const dispatcher = client.voice.broadcasts[0].play(`${config.discord.music_path}${result.path}`, { bitrate: 196000 });
     dispatcher.on("finish", async () => {
-        await updatePlayCount(result.song);
+        if (vc.members.size > 1) {
+            await updatePlayCount(result.song);
+        }
         await dequeue(result.song);
-        setTimeout(async function () { await autoPlay(await searchQueue() || await randomSong(), client) }, 1000)
+        setTimeout(async function () { await autoPlay(await searchQueue() || await randomSong(), client) }, 1000);
     })
 }
 
-module.exports = { searchQueue, randomSong, updateRecent, dequeue, updatePlayCount, autoPlay }
+module.exports = { searchQueue, randomSong, dequeue, autoPlay }

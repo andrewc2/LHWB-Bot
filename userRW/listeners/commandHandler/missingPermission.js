@@ -33,6 +33,11 @@ class MissingPermissionListener extends Listener {
                 .setDescription(`Does this look like a spam channel? Use the \`${command}\` command in <#${config.discord.botsChannel}> :woman_facepalming:`)
             return message.channel.send(embed)
         }
+        else if (missing === "Role") {
+            embed
+                .setDescription(`You don't have the correct permissions to use the \`${command}\` command. :pensive:`)
+            return message.channel.send(embed)
+        }
         else {
             embed
                 .setDescription(`You do not have have permission to use the \`${command}\` command. :confused:`)

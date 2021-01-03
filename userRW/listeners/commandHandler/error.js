@@ -1,4 +1,5 @@
 const { Listener } = require("discord-akairo");
+const { log } = require("../../utilities");
 
 class ErrorListener extends Listener {
     constructor() {
@@ -9,7 +10,7 @@ class ErrorListener extends Listener {
     }
 
     exec(err, message, command) {
-        console.log(`CommandHandler Error: ${err}`);
+        log(`CommandHandler Error: ${err}\nWith Command: ${command}`);
         const embed = this.client.util
             .embed()
             .setDescription("An unknown error occurred. :pensive:")

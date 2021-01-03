@@ -1,4 +1,4 @@
-const { Command } = require("discord-akairo");
+const { Command, Argument } = require("discord-akairo");
 const { commandUsage } = require("../../utilities");
 
 class ReloadCommand extends Command {
@@ -17,7 +17,7 @@ class ReloadCommand extends Command {
             args: [
                 {
                     id: "command",
-                    type: "commandAlias",
+                    type: Argument.union("commandAlias", "listener"),
                     otherwise: message => commandUsage(this.id, message.guild, message.client, this.description.usage)
                 }
             ]

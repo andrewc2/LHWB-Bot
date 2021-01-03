@@ -1,8 +1,9 @@
 const { Command } = require("discord-akairo");
 const config = require("../../config.json");
-const database = require("../../models/database");
+const Discord = require("discord.js");
+const db = require("../../models/db");
 
-class DequeueCommand extends Command {
+class currentCommand extends Command {
     constructor() {
         super("current", {
             aliases: ["current"],
@@ -22,23 +23,29 @@ class DequeueCommand extends Command {
     }
 
     async exec(message, args) {
-        const embed = message.client.util
-            .embed()
-            .setColor(message.member.displayHexColor)
+        const embed = new Discord.MessageEmbed()
+            .setColor('#FF69B4') //pink
 
-        database.recent.findAll({ order: [["id", "DESC"]], limit: 1 })
-            .then(async function (results) {
-                const thumbnail = await database.music.findOne({ where: { name: results[0].getDataValue("name") }})
-                embed
-                    .setThumbnail(thumbnail.getDataValue("albumart"))
-                    .setTitle(results[0].getDataValue("name"))
-                    .setDescription(results[0].getDataValue("album"))
-                if (results[0].getDataValue("queuedby")) {
-                    embed.setFooter(`Queued by: ${results[0].getDataValue("queuedby")}`)
-                }
-                return message.channel.send(embed)
-            })
+        db.query("SELECT id, name, album, queuedby FROM recent WHERE 1 ORDER BY id DESC LIMIT 1", function(err, rows) {
+            let currentAlbum = rows[0]['album'];
+            let currentSong = rows[0]['name'];
+            let queuedBy = rows[0]['queuedby'];
+            
+            db.query("SELECT name, albumart FROM music where name = ?",[currentSong], function(err, rows2) {
+                let albumArt = rows2[0]['albumart'];
+
+                embed.setTitle(currentSong)
+                    .setDescription(currentAlbum)
+                    .setThumbnail(albumArt)
+
+                if(queuedBy) {
+                    embed.setFooter(`Queued by: ${queuedBy}`);
+                } 
+                return message.channel.send({embed});
+                
+            });
+        });
     }
 }
 
-module.exports = DequeueCommand;
+module.exports = currentCommand;

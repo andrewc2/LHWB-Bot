@@ -93,4 +93,47 @@ const requested = sequelize.define("requested", {
     timestamps: false
 })
 
-module.exports = { music, queue, recent, requested }
+const album = sequelize.define("album", {
+    id: {
+        type: Sequelize.INTEGER,
+        autoIncrement: true,
+        primaryKey: true
+    },
+    name: {
+        type: Sequelize.STRING,
+    },
+    path: {
+        type: Sequelize.STRING,
+    },
+    albumorder: {
+        type: Sequelize.INTEGER,
+    },
+    album: {
+        type: Sequelize.STRING,
+    },
+},{
+    freezeTableName: true,
+    timestamps: false
+})
+
+const countdown = sequelize.define("countdown", {
+    id: {
+        type: Sequelize.INTEGER,
+        autoIncrement: true,
+        primaryKey: true
+    },
+    name: {
+        type: Sequelize.STRING,
+    },
+    startdate: {
+        type: Sequelize.DATE(6)
+    },
+    enddate: {
+        type: Sequelize.DATE(6)
+    }
+},{
+    freezeTableName: true,
+    timestamps: false
+})
+
+module.exports = { music, queue, recent, requested, album, countdown }

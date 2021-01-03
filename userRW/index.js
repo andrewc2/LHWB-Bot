@@ -1,13 +1,13 @@
 const { AkairoClient, CommandHandler, ListenerHandler, InhibitorHandler, SQLiteProvider } = require("discord-akairo");
-const sqlite = require('sqlite');
-const sqlite3 = require('sqlite3');
+const sqlite = require("sqlite");
+const sqlite3 = require("sqlite3");
 const path = require("path");
 const config = require("./config.json");
 
 class Client extends AkairoClient {
     constructor() {
         super({
-            ownerID: config.discord.ownerID,
+            ownerID: [config.discord.ownerID, config.discord.username],
             disableMentions: "all"
         });
 
@@ -23,7 +23,7 @@ class Client extends AkairoClient {
                 else if (!message.guild) return ''
                 return config.discord.prefix;
             },
-            ignorePermissions: [config.discord.ownerID],
+            ignorePermissions: [config.discord.ownerID, config.discord.fs, config.discord.username],
             allowMention: true,
             commandUtil: true,
             commandUtilLifetime: 10000,

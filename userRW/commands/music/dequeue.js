@@ -1,5 +1,4 @@
 const { Command } = require("discord-akairo");
-const { Op } = require("sequelize");
 const database = require("../../models/database");
 const { commandUsage, cmdRestrictions } = require("../../utilities");
 
@@ -40,7 +39,7 @@ class DequeueCommand extends Command {
             .embed()
             .setColor("GREEN")
 
-        const song = await database.queue.findOne({ where: { name: { [Op.like]: '%' + args.song + '%' }}})
+        const song = await database.queue.findOne({ where: { name: args.song }})
         if (song) {
             await song.destroy()
             return message.channel.send(successEmbed.setDescription(`${song.getDataValue("name")} has been removed from the queue.`))
