@@ -49,7 +49,7 @@ class QueueCommand extends Command {
             return songQueue;
         }
 
-        async function printQueue() {
+        function printQueue() {
             db.query("SELECT id, name, queuedby FROM recent WHERE 1 ORDER BY id DESC", function(err, rows) {
                 let playingSong = rows[0]['name'];
                 db.query("SELECT id, name FROM queue WHERE 1 ORDER BY id ASC", function(err, rows2) {
@@ -77,7 +77,7 @@ class QueueCommand extends Command {
             });
         }
 
-        async function fetchSong() {
+        function fetchSong() {
             
             let title = args.song;
             let user = message.author.username;
@@ -105,7 +105,7 @@ class QueueCommand extends Command {
             });
         }
 
-        async function fuzzySearch(title, callback){
+        function fuzzySearch(title, callback){
             let result;
             let maxEditDist = 5;
             let minEditDist = maxEditDist;
