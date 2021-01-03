@@ -44,11 +44,8 @@ class QueueCommand extends Command {
             .setColor("#FF69B4")
 
         function getSongs(array, songQueue) {
-            log(`Queue Length: ${array.length}`);
-            log(`Pre Queue: ${songQueue}`);
             for(let num = 0; num < array.length; num++)
                 songQueue = songQueue + `${num+1}. ${array[num]['name']}\n`;
-            log(`Post Queue: ${songQueue}`);
             return songQueue;
         }
 
@@ -89,7 +86,6 @@ class QueueCommand extends Command {
             fuzzySearch(title.toLowerCase(), async function(result){
                 if(result){ //song found in db after fuzzy search
                     db.query("SELECT * FROM queue WHERE path LIKE ? ORDER BY path ASC", [result['path']], function(err, rows2){
-                        //console.log(rows2);
                         if(rows2.length > 1){
                             message.channel.send(failEmbed.setDescription(`${result['name']} is already in the queue and was not added.`));
                         } else {
