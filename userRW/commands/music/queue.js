@@ -50,7 +50,7 @@ class QueueCommand extends Command {
         }
 
         async function printQueue() {
-            db.query("SELECT id, name FROM recent WHERE 1 ORDER BY id DESC", function(err, rows) {
+            db.query("SELECT id, name, queuedby FROM recent WHERE 1 ORDER BY id DESC", function(err, rows) {
                 let playingSong = rows[0]['name'];
                 db.query("SELECT id, name FROM queue WHERE 1 ORDER BY id ASC", function(err, rows2) {
                     let songQueue = "";
