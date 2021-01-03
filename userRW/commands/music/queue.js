@@ -1,5 +1,5 @@
 const { Command } = require("discord-akairo");
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 const fs = require("fs");
 const config = require("../../config.json");
 const db = require("../../models/db");
@@ -33,14 +33,14 @@ class QueueCommand extends Command {
     }
 
     exec(message, args) {
-        const queueEmbed = new Discord.MessageEmbed()
+        const queueEmbed = new MessageEmbed()
             .setColor('#FF69B4') //pink
             .setURL('https://lhwb.dev/')
 
-        const failEmbed = new Discord.MessageEmbed()
+        const failEmbed = new MessageEmbed()
             .setColor("RED")
 
-        const successEmbed = new Discord.MessageEmbed()
+        const successEmbed = new MessageEmbed()
             .setColor("#FF69B4")
 
         function getSongs(array, songQueue) {

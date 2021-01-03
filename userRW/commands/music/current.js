@@ -1,6 +1,6 @@
 const { Command } = require("discord-akairo");
 const config = require("../../config.json");
-const Discord = require("discord.js");
+const { MessageEmbed } = require("discord.js");
 const db = require("../../models/db");
 
 class currentCommand extends Command {
@@ -23,7 +23,7 @@ class currentCommand extends Command {
     }
 
     async exec(message, args) {
-        const embed = new Discord.MessageEmbed()
+        const embed = new MessageEmbed()
             .setColor('#FF69B4') //pink
 
         db.query("SELECT id, name, album, queuedby FROM recent WHERE 1 ORDER BY id DESC LIMIT 1", function(err, rows) {
