@@ -1,14 +1,14 @@
 const { Command } = require("discord-akairo");
 const { MessageEmbed } = require("discord.js");
+const db = require("../../models/db");
 const fs = require("fs");
 const config = require("../../config.json");
-const db = require("../../models/db");
 const { regularRestriction, log, editDistance } = require("../../utilities");
 
 class QueueCommand extends Command {
     constructor() {
         super("queue", {
-            aliases: ["queue", "q"],
+            aliases: ["queue", "q", "🎵"],
             category: "music",
             channel: "guild",
             description: {

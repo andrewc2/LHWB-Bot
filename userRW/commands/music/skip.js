@@ -36,6 +36,17 @@ class SkipCommand extends Command {
         let result = await music.searchQueue() || await music.randomSong();
         await message.channel.send(embed);
         await music.autoPlay(result, this.client);
+
+        /* db.query("SELECT id, name, queuedby FROM recent WHERE 1 ORDER BY id DESC", function(err, rows) {
+
+            if (rows[0]['queuedby'] !== null){
+                music.dequeue(rows[0]['name']);
+            }
+                
+            let result = music.searchQueue() || music.randomSong();
+            message.channel.send(embed);
+            music.autoPlay(result, this.client);
+        }); */
     }
 }
 
