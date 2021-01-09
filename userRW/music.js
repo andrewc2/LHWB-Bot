@@ -39,9 +39,6 @@ function updateRecent(name, queuedBy) {
         let currentAlbum = result[0]['album'];
         db.query("INSERT INTO recent (name, album, queuedby) VALUES (?,?,?)", [name, currentAlbum, queuedBy]);
     });
-
-    /* const album = await database.music.findOne({ where: { name: name }})
-    await database.recent.create({ name: name, queuedby: queuedBy, album: album.getDataValue("album") }) */
 }
 
 function dequeue(name) {
