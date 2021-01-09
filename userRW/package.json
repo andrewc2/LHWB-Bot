@@ -4,18 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "bot": "./start.sh"
+    "bot": "pm2 start index.js"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "iandrewc",
+  "license": "GPL 3.0",
   "dependencies": {
     "@discordjs/opus": "^0.3.3",
     "discord-akairo": "^8.1.0",
     "discord.js": "^12.5.1",
     "luxon": "^1.25.0",
     "mysql2": "^2.2.5",
-    "sequelize": "^6.3.5",
     "sqlite": "^4.0.18",
     "sqlite3": "^5.0.0"
   }

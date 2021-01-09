@@ -101,8 +101,7 @@ function log(content) {
 
 function time() {
     const date = new Date();
-    let time = date.toLocaleString();
-    return time;
+    return date.toLocaleString();
 }
 
 module.exports = { anyUsage, commandUsage, cmdRestrictions, regularRestriction, isMod, isModNoVC, editDistance, log, time }

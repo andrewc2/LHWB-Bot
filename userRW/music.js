@@ -3,7 +3,6 @@ const { db } = require("./models/db");
 const config = require("./config.json");
 const { log } = require("./utilities");
 
-
 function searchQueue() {
     return db.promise().query("SELECT name, path, queuedby FROM queue").then(([result]) => {
         if (result.length > 0) {
@@ -58,7 +57,7 @@ function autoPlay(result, client) {
         if (vc.members.size > 1) {
             updatePlayCount(result.path);
         }
-        dequeue(result.song);
+        if (result.queuedBy !== null) dequeue(result.song);
         setTimeout(async function () { autoPlay( await searchQueue() || await randomSong(), client) }, 1000);
     })
 }

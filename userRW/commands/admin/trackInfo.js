@@ -1,5 +1,5 @@
 const { Command } = require("discord-akairo");
-const database = require("../../models/database");
+const { db } = require("../../models/db");
 const { editDistance } = require("../../utilities");
 
 class TrackInfoCommand extends Command {
@@ -35,7 +35,7 @@ class TrackInfoCommand extends Command {
             let maxEditDist = 5;
             let minEditDist = maxEditDist;
 
-            database.db.query("SELECT * FROM `music`", function(err, songList) {
+            db.query("SELECT * FROM `music`", function(err, songList) {
                 for(let i = 0; i < songList.length; i++){
                     editDistance(title, songList[i]['name'].toLowerCase(), function(tempDist){
                         if(tempDist < minEditDist && tempDist <= maxEditDist){

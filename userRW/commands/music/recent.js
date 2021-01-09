@@ -1,7 +1,6 @@
 const { Command } = require("discord-akairo");
 const config = require("../../config.json");
 const { db } = require("../../models/db");
-const { cmdRestrictions } = require("../../utilities");
 
 class RecentCommand extends Command {
     constructor() {

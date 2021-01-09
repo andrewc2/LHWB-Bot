@@ -1,6 +1,7 @@
 const { Command } = require("discord-akairo");
 const fs = require("fs");
-const database = require("../../models/database");
+const { MessageEmbed } = require("discord.js")
+const { db } = require("../../models/db");
 const config = require("../../config.json");
 const { commandUsage, isMod } = require("../../utilities");
 
@@ -34,19 +35,19 @@ class QueueAlbumCommand extends Command {
         const embed = new MessageEmbed()
             .setColor("GREEN")
 
-            database.db.promise().query("SELECT * FROM `album` WHERE `album` = ? ORDER BY `albumorder`", [args.album])
+            db.promise().query("SELECT * FROM `album` WHERE `album` = ? ORDER BY `albumorder`", [args.album])
             .then(async ([rows]) => {
                 for (const song of rows.values()) {
-                    const checkQueue = await database.db.promise().query("SELECT * FROM `queue` WHERE `name` = ?", [song.name])
+                    const checkQueue = await db.promise().query("SELECT * FROM `queue` WHERE `name` = ?", [song.name])
                     if (checkQueue[0].length > 0) {
-                        await database.db.promise().query("DELETE FROM `queue` WHERE `name` = ?", [song.name])
+                        await db.promise().query("DELETE FROM `queue` WHERE `name` = ?", [song.name])
                     }
                     fs.access(`${config.discord.music_path}${song.path}`, fs.F_OK,async (err) => {
                         if (err) {
                             console.error(err)
                             return
                         }
-                        await database.db.promise().query("INSERT INTO `queue` (name, path, queuedby) VALUES (?,?,?)", [song.name, song.path, message.author.tag])
+                        await db.promise().query("INSERT INTO `queue` (name, path, queuedby) VALUES (?,?,?)", [song.name, song.path, message.author.tag])
                     })
                 }
             })

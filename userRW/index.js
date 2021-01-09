@@ -7,7 +7,7 @@ const config = require("./config.json");
 class Client extends AkairoClient {
     constructor() {
         super({
-            ownerID: [config.discord.ownerID, config.discord.username],
+            ownerID: config.discord.ownerID,
             disableMentions: "all"
         });
 
