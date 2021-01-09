@@ -13,13 +13,7 @@ class RestartCommand extends Command {
                 examples: [
                     "umusicrestart'"
                 ]
-            },
-            args: [
-                {
-                    id: "command",
-                    type: "commandAlias"
-                }
-            ]
+            }
         });
     }
 

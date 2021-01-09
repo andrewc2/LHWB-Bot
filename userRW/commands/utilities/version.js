@@ -13,13 +13,7 @@ class VersionCommand extends Command {
                 examples: [
                     "uversion"
                 ]
-            },
-            args: [
-                {
-                    id: "command",
-                    type: "commandAlias"
-                }
-            ]
+            }
         });
     }
 
