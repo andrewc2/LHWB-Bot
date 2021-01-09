@@ -1,7 +1,7 @@
 const { Command } = require("discord-akairo");
 const config = require("../../config.json");
 const { MessageEmbed } = require("discord.js");
-const db = require("../../models/db");
+const { db } = require("../../models/db");
 
 class currentCommand extends Command {
     constructor() {

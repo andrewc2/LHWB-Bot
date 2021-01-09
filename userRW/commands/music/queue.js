@@ -1,6 +1,6 @@
 const { Command } = require("discord-akairo");
 const { MessageEmbed } = require("discord.js");
-const db = require("../../models/db");
+const { db } = require("../../models/db");
 const fs = require("fs");
 const config = require("../../config.json");
 const { regularRestriction, log, editDistance } = require("../../utilities");

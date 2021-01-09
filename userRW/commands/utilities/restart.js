@@ -1,6 +1,6 @@
 const { Command } = require("discord-akairo");
 const Discord = require("discord.js");
-const { anyUsage } = require("../../utilities");
+const { isMod } = require("../../utilities");
 
 class RestartCommand extends Command {
     constructor() {
@@ -8,7 +8,7 @@ class RestartCommand extends Command {
             aliases: ["umusicrestart"],
             category: "utilities",
             description: {
-                content: "Help command.",
+                content: "Restarts the bot",
                 usage: "umusicrestart",
                 examples: [
                     "umusicrestart'"
@@ -23,7 +23,11 @@ class RestartCommand extends Command {
         });
     }
 
-    exec(message, args) {
+    userPermissions(message) {
+        return isModNoVC(message)
+    }
+
+    exec(message) {
         console.log("LHWB user-music restarting!");
         const embed = new Discord.MessageEmbed()
             .setColor(16711680) //red

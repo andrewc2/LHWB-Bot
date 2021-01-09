@@ -29,6 +29,14 @@ function isMod(message) {
     return "Role";
 }
 
+function isModNoVC(message) {
+    if (message.guild.id !== config.discord.serverID) return "Server";
+    if (message.member.roles.cache.some(role => role.id === config.discord.subRedditMod) || message.member.roles.cache.some(role => role.id === config.discord.mod)) {
+        return null;
+    }
+    return "Role";
+}
+
 function cmdRestrictions(message) {
     if (message.guild.id !== config.discord.serverID) return "Server";
     if (isVoiceChannel(message)) return "Voice"
@@ -97,4 +105,4 @@ function time() {
     return time;
 }
 
-module.exports = { anyUsage, commandUsage, cmdRestrictions, regularRestriction, isMod, editDistance, log, time }
+module.exports = { anyUsage, commandUsage, cmdRestrictions, regularRestriction, isMod, isModNoVC, editDistance, log, time }

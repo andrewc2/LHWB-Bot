@@ -5,8 +5,7 @@ const { log } = require("./utilities");
 
 
 function searchQueue() {
-    return db.promise().query("SELECT name, path, queuedby FROM queue")
-    .then(([result]) => {
+    return db.promise().query("SELECT name, path, queuedby FROM queue").then(([result]) => {
         if (result.length > 0) {
             log("There is a queue.");
             log(`Path: ${result[0].path} Name: ${result[0].name} Queuedby: ${result[0].queuedby} Grabbed from queue`);

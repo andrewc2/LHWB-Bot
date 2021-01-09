@@ -31,34 +31,34 @@ class QueueAlbumCommand extends Command {
     }
 
     exec(message, args) {
-        const embed = this.client.util
-            .embed()
+        const embed = new MessageEmbed()
             .setColor("GREEN")
 
-        let failedQueue = []
-
-        database.album.findAll({ where: { album: args.album }, order: [["albumorder", "ASC"]]})
-            .then(async function (result) {
-                for (const tracks of result.values()) {
-                    const checkQueue = await database.queue.findOne({ where: { name: tracks.getDataValue("name") }})
-                    if (checkQueue) await checkQueue.destroy()
-                    fs.access(`${config.discord.music_path}${tracks.getDataValue("path")}`, fs.F_OK, async (err) => {
+            database.db.promise().query("SELECT * FROM `album` WHERE `album` = ? ORDER BY `albumorder`", [args.album])
+            .then(async ([rows]) => {
+                for (const song of rows.values()) {
+                    const checkQueue = await database.db.promise().query("SELECT * FROM `queue` WHERE `name` = ?", [song.name])
+                    if (checkQueue[0].length > 0) {
+                        await database.db.promise().query("DELETE FROM `queue` WHERE `name` = ?", [song.name])
+                    }
+                    fs.access(`${config.discord.music_path}${song.path}`, fs.F_OK,async (err) => {
                         if (err) {
-                            await failedQueue.push(tracks.getDataValue("name"))
+                            console.error(err)
+                            return
                         }
-                        else {
-                            await database.queue.create({ name: tracks.getDataValue("name"), path: tracks.getDataValue("path"), queuedby: message.author.tag })
-                        }
+                        await database.db.promise().query("INSERT INTO `queue` (name, path, queuedby) VALUES (?,?,?)", [song.name, song.path, message.author.tag])
                     })
                 }
             })
-
-
-        embed.setDescription(`${args.album} has been queued! Hope you enjoy it. :smiley:`)
-        if (failedQueue.length > 0) {
-            embed.addField("Unable to queue", failedQueue, true)
-        }
-        return message.channel.send(embed)
+            .then(() => {
+                embed.setDescription(`${args.album} has been queued! Hope you enjoy it. :smiley:`)
+                return message.channel.send(embed)
+            })
+            .catch(err => {
+                console.log(err)
+                embed.setDescription(`I couldn't queue ${args.album} for some reason. :pleading_face:`)
+                return message.channel.send(embed)
+            })
     }
 }
 
