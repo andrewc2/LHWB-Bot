@@ -27,7 +27,7 @@ class HelpCommand extends Command {
             .embed()
             .setAuthor(message.author.tag, message.author.displayAvatarURL({dynamic: true, format: "png"}), message.author.displayAvatarURL({dynamic: true, format: "png"}))
             .setTitle("Music Commands")
-            .setDescription(`Use ${anyUsage(message.guild, this.client, `${this.id} [command]`)} for further information.`)
+            .setDescription(`Use ${anyUsage(message.guild, this.client, `${this.id} [command]`)} for further information. The full command list is available here: https://lhwb.dev/`)
             .addFields(
                 {name: "Music", value: "current, queue, dequeue, recent, skip"}
             )

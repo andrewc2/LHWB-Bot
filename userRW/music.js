@@ -42,7 +42,7 @@ function updateRecent(name, queuedBy) {
 }
 
 function dequeue(name) {
-    db.query("DELETE FROM queue WHERE name = ?", [name]);
+    db.query("DELETE FROM queue WHERE name = ? LIMIT 1", [name]);
 }
 
 function updatePlayCount(path) {

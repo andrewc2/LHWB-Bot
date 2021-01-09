@@ -1,6 +1,6 @@
 const { Command } = require("discord-akairo");
 const config = require("../../config.json");
-const database = require("../../models/database");
+const { db } = require("../../models/db");
 const { cmdRestrictions } = require("../../utilities");
 
 class RecentCommand extends Command {
@@ -24,20 +24,21 @@ class RecentCommand extends Command {
     }
 
     exec(message, args) {
-        const embed = this.client.util
-            .embed()
-            .setTitle("Recently Played")
-            .setColor("GREEN")
+        const embed = this.client.util.embed()
+            .setColor("#FF69B4")
+            .setURL('https://lhwb.dev/recent.php')
 
-        database.recent.findAll({ order: [["id", "DESC"]], limit: 10 })
-            .then(async function (results) {
-                let songs = []
-                for (let i = 0; i < results.length; i++) {
-                    songs.push(`${i+1}. ${results[i].getDataValue("name")}`)
-                }
-                embed.setDescription(songs)
-                return message.channel.send(embed)
-            })
+        db.query("SELECT id, name FROM recent WHERE 1 ORDER BY id DESC LIMIT 11", function(err, rows) {
+            let playingSong = rows[0]['name'];
+            let recentSongs = "";
+            
+            for(let num = 1; num < rows.length; num++){ //starts with song 1 which was the most recent played before current
+                recentSongs = `${recentSongs} ${num}. ${rows[num]['name']}\n`
+            }
+            embed.setTitle(`Currently playing: ${playingSong}`)
+                .setDescription(`Recently Played:\n${recentSongs}`)
+            message.channel.send({embed});
+        });
     }
 }
 

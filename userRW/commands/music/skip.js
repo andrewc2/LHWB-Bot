@@ -1,6 +1,5 @@
 const { Command } = require("discord-akairo");
 const music = require("../../music");
-//const database = require("../../models/database");
 const { db } = require("../../models/db");
 const { cmdRestrictions } = require("../../utilities");
 

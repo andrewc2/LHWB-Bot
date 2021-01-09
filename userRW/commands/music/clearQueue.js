@@ -1,6 +1,7 @@
 const { Command } = require("discord-akairo");
 const database = require("../../models/database");
-const { cmdRestrictions } = require("../../utilities");
+const { db } = require("../../models/db");
+const { cmdRestrictions, log } = require("../../utilities");
 
 class ClearQueueCommand extends Command {
     constructor() {
@@ -23,12 +24,21 @@ class ClearQueueCommand extends Command {
     }
 
     async exec(message, args) {
-        const embed = message.client.util
-            .embed()
+        const embed = message.client.util.embed()
             .setColor("GREEN")
 
-        await database.queue.destroy({ truncate: true })
-        return message.channel.send(embed.setDescription("Queue has been cleared."))
+        db.query("SELECT COUNT(*) AS queueCount FROM queue", function(err, result){
+            if (err) throw err;
+            if(result[0].queueCount > 0) {
+                db.query("DELETE FROM queue"); //deletes entire queue.
+                message.channel.send(embed.setDescription(`The queue has been cleared 🧹.`));
+                log("Queue Purged at user request.");
+            } else {
+                message.channel.send(embed.setDescription(`The queue is already empty.`)
+                    .setColor('RED'));
+                log("Queue empty, nothing to purge.");
+            }
+        });
     }
 }
 

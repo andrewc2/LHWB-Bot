@@ -1,8 +1,7 @@
 const { Command } = require("discord-akairo");
-const { Op } = require("sequelize");
+const { MessageEmbed } = require("discord.js");
 const { DateTime } = require('luxon');
-
-const database = require("../../models/database");
+const { db } = require("../../models/db");
 
 class CountdownCommand extends Command {
     constructor() {
@@ -20,24 +19,23 @@ class CountdownCommand extends Command {
     }
 
     async exec(message, args) {
-        const embed = message.client.util
-            .embed()
+        const embed = new MessageEmbed()
             .setTitle("Countdowns")
             .setURL("https://www.taylorswift.com/events")
             .setColor(16711680)
 
         let allEvents = []
-        const events = await database.countdown.findAll({ order: [["startdate", "ASC"]], where: { enddate: { [Op.gt]: DateTime.local().setZone("America/New_York") }}})
+        const [rows] = await db.promise().query("SELECT * FROM `countdown` WHERE enddate > ? ORDER BY `startdate`", [DateTime.local().setZone("America/New_York").toString()])
 
-        for (const event of events.values()) {
-            const startDate = DateTime.fromISO(event.getDataValue("startdate").toISOString()).setZone('America/New_York')
-            const endTime = DateTime.fromISO(event.getDataValue("enddate").toISOString()).setZone('America/New_York').toFormat("ha")
+        for (const event of rows.values()) {
+            const startDate = DateTime.fromISO(event.startdate.toISOString()).setZone('America/New_York')
+            const endTime = DateTime.fromISO(event.enddate.toISOString()).setZone('America/New_York').toFormat("ha")
             if (startDate > DateTime.local().setZone("America/New_York")) {
                 const dateUntil = startDate.diff(DateTime.local().setZone('America/New_York')).toFormat("d 'Days' h 'Hours' m 'Minutes' s 'Seconds")
-                allEvents.push(`${event.getDataValue("name")} - ${startDate.toFormat("ccc L/d ha")}-${endTime} EST\n${dateUntil}`)
+                allEvents.push(`${event.name} - ${startDate.toFormat("ccc L/d ha")}-${endTime} EST\n${dateUntil}\n`)
             }
             else {
-                allEvents.push(`${event.getDataValue("name")} - ${startDate.toFormat("ccc L/d ha")}-${endTime} EST`)
+                allEvents.push(`${event.name} - ${startDate.toFormat("ccc L/d ha")}-${endTime} EST\n`)
             }
         }
         if (allEvents.length < 1) return message.channel.send(embed.setDescription("There are no events scheduled. :sob:"))

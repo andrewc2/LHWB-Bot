@@ -1,6 +1,7 @@
 const { Command } = require("discord-akairo");
-const database = require("../../models/database");
-const { commandUsage, cmdRestrictions } = require("../../utilities");
+const { db } = require("../../models/db");
+const { dequeue } = require("../../music");
+const { commandUsage, cmdRestrictions, log } = require("../../utilities");
 
 class DequeueCommand extends Command {
     constructor() {
@@ -39,14 +40,19 @@ class DequeueCommand extends Command {
             .embed()
             .setColor("GREEN")
 
-        const song = await database.queue.findOne({ where: { name: args.song }})
-        if (song) {
-            await song.destroy()
-            return message.channel.send(successEmbed.setDescription(`${song.getDataValue("name")} has been removed from the queue.`))
-        }
-        else {
-            return message.channel.send(failEmbed.setDescription("This song isn't in the queue at the moment."))
-        }
+        db.query("SELECT COUNT(*) AS queueCount FROM queue WHERE name = ?", [args.song], function(err, result){
+            if (err) throw err;
+            db.query("SELECT name FROM music WHERE name = ?", [args.song], function(err, rows) {        
+                if(result[0].queueCount > 0) {
+                    dequeue(args.song); //deletes the song from the queue.
+                    log(rows[0].name + " removed from queue.");
+                    return message.channel.send(successEmbed.setDescription(`${rows[0].name} has been removed from the queue.`))
+                } else {
+                    log(args.song + " not in queue.");
+                    return message.channel.send(failEmbed.setDescription(`This song isn't in the queue at the moment.`))                     
+                }
+            });
+        });
     }
 }
 

@@ -1,6 +1,6 @@
 const { Command } = require("discord-akairo");
-const Discord = require("discord.js");
-const { isMod } = require("../../utilities");
+const { MessageEmbed } = require("discord.js");
+const { isModNoVC } = require("../../utilities");
 
 class RestartCommand extends Command {
     constructor() {
@@ -29,7 +29,7 @@ class RestartCommand extends Command {
 
     exec(message) {
         console.log("LHWB user-music restarting!");
-        const embed = new Discord.MessageEmbed()
+        const embed = new MessageEmbed()
             .setColor(16711680) //red
             .setDescription(`LHWB user-music restarting!`);
         message.channel.send({embed}).then(() => process.exit(-1));
