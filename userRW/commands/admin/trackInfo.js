@@ -5,7 +5,7 @@ const { editDistance } = require("../../utilities");
 class TrackInfoCommand extends Command {
     constructor() {
         super("trackinfo", {
-            aliases: ["trackinfo"],
+            aliases: ["trackinfo, tinfo"],
             category: "admin",
             ownerOnly: true,
             description: {
@@ -34,18 +34,18 @@ class TrackInfoCommand extends Command {
             let result;
             let maxEditDist = 5;
             let minEditDist = maxEditDist;
-            database.music.findAll({ raw: true })
-                .then(function (songList) {
-                    for(let i = 0; i < songList.length; i++){
-                        editDistance(title, songList[i].name.toLowerCase(), function(tempDist){
-                            if(tempDist < minEditDist && tempDist <= maxEditDist){
-                                minEditDist = tempDist;
-                                result = songList[i]
-                            }
-                        });
-                    }
-                    callback(result);
-                })
+
+            database.db.query("SELECT * FROM `music`", function(err, songList) {
+                for(let i = 0; i < songList.length; i++){
+                    editDistance(title, songList[i]['name'].toLowerCase(), function(tempDist){
+                        if(tempDist < minEditDist && tempDist <= maxEditDist){
+                            minEditDist = tempDist;
+                            result = songList[i]
+                        }
+                    });
+                }
+                callback(result);
+            });
         }
 
         fuzzySearch(args.song, function fetchSong(result) {
