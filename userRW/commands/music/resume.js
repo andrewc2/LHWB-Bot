@@ -3,7 +3,7 @@ const { Command } = require("discord-akairo");
 class ResumeCommand extends Command {
     constructor() {
         super("resume", {
-            aliases: ["resume", "play"],
+            aliases: ["resume", "play", "lresume"],
             category: "music",
             channel: "guild",
             ownerOnly: true,

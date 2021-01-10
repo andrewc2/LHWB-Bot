@@ -4,14 +4,14 @@ const { isModNoVC } = require("../../utilities");
 
 class RestartCommand extends Command {
     constructor() {
-        super("umusicrestart", {
-            aliases: ["umusicrestart"],
+        super("urestart", {
+            aliases: ["urestart", "umusicrestart"],
             category: "utilities",
             description: {
                 content: "Restarts the bot",
-                usage: "umusicrestart",
+                usage: "urestart",
                 examples: [
-                    "umusicrestart'"
+                    "umusicrestart"
                 ]
             }
         });

@@ -5,7 +5,7 @@ const { editDistance } = require("../../utilities");
 class TrackInfoCommand extends Command {
     constructor() {
         super("trackinfo", {
-            aliases: ["trackinfo, tinfo"],
+            aliases: ["trackinfo", "tinfo"],
             category: "admin",
             ownerOnly: true,
             description: {
@@ -71,9 +71,7 @@ class TrackInfoCommand extends Command {
                 )
             }
         })
-
-
     }
 }
 
-module.exports = TrackInfoCommand
+module.exports = TrackInfoCommand;

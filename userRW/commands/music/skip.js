@@ -6,7 +6,7 @@ const { cmdRestrictions } = require("../../utilities");
 class SkipCommand extends Command {
     constructor() {
         super("skip", {
-            aliases: ["skip"],
+            aliases: ["skip", "lskip"],
             category: "music",
             channel: "guild",
             cooldown: 3000,

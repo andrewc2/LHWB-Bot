@@ -3,7 +3,7 @@ const { Command } = require("discord-akairo");
 class PauseCommand extends Command {
     constructor() {
         super("pause", {
-            aliases: ["pause"],
+            aliases: ["pause", "lpause"],
             category: "music",
             channel: "guild",
             ownerOnly: true,
