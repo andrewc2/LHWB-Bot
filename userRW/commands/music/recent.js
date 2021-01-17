@@ -19,7 +19,7 @@ class RecentCommand extends Command {
     }
 
     userPermissions(message) {
-        if (message.guild.id !== config.discord.serverID) return true;
+        if (message.guild.id !== config.discord.serverID) return "Server";
     }
 
     exec(message, args) {

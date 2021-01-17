@@ -29,6 +29,8 @@ class QueueCommand extends Command {
     }
 
     userPermissions(message) {
+        if (message.guild.id !== config.discord.serverID) return "Server";
+        if (!message.util.parsed.content) return null;
         return regularRestriction(message)
     }
 

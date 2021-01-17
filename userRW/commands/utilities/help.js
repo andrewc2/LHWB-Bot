@@ -27,9 +27,13 @@ class HelpCommand extends Command {
             .embed()
             .setAuthor(message.author.tag, message.author.displayAvatarURL({dynamic: true, format: "png"}), message.author.displayAvatarURL({dynamic: true, format: "png"}))
             .setTitle("Music Commands")
-            .setDescription(`Use ${anyUsage(message.guild, this.client, `${this.id} [command]`)} for further information. The full command list is available here: https://lhwb.dev/`)
+            .setDescription(`Use ${anyUsage(message.guild, this.client, `${this.id} [command]`)} for further information.\nThe full command list is available here: https://lhwb.dev/`)
             .addFields(
-                {name: "Music", value: "current, queue, dequeue, recent, skip"}
+                {name: "Music :musical_note:", value: "current, queue, dequeue, clearqueue, recent, skip, tracks, rankplays", inline: true},
+                {name: "Albums :musical_note:", value: "debut, beautifuleyes, fearless, speaknow, red, 1989, reputation, lover, folklore, evermore", inline: true},
+                {name: "Tours :musical_note:", value: "redguests, redsetlist, 1989ss, 1989guests, 1989setlist, repss, repguests, repsetlist", inline: true},
+                {name: "Other :wrench:", value: "countdown, gif, request, stream, wtny, danc, eyeroll", inline: true},
+                {name: "Utilities :wrench:", value: "urestart, uversion, lhelp", inline: true}
             )
             .setColor(message.member.displayHexColor)
 
