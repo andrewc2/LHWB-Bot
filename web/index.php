@@ -105,9 +105,9 @@ $server = empty($_GET['server']) ? PRIMARY_GUILD : $_GET['server'];
             !q/!queue [song]: Adds a song to the current queue (only available in #bots)<br />
             !tracks: Returns a link with all songs available on LHWB<br />
             !current: Displays the current song name along side the user who queued it<br />
-            !recent/!recentlyplayed: Displays the 10 most recently played songs<br />
-            !playcount [song]: Displays the play count for the specified song<br />
-            !rankplays [num]: Displays a list of length 'num' order by most played (default is 5)</p>
+            !recent: Displays the 10 most recently played songs<br />
+            <s>!playcount [song]: Displays the play count for the specified song</s> - Not done yet<br />
+            !rankplays [num]: Displays a list of length 'num' order by most played (default is 5, max of 25)</p>
             
             <h4>Album Commands</h4>
             <p>!taylorswift/!debut: Displays the track listing for Taylor Swift' (debut).<br />
@@ -118,28 +118,28 @@ $server = empty($_GET['server']) ? PRIMARY_GUILD : $_GET['server'];
             !1989: Displays the track listing for 1989.<br />
             !reputation: Displays the track listing for reputation.<br />
             !lover: Displays the track listing for Lover.<br />
-            !folklore: Displays the track listing for folklore.
+            !folklore: Displays the track listing for folklore.<br />
+            !evermore: Displays the track listing for evermore.
             </p>
             
             <h4>Misc Commands</h4>
-            <p>!lhelp: links to this website.<br />
+            <p>!lhelp: help lookup tool, as well as this website.<br />
             !danc: replies :thinking:.<br />
             !eyeroll: replies :rolling_eyes:.<br />
             !gif: replies with a random Taylor gif.<br />
-            !wtyn: sends the welcome to discord skyline gif.<br />
+            !wtny: sends the welcome to discord skyline gif.<br />
             !debtcounter: displays WetPatootie's current oof debt.<br />
             !stream/!livestream: information regarding the stream server.<br />
             !countdown: provides an embed of relevant Taylor countdowns.<br />
-            !lhelp: returns this website link.
+            !request [gif/album/song]: Logs a user's request for a bot feature or song/gif etc.
             </p>
             
             <h4>Last FM Commands</h4>
             <p>!lfm: displays an embed of your profile if set.<br />
-            !lfm @user: displays an embed of @user's profile if set.<br />
-            !lfm search lastfm_user: displays an embed of a requested lastfm user.<br />
-            !lfm set user: sets your lastfm profile.<br />
-            !lfm clear: clears your lastfm profile.<br />
-            !lfm -h: displays help dialog embed.
+            !lfm [user]: displays an embed of @user's profile if set.<br />
+            !lfm search [lastfm_user]: displays an embed of a requested lastfm user.<br />
+            !lfm set [lastfm_user]: sets your lastfm profile.<br />
+            !lfm clear: clears your lastfm profile.
             </p>
             
             <h4>Tour Commands</h4>
@@ -155,16 +155,15 @@ $server = empty($_GET['server']) ? PRIMARY_GUILD : $_GET['server'];
             </p>
             
             <h4>Mod Commands</h4>
-            <p><!--!ljoin [channel name]: Tells the bot to join a channel<br />-->
-            !lplay: Tells the bot to start playing music<br />
-            !lstop: Tells the bot to stop playing music<br />
+            <p>
+            !lpause: Tells the bot to start playing music<br />
+            !lresume: Tells the bot to stop playing music<br />
             !lskip: Skips the current song<br />
             !dq/!dequeue [song]: Removes a song from the queue<br />
             !cq/!clearqueue: Removes all songs from the current queue<br />
-            !musicversion: current version of the music bot<br />
-            !musicrestart: restarts the music bot<br />
-            !lversion: current version of the utility bot<br />
-            !lrestart: restarts the utility bot</p>
+            !lversion: current version of the bot<br />
+            !lrestart: restarts the bot
+            </p>
         </div>
     </body>
 </html>
