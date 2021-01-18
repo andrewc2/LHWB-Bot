@@ -1,4 +1,4 @@
-# Red-Bot
+# LosingHimWasBlue-Bot
 A bot for our Discord server.
 
 I do not guarantee stability when used on any other server, though it should work. It currently will only play music on one server at a time. Fully rewritten using discord.js.
@@ -6,19 +6,23 @@ I do not guarantee stability when used on any other server, though it should wor
 ### Requirements
 node.js
 
-Discord.js and Eris
+Discord.js + Akairo + DiscordJS/Opus
 
 ffmpeg for music
 
-mysql for songs and queues
+mysql2 for songs, queues, etc.
+
+sqlite + sqlite3 for bot settings
 
 ### Usage
 Uses mysql for storage of song information and playcount data, as well as recently played songs, and queues.
 
 ### Install Music Bot (using Ubuntu)
-`npm install discord.js --save`
+`npm install discord.js @discordjs/opus mysql2`
 
-`npm install eris mysql node-opus`
+`npm install discord-akairo`
+
+`npm install sqlite sqlite3`
 
 `npm install fs`
 
@@ -32,8 +36,7 @@ Edit `.bashrc` and add `export PATH="/usr/bin/ffmpeg:$PATH"` assuming ffmpeg was
 `source .bashrc` to save PATH
 
 ### Running
-`node rwNonMusic.js`
-`node lhwb-music.js`
+`node index.js`
 
-### Thanks to:
-FS(@swiftlyanerd), Adam (@louistio) for all the help!
+### Special Thanks to:
+username13, FS(@swiftlyanerd), Adam (@louistio), Historicc (@richmoj3), and Donran (@Donran). 
