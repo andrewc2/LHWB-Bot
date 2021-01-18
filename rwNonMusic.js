@@ -82,7 +82,7 @@ bot.on("message", message => {
             break;
            
         case "!lsay":
-            if(isMod(message))
+            if(isOwner(message))
                 lsayCommand(message, command);
             break;
                
@@ -198,11 +198,23 @@ bot.on("message", message => {
         case "!folklore":
             albumFolkloreCommand(message);
             break;
+                  
+        case "!evermore":
+            albumEvermoreCommand(message);
+            break;
         
         case "!queue":
         case "!q":
             if(message.channel.id == config.discord.botsChannel || (message.member.roles.cache.has(config.discord.repRole) && message.channel.id == config.discord.vcChannel) || isMod(message)) { //check if user is in bots or mod
                 queueSong(message, command, params);
+            }
+            break;
+
+        case "!queuealbum":
+        case "!qalbum":
+            //if((message.member.roles.cache.has(config.discord.repRole) && message.channel.id == config.discord.botsChannel) || isMod(message)) { //check if user is in bots or mod
+            if(isMod(message)) { //check if user is in bots or mod
+                queueAlbum(message, command, params);
             }
             break;
 
@@ -301,7 +313,7 @@ function trackCommand(message) {
     const embed = new Discord.MessageEmbed()
         .setColor(message.member.displayHexColor)
         .setAuthor("LosingHimWasBlue TrackList", bot.user.avatarURL)
-        .setDescription("The full requestable track list is here: https://lhwb.tay.rocks/lhwb.php");
+        .setDescription("The full requestable track list is here: https://lhwb.dev/lhwb.php");
 
     message.channel.send({embed});
 }
@@ -310,7 +322,7 @@ function helpCommand(message) {
     const embed = new Discord.MessageEmbed()
         .setColor(message.member.displayHexColor)
         .setAuthor("LosingHimWasBlue Commands", bot.user.avatarURL)
-        .setDescription("The full command list is available here: https://lhwb.tay.rocks/");
+        .setDescription("The full command list is available here: https://lhwb.dev/");
 
     message.channel.send({embed});
 }
@@ -521,7 +533,16 @@ function albumFolkloreCommand(message) {
         .setColor(12040119)
         .setAuthor("Taylor Swift", "https://red.ghst.in/ts.png", "https://en.wikipedia.org/wiki/Folklore_(Taylor_Swift_album)")
         .setThumbnail("https://i.imgur.com/oZvDEky.jpg")
-        .setDescription("**folklore** was released on __July 24, 2020__ \n\n1. the 1\n2. cardigan\n3. the last great american dynasty\n4. exile (featuring bon iver)\n5. my tears ricochet\n6. mirrorball\n7. seven\n8. august\n9. this is me trying\n10. illicit affairs\n11. invisible string\n12. mad woman\n13. epiphany\n14. betty\n15. peace\n16. hoax\nDeluxe 17. the lakes");
+        .setDescription("**folklore** was released on __July 24, 2020__ \n\n1. the 1\n2. cardigan\n3. the last great american dynasty\n4. exile (featuring Bon Iver)\n5. my tears ricochet\n6. mirrorball\n7. seven\n8. august\n9. this is me trying\n10. illicit affairs\n11. invisible string\n12. mad woman\n13. epiphany\n14. betty\n15. peace\n16. hoax\nDeluxe 17. the lakes");
+    message.channel.send({embed});
+}
+
+function albumEvermoreCommand(message) {
+    const embed = new Discord.MessageEmbed()
+        .setColor(12040119)
+        .setAuthor("Taylor Swift", "https://red.ghst.in/ts.png", "https://en.wikipedia.org/wiki/Evermore_(Taylor_Swift_album)")
+        .setThumbnail("https://i.imgur.com/YcHPqib.jpg")
+        .setDescription("**evermore** was released on __December 11, 2020__ \n\n1. willow\n2. champagne problems\n3. gold rush\n4. 'tis the damn season\n5. tolerate it\n6. no body, no crime (featuring Haim)\n7. happiness\n8. dorothea\n9. coney island (featuring The National)\n10. ivy\n11. cowboy like me\n12. long story short\n13. marjorie\n14. closure\n15. evermore (featuring Bon Iver)\nDeluxe\n16. right where you left me\n17. it's time to go");
     message.channel.send({embed});
 }
 
@@ -529,7 +550,7 @@ function versionCommand(message) {
     const embed = new Discord.MessageEmbed()
         .setColor(5218488)
         .setTitle("Patch Notes:")
-        .setAuthor(`Version: ${config.bot.version}`, 'https://red.ghst.in/ts.png', 'https://lhwb.tay.rocks/')
+        .setAuthor(`Version: ${config.bot.version}`, 'https://red.ghst.in/ts.png', 'https://lhwb.dev/')
         .setDescription(`${config.bot.patchnotes}`);
     message.channel.send({embed});
 }
@@ -572,14 +593,15 @@ function ts7CountdownCommand(message)
 
     lastCountdownUsage = Date.now();
 
-    
-    let end1 = new Date('10/21/2020 8:00 PM');
-    let event1 = "CMT Awards's (Taylor's Presenting) Wed 10/21 - 8PM-10:20PM EDT\n";
-    let end2 = new Date('06/01/2021 7:00 PM');
-    let event2 = "LoverFest? LoverFolkFest? FolkerFest? 2021 - June 2021\n";
+    let end2 = new Date('12/14/2020 11:35 PM');
+    let event2 = "Taylor on Kimmel ABC 12/14 - 11:35PM EST\n";
+    let end1 = new Date('03/14/2021 8:00 PM');
+    let event1 = "2020 Grammy Awards Ceremony Sun 3/14 - 8PM-11PM EST (Postponed)\n";
     let end3 = new Date('06/01/2021 7:00 PM');
-    let event3 = "LoverFest 2021 - June 2021\n";
-
+    let event3 = "LoverFest? LoverFolkFest? FolkerFest? 2021 - June 2021\n";
+    //let end3 = new Date('06/01/2021 7:00 PM');
+    //let event3 = "LoverFest 2021 - June 2021\n";
+//grammys 1/31 8pm et
 
     let _second = 1000;
     let _second2 = 1000;
@@ -627,7 +649,8 @@ function ts7CountdownCommand(message)
         .setColor(16711680)
         .setTitle(`Countdowns`)
         .setURL(`https://taylorswift.com`)     
-        .setDescription(event1 + days + " Days " + hours + " Hours " + minutes + " Minutes " + seconds + " Seconds \n\n" + event2 + days2 + " Days " + hours2 + " Hours " + minutes2 + " Minutes " + seconds2 + " Seconds\n\n"/*  + event3 + days3 + " Days " + hours3 + " Hours " + minutes3 + " Minutes " + seconds3 + " Seconds" */);
+        //.setDescription(event1 + days + " Days " + hours + " Hours " + minutes + " Minutes " + seconds + " Seconds \n\n" + event2 + days2 + " Days " + hours2 + " Hours " + minutes2 + " Minutes " + seconds2 + " Seconds\n\n"/*  + event3 + days3 + " Days " + hours3 + " Hours " + minutes3 + " Minutes " + seconds3 + " Seconds" */);
+        .setDescription(event1 + days + " Days " + hours + " Hours " + minutes + " Minutes " + seconds + " Seconds \n\n");
     message.channel.send({embed});
     cooldownMsgSent = false;
 }
@@ -802,6 +825,75 @@ function toggleQ(message) {
     }
 }
 
+function queueAlbum(message, cmd, album){
+    var voiceServerID = message.guild.id;
+    var user = message.author.username;
+
+    if (voiceServerID != config.discord.server) { //makes sure message is coming from the bot's voice server, prevents other places the main bot is in from interacting on the music side
+        log("Not correct voice server");
+        return;
+    }
+
+    if(cmd[1] == null){
+        if((cmd[0].toLowerCase() === "!qalbum") || (cmd[0].toLowerCase() === "!queuealbum")){
+            const embed = new Discord.MessageEmbed()
+                .setColor(16711680) //red
+                .setDescription(`You need to provide the album you wish to queue`)
+            message.channel.send({embed});
+        }
+    }else{
+        var title = album;
+        if (message.member.voice.channel) { //Checks if the user is in the same voice channel as the bot
+            if(title == "folklore"){
+                var sql = "INSERT INTO queue (name, path, queuedby) VALUES ?";
+                var values = [
+                    ['the 1', 'folklore/the 1.mp3', user],
+                    ['cardigan', 'folklore/cardigan.mp3', user],
+                    ['the last great american dynasty', 'folklore/the last great american dynasty.mp3', user],
+                    ['exile', 'folklore/exile.mp3', user],
+                    ['my tears ricochet', 'folklore/my tears ricochet.mp3', user],
+                    ['mirrorball', 'folklore/mirrorball.mp3', user],
+                    ['seven', 'folklore/seven.mp3', user],
+                    ['august', 'folklore/august.mp3', user],
+                    ['this is me trying', 'folklore/this is me trying.mp3', user],
+                    ['illicit affairs', 'folklore/illicit affairs.mp3', user],
+                    ['invisible string', 'folklore/invisible string.mp3', user],
+                    ['mad woman', 'folklore/mad woman.mp3', user],
+                    ['epiphany', 'folklore/epiphany.mp3', user],
+                    ['betty', 'folklore/betty.mp3', user],
+                    ['peace', 'folklore/peace.mp3', user],
+                    ['hoax', 'folklore/hoax.mp3', user],
+                    ['the lakes', 'folklore/the lakes.mp3', user],
+                ];
+
+                db.query(sql, [values], function(err) {
+                    if (err) throw err;
+                });
+
+                const embed = new Discord.MessageEmbed()
+                    .setColor('#FF69B4') //pink
+                    .setDescription(`The album: ${title}, has been added to the queue, note that if any songs from this album were already queued when they play the first time they will be removed from later in the queue as well (I'm not sure how to fix this yet).`)
+                message.channel.send({embed});
+                log(`folklore album Queued By: ${user}`);
+             
+            }else{
+                const embed = new Discord.MessageEmbed()
+                    .setColor(16711680) //red
+                    .setDescription(`That album is not available to bulk queue yet.`);
+                message.channel.send({embed});
+            }
+        } else {
+            const embed = new Discord.MessageEmbed()
+                .setColor(16711680) //red
+                .setDescription(`You must be in the Red voice channel to queue music.`);
+            message.channel.send({embed});
+            log("Attempting to queue while not in the Voice Channel.");
+        }
+    }
+}
+
+
+
 //puts puts songs into a queue database
 function queueSong(message, cmd, song){
     var voiceServerID = message.guild.id;
@@ -877,7 +969,7 @@ function printQueue(message){
                         .setColor('#FF69B4') //pink
                         .setTitle(`Currently playing: ${playingSong}`)
                         .setDescription(`Queued for play:\n${songQueue}`)
-                        .setURL('https://lhwb.tay.rocks/queue.php')
+                        .setURL('https://lhwb.dev/')
                     message.channel.send({embed});
                 } else {
                     const embed = new Discord.MessageEmbed()
@@ -987,7 +1079,7 @@ function recentlyPlayedCommand(message) {
             .setColor('#FF69B4') //pink
             .setTitle(`Currently playing: ${playingSong}`)
             .setDescription(`Recently Played:\n${recentSongs}`)
-            .setURL('https://lhwb.tay.rocks/recent.php')
+            .setURL('https://lhwb.dev/recent.php')
         message.channel.send({embed});
     });
 }
@@ -1011,7 +1103,7 @@ function rankPlaysCommand(message, listNum) {
             .setColor('#FF69B4')
             .setTitle('Ranked Plays:')
             .setDescription(rankedPlays)
-            .setURL('https://lhwb.tay.rocks/recent.php')
+            .setURL('https://lhwb.dev/recent.php')
         message.channel.send({embed});
     });
 }
