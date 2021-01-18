@@ -4,14 +4,14 @@ const { db } = require("../../models/db");
 
 class VersionCommand extends Command {
     constructor() {
-        super("uversion", {
-            aliases: ["uversion"],
+        super("lversion", {
+            aliases: ["lversion","uversion"],
             category: "utilities",
             description: {
                 content: "Displays version information for the bot",
-                usage: "uversion",
+                usage: "lversion",
                 examples: [
-                    "uversion"
+                    "lversion"
                 ]
             }
         });

@@ -1,6 +1,7 @@
 const { Command } = require("discord-akairo");
 const { MessageEmbed } = require("discord.js");
 const { db } = require("../../models/db");
+const { commandUsage } = require("../../utilities");
 
 class requestCommand extends Command {
     constructor() {
@@ -9,15 +10,17 @@ class requestCommand extends Command {
             category: "other",
             description: {
                 content: "Request something be added to the bot",
-                usage: "request",
+                usage: "request [song/gif/feature]",
                 examples: [
-                    "Request [song/gif/feature]"
+                    "request More Lorde songs"
                 ]
             },
             args: [
                 {
                     id: 'request',
-                    type: 'string'
+                    type: 'string',
+                    match: 'content',
+                    otherwise: message => commandUsage(this.id, message.guild, message.client, this.description.usage)
                 }
             ]
         });

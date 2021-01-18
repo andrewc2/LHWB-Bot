@@ -18,6 +18,7 @@ class ReloadCommand extends Command {
                 {
                     id: "command",
                     type: Argument.union("commandAlias", "listener"),
+                    match: "content",
                     otherwise: message => commandUsage(this.id, message.guild, message.client, this.description.usage)
                 }
             ]

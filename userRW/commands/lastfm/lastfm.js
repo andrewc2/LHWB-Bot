@@ -1,8 +1,7 @@
 const { Command, Flag } = require("discord-akairo");
 const { MessageEmbed } = require("discord.js");
 const { db } = require("../../models/db");
-const { fetchFM } = require("./lastfm.js");
-const { time } = require("../../utilities.js");
+const { fetchFM } = require("./fmUtilities.js");
 
 class LastFMCommand extends Command {
     constructor() {
@@ -38,42 +37,16 @@ class LastFMCommand extends Command {
         return { user }
     }
     exec(message, args) {
-        message.channel.send('lfm test hi');
-        if (args.user == null) {
-            db.query("SELECT * FROM lastfm WHERE discordID=?", [message.author.id], function(err, rows) {
-                if (rows[0] == null) {
-                    const embed = new MessageEmbed()
-                        .setColor(message.member.displayHexColor)
-                        .setDescription(`Uh oh! Looks like you have not saved your last.fm username.\nYou can set it by typing \`!lfm set <username>\`.`);
-
-                    message.channel.send({embed});
-                } else {
-                    fetchFM(message, rows[0]['lastfmUsername']);
-                }
-            });
-        } else {
-            try {
-                const mentionedUser = message.mentions.members.first();
-    
-                db.query("SELECT * FROM lastfm WHERE discordID=?", [mentionedUser.user.id], function(err, rows) {
-                    if (rows[0] == null) {
-                        const embed = new MessageEmbed()
-                            .setColor(message.member.displayHexColor)
-                            .setDescription(`Uh oh! Looks like ${message.guild.cache.member(mentionedUser).displayName} has not saved their last.fm username.\nThey may set it by typing \`!lfm set <username\`.`);
-    
-                        message.channel.send({embed});
-                    } else {
-                        fetchFM(message, rows[0]['lastfmUsername']);
-                    }
-                });
-            } catch (err) {
-                console.log(`${time()} - ${err}`);
+        db.query("SELECT * FROM lastfm WHERE discordID=?", [args.user.id], function(err, rows) {
+            if (rows[0] == null) {
                 const embed = new MessageEmbed()
-                    .setColor(message.member.displayHexColor)
-                    .setDescription(`Uh oh! Looks like you forgot to mention the user you want to look up.\nIf you don't want to mention a user, try using \`!lfm search <username>\``);
+                    .setColor('RED')
+                    .setDescription(`Uh oh! Looks like you have not saved your last.fm username.\nYou can set it by typing \`!lfm set <username>\`.`);
                 message.channel.send({embed});
+            } else {
+                fetchFM(message, rows[0]['lastfmUsername']);
             }
-        }
+        });
     }
 }
 

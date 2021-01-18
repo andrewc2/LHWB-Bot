@@ -1,7 +1,7 @@
 const { Command } = require("discord-akairo");
 const { MessageEmbed } = require("discord.js");
 const { commandUsage } = require("../../utilities");
-const { fetchFM } = require("./lastfm.js");
+const { fetchFM } = require("./fmUtilities.js");
 
 class LastFMSearchCommand extends Command {
     constructor() {
@@ -26,14 +26,7 @@ class LastFMSearchCommand extends Command {
     }
 
     exec(message, args) {
-        if (args.username == null) {
-            const embed = new MessageEmbed()
-                .setColor('#FF69B4')
-                .setDescription(`Uh oh! Looks like you forgot to give me a last.fm username to look up.\nTry \`!lfm search <username>\``);
-            message.channel.send({embed});
-        } else {
-            fetchFM(message, args.username);
-        }
+        fetchFM(message, args.username);
     }
 }
 

@@ -14,14 +14,14 @@ function fetchFM(message, target) {
     }, function (err, recentTracks) {
         if (err) { console.log(err); }
         try {
-            const nowPlaying = false;
-            const status = "";
+            let nowPlaying = false;
+            let status = "";
             try {
                 if (recentTracks.track[0]["@attr"].nowplaying) {
                     nowPlaying = true;
                 }
             } catch (undef) { // undefined
-                console.log(undef);
+                //console.log(undef);
             }
 
             switch (nowPlaying) {
@@ -33,7 +33,7 @@ function fetchFM(message, target) {
                     break;
             }
             const embed = new MessageEmbed()
-                .setColor(message.member.displayHexColor)
+                .setColor('#FF69B4')
                 .setAuthor(target, `https://i.imgur.com/x5AhTlq.png`, `https://www.last.fm/user/${recentTracks["@attr"].user}`)
                 .addField(`${status} Song`, `${recentTracks.track[0].name}`, true)
                 .addField(`${status} Artist`, `${recentTracks.track[0].artist["#text"]}`, true)
@@ -48,14 +48,14 @@ function fetchFM(message, target) {
                     embed.setFooter(`Total Scrobbles: ${recentTracks["@attr"].total} - Last scrobbled on: ${recentTracks.track[0].date["#text"]} (UTC)`);
                 }
             message.channel.send({embed});
-            console.log("Track 0: " + recentTracks.track[0].name);
-            console.log("Track 1: " + recentTracks.track[1].name);
-            console.log(`${recentTracks.track[0].image[3]["#text"]}`);
+            //console.log("Track 0: " + recentTracks.track[0].name);
+            //console.log("Track 1: " + recentTracks.track[1].name);
+            //console.log(`${recentTracks.track[0].image[3]["#text"]}`);
             
         } catch (unf) { // user not found
-            console.log(unf);              
+            //console.log(unf);              
             const embed = new MessageEmbed()
-                .setColor(message.member.displayHexColor)
+                .setColor('RED')
                 .setDescription(`${target} is either not a last.fm user, has not scrobbled any songs yet, or the API is down, try again later if the user is definitely correct!`);
 
             message.channel.send({embed});
@@ -63,4 +63,4 @@ function fetchFM(message, target) {
     });
 }
 
-module.exports = fetchFM;
+module.exports = { fetchFM }

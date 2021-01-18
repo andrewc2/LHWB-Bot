@@ -18,6 +18,7 @@ class DisableCommand extends Command {
                 {
                     id: "command",
                     type: "commandAlias",
+                    match: "content",
                     otherwise: message => commandUsage(this.id, message.guild, message.client, this.description.usage)
                 }
             ]

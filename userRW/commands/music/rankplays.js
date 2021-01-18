@@ -13,7 +13,7 @@ class rankPlaysCommand extends Command {
                 content: "Shows a ranking of the most played songs. (Limited to a max of 25 songs)",
                 usage: "rankplays [number 5-25, defaults to 5]",
                 examples: [
-                    "rankplays 5"
+                    "rankplays 13"
                 ]
             },
             args: [

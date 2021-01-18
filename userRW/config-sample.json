@@ -5,6 +5,7 @@
     "serverID": "",
     "botsChannel": "",
     "fs": "",
+		"patootie": "",
     "repRole": "",
     "subRedditMod": "",
     "mod": "",
@@ -17,5 +18,9 @@
     "password": "",
     "database": "",
     "host": ""
+  },
+  "lastfm": {
+    "lfmAPIKey": "",
+    "lfmAPISecret": ""
   }
 }
