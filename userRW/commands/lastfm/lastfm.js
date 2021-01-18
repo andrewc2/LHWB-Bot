@@ -2,6 +2,7 @@ const { Command, Flag } = require("discord-akairo");
 const { MessageEmbed } = require("discord.js");
 const { db } = require("../../models/db");
 const { fetchFM } = require("./lastfm.js");
+const { time } = require("../../utilities.js");
 
 class LastFMCommand extends Command {
     constructor() {
@@ -34,11 +35,11 @@ class LastFMCommand extends Command {
         };
 
         if (method) return Flag.continue(method)
-        return { username }
+        return { user }
     }
     exec(message, args) {
         message.channel.send('lfm test hi');
-        if (args.username == null) {
+        if (args.user == null) {
             db.query("SELECT * FROM lastfm WHERE discordID=?", [message.author.id], function(err, rows) {
                 if (rows[0] == null) {
                     const embed = new MessageEmbed()
