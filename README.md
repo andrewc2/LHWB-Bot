@@ -18,7 +18,7 @@ sqlite + sqlite3 for bot settings
 Uses mysql for storage of song information and playcount data, as well as recently played songs, and queues.
 
 ### Install Music Bot (using Ubuntu)
-`npm install discord.js @discordjs/opus mysql2`
+`npm install discord.js @discordjs/opus mysql2 luxon`
 
 `npm install discord-akairo`
 
