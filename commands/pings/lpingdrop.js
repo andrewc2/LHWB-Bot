@@ -1,7 +1,7 @@
 const { Command } = require("discord-akairo");
 const { MessageEmbed } = require("discord.js");
 const { db } = require("../../models/db");
-const { commandUsage } = require("../../utilities");
+const { commandUsage, log} = require("../../utilities");
 
 class LPingDropCommand extends Command {
     constructor() {
@@ -26,20 +26,28 @@ class LPingDropCommand extends Command {
     }
 
     exec(message, args) {
-        if (args.list == 'chase' || 'chasegang'){
-            let chase = 0;
-            db.query(
-                "UPDATE pings SET chase=? WHERE discordID=?",[chase, message.author.id], function (err, result) {
-                    if (err) throw err;
-                        console.log(result);
-                });
-            const embed = new MessageEmbed()
-                .setColor('#FF69B4')
-                .setDescription(`You have dropped ${args.list}.`);
-            message.channel.send({embed});
+        if (args.list === 'chase' || args.list === 'chasegang'){
+            db.query("SELECT * FROM `pings` WHERE discordID=?", [message.author.id], function(err, rows) {
+                if ( rows[0].chase === 1 ) {
+                    db.query(
+                        "UPDATE pings SET chase=? WHERE discordID=?",['0', message.author.id], function (err, result) {
+                            if (err) throw err;
+                                console.log(result);
+                        });
+                    const embed = new MessageEmbed()
+                        .setColor('#FF69B4')
+                        .setDescription(`You have dropped ${args.list}.`);
+                    message.channel.send({embed});
+                } else {
+                    const embed = new MessageEmbed()
+                        .setColor('RED')
+                        .setDescription(`You didn't have ${args.list}.`);
+                    message.channel.send({embed});
+                }
+            });
         } else {
             const embed = new MessageEmbed()
-                .setColor('Red')
+                .setColor('RED')
                 .setDescription(`There is currently no ping by that name.`);
             message.channel.send({embed});
         }        

@@ -1,6 +1,7 @@
 const { Command, Flag } = require("discord-akairo");
 const { MessageEmbed } = require("discord.js");
 const { db } = require("../../models/db");
+const { anyUsage, log } = require("../../utilities");
 
 class LPingCommand extends Command {
     constructor() {
@@ -40,7 +41,7 @@ class LPingCommand extends Command {
             if (rows[0] == null) {
                 const embed = new MessageEmbed()
                     .setColor('RED')
-                    .setDescription(`Uh oh! Looks like you're not part of any lists.\nYou can set it by typing \`!lping get <ping>\`.`);
+                    .setDescription(`Uh oh! Looks like you're not part of any lists.\nYou can set it by typing ${anyUsage(message.guild, message.client, 'lping get [list name]')}`);
                 message.channel.send({embed});
             } else {
                 if (rows[0].chase == 1)
@@ -50,7 +51,7 @@ class LPingCommand extends Command {
 
                 const embed = new MessageEmbed()
                     .setAuthor(message.author.tag, message.author.displayAvatarURL({dynamic: true, format: "png"}), message.author.displayAvatarURL({dynamic: true, format: "png"}))
-                    .setColor(16711680)
+                    .setColor('#FF69B4')
                     .setTitle('Pings Available')
                     .addField('Chase', pinglist, true)
                 message.channel.send({embed});
