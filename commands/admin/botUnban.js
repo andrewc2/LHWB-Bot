@@ -1,12 +1,11 @@
 const { Command, Argument } = require('discord-akairo');
-const { commandUsage } = require("../../utilities");
+const { commandUsage, isModNoVC } = require("../../utilities");
 
 class BotUnbanCommand extends Command {
     constructor() {
         super("botunban", {
             aliases: ["botunban", "bunban"],
             category: "bot",
-            ownerOnly: true,
             description: {
                 content: "Unbans a user or server from using the bot.",
                 usage: "botunban <user|guild>",
@@ -22,6 +21,10 @@ class BotUnbanCommand extends Command {
                 }
             ]
         });
+    }
+
+    userPermissions(message) {
+        return isModNoVC(message)
     }
 
     exec(message, args) {

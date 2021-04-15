@@ -1,12 +1,15 @@
 const { Command } = require("discord-akairo");
 const { MessageEmbed } = require("discord.js");
-const { isModNoVC } = require("../../utilities");
+//const { isModNoVC } = require("../../utilities");
+const { cmdRestrictions } = require("../../utilities");
 
 class RestartCommand extends Command {
     constructor() {
         super("lrestart", {
             aliases: ["lrestart", "urestart", "umusicrestart"],
             category: "utilities",
+            cooldown: 3000,
+            ratelimit: 1,
             description: {
                 content: "Restarts the bot",
                 usage: "lrestart",
@@ -18,7 +21,7 @@ class RestartCommand extends Command {
     }
 
     userPermissions(message) {
-        return isModNoVC(message)
+        return cmdRestrictions(message)
     }
 
     exec(message) {

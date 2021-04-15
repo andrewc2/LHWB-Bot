@@ -6,7 +6,7 @@ const { db } = require("../../models/db");
 class CountdownCommand extends Command {
     constructor() {
         super("countdown", {
-            aliases: ["countdown"],
+            aliases: ["countdown","taysoon"],
             category: "other",
             description: {
                 content: "Countdown to events.",
@@ -29,13 +29,13 @@ class CountdownCommand extends Command {
 
         for (const event of rows.values()) {
             const startDate = DateTime.fromISO(event.startdate.toISOString()).setZone('America/New_York')
-            const endTime = DateTime.fromISO(event.enddate.toISOString()).setZone('America/New_York').toFormat("ha")
+            const endTime = DateTime.fromISO(event.enddate.toISOString()).setZone('America/New_York').toFormat("h:mma")
             if (startDate > DateTime.local().setZone("America/New_York")) {
                 const dateUntil = startDate.diff(DateTime.local().setZone('America/New_York')).toFormat("d 'Days' h 'Hours' m 'Minutes' s 'Seconds")
-                allEvents.push(`${event.name} - ${startDate.toFormat("ccc L/d ha")}-${endTime} EST\n${dateUntil}\n`)
+                allEvents.push(`${event.name} - ${startDate.toFormat("ccc L/d h:mma")}-${endTime} EST\n${dateUntil}\n`)
             }
             else {
-                allEvents.push(`${event.name} - ${startDate.toFormat("ccc L/d ha")}-${endTime} EST\n`)
+                allEvents.push(`${event.name} - ${startDate.toFormat("ccc L/d h:mma")}-${endTime} EST\n`)
             }
         }
         if (allEvents.length < 1) return message.channel.send(embed.setDescription("There are no events scheduled. :sob:"))

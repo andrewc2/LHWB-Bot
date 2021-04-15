@@ -1,13 +1,12 @@
 const { Command, Argument } = require("discord-akairo");
 const config = require("../../config.json");
-const { commandUsage } = require("../../utilities");
+const { commandUsage, isModNoVC } = require("../../utilities");
 
 class BotBanCommand extends Command {
     constructor() {
         super("botban", {
             aliases: ["botban", "bban"],
             category: "admin",
-            ownerOnly: true,
             description: {
                 content: "Bans a user or server from using the bot.",
                 usage: "botban <user|guild>",
@@ -23,6 +22,10 @@ class BotBanCommand extends Command {
                 }
             ]
         });
+    }
+    
+    userPermissions(message) {
+        return isModNoVC(message)
     }
 
     exec(message, args) {

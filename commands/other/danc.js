@@ -16,7 +16,7 @@ class dancCommand extends Command {
     }
 
     exec(message) {
-        message.channel.send(`:thinking:`);
+        message.channel.send(`:thinking: :partying_face: :tada:`);
     }
 }
 

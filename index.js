@@ -8,7 +8,7 @@ class Client extends AkairoClient {
     constructor() {
         super({
             ownerID: config.discord.ownerID,
-            disableMentions: "all"
+            disableMentions: "everyone"
         });
 
         this.settings = new SQLiteProvider(sqlite.open({ filename: path.join(__dirname, "settings.sqlite3"), driver: sqlite3.Database }), 'bot', {

@@ -4,7 +4,7 @@ const { MessageEmbed } = require("discord.js");
 class TracksCommand extends Command {
     constructor() {
         super("tracks", {
-            aliases: ["tracks"],
+            aliases: ["tracks", "track", "tracklist"],
             category: "music",
             cooldown: 3000,
             ratelimit: 1,
@@ -21,8 +21,8 @@ class TracksCommand extends Command {
     exec(message, args) {
         const embed = new MessageEmbed()
             .setAuthor(`${message.client.user.username} TrackList`, message.client.user.displayAvatarURL({ dynamic: true, format: "png" }), message.client.user.displayAvatarURL({ dynamic: true, format: "png" }))
-            .setDescription("The full requestable track list is here: https://lhwb.tay.rocks/lhwb.php")
-            .setColor(message.member.displayHexColor)
+            .setDescription("The full requestable track list is here: https://lhwb.dev/lhwb.php")
+            .setColor('#9979FF')
         return message.channel.send(embed);
     }
 }

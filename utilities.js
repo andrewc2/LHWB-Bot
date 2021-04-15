@@ -48,6 +48,15 @@ function cmdRestrictions(message) {
     return "Role";
 }
 
+function cmdRestrictionsNoVC(message) {
+    if (message.guild.id !== config.discord.serverID) return "Server";
+    if (modRoleCheck(message)) return null;
+    if (message.member.roles.cache.some(role => role.id === config.discord.repRole)) {
+        return null;
+    }
+    return "Role";
+}
+
 function isVoiceChannel(message) {
     const botVoice = message.client.voice.connections.array()[0].channel.id
     const memberChannel = message.member.voice.channel
@@ -104,4 +113,4 @@ function time() {
     return date.toLocaleString();
 }
 
-module.exports = { anyUsage, commandUsage, cmdRestrictions, regularRestriction, isMod, isModNoVC, editDistance, log, time }
+module.exports = { anyUsage, commandUsage, cmdRestrictions, cmdRestrictionsNoVC, regularRestriction, isMod, isModNoVC, editDistance, log, time }

@@ -20,7 +20,7 @@ class QueueAlbumCommand extends Command {
             args: [
                 {
                     id: "album",
-                    type: ["reputation", "evermore"],
+                    type: ["1989", "reputation", "folklore", "evermore", "fearlesstv"],
                     otherwise: message => commandUsage(this.id, message.guild, message.client, this.description.usage)
                 }
             ]
