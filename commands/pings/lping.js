@@ -2,6 +2,7 @@ const { Command, Flag } = require("discord-akairo");
 const { MessageEmbed } = require("discord.js");
 const { db } = require("../../models/db");
 const { anyUsage } = require("../../utilities");
+const config = require("../../config.json");
 
 class LPingCommand extends Command {
     constructor() {
@@ -44,9 +45,12 @@ class LPingCommand extends Command {
         if (!message.util.parsed.content) return null;
         if (message.guild.id === config.discord.serverID) {
             if (message.member.roles.cache.some(role => role.id === config.discord.repRole)) return null;
+            return "Role";
+        } else if (message.member.hasPermission('MANAGE_MESSAGES')) {
+            return null; 
+        } else {
             return "Role"
         }
-        return null;
     }
 
     exec(message, args) {

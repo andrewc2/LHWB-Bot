@@ -30,7 +30,7 @@ class LPingCreateCommand extends Command {
     exec(message, args) {
         const failedEmbed = new MessageEmbed()
             .setColor('RED')
-            .setDescription(`Uh oh! Looks like this pinglists already exist.\nYou can can view available pinglists in this server by doing ${anyUsage(message.guild, message.client, 'lping list')}`);
+            .setDescription(`Uh oh! Looks like this pinglist already exists.\nYou can can view available pinglists in this server by doing ${anyUsage(message.guild, message.client, 'lping list')}`);
 
         const embed = new MessageEmbed()
             .setColor('#FF69B4')
