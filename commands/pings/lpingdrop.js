@@ -1,23 +1,24 @@
 const { Command } = require("discord-akairo");
 const { MessageEmbed } = require("discord.js");
 const { db } = require("../../models/db");
-const { commandUsage, log} = require("../../utilities");
+const { commandUsage, anyUsage } = require("../../utilities");
 
 class LPingDropCommand extends Command {
     constructor() {
         super("lpingdrop", {
             aliases: ["lping drop"],
             category: "ping",
+            channel: "guild",
             description: {
-                content: "Removes user from the specified ping list.",
-                usage: "lping drop [list name]",
+                content: "Removes a user from the specified pinglist.",
+                usage: "lping drop [name]",
                 examples: [
                     "lping drop chase"
                 ]
             },
             args: [
                 {
-                    id: 'list',
+                    id: 'name',
                     type: 'lowercase',
                     otherwise: message => commandUsage(this.id, message.guild, message.client, this.description.usage)
                 }
@@ -26,31 +27,23 @@ class LPingDropCommand extends Command {
     }
 
     exec(message, args) {
-        if (args.list === 'chase' || args.list === 'chasegang'){
-            db.query("SELECT * FROM `pings` WHERE discordID=?", [message.author.id], function(err, rows) {
-                if ( rows[0].chase === 1 ) {
-                    db.query(
-                        "UPDATE pings SET chase=? WHERE discordID=?",['0', message.author.id], function (err, result) {
-                            if (err) throw err;
-                                console.log(result);
-                        });
-                    const embed = new MessageEmbed()
-                        .setColor('#FF69B4')
-                        .setDescription(`You have dropped ${args.list}.`);
-                    message.channel.send({embed});
-                } else {
-                    const embed = new MessageEmbed()
-                        .setColor('RED')
-                        .setDescription(`You didn't have ${args.list}.`);
-                    message.channel.send({embed});
-                }
-            });
-        } else {
-            const embed = new MessageEmbed()
-                .setColor('RED')
-                .setDescription(`There is currently no ping by that name.`);
-            message.channel.send({embed});
-        }        
+        const failedEmbed = new MessageEmbed()
+            .setColor('RED')
+            .setDescription(`Uh oh! Looks like this pinglists does not exist.\nYou can can view available pinglists in this server by doing ${anyUsage(message.guild, message.client, 'lping list')}`);
+
+        const embed = new MessageEmbed()
+            .setAuthor(message.author.tag, message.author.displayAvatarURL({dynamic: true, format: "png"}), message.author.displayAvatarURL({dynamic: true, format: "png"}))
+            .setColor('#FF69B4')
+
+        db.query("SELECT `name`, `guildID` FROM Ping WHERE name = ? AND guildID = ?", [args.name, message.guild.id], function (err, result, fields) {
+            if (err) return;
+            if (result.length < 1) return message.channel.send(failedEmbed)
+            db.query("SELECT u.userID, p.pingID, p.name FROM User as u INNER JOIN UserPing as up ON u.userID = up.userID INNER JOIN Ping as p ON p.pingID = up.pingID WHERE p.guildID = ? AND up.userID = ? AND p.name = ?", [message.guild.id, message.author.id, args.name], function (err, result, fields) {
+                if (result.length < 1) return message.channel.send(failedEmbed.setDescription(`You are not apart of the ${args.name} pinglist in this server.`))
+                db.query("DELETE UserPing FROM UserPing INNER JOIN User as u On UserPing.userID = u.userID INNER JOIN Ping as p on UserPing.pingID = p.pingID WHERE p.guildID = ? AND u.userID = ? AND p.name = ?", [message.guild.id, message.author.id, args.name])
+                return message.channel.send(embed.setDescription(`You have been successfully removed from the ${args.name} pinglist.`))
+            })
+        })
     }
 }
 
