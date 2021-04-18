@@ -37,7 +37,7 @@ class LPingCommand extends Command {
             ]
         };
 
-        if (method) return Flag.continue(method)
+        if (method) return Flag.continue(method, true);
         return { pinglist }
     }
 
