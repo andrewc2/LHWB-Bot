@@ -41,7 +41,7 @@ class LPingCommand extends Command {
         return { pinglist }
     }
 
-    userPermissions(message) {
+    /* userPermissions(message) {
         if (!message.util.parsed.content) return null;
         if (message.guild.id === config.discord.serverID) {
             if (message.member.roles.cache.some(role => role.id === config.discord.repRole)) return null;
@@ -51,7 +51,7 @@ class LPingCommand extends Command {
         } else {
             return "Role"
         }
-    }
+    } */
 
     exec(message, args) {
         const failedEmbed = new MessageEmbed()
@@ -89,7 +89,7 @@ class LPingCommand extends Command {
                             })
                             .catch(() => {})
                     }
-                    if (users < 2) return message.channel.send(failedEmbed.setDescription("It looks like nobody has this pinglist assigned. :confused:"))
+                    if (users.length < 2) return message.channel.send(failedEmbed.setDescription("It looks like nobody has this pinglist assigned. :confused:"))
                     const sendList = users.join(` `).toString()
                     for (let i = 0; i < sendList.length; i += 2040) {
                         const toSend = sendList.substring(i, Math.min(sendList.length, i + 2040));
@@ -100,9 +100,13 @@ class LPingCommand extends Command {
         }
 
         if (args.pinglist === '') {
-            standard()
+            standard();
         } else {
-            ping()
+            //ping()
+            if (message.guild.id === config.discord.serverID) {
+                if (message.member.roles.cache.some(role => role.id === config.discord.repRole)) return ping();
+                standard();
+            }
         }
     }
 }

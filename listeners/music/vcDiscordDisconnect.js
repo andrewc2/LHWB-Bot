@@ -18,7 +18,7 @@ class VCDiscordDisconnectListener extends Listener {
         const result = await music.searchQueue() || await music.randomSong();
         channel.join()
             .then(async connection => {
-                console.log("Reconnected to voice channel.")
+                console.log("Reconnected to voice channel. - Discord Disconnect")
                 connection.play(broadcast)
                 setTimeout(function () { music.autoPlay(result, broadcast.client) }, 1000)
             })

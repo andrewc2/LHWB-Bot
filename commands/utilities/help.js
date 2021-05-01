@@ -35,7 +35,8 @@ class HelpCommand extends Command {
                 {name: "Tours :ticket:", value: "redguests, redsetlist, 1989ss, 1989guests, 1989setlist, repss, repguests, repsetlist", inline: true},
                 {name: "Other :wrench:", value: "countdown, danc, debtcounter, eyeroll, gif, request, stream, wtny", inline: true},
                 {name: "Last.FM :notes:", value: "lfm, lfm [user], lfm clear, lfm search [user], lfm set [user]", inline: true},
-                {name: "Utilities :gear:", value: "lrestart, lversion, lhelp", inline: true}
+                {name: "Utilities :gear:", value: "lrestart, lversion, lhelp", inline: true},
+                {name: "Pinglists :rotating_light:", value: "lping list, lping get [list name], lping drop [list name], lping (shows lists you're on), lping [list to ping], lping create [list name], lping delete [list name]", inline: true}
             )
             .setColor(message.member.displayHexColor)
 

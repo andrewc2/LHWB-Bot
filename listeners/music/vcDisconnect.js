@@ -16,7 +16,7 @@ class VCDisconnectListener extends Listener {
             function disconnect(client) {
                 channel.join()
                     .then(connection => {
-                        console.log("Reconnected to voice channel.");
+                        console.log("Reconnected to voice channel. - Disconnect");
                         const broadcast = client.voice.broadcasts[0]
                         connection.play(broadcast)
                     })
