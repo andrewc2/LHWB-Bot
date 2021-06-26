@@ -38,7 +38,7 @@ class HelpCommand extends Command {
                 {name: "Utilities :gear:", value: "lrestart, lversion, lhelp", inline: true},
                 {name: "Pinglists :rotating_light:", value: "lping list, lping get [list name], lping drop [list name], lping (shows lists you're on), lping [list to ping], lping create [list name], lping delete [list name]", inline: true}
             )
-            .setColor(message.member.displayHexColor)
+            .setColor('#FF69B4')
 
         if (!args.command || args.command.id === "lhelp") {
             return message.channel.send(musicCommands)
@@ -49,7 +49,7 @@ class HelpCommand extends Command {
                 .setAuthor(message.author.tag, message.author.displayAvatarURL({dynamic: true, format: "png"}), message.author.displayAvatarURL({dynamic: true, format: "png"}))
                 .setTitle(args.command.id)
                 .setDescription(args.command.description.content || "No content provided")
-                .setColor(message.member.displayHexColor)
+                .setColor('#FF69B4')
                 .addFields(
                     {name: "Example", value: anyUsage(message.guild, this.client, `${args.command.description.examples ? args.command.description.examples.map(e => `${e}`).join('\n') :  'No examples provided.'}`), inline: false},
                     {name: "Usage", value: anyUsage(message.guild, this.client, `${args.command.description.usage || 'No usage provided.'}`), inline: false}

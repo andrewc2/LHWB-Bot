@@ -14,7 +14,7 @@ class LPingCommand extends Command {
                 content: "Returns the current general pinglists you are a part of, or pings a ping list.",
                 usage: "lping / lping [listname] [message]",
                 examples: [
-                    "lping","lping chase link"
+                    "lping","lping list","lping chase link","lping get chase","lping drop chase","lping create chase","lping delete chase"
                 ]
             }
         });
@@ -37,7 +37,7 @@ class LPingCommand extends Command {
             ]
         };
 
-        if (method) return Flag.continue(method, true);
+        if (method) return Flag.continue(method);
         return { pinglist }
     }
 
@@ -105,6 +105,10 @@ class LPingCommand extends Command {
             //ping()
             if (message.guild.id === config.discord.serverID) {
                 if (message.member.roles.cache.some(role => role.id === config.discord.repRole)) return ping();
+                standard();
+            } else if (message.member.hasPermission('MANAGE_MESSAGES')) {
+                ping();
+            } else {
                 standard();
             }
         }

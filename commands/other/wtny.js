@@ -5,7 +5,7 @@ class wtnyCommand extends Command {
         super("wtny", {
             aliases: ["wtny"],
             category: "other",
-            cooldown: 10000,
+            cooldown: 30000,
             ratelimit: 1,
             description: {
                 content: "Welcomes new users to the server.",

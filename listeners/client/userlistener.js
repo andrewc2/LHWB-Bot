@@ -11,8 +11,8 @@ class MessageAddListener extends Listener {
 
     exec(message) {
         db.query("SELECT * FROM `User` WHERE `userID` = ?", [message.author.id], function (err, result, fields) {
-            if (result.length > 0) return
-            db.query("INSERT INTO `User` (`userID`) VALUES (?)", [message.author.id])
+            if (err) return;
+            if (result.length < 1) return db.query("INSERT INTO `User` (`userID`) VALUES (?)", [message.author.id])
         })
     }
 }

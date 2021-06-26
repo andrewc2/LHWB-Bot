@@ -22,7 +22,7 @@ class streamCommand extends Command {
             .setAuthor('Live Stream', 'https://lhwb.dev/ts.png', 'https://speaknow.rocks:1989/player/')
             .setURL(`https://speaknow.rocks:1989/player/`)
             .setDescription("[HLS Stream Player](https://speaknow.rocks:1989/)\n\nStream will be minimum 30sec behind from live\nIf you have issues please refresh your browser first.")
-            .setFooter("Please do not share this stream outside of this discord server.");
+            .setFooter("Please do not share this stream outside of this discord server, or this stream will not be able to be provided.");
         message.channel.send({embed})
     }
 }
