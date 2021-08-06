@@ -29,7 +29,7 @@ class RestartCommand extends Command {
         const embed = new MessageEmbed()
             .setColor(16711680) //red
             .setDescription(`LHWB user-music restarting!`);
-        message.channel.send({embed}).then(() => process.exit(-1));
+        message.channel.send({ embeds: [embed] }).then(() => process.exit(-1));
     }
 }
 

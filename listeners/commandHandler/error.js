@@ -15,7 +15,7 @@ class ErrorListener extends Listener {
             .embed()
             .setDescription("An unknown error occurred. :pensive:")
             .setColor("RED")
-        return message.channel.send(embed)
+        return message.channel.send({ embeds: [embed] })
     }
 }
 

@@ -33,16 +33,18 @@ class EnableCommand extends Command {
         const checkCommand = this.client.settings.get(args.command.id, "command");
         if (checkCommand) {
             this.client.settings.delete(args.command.id, "command")
-            return message.channel.send(
+            return message.channel.send({ embeds: [
                 embed
                     .setDescription(`The \`${args.command.id}\` command has been enabled globally.`)
+                ] }
             )
         }
         else {
-            return message.channel.send(
+            return message.channel.send({ embeds: [
                 embed
                     .setDescription(`The \`${args.command.id}\` command is currently not disabled globally.`)
                     .setColor("RED")
+                ] }
             )
         }
     }

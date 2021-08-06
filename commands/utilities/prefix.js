@@ -23,7 +23,7 @@ class PrefixCommand extends Command {
             .setColor(message.member.displayHexColor)
 
         const prefix = this.client.settings.get(message.guild.id, 'prefix', config.discord.prefix);
-        return message.channel.send(embed.setDescription(`The command prefix is \`${prefix || 'none set'}\`. To run commands, use \`${prefix}command\`.`))
+        return message.channel.send({ embeds: [embed.setDescription(`The command prefix is \`${prefix || 'none set'}\`. To run commands, use \`${prefix}command\`.`)] })
     }
 }
 

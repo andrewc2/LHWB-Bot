@@ -42,7 +42,7 @@ class rankPlaysCommand extends Command {
                 .setTitle('Ranked Plays:')
                 .setDescription(rankedPlays)
                 .setURL('https://lhwb.dev/recent.php')
-            message.channel.send({embed});
+            message.channel.send({ embeds: [embed] });
         });
     }
 }

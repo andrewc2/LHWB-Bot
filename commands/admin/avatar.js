@@ -40,7 +40,7 @@ class AvatarCommand extends Command {
         } else {
             this.client.user.setAvatar(args.url);
         }
-        message.channel.send(embed.setDescription(`The avatar has been updated`));
+        message.channel.send({ embeds: [embed.setDescription(`The avatar has been updated`)] });
     }
 }
 

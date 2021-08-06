@@ -31,7 +31,7 @@ class NicknameCommand extends Command {
             .setColor("GREEN")
 
         message.channel.guild.me.setNickname(args.username);
-        message.channel.send(embed.setDescription(`The nickname has been updated to: \`${args.username}\``));
+        message.channel.send({ embeds: [embed.setDescription(`The nickname has been updated to: \`${args.username}\``) ] });
     }
 }
 

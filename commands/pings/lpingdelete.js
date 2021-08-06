@@ -38,9 +38,9 @@ class LPingDeleteCommand extends Command {
 
         db.query("SELECT * FROM `Ping` WHERE `name` = ? AND `guildID` = ?", [args.name, message.guild.id], function (err, result) {
             if (err) return
-            if (result.length < 1) return message.channel.send(failedEmbed)
+            if (result.length < 1) return message.channel.send({ embeds: [failedEmbed]})
             db.query("DELETE FROM `Ping` WHERE name = ? AND guildID = ?", [args.name, message.guild.id])
-            return message.channel.send(embed)
+            return message.channel.send({ embeds: [embed]})
         })
     }
 }

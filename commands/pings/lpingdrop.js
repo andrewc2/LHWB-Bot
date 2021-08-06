@@ -37,11 +37,11 @@ class LPingDropCommand extends Command {
 
         db.query("SELECT `name`, `guildID` FROM Ping WHERE name = ? AND guildID = ?", [args.name, message.guild.id], function (err, result, fields) {
             if (err) return;
-            if (result.length < 1) return message.channel.send(failedEmbed)
+            if (result.length < 1) return message.channel.send({ embeds: [failedEmbed]})
             db.query("SELECT u.userID, p.pingID, p.name FROM User as u INNER JOIN UserPing as up ON u.userID = up.userID INNER JOIN Ping as p ON p.pingID = up.pingID WHERE p.guildID = ? AND up.userID = ? AND p.name = ?", [message.guild.id, message.author.id, args.name], function (err, result, fields) {
-                if (result.length < 1) return message.channel.send(failedEmbed.setDescription(`You are not apart of the ${args.name} pinglist in this server.`))
+                if (result.length < 1) return message.channel.send({ embeds: [failedEmbed.setDescription(`You are not apart of the ${args.name} pinglist in this server.`)]})
                 db.query("DELETE UserPing FROM UserPing INNER JOIN User as u On UserPing.userID = u.userID INNER JOIN Ping as p on UserPing.pingID = p.pingID WHERE p.guildID = ? AND u.userID = ? AND p.name = ?", [message.guild.id, message.author.id, args.name])
-                return message.channel.send(embed.setDescription(`You have been successfully removed from the ${args.name} pinglist.`))
+                return message.channel.send({ embeds: [embed.setDescription(`You have been successfully removed from the ${args.name} pinglist.`)]})
             })
         })
     }

@@ -53,12 +53,12 @@ class QueueAlbumCommand extends Command {
             })
             .then(() => {
                 embed.setDescription(`${args.album} has been queued! Hope you enjoy it. :smiley:`)
-                return message.channel.send(embed)
+                return message.channel.send({ embeds: [embed] })
             })
             .catch(err => {
                 console.log(err)
                 embed.setDescription(`I couldn't queue ${args.album} for some reason. :pleading_face:`)
-                return message.channel.send(embed)
+                return message.channel.send({ embeds: [embed] })
             })
     }
 }

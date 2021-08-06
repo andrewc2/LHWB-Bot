@@ -24,7 +24,7 @@ class VersionCommand extends Command {
                 .setTitle("Patch Notes:")
                 .setAuthor(`Version: ${rows[0].versionNum}`, 'https://lhwb.dev/ts.png', 'https://lhwb.dev/')
                 .setDescription(`${rows[0].patchNotes}`);
-            message.channel.send({embed})
+            message.channel.send({ embeds: [embed] })
         });
     }
 }

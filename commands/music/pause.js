@@ -25,7 +25,7 @@ class PauseCommand extends Command {
 
         if (!message.client.voice.broadcasts[0].dispatcher.paused) {
             message.client.voice.broadcasts[0].dispatcher.pause(true)
-            return message.channel.send(embed)
+            return message.channel.send({ embeds: [embed] })
         }
         else {
             return message.channel.send(

@@ -42,7 +42,7 @@ class LastFMCommand extends Command {
                 const embed = new MessageEmbed()
                     .setColor('RED')
                     .setDescription(`Uh oh! Looks like you or that user has not saved your/their last.fm username.\nYou/They can set it by typing \`!lfm set <username>\`.`);
-                message.channel.send({embed});
+                message.channel.send({ embeds: [embed] });
             } else {
                 fetchFM(message, rows[0]['lastfmUsername']);
             }

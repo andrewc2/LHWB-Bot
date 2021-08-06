@@ -32,7 +32,7 @@ class SkipCommand extends Command {
 
         const [rows] = await db.promise().query("SELECT id, name, queuedby FROM recent WHERE 1 ORDER BY id DESC")
         if (rows[0]['queuedby'] !== null) music.dequeue(rows[0]['name']);
-        await message.channel.send(embed);
+        await message.channel.send({ embeds: [embed] });
         setTimeout(async function () { music.autoPlay(await music.searchQueue() || await music.randomSong(), message.client) }, 500)
     }
 }

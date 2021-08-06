@@ -1,4 +1,5 @@
 const { Command } = require("discord-akairo");
+const { MessageEmbed } = require('discord.js');
 const { db } = require("../../models/db");
 const { editDistance } = require("../../utilities");
 
@@ -26,8 +27,7 @@ class TrackInfoCommand extends Command {
     }
 
     async exec(message, args) {
-        const embed = this.client.util
-            .embed()
+        const embed = new MessageEmbed()
             .setColor("GREEN")
 
         function fuzzySearch(title, callback){
@@ -50,7 +50,7 @@ class TrackInfoCommand extends Command {
 
         fuzzySearch(args.song, function fetchSong(result) {
             if (result) {
-                return message.channel.send(
+                return message.channel.send({ embeds: [
                     embed
                         .setTitle("Track Information")
                         .setThumbnail(result.albumart)
@@ -60,14 +60,14 @@ class TrackInfoCommand extends Command {
                             {name: "Play Count", value: result.playcount, inline: true},
                             {name: "Path", value: result.path, inline: true},
                             {name: "Type", value: result.type, inline: true}
-                        )
+                        ) ] }
                 )
             }
             if (!result) {
-                return message.channel.send(
+                return message.channel.send({ embeds: [
                     embed
                         .setDescription("I don't know this song.")
-                        .setColor("RED")
+                        .setColor("RED") ] }
                 )
             }
         })

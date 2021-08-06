@@ -31,12 +31,12 @@ class LPingListCommand extends Command {
 
         db.query("SELECT `name` FROM Ping WHERE guildID = ?", [message.guild.id], function (err, result) {
             if (err) return;
-            if (result.length < 1) return message.channel.send(failedEmbed)
+            if (result.length < 1) return message.channel.send({ embeds: [failedEmbed]})
             let pings = []
             for (const rows of result.values()) {
                 pings.push(rows.name)
             }
-            return message.channel.send(embed.setDescription(`Here are the pinglists available in this server. Use ${anyUsage(message.guild, message.client, 'lping get [name]')} to get one.\n\n \`${pings.join('` | `')}\``))
+            return message.channel.send({ embeds: [embed.setDescription(`Here are the pinglists available in this server. Use ${anyUsage(message.guild, message.client, 'lping get [name]')} to get one.\n\n \`${pings.join('` | `')}\``)]})
         })
     }
 }

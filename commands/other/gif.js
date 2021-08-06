@@ -23,7 +23,7 @@ class gifCommand extends Command {
                 .setColor('#FF69B4') //pink
                 .setImage(`${rows[0].path}`)
                 .setFooter('Submit gifs to be added using !request [imgur url]', message.client.user.displayAvatarURL({dynamic: true, format: "png"}));
-            message.channel.send({embed})
+            message.channel.send({ embeds: [embed]})
         });
     }
 }

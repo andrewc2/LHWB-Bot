@@ -30,11 +30,11 @@ class ClearQueueCommand extends Command {
             if (err) throw err;
             if(result[0].queueCount > 0) {
                 db.query("DELETE FROM queue"); //deletes entire queue.
-                message.channel.send(embed.setDescription(`The queue has been cleared 🧹.`));
+                message.channel.send({ embeds: [embed.setDescription(`The queue has been cleared 🧹.`)] });
                 log("Queue Purged at user request.");
             } else {
-                message.channel.send(embed.setDescription(`The queue is already empty.`)
-                    .setColor('RED'));
+                message.channel.send({ embeds: [embed.setDescription(`The queue is already empty.`)
+                    .setColor('RED')] });
                 log("Queue empty, nothing to purge.");
             }
         });

@@ -10,6 +10,7 @@ class LPingCommand extends Command {
             aliases: ["lping"],
             category: "ping",
             channel: "guild",
+            editable: false,
             description: {
                 content: "Returns the current general pinglists you are a part of, or pings a ping list.",
                 usage: "lping / lping [listname] [message]",
@@ -66,20 +67,20 @@ class LPingCommand extends Command {
         function standard() {
             db.query("SELECT u.userID, p.pingID, p.name FROM User as u INNER JOIN UserPing as up ON u.userID = up.userID INNER JOIN Ping as p ON p.pingID = up.pingID WHERE p.guildID = ? AND up.userID = ?", [message.guild.id, message.author.id], function (err, result) {
                 if (err) return;
-                if (result.length < 1) return message.channel.send(failedEmbed)
+                if (result.length < 1) return message.channel.send({ embeds: [failedEmbed]})
                 let pings = []
                 for (const rows of result.values()) pings.push(rows["name"])
-                return message.channel.send(embed.setDescription(`\`${pings.join('` | `')}\``))
+                return message.channel.send({ embeds: [embed.setDescription(`\`${pings.join('` | `')}\``)]})
             })
         }
 
         function ping() {
             db.query("SELECT `name`, `guildID` FROM Ping WHERE name = ? AND guildID = ?", [args.pinglist, message.guild.id], function (err, result) {
                 if (err) return;
-                if (result.length < 1) return message.channel.send(failedEmbed.setDescription(`Uh oh! Looks like this pinglists does not exist.\nYou can can view available pinglists in this server by doing ${anyUsage(message.guild, message.client, 'lping list')}`))
+                if (result.length < 1) return message.channel.send({ embeds: [failedEmbed.setDescription(`Uh oh! Looks like this pinglists does not exist.\nYou can can view available pinglists in this server by doing ${anyUsage(message.guild, message.client, 'lping list')}`)]})
                 db.query("SELECT u.userID FROM User as u INNER JOIN UserPing as up ON u.userID = up.userID INNER JOIN Ping as p ON p.pingID = up.pingID WHERE p.guildID = ? AND p.name = ?", [message.guild.id, args.pinglist], async function (err, result) {
                     if (err) return
-                    if (result.length < 1) return message.channel.send(failedEmbed.setDescription("It looks like nobody has this pinglist assigned. :confused:"))
+                    if (result.length < 1) return message.channel.send({ embeds: [failedEmbed.setDescription("It looks like nobody has this pinglist assigned. :confused:")]})
                     let users = []
                     users.push(`${args.pinglist}`)
                     for (const rows of result.values()) {
@@ -89,7 +90,7 @@ class LPingCommand extends Command {
                             })
                             .catch(() => {})
                     }
-                    if (users.length < 2) return message.channel.send(failedEmbed.setDescription("It looks like nobody has this pinglist assigned. :confused:"))
+                    if (users.length < 2) return message.channel.send({ embeds: [failedEmbed.setDescription("It looks like nobody has this pinglist assigned. :confused:")]})
                     const sendList = users.join(` `).toString()
                     for (let i = 0; i < sendList.length; i += 2040) {
                         const toSend = sendList.substring(i, Math.min(sendList.length, i + 2040));
@@ -106,7 +107,7 @@ class LPingCommand extends Command {
             if (message.guild.id === config.discord.serverID) {
                 if (message.member.roles.cache.some(role => role.id === config.discord.repRole)) return ping();
                 standard();
-            } else if (message.member.hasPermission('MANAGE_MESSAGES')) {
+            } else if (message.member.permissions.has('MANAGE_MESSAGES')) {
                 ping();
             } else {
                 standard();

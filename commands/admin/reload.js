@@ -31,9 +31,7 @@ class ReloadCommand extends Command {
             .setColor("GREEN")
 
         args.command.reload()
-        return message.channel.send(
-            embed
-                .setDescription(`The \`${args.command.id}\` command has been reloaded. :relaxed:`)
+        return message.channel.send({ embeds: [embed.setDescription(`The \`${args.command.id}\` command has been reloaded. :relaxed:`)] }
         )
     }
 }

@@ -35,7 +35,7 @@ class ChaseCommand extends Command {
             .embed()
             .setColor("RED")
 
-        message.channel.send(embed.setDescription(`This command has been depreciated, please use ${anyUsage(message.guild, message.client, 'lping chase')}`));
+        message.channel.send({ embeds: [embed.setDescription(`This command has been depreciated, please use ${anyUsage(message.guild, message.client, 'lping chase')}`)]});
     }
 }
 

@@ -22,7 +22,7 @@ class speaknowCommand extends Command {
             .setAuthor("Taylor Swift", "https://lhwb.dev/ts.png", "https://en.wikipedia.org/wiki/Speak_Now")
             .setThumbnail("https://i.imgur.com/TNKbt8Y.jpg")
             .setDescription("**Speak Now** was released on __October 25, 2010__ \n\n1. Mine\n2. Sparks Fly\n3. Back to December\n4. Speak Now\n5. Dear John\n6. Mean\n7. The Story of Us\n8. Never Grow Up\n9. Enchanted\n10. Better Than Revenge\n11. Innocent\n12. Haunted\n13. Last Kiss\n14. Long Live\n\n__Deluxe Version__\n15. Ours\n16. If This Was A Movie\n17. Superman");
-        message.channel.send({embed})
+        message.channel.send({ embeds: [embed] })
     }
 }
 

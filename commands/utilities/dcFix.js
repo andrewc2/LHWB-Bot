@@ -27,7 +27,7 @@ class dcFixCommand extends Command {
         const embed = new MessageEmbed()
             .setDescription("Disconnected from voice chat, auto-reconnecting.")
             .setColor('#9979FF')
-        return message.channel.send(embed);
+        return message.channel.send({ embeds: [embed] });
     }
 }
 

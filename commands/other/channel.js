@@ -33,7 +33,7 @@ class ChannelCommand extends Command {
         const failedEmbed = new MessageEmbed()
             .setColor('RED');
 
-        return message.channel.send(failedEmbed.setDescription("Please consult the help guide to use this command. :smiley:"));
+        return message.channel.send({ embeds: [failedEmbed.setDescription("Please consult the help guide to use this command. :smiley:")] });
     }
 }
 

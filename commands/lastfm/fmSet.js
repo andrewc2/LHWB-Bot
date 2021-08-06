@@ -36,7 +36,7 @@ class LastFMSetCommand extends Command {
         const embed = new MessageEmbed()
             .setColor('#FF69B4')
             .setDescription(`Your last.fm username has been set to ${args.username}.`);
-        message.channel.send({embed});
+        message.channel.send({ embeds: [embed] });
     }
 }
 

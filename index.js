@@ -8,7 +8,9 @@ class Client extends AkairoClient {
     constructor() {
         super({
             ownerID: config.discord.ownerID,
-            disableMentions: "everyone"
+            allowedMentions: { parse: ['users', 'roles'], repliedUser: true },
+            intents: ['GUILDS', 'GUILD_MEMBERS', 'GUILD_EMOJIS_AND_STICKERS', 'GUILD_VOICE_STATES', 'GUILD_MESSAGES', 'DIRECT_MESSAGES'],
+            partials: ['CHANNEL']
         });
 
         this.settings = new SQLiteProvider(sqlite.open({ filename: path.join(__dirname, "settings.sqlite3"), driver: sqlite3.Database }), 'bot', {

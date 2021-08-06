@@ -37,11 +37,11 @@ class LPingGetCommand extends Command {
 
         db.query("SELECT `name`, `guildID` FROM Ping WHERE name = ? AND guildID = ?", [args.name, message.guild.id], function (err, result) {
             if (err) return;
-            if (result.length < 1) return message.channel.send(failedEmbed)
+            if (result.length < 1) return message.channel.send({ embeds: [failedEmbed]})
             db.query("SELECT u.userID, p.pingID, p.name FROM User as u INNER JOIN UserPing as up ON u.userID = up.userID INNER JOIN Ping as p ON p.pingID = up.pingID WHERE p.guildID = ? AND up.userID = ? AND p.name = ?", [message.guild.id, message.author.id, args.name], function (err, result) {
-                if (result.length > 0) return message.channel.send(failedEmbed.setDescription(`You are already apart of the ${result[0].name} pinglist in this server.`))
+                if (result.length > 0) return message.channel.send({ embeds: [failedEmbed.setDescription(`You are already apart of the ${result[0].name} pinglist in this server.`)]})
                 db.query("INSERT INTO UserPing (userID, pingID) SELECT u.userID, p.pingID FROM User as u, Ping as p WHERE u.userID = ? AND p.name = ? AND p.guildID = ?", [message.author.id, args.name, message.guild.id])
-                return message.channel.send(embed.setDescription(`You have been successfully added to the ${args.name} pinglist.`))
+                return message.channel.send({ embeds: [embed.setDescription(`You have been successfully added to the ${args.name} pinglist.`)]})
             })
         })
     }

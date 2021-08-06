@@ -31,7 +31,7 @@ class requestCommand extends Command {
         const embed = new MessageEmbed()
             .setColor('#FF69B4') //pink
             .setDescription('Request Submitted!');
-        message.channel.send({embed})
+        message.channel.send({ embeds: [embed]})
     }
 }
 

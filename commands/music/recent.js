@@ -36,7 +36,7 @@ class RecentCommand extends Command {
             }
             embed.setTitle(`Currently playing: ${playingSong}`)
                 .setDescription(`Recently Played:\n${recentSongs}`)
-            message.channel.send({embed});
+            message.channel.send({ embeds: [embed] });
         });
     }
 }

@@ -39,7 +39,7 @@ class CountdownCommand extends Command {
             }
         }
         if (allEvents.length < 1) return message.channel.send(embed.setDescription("There are no events scheduled. :sob:"))
-        return message.channel.send(embed.setDescription(allEvents))
+        return message.channel.send({ embeds: [embed.setDescription(allEvents)]})
     }
 }
 

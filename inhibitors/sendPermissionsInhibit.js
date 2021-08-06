@@ -10,7 +10,8 @@ class SendPermissionsInhibit extends Inhibitor {
 
     exec(message, command) {
         if (message.guild) {
-            if (!message.guild.me.hasPermission("SEND_MESSAGES")) {
+            //if (!message.guild.me.hasPermission("SEND_MESSAGES")) {
+            if (!message.guild.me.permissions.has("SEND_MESSAGES")) {
                 return true;
             }
         }

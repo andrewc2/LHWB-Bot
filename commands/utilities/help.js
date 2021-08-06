@@ -41,7 +41,7 @@ class HelpCommand extends Command {
             .setColor('#FF69B4')
 
         if (!args.command || args.command.id === "lhelp") {
-            return message.channel.send(musicCommands)
+            return message.channel.send({ embeds: [musicCommands] })
         }
         else {
             const moduleEmbed = this.client.util
@@ -55,7 +55,7 @@ class HelpCommand extends Command {
                     {name: "Usage", value: anyUsage(message.guild, this.client, `${args.command.description.usage || 'No usage provided.'}`), inline: false}
                 )
             if (args.command.aliases.length > 0) moduleEmbed.addField("Aliases", `\`${args.command.aliases.join('`, `')}\``, false);
-            return message.channel.send(moduleEmbed)
+            return message.channel.send({ embeds: [moduleEmbed] })
         }
     }
 }

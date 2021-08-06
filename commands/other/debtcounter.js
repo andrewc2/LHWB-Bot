@@ -26,11 +26,11 @@ class debtCounterCommand extends Command {
 
         db.query("SELECT * FROM counters WHERE word='oof'", function(err, rows) {
             if(rows[0] == null) {
-                message.channel.send(failEmbed.setDescription('There was an error retrieving the oof counter.'));
+                message.channel.send({ embeds: [failEmbed.setDescription('There was an error retrieving the oof counter.')]});
             } else {
-                message.channel.send(successEmbed.setAuthor(`${rows[0]['user']}'s oof counter`, 'https://lhwb.dev/ts.png', 'https://turtlebyte.github.io/oofdebt/')
+                message.channel.send({ embeds: [successEmbed.setAuthor(`${rows[0]['user']}'s oof counter`, 'https://lhwb.dev/ts.png', 'https://turtlebyte.github.io/oofdebt/')
                 .setDescription(`Total: ${rows[0]['counter']}`)
-                .setFooter(`As of ${rows[0]['lastUsed']}`));
+                .setFooter(`As of ${rows[0]['lastUsed']}`)]});
             }
         });
     }

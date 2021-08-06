@@ -41,7 +41,7 @@ class currentCommand extends Command {
                 if(queuedBy) {
                     embed.setFooter(`Queued by: ${queuedBy}`);
                 } 
-                return message.channel.send({embed});
+                return message.channel.send({ embeds: [embed] });
                 
             });
         });

@@ -63,17 +63,17 @@ class QueueCommand extends Command {
                         songQueue = getSongs(rows2, songQueue)
 
                         if (songQueue.length < 1) {
-                            return message.channel.send(queueEmbed.setDescription("There's nothing else queued at the moment..."));
+                            return message.channel.send({ embeds: [queueEmbed.setDescription("There's nothing else queued at the moment...")] });
                         } else {
-                            return message.channel.send(queueEmbed.setDescription(`Queued for play:\n${songQueue}`));
+                            return message.channel.send({ embeds: [queueEmbed.setDescription(`Queued for play:\n${songQueue}`)] });
                         }
                     } else if (rows2.length > 0) {
                         songQueue = getSongs(rows2, songQueue)
 
-                        return message.channel.send(queueEmbed.setTitle(`Currently Playing: ${playingSong}`)
-                            .setDescription(`Queued for play:\n${songQueue}`));
+                        return message.channel.send({ embeds: [queueEmbed.setTitle(`Currently Playing: ${playingSong}`)
+                            .setDescription(`Queued for play:\n${songQueue}`)] });
                     } else {
-                        return message.channel.send(failEmbed.setDescription("There's nothing queued at the moment..."));
+                        return message.channel.send({ embeds: [failEmbed.setDescription("There's nothing queued at the moment...")] });
                     }
                 });
             });
@@ -89,20 +89,20 @@ class QueueCommand extends Command {
                 if(result){ //song found in db after fuzzy search
                     db.query("SELECT * FROM queue WHERE path LIKE ? ORDER BY path ASC", [result['path']], function(err, rows2){
                         if(rows2.length > 1){
-                            message.channel.send(failEmbed.setDescription(`${result['name']} is already in the queue and was not added.`));
+                            message.channel.send({ embeds: [failEmbed.setDescription(`${result['name']} is already in the queue and was not added.`)] });
                         } else {
                             fs.access(`${config.discord.music_path}${result['path']}`, fs.F_OK, async (err) => {
                                 if (err) {
-                                    return message.channel.send(failEmbed.setDescription("I know this song but I couldn't find the file. :thinking:"))
+                                    return message.channel.send({ embeds: [failEmbed.setDescription("I know this song but I couldn't find the file. :thinking:")] })
                                 }
                                 db.query("INSERT INTO queue (name, path, queuedby) VALUES (?,?,?)", [result['name'], result['path'], user]);
-                                message.channel.send(successEmbed.setDescription(`${result['name']} has been added to the queue.`));
+                                message.channel.send({ embeds: [successEmbed.setDescription(`${result['name']} has been added to the queue.`)] });
                                 log(`Song: ${result['name']} Path: ${result['path']} Queued By: ${user}`);
                             })
                         }
                     })
                 }else{
-                    message.channel.send(failEmbed.setDescription("That song could not be found.\nPlease check the track listings (!tracks).\nIf it's not there ask iandrewc to add the song."));
+                    message.channel.send({ embeds: [failEmbed.setDescription("That song could not be found.\nPlease check the track listings (!tracks).\nIf it's not there ask iandrewc to add the song.")] });
                 }
             });
         }

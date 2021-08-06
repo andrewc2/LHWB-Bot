@@ -34,25 +34,25 @@ class BotBanCommand extends Command {
             .setColor("RANDOM")
 
         const protectedUsers = [this.client.ownerID, config.discord.serverID, this.client.user.id]
-        if (protectedUsers.includes(args.user.id)) return message.channel.send(
+        if (protectedUsers.includes(args.user.id)) return message.channel.send({ embeds: [
             embed
                 .setDescription(`${args.user} cannot be bot banned as it is a protected property.`)
                 .setColor("RED")
+            ] }
         )
 
         const checkUser = this.client.settings.get(args.user.id, "ban");
         if (!checkUser) {
             this.client.settings.set(args.user.id, "ban", true)
-            return message.channel.send(
-                embed
-                    .setDescription(`${args.user} has been bot banned.`)
-            )
+            
+            return message.channel.send({ embeds: [embed.setDescription(`${args.user} has been bot banned.`)] })
         }
         else {
-            return message.channel.send(
+            return message.channel.send({ embeds: [
                 embed
                     .setDescription(`${args.user} is already bot banned.`)
                     .setColor("RED")
+                ] }
             )
         }
     }

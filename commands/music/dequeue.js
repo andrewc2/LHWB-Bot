@@ -46,10 +46,10 @@ class DequeueCommand extends Command {
                 if(result[0].queueCount > 0) {
                     dequeue(args.song); //deletes the song from the queue.
                     log(rows[0].name + " removed from queue.");
-                    return message.channel.send(successEmbed.setDescription(`${rows[0].name} has been removed from the queue.`))
+                    return message.channel.send({ embeds: [successEmbed.setDescription(`${rows[0].name} has been removed from the queue.`)] })
                 } else {
                     log(args.song + " not in queue.");
-                    return message.channel.send(failEmbed.setDescription(`This song isn't in the queue at the moment.`))                     
+                    return message.channel.send({ embeds: [failEmbed.setDescription(`This song isn't in the queue at the moment.`)] })                     
                 }
             });
         });

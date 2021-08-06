@@ -39,10 +39,10 @@ class LPingCreateCommand extends Command {
         db.query("SELECT * FROM `Ping` WHERE `name` = ? AND `guildID` = ?", [args.name, message.guild.id], function (err, result) {
             if (err) return
             for (const ping of result.values()) {
-                if (ping.name === args.name) return message.channel.send(failedEmbed)
+                if (ping.name === args.name) return message.channel.send({ embeds: [failedEmbed]})
             }
             db.query("INSERT INTO `Ping` (`name`, `guildID`) VALUES (?,?)", [args.name, message.guild.id])
-            return message.channel.send(embed)
+            return message.channel.send({ embeds: [embed]})
         })
     }
 }

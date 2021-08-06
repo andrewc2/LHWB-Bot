@@ -47,7 +47,7 @@ function fetchFM(message, target) {
                 } else {
                     embed.setFooter(`Total Scrobbles: ${recentTracks["@attr"].total} - Last scrobbled on: ${recentTracks.track[0].date["#text"]} (UTC)`);
                 }
-            message.channel.send({embed});
+            message.channel.send({ embeds: [embed] });
             //console.log("Track 0: " + recentTracks.track[0].name);
             //console.log("Track 1: " + recentTracks.track[1].name);
             //console.log(`${recentTracks.track[0].image[3]["#text"]}`);
@@ -58,7 +58,7 @@ function fetchFM(message, target) {
                 .setColor('RED')
                 .setDescription(`${target} is either not a last.fm user, has not scrobbled any songs yet, or the API is down, try again later if the user is definitely correct!`);
 
-            message.channel.send({embed});
+            message.channel.send({ embeds: [embed] });
         }
     });
 }

@@ -35,16 +35,18 @@ class BotUnbanCommand extends Command {
         const checkUser = this.client.settings.get(args.user.id, "ban");
         if (checkUser) {
             this.client.settings.delete(args.user.id, "ban")
-            return message.channel.send(
+            return message.channel.send({ embeds: [
                 embed
                     .setDescription(`${args.user} has been bot unbanned.`)
+                ] }
             )
         }
         else {
-            return message.channel.send(
+            return message.channel.send({ embeds: [
                 embed
                     .setDescription(`${args.user} is not bot banned.`)
                     .setColor("RED")
+                ] }
             )
         }
     }
