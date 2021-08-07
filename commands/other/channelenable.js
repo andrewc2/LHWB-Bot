@@ -1,7 +1,7 @@
 const { Command } = require("discord-akairo");
 const { db } = require("../../models/db");
 const { MessageEmbed } = require("discord.js");
-const { commandUsage } = require("../../utilities");
+const { commandUsage, anyUsage } = require("../../utilities");
 
 class ChannelEnable extends Command {
     constructor() {
@@ -40,11 +40,11 @@ class ChannelEnable extends Command {
         db.query("SELECT * FROM `command` WHERE `guildID` = ? AND `channelID` = ? AND `commandID` = ?", [guildID, channelID, commandID], function(err, result) {
             if (err) return;
             if (result.length < 1) {
-                return message.channel.send({ embeds: [failedEmbed.setDescription("Command is not disabled. :smiley:")] });
+                return message.channel.send({ embeds: [failedEmbed.setDescription(`Command is not disabled. :smiley:\nTo disable use ${anyUsage(message.guild, message.client, 'channel disable commandName')}`)] });
             }
             else {
                 db.query("DELETE FROM `command` WHERE `guildID` = ? AND `channelID` = ? AND `commandID` = ?", [guildID, channelID, commandID]);
-                return message.channel.send({ embeds: [embed.setDescription("Command has been enabled. :smiley:")] });
+                return message.channel.send({ embeds: [embed.setDescription(`Command has been enabled. :smiley:\nTo disable use ${anyUsage(message.guild, message.client, 'channel disable commandName')}`)] });
             }
         });
     }

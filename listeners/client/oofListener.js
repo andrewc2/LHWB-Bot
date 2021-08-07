@@ -6,7 +6,7 @@ const { db } = require("../../models/db");
 class OofListener extends Listener {
     constructor() {
         super("ooflistener", {
-            event: "message",
+            event: "messageCreate",
             emitter: "client"
         });
     }

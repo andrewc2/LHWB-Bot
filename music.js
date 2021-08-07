@@ -3,14 +3,9 @@ const { db } = require("./models/db");
 const config = require("./config.json");
 const { log } = require("./utilities");
 const {
-	NoSubscriberBehavior,
-	StreamType,
 	createAudioPlayer,
 	createAudioResource,
-	entersState,
 	AudioPlayerStatus,
-	VoiceConnectionStatus,
-	joinVoiceChannel,
 } = require('@discordjs/voice');
 
 function searchQueue() {
@@ -58,9 +53,10 @@ function updatePlayCount(path) {
     db.query("UPDATE music SET playcount = playcount + 1 WHERE path = ?",[path])
 }
 
-function autoPlay(result, connection) {
+function autoPlay(result, connection, client) {
     updateRecent(result.song, result.queuedBy);
-    const vc = connection.channelId;
+    //const vc = connection.channelId;
+    //const vc = client.channels.cache.get(client.voice.connections.array()[0].channel.id);
     //figure out how to get actual client here
     //client.user.setActivity(result.song, { type: "LISTENING" });
 

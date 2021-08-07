@@ -28,6 +28,7 @@ class AvatarCommand extends Command {
     exec(message, args) {
         let selena = `https://i.imgur.com/7rYMWjO.png`;
         let taylor = `https://i.imgur.com/NggyZ5P.png`;
+        let test = `https://i.imgur.com/16JHm36.png`;
 
         const embed = this.client.util
             .embed()
@@ -37,6 +38,8 @@ class AvatarCommand extends Command {
             this.client.user.setAvatar(taylor);
         } else if (args.url == 'selena') {
             this.client.user.setAvatar(selena);
+        } else if (args.url == 'test') {
+            this.client.user.setAvatar(test);
         } else {
             this.client.user.setAvatar(args.url);
         }

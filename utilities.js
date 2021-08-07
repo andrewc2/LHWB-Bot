@@ -11,9 +11,10 @@ function anyUsage(guild, client, text) {
 }
 
 function commandUsage(commandName, guild, client, text) {
-    return new MessageEmbed()
+    const embed = new MessageEmbed()
         .setDescription(`Invalid command usage: the \`${commandName}\` command's accepted format is: ${anyUsage(guild, client, text)}`)
         .setColor('RED')
+    return { embeds: [embed] };
 }
 
 function modRoleCheck(message) {

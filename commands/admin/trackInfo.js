@@ -55,11 +55,11 @@ class TrackInfoCommand extends Command {
                         .setTitle("Track Information")
                         .setThumbnail(result.albumart)
                         .addFields(
-                            {name: "Track Name", value: result.name, inline: true},
-                            {name: "Album", value: result.album, inline: true},
-                            {name: "Play Count", value: result.playcount, inline: true},
-                            {name: "Path", value: result.path, inline: true},
-                            {name: "Type", value: result.type, inline: true}
+                            {name: "Track Name", value: result.name.toString(), inline: true},
+                            {name: "Album", value: result.album.toString(), inline: true},
+                            {name: "Play Count", value: result.playcount.toString(), inline: true},
+                            {name: "Path", value: result.path.toString(), inline: true},
+                            {name: "Type", value: result.type.toString(), inline: true}
                         ) ] }
                 )
             }

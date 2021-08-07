@@ -1,4 +1,5 @@
 const { Command } = require("discord-akairo");
+const { getVoiceConnection } = require('@discordjs/voice');
 const music = require("../../music");
 const { db } = require("../../models/db");
 const { cmdRestrictions } = require("../../utilities");
@@ -26,6 +27,7 @@ class SkipCommand extends Command {
     }
 
     async exec(message, args) {
+        const connection = getVoiceConnection(message.guild.id);
         const embed = message.client.util.embed()
             .setDescription("Song skipped. Finding a new song... :musical_note:")
             .setColor("GREEN")
@@ -33,7 +35,7 @@ class SkipCommand extends Command {
         const [rows] = await db.promise().query("SELECT id, name, queuedby FROM recent WHERE 1 ORDER BY id DESC")
         if (rows[0]['queuedby'] !== null) music.dequeue(rows[0]['name']);
         await message.channel.send({ embeds: [embed] });
-        setTimeout(async function () { music.autoPlay(await music.searchQueue() || await music.randomSong(), message.client) }, 500)
+        setTimeout(async function () { music.autoPlay(await music.searchQueue() || await music.randomSong(), connection, message.client) }, 500)
     }
 }
 

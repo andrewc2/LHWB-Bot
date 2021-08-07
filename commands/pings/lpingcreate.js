@@ -1,7 +1,7 @@
 const { Command, Argument } = require("discord-akairo");
 const { MessageEmbed } = require("discord.js");
 const { db } = require("../../models/db");
-const { commandUsage, anyUsage, } = require("../../utilities");
+const { commandUsage, anyUsage } = require("../../utilities");
 
 class LPingCreateCommand extends Command {
     constructor() {

@@ -4,7 +4,7 @@ const { db } = require("../../models/db");
 class MessageAddListener extends Listener {
     constructor() {
         super("messageAdd", {
-            event: "message",
+            event: "messageCreate",
             emitter: "client"
         });
     }
