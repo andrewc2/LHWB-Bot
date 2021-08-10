@@ -2,3 +2,7 @@
 /node_modules/
 authMusicTest.json
 authMusicMain.json
+models/red_bot.sql
+README.md
+LICENSE.txt
+.eslintrc.json
