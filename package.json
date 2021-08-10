@@ -16,10 +16,10 @@
     "discord.js": "^13.0.0-dev.t1627732975.331a9d3",
     "eris": "^0.14.0",
     "lastfmapi": "^0.1.1",
+    "libsodium-wrappers": "^0.7.9",
     "luxon": "^1.26.0",
     "mysql": "^2.18.1",
     "mysql2": "^2.2.5",
-    "node-opus": "^0.3.3",
     "sqlite": "^4.0.18",
     "sqlite3": "^5.0.0"
   }
