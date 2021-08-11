@@ -55,45 +55,25 @@ function updatePlayCount(path) {
 
 function autoPlay(result, connection, client) {
     updateRecent(result.song, result.queuedBy);
-    //const vc = connection.channelId;
-    //const vc = client.channels.cache.get(client.voice.connections.array()[0].channel.id);
-    //figure out how to get actual client here
-    //client.user.setActivity(result.song, { type: "LISTENING" });
+    const vc = client.channels.cache.get(config.discord.channelID);
 
     const player = createAudioPlayer();
     const resource = createAudioResource(`${config.discord.music_path}${result.path}`);
     player.play(resource);
     connection.subscribe(player);
 
-    connection.on('stateChange', (oldState, newState) => {
-        console.log(`Connection transitioned from ${oldState.status} to ${newState.status}`);
-    });
-    
     player.on('stateChange', (oldState, newState) => {
         console.log(`Audio player transitioned from ${oldState.status} to ${newState.status}`);
 
         if (newState.status === AudioPlayerStatus.Idle && oldState.status !== AudioPlayerStatus.Idle) {
             console.log('The connection has entered the Idle state - ready to play audio!');
-            //if (vc.members.size > 1) {
-            //need to figure out how to get voice chat member count
+            if (vc.members.size > 1) {
                 updatePlayCount(result.path);
-            //}
+            }
             if (result.queuedBy !== null) dequeue(result.song);
             setTimeout(async function () { autoPlay( await searchQueue() || await randomSong(), connection) }, 1000);
         }
     });
-
-    //updateRecent(result.song, result.queuedBy);
-    //const vc = client.channels.cache.get(client.voice.connections.array()[0].channel.id);
-    //client.user.setActivity(result.song, { type: "LISTENING" });
-    //const dispatcher = client.voice.broadcasts[0].play(`${config.discord.music_path}${result.path}`, { bitrate: 196000 });
-    //dispatcher.on("finish", () => {
-        //if (vc.members.size > 1) {
-          //  updatePlayCount(result.path);
-        //}
-        //if (result.queuedBy !== null) dequeue(result.song);
-        //setTimeout(async function () { autoPlay( await searchQueue() || await randomSong(), client) }, 1000);
-    //})
 }
 
 module.exports = { searchQueue, randomSong, dequeue, autoPlay }

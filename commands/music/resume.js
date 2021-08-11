@@ -1,4 +1,5 @@
 const { Command } = require("discord-akairo");
+const { getVoiceConnection } = require('@discordjs/voice');
 
 class ResumeCommand extends Command {
     constructor() {
@@ -18,21 +19,22 @@ class ResumeCommand extends Command {
     }
 
     async exec(message, args) {
+        const connection = getVoiceConnection(message.guild.id);
         const embed = message.client.util
             .embed()
             .setDescription("Music has been resumed. :play_pause:")
             .setColor("GREEN")
-
-        if (message.client.voice.broadcasts[0].dispatcher.paused) {
-            message.client.voice.broadcasts[0].dispatcher.pause(false)
-            message.client.voice.broadcasts[0].dispatcher.resume()
+            
+        if(connection.state.subscription.player.state.status === "paused") {
+            connection.state.subscription.player.unpause();
             return message.channel.send({ embeds: [embed] })
-        }
-        else {
-            return message.channel.send(
+
+        } else {
+            return message.channel.send({ embeds: [
                 embed
                     .setDescription("Music isn't paused at the moment.")
                     .setColor("RED")
+                ] }
             )
         }
     }
