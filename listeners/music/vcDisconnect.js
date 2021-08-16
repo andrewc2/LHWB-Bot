@@ -1,6 +1,6 @@
 const { Listener } = require("discord-akairo");
-//const config = require("../../config.json");
-const { VoiceConnectionStatus, entersState, getVoiceConnection } = require('@discordjs/voice');
+const config = require("../../config.json");
+const { joinVoiceChannel } = require('@discordjs/voice');
 
 class VCDisconnectListener extends Listener {
     constructor() {
@@ -11,23 +11,15 @@ class VCDisconnectListener extends Listener {
     }
 
     exec(oldState, newState) {
-
-        if (newState.id === this.client.user.id && newState.connection === null) {
-            const connection = getVoiceConnection(oldState.guild.id);
-
-            connection.on(VoiceConnectionStatus.Disconnected, async (oldState, newState) => {
-                try {
-                    await Promise.race([
-                        entersState(connection, VoiceConnectionStatus.Signalling, 5_000),
-                        entersState(connection, VoiceConnectionStatus.Connecting, 5_000),
-                    ]);
-                    // Seems to be reconnecting to a new channel - ignore disconnect
-                } catch (error) {
-                    // Seems to be a real disconnect which SHOULDN'T be recovered from
-                    console.log(error);
-                    connection.destroy();
-                }
+        if (newState.id === this.client.user.id && newState.channelId === null) {
+            const channel = this.client.channels.cache.get(config.discord.channelID);
+            if (!channel) return console.log("I cannot find the voice channel.");
+            const connection = joinVoiceChannel({
+                channelId: channel.id,
+                guildId: channel.guild.id,
+                adapterCreator: channel.guild.voiceAdapterCreator,
             });
+            connection.state.subscription.player.unpause();
         }
     }
 }

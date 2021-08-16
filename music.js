@@ -55,25 +55,18 @@ function updatePlayCount(path) {
 
 function autoPlay(result, connection, client) {
     updateRecent(result.song, result.queuedBy);
-    //const vc = client.channels.cache.get('353947047306723328').members.size;
-    //console.log(vc);
-
     const player = createAudioPlayer();
     const resource = createAudioResource(`${config.discord.music_path}${result.path}`);
     player.play(resource);
     connection.subscribe(player);
-
-    player.on('stateChange', (oldState, newState) => {
+    player.on("stateChange", (oldState, newState) => {
         console.log(`Audio player transitioned from ${oldState.status} to ${newState.status}`);
-
         if (newState.status === AudioPlayerStatus.Idle && oldState.status !== AudioPlayerStatus.Idle) {
-            console.log('The connection has entered the Idle state - ready to play audio!');
-            //console.log(vc);
-            //if (vc > 1) {
-                updatePlayCount(result.path);
-            //}
+            console.log("The connection has entered the Idle state - ready to play audio!");
+            const vc = client.channels.cache.get(connection.packets.state.channel_id).members.size;
+            if (vc > 1) updatePlayCount(result.path);
             if (result.queuedBy !== null) dequeue(result.song);
-            setTimeout(async function () { autoPlay( await searchQueue() || await randomSong(), connection) }, 1000);
+            setTimeout(async function() { autoPlay(await searchQueue() || await randomSong(), connection, client); }, 1000);
         }
     });
 }

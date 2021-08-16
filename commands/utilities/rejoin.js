@@ -1,16 +1,17 @@
 const { Command } = require("discord-akairo");
 const config = require("../../config.json");
 const { MessageEmbed } = require("discord.js");
+const {	joinVoiceChannel } = require('@discordjs/voice');
 
-class dcFixCommand extends Command {
+class reJoinCommand extends Command {
     constructor() {
-        super("dcfix", {
-            aliases: ["dcfix"],
+        super("rejoin", {
+            aliases: ["rejoin"],
             category: "utility",
             cooldown: 30000,
             ratelimit: 1,
             description: {
-                content: "Disconnectes the bot from the voice channel, allowing it to reconnect and resume playing music.",
+                content: "Reconnect and resume playing music in default channel.",
                 usage: "dcfix",
                 examples: [
                     "dcfix"
@@ -20,10 +21,14 @@ class dcFixCommand extends Command {
     }
 
     exec(message) {
-        const channel = this.client.channels.cache.get(config.discord.channelID)
+        const channel = this.client.channels.cache.get(config.discord.channelID);
+        const connection = joinVoiceChannel({
+            channelId: channel.id,
+            guildId: channel.guild.id,
+            adapterCreator: channel.guild.voiceAdapterCreator,
+        });
         if (!channel) return console.log("I cannot find the voice channel.")
-        channel.leave();
-        console.log("Leaving voice channel. - User Requested Disconnect");
+        connection.state.subscription.player.unpause();        
         const embed = new MessageEmbed()
             .setDescription("Disconnected from voice chat, auto-reconnecting.")
             .setColor('#9979FF')
@@ -31,4 +36,4 @@ class dcFixCommand extends Command {
     }
 }
 
-module.exports = dcFixCommand;
+module.exports = reJoinCommand;
