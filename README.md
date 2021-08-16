@@ -6,7 +6,7 @@ I do not guarantee stability when used on any other server, though it should wor
 ### Requirements
 node.js
 
-Discord.js + Akairo + DiscordJS/Opus
+Discord.js + Akairo + DiscordJS/voice
 
 ffmpeg for music
 
@@ -18,7 +18,7 @@ sqlite + sqlite3 for bot settings
 Uses mysql for storage of song information and playcount data, as well as recently played songs, and queues.
 
 ### Install Music Bot (using Ubuntu)
-`npm install discord.js @discordjs/opus mysql2 luxon`
+`npm install discord.js @discordjs/voice mysql2 luxon`
 
 `npm install discord-akairo`
 
