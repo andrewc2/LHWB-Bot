@@ -10,6 +10,15 @@ function anyUsage(guild, client, text) {
     }
 }
 
+function anyUsageFooter(guild, client, text) {
+    if (guild) {
+        return `${client.settings.get(guild.id, 'prefix', config.discord.prefix)}${text}`
+    }
+    else {
+        return `${text}`
+    }
+}
+
 function commandUsage(commandName, guild, client, text) {
     const embed = new MessageEmbed()
         .setDescription(`Invalid command usage: the \`${commandName}\` command's accepted format is: ${anyUsage(guild, client, text)}`)
@@ -114,4 +123,4 @@ function time() {
     return date.toLocaleString();
 }
 
-module.exports = { anyUsage, commandUsage, cmdRestrictions, cmdRestrictionsNoVC, regularRestriction, isMod, isModNoVC, editDistance, log, time }
+module.exports = { anyUsage, anyUsageFooter, commandUsage, cmdRestrictions, cmdRestrictionsNoVC, regularRestriction, isMod, isModNoVC, editDistance, log, time }

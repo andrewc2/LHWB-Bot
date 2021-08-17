@@ -1,5 +1,6 @@
 const { Command } = require("discord-akairo");
 const { getVoiceConnection } = require('@discordjs/voice');
+const { isModNoVC } = require("../../utilities");
 
 class ResumeCommand extends Command {
     constructor() {
@@ -7,7 +8,6 @@ class ResumeCommand extends Command {
             aliases: ["resume", "play", "lresume"],
             category: "music",
             channel: "guild",
-            ownerOnly: true,
             description: {
                 content: "Resumes music on the bot.",
                 usage: "resume",
@@ -16,6 +16,10 @@ class ResumeCommand extends Command {
                 ]
             }
         });
+    }
+
+    userPermissions(message) {
+        return isModNoVC(message)
     }
 
     async exec(message, args) {

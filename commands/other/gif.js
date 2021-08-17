@@ -1,6 +1,7 @@
 const { Command } = require("discord-akairo");
 const { MessageEmbed } = require("discord.js");
 const { db } = require("../../models/db");
+const { anyUsageFooter } = require("../../utilities");
 
 class gifCommand extends Command {
     constructor() {
@@ -22,7 +23,7 @@ class gifCommand extends Command {
             const embed = new MessageEmbed()
                 .setColor('#FF69B4') //pink
                 .setImage(`${rows[0].path}`)
-                .setFooter('Submit gifs to be added using !request [imgur url]', message.client.user.displayAvatarURL({dynamic: true, format: "png"}));
+                .setFooter(`Submit gifs to be added using: ${anyUsageFooter(message.guild, message.client, 'request [imgur url]')}`, message.client.user.displayAvatarURL({dynamic: true, format: "png"}));
             message.channel.send({ embeds: [embed]})
         });
     }

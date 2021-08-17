@@ -1,5 +1,6 @@
 const { Command } = require("discord-akairo");
 const { getVoiceConnection } = require('@discordjs/voice');
+const { isModNoVC } = require("../../utilities");
 
 class PauseCommand extends Command {
     constructor() {
@@ -7,7 +8,6 @@ class PauseCommand extends Command {
             aliases: ["pause", "lpause"],
             category: "music",
             channel: "guild",
-            ownerOnly: true,
             description: {
                 content: "Pauses music on the bot.",
                 usage: "pause",
@@ -16,6 +16,10 @@ class PauseCommand extends Command {
                 ]
             }
         });
+    }
+
+    userPermissions(message) {
+        return isModNoVC(message)
     }
 
     async exec(message, args) {

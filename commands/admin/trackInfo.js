@@ -1,14 +1,13 @@
 const { Command } = require("discord-akairo");
 const { MessageEmbed } = require('discord.js');
 const { db } = require("../../models/db");
-const { editDistance } = require("../../utilities");
+const { editDistance, isModNoVC } = require("../../utilities");
 
 class TrackInfoCommand extends Command {
     constructor() {
         super("trackinfo", {
             aliases: ["trackinfo", "tinfo"],
             category: "admin",
-            ownerOnly: true,
             description: {
                 content: "Shows information about a track.",
                 usage: "trackinfo [song]",
@@ -24,6 +23,10 @@ class TrackInfoCommand extends Command {
                 }
             ]
         });
+    }
+
+    userPermissions(message) {
+        return isModNoVC(message)
     }
 
     async exec(message, args) {

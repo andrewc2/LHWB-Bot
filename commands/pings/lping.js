@@ -87,7 +87,8 @@ class LPingCommand extends Command {
                             })
                             .catch(() => console.log("error"));
                     }
-                    if (users.length < 2) return message.channel.send({ embeds: [failedEmbed.setDescription("It looks like nobody has this pinglist assigned. :confused:")] });
+                    users.push(`- to join this pinglist, do \`${anyUsage(message.guild, message.client, `lping get ${args.pinglist}`)}\` in bots.`);
+                    if (users.length < 3) return message.channel.send({ embeds: [failedEmbed.setDescription("It looks like nobody has this pinglist assigned. :confused:")] });
                     const sendList = users.join(" ").toString();
                     for (let i = 0; i < sendList.length; i += 2040) {
                         const toSend = sendList.substring(i, Math.min(sendList.length, i + 2040));

@@ -38,8 +38,8 @@ class CountdownCommand extends Command {
                 allEvents.push(`${event.name} - ${startDate.toFormat("ccc L/d h:mma")}-${endTime} EST\n`)
             }
         }
-        if (allEvents.length < 1) return message.channel.send(embed.setDescription("There are no events scheduled. :sob:"))
-        return message.channel.send({ embeds: [embed.setDescription(allEvents)]})
+        if (allEvents.length < 1) return message.channel.send({ embeds: [embed.setDescription("There are no events scheduled. :sob:")]})
+        return message.channel.send({ embeds: [embed.setDescription(allEvents.toString())]})
     }
 }
 

@@ -33,7 +33,7 @@ class rankPlaysCommand extends Command {
     exec(message, args) {
         db.query("SELECT ANY_VALUE(name) AS song, path, MAX(playcount) AS plays FROM music WHERE playcount > 0 GROUP BY path ORDER BY plays DESC LIMIT ?", [args.listNum], function(err, rows) {
             let rankedPlays = "";
-            
+
             for(let num = 0; num < rows.length; num++)
                 rankedPlays = rankedPlays + `${num+1}. ${rows[num]['song']} - ${rows[num]['plays']} plays\n`;
 

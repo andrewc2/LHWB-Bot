@@ -2,6 +2,7 @@ const { Command } = require("discord-akairo");
 const config = require("../../config.json");
 const { MessageEmbed } = require("discord.js");
 const {	joinVoiceChannel } = require('@discordjs/voice');
+const { cmdRestrictionsNoVC } = require("../../utilities");
 
 class reJoinCommand extends Command {
     constructor() {
@@ -20,6 +21,10 @@ class reJoinCommand extends Command {
         });
     }
 
+    userPermissions(message) {
+        return cmdRestrictionsNoVC(message)
+    }
+
     exec(message) {
         const channel = this.client.channels.cache.get(config.discord.channelID);
         const connection = joinVoiceChannel({
@@ -30,7 +35,7 @@ class reJoinCommand extends Command {
         if (!channel) return console.log("I cannot find the voice channel.")
         connection.state.subscription.player.unpause();        
         const embed = new MessageEmbed()
-            .setDescription("Disconnected from voice chat, auto-reconnecting.")
+            .setDescription("Automatically reconnecting to the default voice channel.")
             .setColor('#9979FF')
         return message.channel.send({ embeds: [embed] });
     }
