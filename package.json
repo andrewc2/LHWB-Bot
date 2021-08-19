@@ -11,15 +11,15 @@
   "license": "GPL 3.0",
   "dependencies": {
     "@discordjs/opus": "^0.3.3",
-    "@discordjs/voice": "^0.5.5",
+    "@discordjs/voice": "^0.6.0",
     "discord-akairo": "github:discord-akairo/discord-akairo",
-    "discord.js": "^13.0.0-dev.t1627732975.331a9d3",
-    "eris": "^0.14.0",
+    "discord.js": "^13.1.0",
     "lastfmapi": "^0.1.1",
-    "libsodium-wrappers": "^0.7.9",
     "luxon": "^1.26.0",
     "mysql": "^2.18.1",
     "mysql2": "^2.2.5",
+    "node-opus": "^0.3.3",
+    "sodium": "^3.0.2",
     "sqlite": "^4.0.18",
     "sqlite3": "^5.0.0"
   }

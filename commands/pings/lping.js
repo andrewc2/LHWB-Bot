@@ -101,7 +101,7 @@ class LPingCommand extends Command {
         if (args.pinglist === "") {
             standard();
         }
-        else if (message.guild.id === config.discord.serverID && message.member.roles.cache.has(config.discord.repRole) || message.member.permissions.has("MANAGE_MESSAGES")) {
+        else if (message.guild.id === config.discord.serverID && message.member.roles.cache.has(config.discord.repRole) || message.guild.id === config.discord.anonServerID || message.member.permissions.has("MANAGE_MESSAGES")) {
             const buttonEmbed = new MessageEmbed()
                 .setDescription(`${message.author}, Are you sure you want to ping this ping list? ${this.client.user.username} is not responsible for any potential consequences.`)
                 .setColor("YELLOW");
