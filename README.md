@@ -1,7 +1,7 @@
 # LosingHimWasBlue-Bot
 A bot for our Discord server.
 
-I do not guarantee stability when used on any other server, though it should work. It currently will only play music on one server at a time. Fully rewritten using discord.js.
+I do not guarantee stability when used on any other server, though it should work.
 
 ### Requirements
 node.js
