@@ -1,74 +1,62 @@
 const fs = require("fs");
 const { db } = require("./models/db");
+const { DELETE_FROM_QUEUE, FIND_RANDOM_SONG, UPDATE_RECENT, SEARCH_QUEUE, UPDATE_PLAY_COUNT } = require("./models/music-queries");
+const { AudioPlayerStatus, createAudioPlayer, createAudioResource } = require("@discordjs/voice");
+const { logger } = require("./utilities/logging");
 const config = require("./config.json");
-const { log } = require("./utilities");
-const {
-	createAudioPlayer,
-	createAudioResource,
-	AudioPlayerStatus,
-} = require('@discordjs/voice');
 
-function searchQueue() {
-    return db.promise().query("SELECT name, path, queuedby FROM queue").then(([result]) => {
-        if (result.length > 0) {
-            log("There is a queue.");
-            log(`Path: ${result[0].path} Name: ${result[0].name} Queuedby: ${result[0].queuedby} Grabbed from queue`);
-            return { song: result[0].name, path: result[0].path, queuedBy: result[0].queuedby };
-        }
-        return null;
-    });
+async function searchQueue(guild) {
+	const [result] = await db.promise().query(SEARCH_QUEUE, [guild.id]);
+	if (result.length > 0) {
+		logger.log("info", "There is a queue");
+		logger.log("info", `Path: ${result[0].path} Guild: ${guild.name} Name: ${result[0]["official_name"]} Queued By: ${result[0].queued_by} Grabbed from queue`);
+		return { id: result[0]["song_detail_id"], ...result[0], guild_id: guild.id, full_path: `${config.music.filepath}${result[0].path}` };
+	}
+	return null;
 }
 
-function randomSong() {
-    return db.promise().query("SELECT DISTINCT path, name FROM music WHERE type != ? ORDER BY RAND() LIMIT 1",["unreleased"]).then(([result]) => {
-        //gets path from the music db, and randomly selects a released track
-        if(result != null) {
-            const songPath = result[0].path;
-            const songName = result[0].name;
-            log(`Path: ${songPath} Name: ${songName} is now playing`);
-            fs.access(`${config.discord.music_path}${songPath}`, fs.F_OK, async (err) => {
-                if (err) {
-                    await randomSong()
-                }
-            })
-            return { song: songName, path: songPath, queuedBy: null }
-        }
-    });    
+async function randomSong(guild) {
+	const [result] = await db.promise().query(FIND_RANDOM_SONG, [config.music.main_artist]);
+	if (result.length > 0) {
+		fs.access(`${config.music.filepath}${result[0].path}`, fs.constants.F_OK, async (err) => {
+			if (err) {
+				logger.log("error", `Path: ${result[0].path} Name: ${result[0]["official_name"]} could not be found`);
+				return await randomSong(guild);
+			}
+		});
+		logger.log("info", `Path: ${result[0].path} Guild: ${guild.name} Name: ${result[0]["official_name"]} is now playing`);
+		return { ...result[0], queued_by: null, guild_id: guild.id, full_path: `${config.music.filepath}${result[0].path}` };
+	}
+	return await randomSong(guild);
 }
 
-function updateRecent(name, queuedBy) {
-    //Adds recently played songs to database
-    db.query("SELECT album FROM music WHERE name = ?",[name], function(err,result) {
-        if (err) return log(`Error Updating Recent: ${err} Result: ${result}`);
-        let currentAlbum = result[0]['album'];
-        db.query("INSERT INTO recent (name, album, queuedby) VALUES (?,?,?)", [name, currentAlbum, queuedBy]);
-    });
+function dequeue(id, guildId) {
+	db.query(DELETE_FROM_QUEUE, [id, guildId]);
 }
 
-function dequeue(name) {
-    db.query("DELETE FROM queue WHERE name = ? LIMIT 1", [name]);
+function updateRecent(songId, guildId, queuedBy) {
+	db.query(UPDATE_RECENT, [songId, guildId, queuedBy]);
 }
 
-function updatePlayCount(path) {
-    db.query("UPDATE music SET playcount = playcount + 1 WHERE path = ?",[path])
+function updatePlayCount(id) {
+	db.query(UPDATE_PLAY_COUNT, [id]);
 }
 
-function autoPlay(result, connection, client) {
-    updateRecent(result.song, result.queuedBy);
-    const player = createAudioPlayer();
-    const resource = createAudioResource(`${config.discord.music_path}${result.path}`);
-    player.play(resource);
-    connection.subscribe(player);
-    player.on("stateChange", (oldState, newState) => {
-        console.log(`Audio player transitioned from ${oldState.status} to ${newState.status}`);
-        if (newState.status === AudioPlayerStatus.Idle && oldState.status !== AudioPlayerStatus.Idle) {
-            console.log("The connection has entered the Idle state - ready to play audio!");
-            const vc = client.channels.cache.get(connection.packets.state.channel_id).members.size;
-            if (vc > 1) updatePlayCount(result.path);
-            if (result.queuedBy !== null) dequeue(result.song);
-            setTimeout(async function() { autoPlay(await searchQueue() || await randomSong(), connection, client); }, 1000);
-        }
-    });
+function play(result, connection, client) {
+	updateRecent(result.id, result.guild_id, result.queued_by);
+	const player = createAudioPlayer();
+	const resource = createAudioResource(result.full_path);
+	player.play(resource);
+	connection.subscribe(player);
+	player.on("stateChange", async (oldState, newState) => {
+		logger.log("info", `Audio player transitioned from ${oldState.status} to ${newState.status}`);
+		if (newState.status === AudioPlayerStatus.Idle && oldState.status !== AudioPlayerStatus.Idle) {
+			const vc = client.channels.cache.get(connection.joinConfig.channelId);
+			if (vc.members.size > 1) updatePlayCount(result.id);
+			if (result.queued_by !== null) dequeue(result.id, result.guild_id);
+			setTimeout(async () => { play(await searchQueue(vc.guild) || await randomSong(vc.guild), connection, client); }, 1000);
+		}
+	});
 }
 
-module.exports = { searchQueue, randomSong, dequeue, autoPlay }
+module.exports = { searchQueue, randomSong, dequeue, play };

@@ -1,0 +1,27 @@
+{
+  "discord": {
+    "prefix": "",
+    "discord_token": "",
+    "owner": "",
+    "ignore_perms": [],
+    "patootie": {
+      "patootie_id": "",
+      "guild_id": "",
+      "ignore_channels": []
+    }
+  },
+  "lastfm": {
+    "lfmAPIKey": "",
+    "lfmAPISecret": ""
+  },
+  "music": {
+    "main_artist": "",
+    "filepath": ""
+  },
+  "mySQL": {
+    "database_host": "",
+    "database_username": "",
+    "database_password": "",
+    "database_name": ""
+  }
+}

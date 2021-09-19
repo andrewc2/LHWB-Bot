@@ -1,12 +1,9 @@
-const mysql = require('mysql2');
+const { createPool } = require("mysql2");
 const config = require("../config.json");
 
-const db = mysql.createPool({
-	host: config.mySQL.host,
-	user: config.mySQL.username,
-	password: config.mySQL.password,
-	database: config.mySQL.database,
-    charset: "utf8mb4"
+exports.db = createPool({
+	host: config.mySQL.database_host,
+	user: config.mySQL.database_username,
+	password: config.mySQL.database_password,
+	database: config.mySQL.database_name,
 });
-
-module.exports = { db }
