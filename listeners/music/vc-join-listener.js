@@ -23,7 +23,6 @@ module.exports = class VcJoinListener extends Listener {
 			});
 
 			const result = await searchQueue(channel.guild) || await randomSong(channel.guild);
-			this.client.user.setActivity("Music", { type: "PLAYING" });
 			setTimeout(() => { play(result, connection, this.client); }, 1000);
 		}
 	}

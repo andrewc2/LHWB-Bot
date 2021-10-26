@@ -18,7 +18,7 @@ class memberJoinListener extends Listener {
 				console.log("Member joined but there is no system channel");
 				return;
 			}			
-            member.guild.systemChannel.send({ embeds: [embed.setDescription(`Welcome to the server, <@!${member.user.id}>! :wave:`)] });
+            member.guild.systemChannel.send({ embeds: [embed.setDescription(`Welcome to the server, ${member.user.username} <@!${member.user.id}>! :wave:\nIf you’re here for Swiftmas please read the rules in <#767953090275573801>.\nWhen finished press I agree, then fill out the form.`)] });
 	    }
     }
 }

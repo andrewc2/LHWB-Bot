@@ -2,7 +2,7 @@ const { Command } = require("discord-akairo");
 const voiceServers = require("../../voice-servers.json");
 const { MessageEmbed } = require("discord.js");
 const {	joinVoiceChannel } = require("@discordjs/voice");
-const { cmdRestrictionsNoVC } = require("../../utilities/permissions");
+const { isVoiceServerAndMod } = require("../../utilities/permissions");
 
 class reJoinCommand extends Command {
 	constructor() {
@@ -22,7 +22,7 @@ class reJoinCommand extends Command {
 	}
 
 	async userPermissions(message) {
-		return await cmdRestrictionsNoVC(message);
+		return isVoiceServerAndMod(message);
 	}
 
 	exec(message) {

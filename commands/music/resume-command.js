@@ -1,7 +1,7 @@
 const { Command } = require("discord-akairo");
 const { MessageEmbed } = require("discord.js");
 const { getVoiceConnection } = require("@discordjs/voice");
-const { noVoiceServerAndMod } = require("../../utilities/permissions");
+const { isVoiceServerAndMod } = require("../../utilities/permissions");
 
 module.exports = class ResumeCommand extends Command {
 	constructor() {
@@ -18,7 +18,7 @@ module.exports = class ResumeCommand extends Command {
 	}
 
 	userPermissions(message) {
-		return noVoiceServerAndMod(message);
+		return isVoiceServerAndMod(message);
 	}
 
 	async exec(message) {

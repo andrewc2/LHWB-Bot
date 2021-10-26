@@ -5,7 +5,7 @@ const {
 	FIND_SONG_IN_QUEUE,
 } = require("../../models/music-queries");
 const { dequeue } = require("../../music");
-const { isMusicServer } = require("../../utilities/permissions");
+const { cmdRestrictionsNoVC } = require("../../utilities/permissions");
 const { commandUsage } = require("../../utilities/utilities");
 
 module.exports = class DequeueCommand extends Command {
@@ -30,8 +30,8 @@ module.exports = class DequeueCommand extends Command {
 		});
 	}
 
-	userPermissions(message) {
-		return isMusicServer(message);
+	async userPermissions(message) {
+		return await cmdRestrictionsNoVC(message);
 	}
 
 	async exec(message, { song }) {
