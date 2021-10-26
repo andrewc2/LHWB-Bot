@@ -57,14 +57,14 @@ function noVoiceServerAndMod(message) {
 }
 
 async function regularRestriction(message) {
-	if (await isVoiceServer(message.guild.id)) return "Server";
+	if (isVoiceServer(message.guild.id)) return "Server";
 	if (isVoiceChannel(message)) return "Voice";
 	if (!await isSpamChannel(message.channel) || !isMod(message.member)) return null;
 	return "Channel";
 }
 
 async function cmdRestrictions(message) {
-	if (await isVoiceServer(message.guild.id)) return "Server";
+	if (isVoiceServer(message.guild.id)) return "Server";
 	if (isVoiceChannel(message)) return "Voice";
 	if (!isMod(message.member)) return null;
 	if (await isSpamChannel(message.channel)) return "Channel";
@@ -73,7 +73,7 @@ async function cmdRestrictions(message) {
 }
 
 async function cmdRestrictionsNoVC(message) {
-	if (await isVoiceServer(message.guild)) return "Server";
+	if (isVoiceServer(message.guild.id)) return "Server";
 	if (!isMod(message.member)) return null;
 	if (!await isTrusted(message.member)) return null;
 	return "Role";
