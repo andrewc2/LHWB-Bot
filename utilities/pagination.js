@@ -1,23 +1,42 @@
-const { MessageActionRow, MessageButton } = require("discord.js");
+const { MessageActionRow, MessageButton, MessageEmbed } = require("discord.js");
 
-const buttons = new MessageActionRow().addComponents(
-    new MessageButton()
-        .setCustomId("previousButton")
-        .setLabel("Previous")
-        .setStyle("SECONDARY"),
-    new MessageButton()
-        .setCustomId("nextButton")
-        .setLabel("Next")
-        .setStyle("SECONDARY"),
-    new MessageButton()
-        .setCustomId("deleteButton")
-        .setLabel("Delete")
-        .setStyle("DANGER")
-);
+const previousButton = new MessageButton()
+    .setCustomId("previousButton")
+    .setLabel("Previous")
+    .setStyle("SECONDARY");
 
-module.exports.pagination = async (message, embedArray) => {
+const nextButton = new MessageButton()
+    .setCustomId("nextButton")
+    .setLabel("Next")
+    .setStyle("SECONDARY");
+
+const deleteButton = new MessageButton()
+    .setCustomId("deleteButton")
+    .setLabel("Delete")
+    .setStyle("DANGER");
+
+module.exports.pagination = async (message, embedArray, deletable = true) => {
+
+    if (embedArray.length === 0)
+        return message.channel.send({
+            embeds: [
+                new MessageEmbed()
+                    .setDescription("There is not enough information for this command to work right now. Try again later.")
+                    .setColor("RED")
+            ]
+        });
+
+    const sendPayload = embedArray.length === 1 ?
+        deletable === true ?
+            { embeds: [embedArray[0]], components: [new MessageActionRow().addComponents(deleteButton)] } :
+            { embeds: [embedArray[0]] }
+        :
+        deletable === true ?
+            { embeds: [embedArray[0]], components: [new MessageActionRow().addComponents(previousButton, nextButton, deleteButton)] } :
+            { embeds: [embedArray[0]], components: [new MessageActionRow().addComponents(previousButton, nextButton)] };
+
     await message.channel
-        .send({embeds: [embedArray[0]], components: [buttons]})
+        .send(sendPayload)
         .then((sentInteraction) => {
             let i = 0;
 
@@ -52,7 +71,8 @@ module.exports.pagination = async (message, embedArray) => {
             );
 
             collector.on("end", () => {
-                sentInteraction.edit({components: []});
+                if (!sentInteraction.deleted)
+                    sentInteraction.edit({ components: [] });
             });
         });
 }

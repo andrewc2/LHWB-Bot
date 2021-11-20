@@ -1,6 +1,7 @@
 const { Command } = require('discord-akairo');
-const { MessageActionRow, MessageButton, MessageEmbed } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
 const fetch = require('node-fetch');
+const { pagination } = require("../../utilities/pagination");
 
 module.exports = class StoreCommand extends Command {
     constructor() {
@@ -18,17 +19,6 @@ module.exports = class StoreCommand extends Command {
     exec(message) {
         const embedArray = [];
 
-        const buttons = new MessageActionRow().addComponents(
-            new MessageButton()
-                .setCustomId('previousButton')
-                .setLabel('Previous')
-                .setStyle('SECONDARY'),
-            new MessageButton()
-                .setCustomId('nextButton')
-                .setLabel('Next')
-                .setStyle('SECONDARY')
-        );
-
         fetch(`https://store.taylorswift.com/products.json`)
             .then((response) => response.json())
             .then(async (response) => {
@@ -42,46 +32,19 @@ module.exports = class StoreCommand extends Command {
                             .setTimestamp(item.published_at)
                             .setColor('GOLD')
                     )
-                            
+
                 });
 
-                return message.channel
-                    .send({ embeds: [embedArray[0]], components: [buttons] })
-                    .then((sentInteraction) => {
-                        let i = 0;
-
-                        const filter = async (interaction) => {
-                            await interaction.deferUpdate();
-                            return interaction.user.id === message.author.id;
-                        };
-
-                        const collector =
-                            sentInteraction.createMessageComponentCollector({
-                                filter,
-                                idle: 20000,
-                            });
-
-                        collector.on('collect', (interaction) => {
-                                if (interaction.customId === 'nextButton') {
-                                    i++;
-                                    if (i >= embedArray.length) i = 0;
-                                    interaction.editReply({
-                                        embeds: [embedArray[i]],
-                                    });
-                                } else {
-                                    i--;
-                                    if (i < 0) i = embedArray.length - 1;
-                                    interaction.editReply({
-                                        embeds: [embedArray[i]],
-                                    });
-                                }
-                            }
-                        );
-
-                        collector.on('end', () => {
-                            sentInteraction.edit({ components: [] });
-                        });
-                    });
+                await pagination(message, embedArray);
+            })
+            .catch(() => {
+                return message.channel.send({
+                    embeds: [
+                        new MessageEmbed()
+                            .setDescription("Something went wrong while searching Taylor Store. Please try again later.")
+                            .setColor("RED")
+                    ]
+                });
             });
     }
 }
