@@ -1,5 +1,6 @@
 const { Command } = require("discord-akairo");
-const { MessageActionRow, MessageButton, MessageEmbed } = require('discord.js');
+const { MessageEmbed } = require('discord.js');
+const { pagination } = require("../../utilities/pagination");
 
 class fearlessCommand extends Command {
 	constructor() {
@@ -16,18 +17,7 @@ class fearlessCommand extends Command {
 		});
 	}
 
-	exec(message) {
-		const buttons = new MessageActionRow().addComponents(
-            new MessageButton()
-                .setCustomId('previousButton')
-                .setLabel('Previous')
-                .setStyle('SECONDARY'),
-            new MessageButton()
-                .setCustomId('nextButton')
-                .setLabel('Next')
-                .setStyle('SECONDARY')
-        );
-		
+	async exec(message) {
 		const embedTV = new MessageEmbed()
 			.setColor(14929032)
 			.setAuthor("Taylor Swift", "https://lhwb.dev/ts.png", "https://en.wikipedia.org/wiki/Fearless_(Taylor_Swift_album)")
@@ -41,44 +31,7 @@ class fearlessCommand extends Command {
 			.setDescription("**Fearless** was released on __November 11, 2008__ \n\n1. Fearless\n2. Fifteen\n3. Love Story\n4. Hey Stephen\n5. White Horse\n6. You Belong with Me\n7. Breathe (featuring Colbie Caillat)\n8. Tell Me Why\n9. You're Not Sorry\n10. The Way I Loved You\n11. Forever and Always\n12. The Best Day\n13. Change\n\n__Platinum Edition Tracks:__\nJump Then Fall\nUntouchable\nCome in with the Rain\nSuperstar\nThe Other Side of the Door\nForever And Always (Piano Version)");
 			
 		const embedArray = [embedTV, embed];
-
-		return message.channel
-		.send({ embeds: [embedArray[0]], components: [buttons] })
-		.then((sentInteraction) => {
-			let i = 0;
-
-			const filter = async (interaction) => {
-				await interaction.deferUpdate();
-				return interaction.user.id === message.author.id;
-			};
-
-			const collector =
-				sentInteraction.createMessageComponentCollector({
-					filter,
-					idle: 20000,
-				});
-
-				collector.on('collect', (interaction) => {
-					if (interaction.customId === 'nextButton') {
-						i++;
-						if (i >= embedArray.length) i = 0;
-						interaction.editReply({
-							embeds: [embedArray[i]],
-						});
-					} else {
-						i--;
-						if (i < 0) i = embedArray.length - 1;
-							interaction.editReply({
-								embeds: [embedArray[i]],
-							});
-						}
-					}
-				);
-
-				collector.on('end', () => {
-					sentInteraction.edit({ components: [] });
-				});
-			});
+		await pagination(message, embedArray);
 	}
 }
 

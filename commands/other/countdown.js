@@ -22,20 +22,22 @@ class CountdownCommand extends Command {
 		const embed = new MessageEmbed()
 			.setTitle("Countdowns")
 			.setURL("https://www.taylorswift.com/events")
-			.setColor(16711680);
+			.setColor("#9979FF")
+			.setTimestamp()
+			.setFooter("Times are now in your Local Timezone!");
 
 		const allEvents = [];
 		const [rows] = await db.promise().query("SELECT * FROM `countdown` WHERE enddate > ? ORDER BY `startdate`", [DateTime.local().setZone("America/New_York").toString()]);
 
 		for (const event of rows.values()) {
 			const startDate = DateTime.fromISO(event.startdate.toISOString()).setZone("America/New_York");
-			const endTime = DateTime.fromISO(event.enddate.toISOString()).setZone("America/New_York").toFormat("h:mma");
+			const endTime = DateTime.fromISO(event.enddate.toISOString()).setZone("America/New_York");
 			if (startDate > DateTime.local().setZone("America/New_York")) {
 				const dateUntil = startDate.diff(DateTime.local().setZone("America/New_York")).toFormat("d 'Days' h 'Hours' m 'Minutes' s 'Seconds");
-				allEvents.push(`${event.name} - ${startDate.toFormat("ccc L/d h:mma")}-${endTime} EST\n${dateUntil}\n`);
+				allEvents.push(`${event.name} - <t:${startDate.toSeconds()}> - <t:${endTime.toSeconds()}:t> (Local)\n${dateUntil}\n\n`);
 			}
 			else {
-				allEvents.push(`${event.name} - ${startDate.toFormat("ccc L/d h:mma")}-${endTime} EST\n`);
+				allEvents.push(`${event.name} - <t:${startDate.toSeconds()}> - <t:${endTime.toSeconds()}:t> (Local)\n\n`);
 			}
 		}
 		if (allEvents.length < 1) return message.channel.send({ embeds: [embed.setDescription("There are no events scheduled. :sob:")] });
