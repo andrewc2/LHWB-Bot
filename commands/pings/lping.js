@@ -93,8 +93,8 @@ class LPingCommand extends Command {
 				users.push(`- to join this pinglist, do \`${anyUsage(message.guild, message.client, `lping get ${args.pinglist}`)}\` in bots.`);
 				if (users.length < 3) return message.channel.send({ embeds: [failedEmbed.setDescription("It looks like nobody has this pinglist assigned. :confused:")] });
 				const sendList = users.join(" ").toString();
-				for (let i = 0; i < sendList.length; i += 2040) {
-					const toSend = sendList.substring(i, Math.min(sendList.length, i + 2040));
+				for (let i = 0; i < sendList.length; i += 1999) {
+					const toSend = sendList.substring(i, Math.min(sendList.length, i + 1999));
 					await message.channel.send(toSend);
 				}
 			});
