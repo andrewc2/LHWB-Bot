@@ -19,7 +19,7 @@ class gifCommand extends Command {
 	}
 
 	exec(message) {
-		db.query("SELECT path FROM gifs ORDER BY RAND() LIMIT 1", function(err, rows) {
+		db.query("SELECT path, type FROM media WHERE type = 'gif' ORDER BY RAND() LIMIT 1", function(err, rows) {
 			const embed = new MessageEmbed()
 				.setColor("#FF69B4")
 				.setImage(`${rows[0].path}`)
