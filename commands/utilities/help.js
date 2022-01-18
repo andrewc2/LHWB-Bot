@@ -30,7 +30,7 @@ class HelpCommand extends Command {
 			.setTitle("LHWB Commands")
 			.setDescription(`Use ${anyUsage(message.guild, this.client, `${this.id} [command]`)} for further information.\nThe full command list is available here: https://lhwb.dev/`)
 			.addFields(
-				{ name: "Music :musical_note:", value: "current, queue, dequeue, clearqueue, recent, skip, tracks, rankplays, trackinfo", inline: true },
+				{ name: "Music :musical_note:", value: "albumlist, current, queue, queue album, dequeue, clearqueue, recent, skip, tracks, rankplays, trackinfo", inline: true },
 				{ name: "Albums :cd:", value: "debut, beautifuleyes, fearless, speaknow, red, 1989, reputation, lover, folklore, evermore", inline: true },
 				{ name: "Tours :ticket:", value: "redguests, redsetlist, 1989ss, 1989guests, 1989setlist, repss, repguests, repsetlist", inline: true },
 				{ name: "Other :wrench:", value: "countdown, danc, debtcounter, eyeroll, gif, prefix, request, stream, taze, wtny", inline: true },
