@@ -34,6 +34,7 @@ class LPingCommand extends Command {
 				["lpinglist", "list"],
 				["lpingcreate", "create"],
 				["lpingdelete", "delete"],
+				["lpingshow", "show"],
 			],
 		};
 
