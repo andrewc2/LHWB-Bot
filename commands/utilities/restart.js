@@ -9,7 +9,7 @@ class RestartCommand extends Command {
 			category: "utilities",
 			cooldown: 3000,
 			ratelimit: 1,
-			ownerOnly: true,
+			userPermissions: ["MANAGE_GUILD"],
 			description: {
 				content: "Restarts the bot",
 				usage: "lrestart",

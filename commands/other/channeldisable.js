@@ -39,18 +39,18 @@ class ChannelDisable extends Command {
 		const guardedCommands = ["channeldisable", "channelenable", "channel"];
 
 		if (guardedCommands.includes(commandID)) {
-			return message.channel.send({ embeds: [failedEmbed.setDescription("This cannot be disabled as it is an essential command. :sob:")] });
+			return message.channel.send({ embeds: [failedEmbed.setDescription(`${commandID} cannot be disabled as it is an essential command. :sob:`)] });
 		}
 
 		db.query("SELECT * FROM `command` WHERE `guildID` = ? AND `channelID` = ? AND `commandID` = ?", [guildID, channelID, commandID], function(err, result) {
 			if (err) return;
 			if (result.length > 0) {
-				return message.channel.send({ embeds: [failedEmbed.setDescription(`Command already disabled. :sob:\nTo enable use ${anyUsage(message.guild, message.client, "channel enable commandName")}`)] });
+				return message.channel.send({ embeds: [failedEmbed.setDescription(`${commandID} was already disabled. :sob:\nTo enable use ${anyUsage(message.guild, message.client, "channel enable commandName")}`)] });
 
 			}
 			else {
 				db.query("INSERT INTO `command` (`guildID`, `channelID`, `commandID`) VALUES (?,?,?)", [guildID, channelID, commandID]);
-				return message.channel.send({ embeds: [embed.setDescription(`Command has been disabled. :smiley:\nTo enable use ${anyUsage(message.guild, message.client, "channel enable commandName")}`)] });
+				return message.channel.send({ embeds: [embed.setDescription(`${commandID} has been disabled. :smiley:\nTo enable use ${anyUsage(message.guild, message.client, "channel enable commandName")}`)] });
 			}
 		});
 	}
