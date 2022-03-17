@@ -57,11 +57,11 @@ class LPingCommand extends Command {
 			.addComponents(
 				new MessageButton()
 					.setCustomId("send")
-					.setLabel("Send")
+					.setLabel("PING MANY PEOPLE")
 					.setStyle("DANGER"),
 				new MessageButton()
 					.setCustomId("cancel")
-					.setLabel("Cancel")
+					.setLabel("CANCEL PING")
 					.setStyle("SECONDARY"),
 			);
 
@@ -112,8 +112,9 @@ class LPingCommand extends Command {
 				return message.channel.send({ embeds: [permsEmbed] });
 			}
 			const buttonEmbed = new MessageEmbed()
-				.setDescription(`${message.author}, Are you sure you want to ping this ping list? ${this.client.user.username} is not responsible for any potential consequences.`)
-				.setColor("YELLOW");
+				.setDescription(`${message.author}, This command **WILL SEND a potential mass ping.** Are you sure you want to **PING** this ping list? This is **NOT** how you GET the list.\n${this.client.user.username} is not responsible for any potential consequences.`)
+				.setColor("YELLOW")
+				.setFooter(`To GET this pinglist, do ${anyUsage(message.guild, message.client, `lping get ${args.pinglist}`)} in bots.`);
 			message.channel.send({ embeds: [buttonEmbed], components: [row] })
 				.then(interaction => {
 					const filter = async i => {
