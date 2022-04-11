@@ -4,7 +4,7 @@ const path = require("path");
 const config = require("./config.json");
 const { db } = require("./models/db");
 const sqlite = require("sqlite");
-const sqlite3 = require("sqlite3");
+const sqlite3 = require("@vscode/sqlite3");
 const { FETCH_ALL_QUEUEABLE_SONGS } = require("./models/music-queries");
 const { editDistance } = require("./utilities/fuzzy-search");
 

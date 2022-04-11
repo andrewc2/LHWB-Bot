@@ -10,17 +10,17 @@
   "author": "iandrewc",
   "license": "MIT",
   "dependencies": {
-    "@discordjs/opus": "^0.6.0",
-    "@discordjs/voice": "^0.6.0",
+    "@discordjs/opus": "^0.7.0",
+    "@discordjs/voice": "^0.8.0",
+    "@vscode/sqlite3": "^5.0.8",
     "discord-akairo": "github:discord-akairo/discord-akairo",
-    "discord.js": "^13.3.1",
+    "discord.js": "^13.6.0",
     "lastfmapi": "^0.1.1",
-    "luxon": "^1.26.0",
-    "mysql2": "^2.3.0",
-    "node-fetch": "^2.6.6",
+    "luxon": "^2.3.1",
+    "mysql2": "^2.3.3",
+    "node-fetch": "^2.6.7",
     "sodium": "^3.0.2",
     "sqlite": "^4.0.18",
-    "sqlite3": "^5.0.0",
-    "winston": "^3.3.3"
+    "winston": "^3.7.2"
   }
 }

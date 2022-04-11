@@ -71,8 +71,8 @@ module.exports.pagination = async (message, embedArray, deletable = true) => {
             );
 
             collector.on("end", () => {
-                if (!sentInteraction.deleted)
-                    sentInteraction.edit({ components: [] });
+                sentInteraction.edit({ components: [] })
+                    .catch(() => {})
             });
         });
 }

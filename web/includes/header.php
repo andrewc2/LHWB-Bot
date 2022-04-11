@@ -10,13 +10,18 @@
 ?>
 
 <!DOCTYPE html>
-    <html>
+    <html lang="en">
         <head>
             <!-- Primary Meta Tags -->
             <title><?php echo isset($title) ? $title : "LosingHimWasBlue [Bot] - Discord Bot"; ?></title>
             <meta name="title" content="<?php echo isset($title) ? $title : "LosingHimWasBlue [Bot]"; ?>">
             <meta name="description" content="<?php echo isset($desc) ? $desc : "LosingHimWasBlue | A multi-purpose music and utility Discord bot for Taylor Swift related servers, with user joinable pinglists, last.fm, and album metadata."; ?>">
-            <link rel="shortcut icon" type="image/jpg" href="favicon.ico"/>
+            <meta name="viewport" content="width=device-width, initial-scale=1">
+            <meta name="apple-mobile-web-app-title" content="LHWB [Bot]">
+            <meta name="apple-mobile-web-app-capable" content="yes">
+            <meta name="apple-mobile-web-app-status-bar-style" content="black">
+            <meta name="application-name" content="LHWB [Bot]">
+            <!-- <link rel="shortcut icon" type="image/jpg" href="favicon.ico"/> -->
 
             <!-- Open Graph / Facebook -->
             <meta property="og:type" content="website">
@@ -41,10 +46,30 @@
 
                 gtag('config', 'G-EJ2HKNBZ1B');
             </script>
+
+            <!-- App Icons -->
+            <link rel="apple-touch-icon" sizes="57x57" href="/includes/images/apple-icon-57x57.png">
+            <link rel="apple-touch-icon" sizes="60x60" href="/includes/images/apple-icon-60x60.png">
+            <link rel="apple-touch-icon" sizes="72x72" href="/includes/images/apple-icon-72x72.png">
+            <link rel="apple-touch-icon" sizes="76x76" href="/includes/images/apple-icon-76x76.png">
+            <link rel="apple-touch-icon" sizes="114x114" href="/includes/images/apple-icon-114x114.png">
+            <link rel="apple-touch-icon" sizes="120x120" href="/includes/images/apple-icon-120x120.png">
+            <link rel="apple-touch-icon" sizes="144x144" href="/includes/images/apple-icon-144x144.png">
+            <link rel="apple-touch-icon" sizes="152x152" href="/includes/images/apple-icon-152x152.png">
+            <link rel="apple-touch-icon" sizes="180x180" href="/includes/images/apple-icon-180x180.png">
+            <link rel="icon" type="image/png" sizes="192x192"  href="/includes/images/android-icon-192x192.png">
+            <link rel="icon" type="image/png" sizes="32x32" href="/includes/images/favicon-32x32.png">
+            <link rel="icon" type="image/png" sizes="96x96" href="/includes/images/favicon-96x96.png">
+            <link rel="icon" type="image/png" sizes="16x16" href="/includes/images/favicon-16x16.png">
+            <link rel="manifest" href="/includes/images/manifest.json">
+            <meta name="msapplication-TileColor" content="#ffffff">
+            <meta name="msapplication-TileImage" content="/includes/images/ms-icon-144x144.png">
+            <meta name="theme-color" content="#ffffff">
             
             <meta http-equiv="content-type" content="text/html; charset=UTF-8">
             <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs-3.3.7/jq-2.2.4/dt-1.10.13/datatables.min.css"/>
             <link rel="stylesheet" type="text/css" href="darkly.css"/>
+        <script type="text/javascript" src="https://cdn.datatables.net/v/bs-3.3.7/jq-2.2.4/dt-1.10.13/datatables.min.js"></script>
 
         </head>
         <body>

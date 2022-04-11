@@ -2,6 +2,7 @@ const { Command } = require("discord-akairo");
 const { MessageEmbed } = require("discord.js");
 const { DateTime } = require("luxon");
 const { db } = require("../../models/db");
+const { pagination } = require("../../utilities/pagination");
 
 class CountdownCommand extends Command {
 	constructor() {
@@ -19,14 +20,7 @@ class CountdownCommand extends Command {
 	}
 
 	async exec(message) {
-		const embed = new MessageEmbed()
-			.setTitle("Countdowns")
-			.setURL("https://www.taylorswift.com/events")
-			.setColor("#9979FF")
-			.setTimestamp()
-			.setFooter("Times are now in your Local Timezone!");
-
-		const allEvents = [];
+		const allEvents = [], embeds = [];
 		const [rows] = await db.promise().query("SELECT * FROM `countdown` WHERE enddate > ? ORDER BY `startdate`", [DateTime.local().setZone("America/New_York").toString()]);
 
 		for (const event of rows.values()) {
@@ -37,11 +31,35 @@ class CountdownCommand extends Command {
 				allEvents.push(`${event.name} - <t:${startDate.toSeconds()}> - <t:${endTime.toSeconds()}:t> (Local)\n${dateUntil}\n\n`);
 			}
 			else {
-				allEvents.push(`${event.name} - <t:${startDate.toSeconds()}> - <t:${endTime.toSeconds()}:t> (Local)\n\n`);
+				allEvents.push(`${event.name} - <t:${startDate.toSeconds()}> - <t:${endTime.toSeconds()}:t>\n\n`);
 			}
 		}
-		if (allEvents.length < 1) return message.channel.send({ embeds: [embed.setDescription("There are no events scheduled. :sob:")] });
-		return message.channel.send({ embeds: [embed.setDescription(allEvents.join(""))] });
+		if (allEvents.length < 1) return message.channel.send({
+			embeds: [
+				new MessageEmbed()
+					.setDescription("There are no events scheduled. :sob:")
+					.setColor("RED")
+			]
+		});
+
+		const perChunk = 3;
+		const result = allEvents.reduce((all,one,i) => {
+			const ch = Math.floor(i/perChunk);
+			all[ch] = [].concat((all[ch]||[]),one);
+			return all;
+		}, []);
+
+		result.forEach((event, i) => {
+			embeds.push(new MessageEmbed()
+				.setTitle(allEvents.length === 1 ? "Countdown" : "Countdowns")
+				.setURL("https://www.taylorswift.com/events")
+				.setDescription(event.join(""))
+				.setFooter({ text: `Page ${i + 1}/${result.length}` })
+				.setColor("#9979FF")
+			);
+		});
+
+		return await pagination(message, embeds, false);
 	}
 }
 
