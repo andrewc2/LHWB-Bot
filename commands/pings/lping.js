@@ -112,6 +112,7 @@ class LPingCommand extends Command {
 				return message.channel.send({ embeds: [permsEmbed] });
 			}
 			const buttonEmbed = new MessageEmbed()
+				.setTitle(`Ping ${args.pinglist}?`)
 				.setDescription(`${message.author}, This command **WILL SEND a potential mass ping.** Are you sure you want to **PING** this ping list? This is **NOT** how you GET the list.\n${this.client.user.username} is not responsible for any potential consequences.`)
 				.setColor("YELLOW")
 				.setFooter(`To GET this pinglist, do ${anyUsage(message.guild, message.client, `lping get ${args.pinglist}`)} in bots.`);
