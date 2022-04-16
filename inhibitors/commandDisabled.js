@@ -3,7 +3,7 @@ const { Inhibitor } = require("discord-akairo");
 class CommandDisabledInhibitor extends Inhibitor {
 	constructor() {
 		super("commandDisabled", {
-			reason: "Command Disabled Globally",
+			reason: "commandDisabledGlobally",
 		});
 	}
 

@@ -3,7 +3,7 @@ const { Inhibitor } = require("discord-akairo");
 class UserBlacklistInhibitor extends Inhibitor {
 	constructor() {
 		super("userBlacklist", {
-			reason: "Bot Banned",
+			reason: "botBanned",
 			type: "pre",
 		});
 	}

@@ -1,4 +1,11 @@
 {
+  "slashConfig": {
+    "env": "DEV",
+    "pro_client_id": "",
+    "dev_client_id": "",
+    "test_guild_id": "",
+    "slash_filepath": ""
+  },
   "discord": {
     "prefix": "",
     "discord_token": "",

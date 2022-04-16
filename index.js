@@ -1,4 +1,4 @@
-const { AkairoClient, CommandHandler, ListenerHandler, InhibitorHandler, Flag, SQLiteProvider } = require("discord-akairo");
+const { AkairoClient, CommandHandler, ListenerHandler, InhibitorHandler, Flag, SQLiteProvider, SlashCommandHandler } = require("discord-akairo");
 const { Intents } = require("discord.js");
 const path = require("path");
 const config = require("./config.json");
@@ -46,6 +46,12 @@ class Client extends AkairoClient {
 			automateCategories: true,
 		});
 
+		this.slashCommandHandler = new SlashCommandHandler(this, {
+			directory: path.join(__dirname, "slashCommands"),
+			ignorePermissions: [config.discord.owner, config.discord.ignore_perms.join(", ")],
+			automateCategories: true,
+		})
+
 		this.commandHandler.resolver.addType("song", async (message, phrase) => {
 			if (!phrase) return Flag.fail(phrase);
 			const maxEditDist = 5;
@@ -73,15 +79,19 @@ class Client extends AkairoClient {
 
 		this.listenerHandler.setEmitters({
 			commandHandler: this.commandHandler,
+			slashCommandHandler: this.slashCommandHandler,
 			inhibitorHandler: this.inhibitorHandler,
 			listenerHandler: this.listenerHandler,
 		});
 
 		this.commandHandler.useListenerHandler(this.listenerHandler);
 		this.commandHandler.useInhibitorHandler(this.inhibitorHandler);
+		this.slashCommandHandler.useListenerHandler(this.listenerHandler);
+		this.slashCommandHandler.useInhibitorHandler(this.inhibitorHandler);
 		this.inhibitorHandler.loadAll();
 		this.listenerHandler.loadAll();
 		this.commandHandler.loadAll();
+		this.slashCommandHandler.loadAll();
 	}
 	async login(token) {
 		await this.settings.init();

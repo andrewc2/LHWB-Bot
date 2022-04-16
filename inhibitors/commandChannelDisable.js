@@ -4,7 +4,7 @@ const { db } = require("../models/db");
 class CommandChannelDisabledInhibitor extends Inhibitor {
 	constructor() {
 		super("commandChannelDisabled", {
-			reason: "Command Channel Disabled",
+			reason: "commandChannelDisabled",
 		});
 	}
 
