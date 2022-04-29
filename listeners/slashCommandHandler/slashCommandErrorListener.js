@@ -11,12 +11,15 @@ class SlashCommandErrorListener extends Listener {
         });
     }
 
-    exec(err, message, command) {
+    async exec(message, command, err) {
         logger.log("error", `CommandHandler Error: ${err}\nWith Command: ${command.id}`);
         const embed = new MessageEmbed()
             .setDescription("An unknown error occurred. :pensive:")
             .setColor("RED");
-        return message.interaction.reply({ embeds: [embed], ephemeral: true });
+
+        return await (message.interaction.deferred || message.interaction.replied) ?
+            message.interaction.editReply({ embeds: [embed] }) :
+            message.interaction.reply({ embeds: [embed], ephemeral: true })
     }
 }
 

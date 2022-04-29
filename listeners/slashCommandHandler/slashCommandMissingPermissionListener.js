@@ -24,7 +24,6 @@ class SlashCommandMissingPermissionListener extends Listener {
             );
         }
         return message.interaction.reply({ embeds: [embed], ephemeral: true });
-
     }
 }
 
