@@ -28,6 +28,7 @@ function isMod(member) {
 
 async function isTrusted(member) {
 	const [result] = await db.promise().query(GET_PERMISSION, [member.guild.id, permissionType.ROLE]);
+	if (result.length === 0) return true;
 	if (member.roles.cache.has(result[0]["role_id"]) || member.permissions.has(Permissions.FLAGS.MANAGE_MESSAGES)) return null;
 	return true;
 }

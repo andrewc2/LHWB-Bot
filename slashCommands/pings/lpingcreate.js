@@ -5,6 +5,9 @@ class LPingCreateCommand extends SlashCommand {
     constructor() {
         super('lpingcreate', {
             name: 'lping create',
+            category: "ping",
+            channel: "guild",
+            userPermissions: ["MANAGE_MESSAGES"],
             commandType: 'sub',
             parentCommandName: 'lping',
             shortCommandName: 'create',
