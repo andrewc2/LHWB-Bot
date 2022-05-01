@@ -1,4 +1,5 @@
 const { Listener } = require("discord-akairo");
+const { MessageEmbed } = require("discord.js")
 
 class SlashCommandBlocked extends Listener {
     constructor() {
@@ -9,10 +10,9 @@ class SlashCommandBlocked extends Listener {
         });
     }
 
-    exec(message, command, reason) {
+    async exec(message, command, reason) {
         const commandName = command.name
-        const embed = this.client.util
-            .embed()
+        const embed = new MessageEmbed()
             .setDescription(`You cannot use the **${commandName}** command at the moment.`)
             .setColor("RED");
 
@@ -27,7 +27,7 @@ class SlashCommandBlocked extends Listener {
                 break;
             case "commandChannelDisabled":
                 embed
-                    .setDescription(`The **${commandName}** command has been disabled in **${message.channel}.**`);
+                    .setDescription(`The **${commandName}** command has been disabled in **${message.interaction.channel}.**`);
                 break;
         }
 

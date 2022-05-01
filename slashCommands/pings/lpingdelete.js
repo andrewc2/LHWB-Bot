@@ -6,10 +6,10 @@ class LPingDeleteCommand extends SlashCommand {
         super("lpingdelete", {
             name: "lping delete",
             category: "ping",
-            channel: "guild",
+            channel: "dm",
             userPermissions: ["MANAGE_MESSAGES"],
             commandType: "sub",
-            ownerOnly: true,
+            //ownerOnly: true,
             parentCommandName: "lping",
             shortCommandName: "delete",
             args: [
