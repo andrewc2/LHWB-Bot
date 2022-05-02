@@ -7,15 +7,16 @@ class LPingDropCommand extends SlashCommand {
     constructor() {
         super('lpingdrop', {
             name: 'lping drop',
+            prefixId: "lpingdrop",
             category: "ping",
             channel: "guild",
-            commandType: 'sub',
-            parentCommandName: 'lping',
-            shortCommandName: 'drop',
+            commandType: "sub",
+            parentCommandName: "lping",
+            shortCommandName: "drop",
             args: [
                 {
-                    name: 'pinglist',
-                    description: 'The name of the pinglist to drop',
+                    name: "pinglist",
+                    description: "The name of the pinglist to drop",
                     type: Constants.ApplicationCommandOptionTypes.STRING,
                     required: true,
                     autocomplete: true,

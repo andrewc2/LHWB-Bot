@@ -6,6 +6,7 @@ class LPingJoinedCommand extends SlashCommand {
     constructor() {
         super("pingjoined", {
             name: "lping joined",
+            prefixId: "lping",
             category: "ping",
             channel: "guild",
             commandType: "sub",

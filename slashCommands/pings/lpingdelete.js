@@ -6,6 +6,7 @@ class LPingDeleteCommand extends SlashCommand {
     constructor() {
         super("lpingdelete", {
             name: "lping delete",
+            prefixId: "lpingdelete",
             category: "ping",
             channel: "guild",
             userPermissions: ["MANAGE_MESSAGES"],

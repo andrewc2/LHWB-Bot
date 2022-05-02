@@ -4,8 +4,9 @@ const { db } = require("../../models/db");
 
 class LPingListCommand extends SlashCommand {
     constructor() {
-        super('lpinglist', {
-            name: 'lping list',
+        super("lpinglist", {
+            name: "lping list",
+            prefixId: "lpinglist",
             category: "ping",
             channel: "guild",
             commandType: "sub",

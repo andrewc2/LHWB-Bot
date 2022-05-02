@@ -6,7 +6,7 @@ class LPingCommand extends SlashCommand {
         super("lping", {
             commandType: "command",
             name: "lping",
-            description: "test",
+            description: "Join, leave, and control pinglists in a server",
             args: [
                 {
                     name: "ping",

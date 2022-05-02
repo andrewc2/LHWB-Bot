@@ -7,6 +7,7 @@ class LPingGetCommand extends SlashCommand {
     constructor() {
         super('lpingget', {
             name: 'lping get',
+            prefixId: "lpingget",
             category: "ping",
             channel: "guild",
             commandType: "sub",

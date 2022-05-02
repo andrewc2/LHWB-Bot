@@ -5,8 +5,9 @@ const { autocomplete } = require("../../slashCommandUtilities/lpingutilities");
 
 class LPingShowCommand extends SlashCommand {
     constructor() {
-        super('lpingshow', {
-            name: 'lping show',
+        super("lpingshow", {
+            name: "lping show",
+            prefixId: "lpingshow",
             category: "ping",
             channel: "guild",
             commandType: "sub",

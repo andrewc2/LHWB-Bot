@@ -6,16 +6,17 @@ class LPingCreateCommand extends SlashCommand {
     constructor() {
         super('lpingcreate', {
             name: 'lping create',
+            prefixId: "lpingcreate",
             category: "ping",
             channel: "guild",
             userPermissions: ["MANAGE_MESSAGES"],
-            commandType: 'sub',
-            parentCommandName: 'lping',
-            shortCommandName: 'create',
+            commandType: "sub",
+            parentCommandName: "lping",
+            shortCommandName: "create",
             args: [
                 {
-                    name: 'pinglist',
-                    description: 'The name of the pinglist to delete',
+                    name: "pinglist",
+                    description: "The name of the pinglist to delete",
                     type: Constants.ApplicationCommandOptionTypes.STRING,
                     required: true,
                 }
