@@ -51,7 +51,7 @@ class LPingPingCommand extends SlashCommand {
         function ping() {
             db.query("SELECT u.userID FROM User as u INNER JOIN UserPing as up ON u.userID = up.userID INNER JOIN Ping as p ON p.pingID = up.pingID WHERE p.guildID = ? AND p.name = ?", [interaction.guild.id, pinglist], async function(err, result) {
                 if (err) return;
-                if (result.length < 1) return interaction.editReply({ embeds: [failedEmbed.setDescription("It looks like nobody has this pinglist assigned. :confused:")] });
+                if (result.length < 1) return interaction.editReply({ embeds: [failedEmbed.setDescription("It looks like nobody has this pinglist assigned. :confused:")], components: [] });
                 const users = [`${pinglist}`];
                 for (const rows of result.values()) {
                     await interaction.guild.members.fetch({ user: rows.userID })
@@ -61,7 +61,8 @@ class LPingPingCommand extends SlashCommand {
                         .catch(() => console.error());
                 }
                 users.push("- to join this pinglist, do \`/lping get\` in bots.");
-                if (users.length < 3) return interaction.editReply({ embeds: [failedEmbed.setDescription("It looks like nobody has this pinglist assigned. :confused:")] });
+                if (users.length < 3) return interaction.editReply({ embeds: [failedEmbed.setDescription("It looks like nobody has this pinglist assigned. :confused:")], components: [] });
+                await interaction.deleteReply();
                 const sendList = users.join(" ").toString();
                 for (let i = 0; i < sendList.length; i += 1999) {
                     const toSend = sendList.substring(i, Math.min(sendList.length, i + 1999));
@@ -92,7 +93,6 @@ class LPingPingCommand extends SlashCommand {
                     message.awaitMessageComponent({ filter, componentType: "BUTTON", time: 10000 })
                         .then(i => {
                             if (i.customId === "send") {
-                                i.deleteReply();
                                 ping();
                             } else {
                                 i.deleteReply();
