@@ -5,7 +5,6 @@ class CommandBlockedListener extends Listener {
 		super("commandBlocked", {
 			event: "commandBlocked",
 			emitter: "commandHandler",
-
 		});
 	}
 
@@ -14,10 +13,11 @@ class CommandBlockedListener extends Listener {
 			.embed()
 			.setDescription(`You cannot use the \`${command.id}\` command at the moment.`)
 			.setColor("RED");
-		if (reason === "Missing Send Messages Permissions") {
+
+		if (reason === "sendMessagesPermissions") {
 			return console.log(reason);
 		}
-		else if (reason === "Bot Banned in Server" || reason === "Bot Banned") {
+		else if (reason === "botBannedInServer" || reason === "botBanned") {
 			embed
 				.setDescription(`You cannot use the \`${command.id}\` command at the moment.`);
 			return message.channel.send({ embeds: [embed] });
@@ -32,7 +32,7 @@ class CommandBlockedListener extends Listener {
 				.setDescription(`Only the bot owner can use the \`${command}\` command.`);
 			return message.channel.send({ embeds: [embed] });
 		}
-		else if (reason === "Command Channel Disabled") {
+		else if (reason === "commandChannelDisabled") {
 			embed
 				.setDescription(`The \`${command}\` command has been disabled in ${message.channel}.`);
 			return message.channel.send({ embeds: [embed] });

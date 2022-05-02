@@ -11,9 +11,11 @@
   "license": "MIT",
   "dependencies": {
     "@discordjs/opus": "^0.7.0",
+    "@discordjs/rest": "^0.3.0",
     "@discordjs/voice": "^0.8.0",
     "@vscode/sqlite3": "^5.0.8",
-    "discord-akairo": "github:discord-akairo/discord-akairo",
+    "discord-akairo": "github:username1307/discord-akairo",
+    "discord-api-types": "^0.31.1",
     "discord.js": "^13.6.0",
     "lastfmapi": "^0.1.1",
     "luxon": "^2.3.1",

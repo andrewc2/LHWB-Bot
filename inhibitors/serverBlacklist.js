@@ -3,7 +3,7 @@ const { Inhibitor } = require("discord-akairo");
 class GuildBlacklistInhibitor extends Inhibitor {
 	constructor() {
 		super("guildBlacklist", {
-			reason: "Bot Banned in Server",
+			reason: "botBannedInServer",
 			type: "all",
 		});
 	}
