@@ -7,6 +7,7 @@ class LPingPingCommand extends SlashCommand {
     constructor() {
         super('lpingping', {
             name: 'lping ping',
+            category: "ping",
             channel: "guild",
             commandType: "sub",
             parentCommandName: "lping",
@@ -14,7 +15,7 @@ class LPingPingCommand extends SlashCommand {
             args: [
                 {
                     name: "pinglist",
-                    description: "The pinglist to ping",
+                    description: "The name of the pinglist to ping",
                     type: Constants.ApplicationCommandOptionTypes.STRING,
                     required: true,
                     autocomplete: true,
