@@ -19,6 +19,7 @@ class LPingShowCommand extends SlashCommand {
                     description: "The name of the pinglist to show",
                     type: Constants.ApplicationCommandOptionTypes.STRING,
                     required: true,
+                    autocomplete: true,
                 }
             ]
         });

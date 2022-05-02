@@ -32,7 +32,7 @@ class LPingDropCommand extends Command {
 			.setDescription(`Uh oh! Looks like this pinglists does not exist.\nYou can can view available pinglists in this server by doing ${anyUsage(message.guild, message.client, "lping list")}`);
 
 		const embed = new MessageEmbed()
-			.setAuthor(message.author.tag, message.author.displayAvatarURL({ dynamic: true, format: "png" }), message.author.displayAvatarURL({ dynamic: true, format: "png" }))
+			.setAuthor({ name: message.author.tag, iconURL: message.author.displayAvatarURL({ dynamic: true, format: "png" }), url: message.author.displayAvatarURL({ dynamic: true, format: "png" }) })
 			.setColor("#FF69B4");
 
 		db.query("SELECT `name`, `guildID` FROM Ping WHERE name = ? AND guildID = ?", [args.name, message.guild.id], function(err, result, fields) {
