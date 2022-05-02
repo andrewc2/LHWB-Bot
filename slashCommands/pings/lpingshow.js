@@ -1,6 +1,7 @@
 const { SlashCommand } = require("discord-akairo");
 const { Constants, MessageEmbed } = require("discord.js");
 const { db } = require("../../models/db");
+const { autocomplete } = require("../../slashCommandUtilities/lpingutilities");
 
 class LPingShowCommand extends SlashCommand {
     constructor() {
@@ -67,6 +68,10 @@ class LPingShowCommand extends SlashCommand {
         else {
             return interaction.editReply({ embeds: [failedEmbed.setDescription("Uh oh! Looks like this pinglist does not exist.\nYou can can view available pinglists in this server by doing `/lping list`")] });
         }
+    }
+
+    async autocomplete(interaction) {
+        await autocomplete(interaction);
     }
 }
 

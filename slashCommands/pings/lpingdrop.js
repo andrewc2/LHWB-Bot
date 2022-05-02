@@ -1,6 +1,7 @@
 const { SlashCommand } = require("discord-akairo");
 const { Constants, MessageEmbed } = require("discord.js");
 const { db } = require("../../models/db");
+const { autocomplete } = require("../../slashCommandUtilities/lpingutilities");
 
 class LPingDropCommand extends SlashCommand {
     constructor() {
@@ -17,6 +18,7 @@ class LPingDropCommand extends SlashCommand {
                     description: 'The name of the pinglist to drop',
                     type: Constants.ApplicationCommandOptionTypes.STRING,
                     required: true,
+                    autocomplete: true,
                 }
             ]
         });
@@ -43,6 +45,10 @@ class LPingDropCommand extends SlashCommand {
                 return interaction.editReply({ embeds: [embed.setDescription(`You have been successfully removed from the ${pinglist} pinglist.`)] });
             });
         });
+    }
+
+    async autocomplete(interaction) {
+        await autocomplete(interaction);
     }
 }
 
