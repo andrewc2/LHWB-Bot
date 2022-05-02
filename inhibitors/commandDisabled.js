@@ -8,7 +8,8 @@ class CommandDisabledInhibitor extends Inhibitor {
 	}
 
 	async exec(message, command) {
-		const blacklist = this.client.settings.get(command.id, "command");
+		const commandID = command.prefixId ?? command.id
+		const blacklist = this.client.settings.get(commandID, "command");
 		if (blacklist) return true;
 	}
 }

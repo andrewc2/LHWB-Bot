@@ -27,7 +27,7 @@ class SlashCommandBlocked extends Listener {
                 break;
             case "commandChannelDisabled":
                 embed
-                    .setDescription(`The **${commandName}** command has been disabled in **${message.interaction.channel}.**`);
+                    .setDescription(`The **${commandName}** command has been disabled in **${message.interaction.channel}**`);
                 break;
         }
 
