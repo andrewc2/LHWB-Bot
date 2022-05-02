@@ -25,7 +25,7 @@ class LPingListCommand extends Command {
 			.setDescription(`Uh oh! Looks like there are no ping lists in this server.\nYou can create one by typing ${anyUsage(message.guild, message.client, "lping create [name]")}`);
 
 		const embed = new MessageEmbed()
-			.setAuthor(message.author.tag, message.author.displayAvatarURL({ dynamic: true, format: "png" }), message.author.displayAvatarURL({ dynamic: true, format: "png" }))
+			.setAuthor({ name : message.author.tag, iconURL: message.author.displayAvatarURL({ dynamic: true, format: "png" }), url: message.author.displayAvatarURL({ dynamic: true, format: "png" }) })
 			.setColor("#FF69B4")
 			.setTitle("Server Pinglists");
 
