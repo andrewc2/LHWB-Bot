@@ -29,7 +29,7 @@ class LPingDropCommand extends Command {
 	exec(message, args) {
 		const failedEmbed = new MessageEmbed()
 			.setColor("RED")
-			.setDescription(`Uh oh! Looks like this pinglists does not exist.\nYou can can view available pinglists in this server by doing ${anyUsage(message.guild, message.client, "lping list")}`);
+			.setDescription(`Uh oh! Looks like this pinglists does not exist.\nYou can view available pinglists in this server by doing ${anyUsage(message.guild, message.client, "lping list")} or /lping list`);
 
 		const embed = new MessageEmbed()
 			.setAuthor({ name: message.author.tag, iconURL: message.author.displayAvatarURL({ dynamic: true, format: "png" }), url: message.author.displayAvatarURL({ dynamic: true, format: "png" }) })

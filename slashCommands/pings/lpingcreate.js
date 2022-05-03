@@ -30,7 +30,7 @@ class LPingCreateCommand extends SlashCommand {
 
         const failedEmbed = new MessageEmbed()
             .setColor("RED")
-            .setDescription("Uh oh! Looks like this pinglist already exists.\nYou can can view available pinglists in this server by doing `/lping list`");
+            .setDescription("Uh oh! Looks like this pinglist already exists.\nYou can view available pinglists in this server by doing `/lping list`");
 
         const embed = new MessageEmbed()
             .setColor("#FF69B4")

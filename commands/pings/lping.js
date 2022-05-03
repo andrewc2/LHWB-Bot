@@ -46,12 +46,13 @@ class LPingCommand extends Command {
 
 		const failedEmbed = new MessageEmbed()
 			.setColor("RED")
-			.setDescription(`Uh oh! Looks like you're not part of any lists.\nYou can set it by typing ${anyUsage(message.guild, message.client, "lping get [name]")}`);
+			.setDescription(`Uh oh! Looks like you're not part of any lists.\nYou can set it by typing ${anyUsage(message.guild, message.client, "lping get [name]")} or /lping get [name]`);
 
 		const embed = new MessageEmbed()
 			.setAuthor({ name: message.author.tag, iconURL: message.author.displayAvatarURL({ dynamic: true, format: "png" }), url: message.author.displayAvatarURL({ dynamic: true, format: "png" }) })
 			.setColor("#FF69B4")
-			.setTitle("Assigned Pings");
+			.setTitle("Assigned Pings")
+			.setFooter({ text: `This command is now available via /lping joined` });
 
 		const row = new MessageActionRow()
 			.addComponents(
@@ -91,7 +92,7 @@ class LPingCommand extends Command {
 						})
 						.catch(() => console.error());
 				}
-				users.push(`- to join this pinglist, do \`${anyUsage(message.guild, message.client, `lping get ${args.pinglist}`)}\` in bots.`);
+				users.push(`- to join this pinglist, do \`${anyUsage(message.guild, message.client, `lping get ${args.pinglist}`)}\` or /lping get ${args.pinglist} in bots.`);
 				if (users.length < 3) return message.channel.send({ embeds: [failedEmbed.setDescription("It looks like nobody has this pinglist assigned. :confused:")] });
 				const sendList = users.join(" ").toString();
 				for (let i = 0; i < sendList.length; i += 1999) {
@@ -115,7 +116,7 @@ class LPingCommand extends Command {
 				.setTitle(`Ping ${args.pinglist}?`)
 				.setDescription(`${message.author}, This command **WILL SEND a potential mass ping.** Are you sure you want to **PING** this ping list? This is **NOT** how you GET the list.\n${this.client.user.username} is not responsible for any potential consequences.`)
 				.setColor("YELLOW")
-				.setFooter({ text: `To GET this pinglist, do ${anyUsage(message.guild, message.client, `lping get ${args.pinglist}`)} in bots.`});
+				.setFooter({ text: `To GET this pinglist, do ${anyUsage(message.guild, message.client, `lping get ${args.pinglist}`)} or /lping get ${args.pinglist} in bots.`});
 			message.channel.send({ embeds: [buttonEmbed], components: [row] })
 				.then(interaction => {
 					const filter = async i => {
@@ -136,7 +137,7 @@ class LPingCommand extends Command {
 				});
 		}
 		else {
-			return message.channel.send({ embeds: [failedEmbed.setDescription(`Uh oh! Looks like this pinglist does not exist.\nYou can can view available pinglists in this server by doing ${anyUsage(message.guild, message.client, "lping list")}`)] });
+			return message.channel.send({ embeds: [failedEmbed.setDescription(`Uh oh! Looks like this pinglist does not exist.\nYou can view available pinglists in this server by doing ${anyUsage(message.guild, message.client, "lping list")} or /lping list`)] });
 		}
 	}
 }
