@@ -22,7 +22,7 @@ class LPingListCommand extends Command {
 	exec(message) {
 		const failedEmbed = new MessageEmbed()
 			.setColor("RED")
-			.setDescription(`Uh oh! Looks like there are no ping lists in this server.\nYou can create one by typing ${anyUsage(message.guild, message.client, "lping create [name]")} or /lping create [name]`);
+			.setDescription(`Uh oh! Looks like there are no ping lists in this server.\nYou can create one by typing ${anyUsage(message.guild, message.client, "lping create [name]")} or \`/lping create [name]\``);
 
 		const embed = new MessageEmbed()
 			.setAuthor({ name : message.author.tag, iconURL: message.author.displayAvatarURL({ dynamic: true, format: "png" }), url: message.author.displayAvatarURL({ dynamic: true, format: "png" }) })
@@ -36,7 +36,7 @@ class LPingListCommand extends Command {
 			for (const rows of result.values()) {
 				pings.push(rows.name);
 			}
-			return message.channel.send({ embeds: [embed.setDescription(`Here are the pinglists available in this server. Use ${anyUsage(message.guild, message.client, "lping get [name]")} or /lping get [name] to get one.\n\n \`${pings.join("` | `")}\``)] });
+			return message.channel.send({ embeds: [embed.setDescription(`Here are the pinglists available in this server. Use ${anyUsage(message.guild, message.client, "lping get [name]")} or \`/lping get [name]\` to get one.\n\n \`${pings.join("` | `")}\``)] });
 		});
 	}
 }

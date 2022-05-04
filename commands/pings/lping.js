@@ -46,7 +46,7 @@ class LPingCommand extends Command {
 
 		const failedEmbed = new MessageEmbed()
 			.setColor("RED")
-			.setDescription(`Uh oh! Looks like you're not part of any lists.\nYou can set it by typing ${anyUsage(message.guild, message.client, "lping get [name]")} or /lping get [name]`);
+			.setDescription(`Uh oh! Looks like you're not part of any lists.\nYou can set it by typing ${anyUsage(message.guild, message.client, "lping get [name]")} or \`/lping get [name]\``);
 
 		const embed = new MessageEmbed()
 			.setAuthor({ name: message.author.tag, iconURL: message.author.displayAvatarURL({ dynamic: true, format: "png" }), url: message.author.displayAvatarURL({ dynamic: true, format: "png" }) })
@@ -92,7 +92,7 @@ class LPingCommand extends Command {
 						})
 						.catch(() => console.error());
 				}
-				users.push(`- to join this pinglist, do \`${anyUsage(message.guild, message.client, `lping get ${args.pinglist}`)}\` or /lping get ${args.pinglist} in bots.`);
+				users.push(`- to join this pinglist, do \`${anyUsage(message.guild, message.client, `lping get ${args.pinglist}`)}\` or \`/lping get ${args.pinglist}\` in bots.`);
 				if (users.length < 3) return message.channel.send({ embeds: [failedEmbed.setDescription("It looks like nobody has this pinglist assigned. :confused:")] });
 				const sendList = users.join(" ").toString();
 				for (let i = 0; i < sendList.length; i += 1999) {
@@ -137,7 +137,7 @@ class LPingCommand extends Command {
 				});
 		}
 		else {
-			return message.channel.send({ embeds: [failedEmbed.setDescription(`Uh oh! Looks like this pinglist does not exist.\nYou can view available pinglists in this server by doing ${anyUsage(message.guild, message.client, "lping list")} or /lping list`)] });
+			return message.channel.send({ embeds: [failedEmbed.setDescription(`Uh oh! Looks like this pinglist does not exist.\nYou can view available pinglists in this server by doing ${anyUsage(message.guild, message.client, "lping list")} or \`/lping list\``)] });
 		}
 	}
 }
