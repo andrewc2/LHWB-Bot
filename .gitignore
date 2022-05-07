@@ -5,3 +5,13 @@ authMusicMain.json
 models/red_bot.sql
 LICENSE.txt
 .eslintrc.json
+config.json
+.gitignore
+log
+voice-servers.json
+.idea/LHWB-Bot.iml
+.idea/dataSources.xml
+.idea/inspectionProfiles/Project_Default.xml
+.idea/modules.xml
+.idea/vcs.xml
+.idea/sqldialects.xml
