@@ -11,6 +11,7 @@ class ErrorListener extends Listener {
 	}
 
 	exec(err, message, command) {
+		console.log(`Some Kind of Error: ${err}`);
 		logger.log("error", `CommandHandler Error: ${err}\nWith Command: ${command.id ?? `Unknown Command`}`);
 		const embed = this.client.util
 			.embed()

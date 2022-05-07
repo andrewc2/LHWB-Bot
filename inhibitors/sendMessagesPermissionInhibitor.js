@@ -10,7 +10,7 @@ module.exports = class SendMessagesPermissionInhibitor extends Inhibitor {
 	}
 
 	async exec(message) {
-		if (message.guild && message.channel.isText()) {
+		if (!message.interaction && message.guild && message.channel.isText()) {
 			return !(message.channel)
 				.permissionsFor(message.guild.me)
 				.has([Permissions.FLAGS.VIEW_CHANNEL, Permissions.FLAGS.SEND_MESSAGES]);
