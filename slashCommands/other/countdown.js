@@ -10,15 +10,13 @@ class CountdownCommand extends SlashCommand {
             name: "countdown",
             prefixId: "countdown",
             category: "other",
-            channel: "guild",
             commandType: "command",
             description: "Display the current event countdowns.",
         });
     }
 
-    async exec(interaction) {
-        await interaction.deferReply();
-		const message = await interaction.fetchReply();
+    async exec(interaction, message) {
+        await interaction.deferReply({ fetchReply: true });
 
 		const allEvents = [], embeds = [];
 		const [rows] = await db.promise().query("SELECT * FROM `countdown` WHERE enddate > ? ORDER BY `startdate`", [DateTime.local().setZone("America/New_York").toString()]);
@@ -34,7 +32,7 @@ class CountdownCommand extends SlashCommand {
 				allEvents.push(`${event.name} - <t:${startDate.toSeconds()}> - <t:${endTime.toSeconds()}:t>\n\n`);
 			}
 		}
-		if (allEvents.length < 1) return message.channel.send({
+		if (allEvents.length < 1) return interaction.editReply({
 			embeds: [
 				new MessageEmbed()
 					.setDescription("There are no events scheduled. :sob:")
@@ -60,7 +58,6 @@ class CountdownCommand extends SlashCommand {
 		});
 
 		return await pagination(message, embeds, false);
-
     }
 }
 
