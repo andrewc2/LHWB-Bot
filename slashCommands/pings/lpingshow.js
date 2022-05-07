@@ -31,7 +31,7 @@ class LPingShowCommand extends SlashCommand {
 
         const failedEmbed = new MessageEmbed()
             .setColor("RED")
-            .setDescription("Uh oh! Looks like this pinglist does not exist.\nYou can can view available pinglists in this server by doing `/lping list`");
+            .setDescription("Uh oh! Looks like this pinglist does not exist.\nYou can view available pinglists in this server by doing `/lping list`");
 
         const embed = new MessageEmbed()
             .setAuthor({ name: interaction.user.tag, iconURL: interaction.user.displayAvatarURL({ dynamic: true, format: "png" }), url: interaction.user.displayAvatarURL({ dynamic: true, format: "png" }) })
@@ -68,7 +68,7 @@ class LPingShowCommand extends SlashCommand {
             });
         }
         else {
-            return interaction.editReply({ embeds: [failedEmbed.setDescription("Uh oh! Looks like this pinglist does not exist.\nYou can can view available pinglists in this server by doing `/lping list`")] });
+            return interaction.editReply({ embeds: [failedEmbed.setDescription("Uh oh! Looks like this pinglist does not exist.\nYou can view available pinglists in this server by doing `/lping list`")] });
         }
     }
 

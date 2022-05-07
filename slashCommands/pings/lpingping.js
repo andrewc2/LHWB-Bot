@@ -62,7 +62,7 @@ class LPingPingCommand extends SlashCommand {
                         })
                         .catch(() => console.error());
                 }
-                users.push("- to join this pinglist, do \`/lping get\` in bots.");
+                users.push(`- to join this pinglist, do \`/lping get ${pinglist}\` in bots.`);
                 if (users.length < 3) return interaction.editReply({ embeds: [failedEmbed.setDescription("It looks like nobody has this pinglist assigned. :confused:")], components: [] });
                 await interaction.deleteReply();
                 const sendList = users.join(" ").toString();
@@ -104,7 +104,7 @@ class LPingPingCommand extends SlashCommand {
                 });
         }
         else {
-            return interaction.editReply({ embeds: [failedEmbed.setDescription("Uh oh! Looks like this pinglist does not exist.\nYou can can view available pinglists in this server by doing `/lping list`")] });
+            return interaction.editReply({ embeds: [failedEmbed.setDescription("Uh oh! Looks like this pinglist does not exist.\nYou can view available pinglists in this server by doing `/lping list`")] });
         }
     }
 
