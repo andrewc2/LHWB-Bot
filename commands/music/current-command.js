@@ -28,15 +28,16 @@ module.exports = class CurrentCommand extends Command {
 		db.query(GET_RECENT, [message.guild.id, 1], function(err, result) {
 			const currentAlbum = result[0]["album"];
 			const currentSong = result[0]["official_name"];
+			const artistName = result[0]["artist_name"];
 			const queuedBy = result[0]["queued_by"];
 			const albumArt = result[0]["album_art_url"];
 
 			embed
 				.setTitle(currentSong)
-				.setDescription(currentAlbum)
+				.setDescription(`${currentAlbum} - ${artistName}`)
 				.setThumbnail(albumArt);
 
-			if (queuedBy) embed.setFooter(`Queued by: ${queuedBy}`);
+			if (queuedBy) embed.setFooter({ text: `Queued by: ${queuedBy}` });
 			return message.channel.send({ embeds: [embed] });
 		});
 	}

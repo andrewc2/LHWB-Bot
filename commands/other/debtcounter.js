@@ -31,7 +31,7 @@ class debtCounterCommand extends Command {
 			else {
 				message.channel.send({ embeds: [successEmbed.setAuthor(`${rows[0]["user"]}'s oof counter`, "https://lhwb.dev/ts.png", "https://turtlebyte.github.io/oofdebt/")
 					.setDescription(`Total: ${rows[0]["counter"]}`)
-					.setFooter(`As of ${rows[0]["lastUsed"]}`)] });
+					.setFooter({ text: `As of ${rows[0]["lastUsed"]}` })] });
 			}
 		});
 	}
