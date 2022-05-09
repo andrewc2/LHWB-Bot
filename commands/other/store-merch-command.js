@@ -25,7 +25,7 @@ module.exports = class StoreCommand extends Command {
                 response.products.forEach((item) => {
                     embedArray.push(
                         new MessageEmbed()
-                            .setAuthor(item.vendor)
+                            .setAuthor({ name: item.vendor })
                             .setTitle(item.title)
                             .setURL(`https://store.taylorswift.com/products/${item.handle}`)
                             .setImage(item.images[0].src)

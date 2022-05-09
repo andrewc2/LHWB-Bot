@@ -23,7 +23,10 @@ class wtfCommand extends Command {
 			const embed = new MessageEmbed()
 				.setColor("#FF69B4")
 				.setImage(`${rows[0].path}`)
-				.setFooter(`Submit !g wtf's be added using: ${anyUsageFooter(message.guild, message.client, "request wtf [imgur url]")}`, message.client.user.displayAvatarURL({ dynamic: true, format: "png" }));
+				.setFooter({
+					text: `Submit !g wtf's be added using: ${anyUsageFooter(message.guild, message.client, "request wtf [imgur url]")}`,
+					iconURL: message.client.user.displayAvatarURL({ dynamic: true, format: "png" })
+				})
 			message.channel.send({ embeds: [embed] });
 		});
 	}

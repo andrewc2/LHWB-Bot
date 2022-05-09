@@ -26,7 +26,11 @@ class HelpCommand extends Command {
 	exec(message, args) {
 		const musicCommands = this.client.util
 			.embed()
-			.setAuthor(message.author.tag, message.author.displayAvatarURL({ dynamic: true, format: "png" }), message.author.displayAvatarURL({ dynamic: true, format: "png" }))
+			.setAuthor({
+				name: message.author.tag,
+				iconURL: message.author.displayAvatarURL({ dynamic: true, format: "png" }),
+				url: message.author.displayAvatarURL({ dynamic: true, format: "png" })
+			})
 			.setTitle("LHWB Commands")
 			.setDescription(`Use ${anyUsage(message.guild, this.client, `${this.id} [command]`)} for further information.\nThe full command list is available here: https://lhwb.dev/`)
 			.addFields(
@@ -48,7 +52,11 @@ class HelpCommand extends Command {
 		else {
 			const moduleEmbed = this.client.util
 				.embed()
-				.setAuthor(message.author.tag, message.author.displayAvatarURL({ dynamic: true, format: "png" }), message.author.displayAvatarURL({ dynamic: true, format: "png" }))
+				.setAuthor({
+					name: message.author.tag,
+					iconURL: message.author.displayAvatarURL({ dynamic: true, format: "png" }),
+					url: message.author.displayAvatarURL({ dynamic: true, format: "png" })
+				})
 				.setTitle(args.command.id)
 				.setDescription(args.command.description.content || "No content provided")
 				.setColor("#FF69B4")

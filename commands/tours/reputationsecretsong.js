@@ -22,7 +22,11 @@ class repSecretSongCommand extends Command {
 
 		const successEmbed = new MessageEmbed()
 			.setColor(568027)
-			.setAuthor("reputation Stadium Tour: Secret Songs", "https://lhwb.dev/ts.png", "https://docs.google.com/spreadsheets/d/1Yt0_VqcPczB9GxKf9BGCpNcSWXTROlpdrEcTP1wmevs/edit")
+			.setAuthor({
+				name: "reputation Stadium Tour: Secret Songs",
+				iconURL: "https://lhwb.dev/ts.png",
+				url: "https://docs.google.com/spreadsheets/d/1Yt0_VqcPczB9GxKf9BGCpNcSWXTROlpdrEcTP1wmevs/edit"
+			})
 			.setThumbnail("https://i.imgur.com/Zhg0oXF.jpg");
 
 		if (message.guild != null) {

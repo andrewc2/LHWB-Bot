@@ -26,7 +26,11 @@ function fetchFM(message, target) {
 
 		const embed = new MessageEmbed()
 			.setColor("#FF69B4")
-			.setAuthor(target, "https://i.imgur.com/x5AhTlq.png", `https://www.last.fm/user/${recentTracks["@attr"].user}`)
+			.setAuthor({
+				name: target,
+				iconUrl: "https://i.imgur.com/x5AhTlq.png",
+				url: `https://www.last.fm/user/${recentTracks["@attr"].user}`
+			})
 			.addField(`${status} Song`, `${recentTracks.track[0].name}`, true)
 			.addField(`${status} Artist`, `${recentTracks.track[0].artist["#text"]}`, true)
 			.addField("\u200b", "\u200b", true)
@@ -34,7 +38,7 @@ function fetchFM(message, target) {
 			.addField("Previous Artist", `${recentTracks.track[1].artist["#text"]}`, true)
 			.addField("\u200b", "\u200b", true)
 			.setThumbnail(`${recentTracks.track[0].image[3]["#text"]}`)
-			.setFooter(`Total Scrobbles: ${recentTracks["@attr"].total} - ${nowPlaying}`);
+			.setFooter({ text: `Total Scrobbles: ${recentTracks["@attr"].total} - ${nowPlaying}` });
 
 		// console.log("Track 0: " + recentTracks.track[0].name);
 		// console.log("Track 1: " + recentTracks.track[1].name);

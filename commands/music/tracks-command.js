@@ -16,7 +16,11 @@ module.exports = class TracksCommand extends Command {
 
 	async exec(message) {
 		const embed = new MessageEmbed()
-			.setAuthor(`${message.client.user.username} TrackList`, message.client.user.displayAvatarURL({ dynamic: true, format: "png" }), message.client.user.displayAvatarURL({ dynamic: true, format: "png" }))
+			.setAuthor({
+				name: `${message.client.user.username} TrackList`,
+				iconURL: message.client.user.displayAvatarURL({ dynamic: true, format: "png" }),
+				url: message.client.user.displayAvatarURL({ dynamic: true, format: "png" })
+			})
 			.setDescription("The full requestable track list is here: https://lhwb.dev/lhwb.php")
 			.setColor("#9979FF");
 		return message.channel.send({ embeds: [embed] });
