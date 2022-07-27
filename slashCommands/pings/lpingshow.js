@@ -2,6 +2,7 @@ const { SlashCommand } = require("discord-akairo");
 const { Constants, MessageEmbed } = require("discord.js");
 const { db } = require("../../models/db");
 const { autocomplete } = require("../../slashCommandUtilities/lpingutilities");
+const {logger} = require("../../utilities/logging");
 
 class LPingShowCommand extends SlashCommand {
     constructor() {
@@ -34,7 +35,6 @@ class LPingShowCommand extends SlashCommand {
             .setDescription("Uh oh! Looks like this pinglist does not exist.\nYou can view available pinglists in this server by doing `/lping list`");
 
         const embed = new MessageEmbed()
-            .setAuthor({ name: interaction.user.tag, iconURL: interaction.user.displayAvatarURL({ dynamic: true, format: "png" }), url: interaction.user.displayAvatarURL({ dynamic: true, format: "png" }) })
             .setColor("#FF69B4");
 
         async function findPingList() {
@@ -45,26 +45,27 @@ class LPingShowCommand extends SlashCommand {
         if (await findPingList() === true) {
             db.query("SELECT u.userID FROM User as u INNER JOIN UserPing as up ON u.userID = up.userID INNER JOIN Ping as p ON p.pingID = up.pingID WHERE p.guildID = ? AND p.name = ?", [interaction.guild.id, pinglist], async function(err, result) {
                 if (err) return;
-                if (result.length < 1) return interaction.editReply({ embeds: [failedEmbed.setDescription("It looks like nobody has this pinglist assigned. :confused:")] });
-                const users = [`${pinglist}`];
-                for (const rows of result.values()) {
-                    await interaction.guild.members.fetch({ user: rows.userID })
-                        .then(user => {
-                            users.push(user.user.toString());
-                        })
-                        .catch(() => console.error());
-                }
-                users.push("- to join this pinglist, do \`/lping get\` in bots.");
-                if (users.length < 3) return interaction.editReply({ embeds: [failedEmbed.setDescription("It looks like nobody has this pinglist assigned. :confused:")] });
-                const sendList = users.join(" ").toString();
-                for (let i = 0; i < sendList.length; i += 1999) {
-                    const toSend = sendList.substring(i, Math.min(sendList.length, i + 1999));
-                    await interaction.followUp({ embeds: [
-                        embed
-                            .addField('Total Pinglist Members Result:', result.length.toString())
-                            .setDescription(toSend)
-                    ]});
-                }
+                const userIds = result.map(user => user.userID)
+                await interaction.guild.members.fetch({ user: userIds })
+                    .then(async users => {
+                        if (users.size < 1) return interaction.editReply({ embeds: [failedEmbed.setDescription("It looks like nobody has this pinglist assigned. :confused:")] });
+                        const mentions = users.map(user => user.user.toString());
+                        const mentionsAgain = mentions;
+                        while (mentionsAgain.join(" ").length > 1999) {
+                            mentionsAgain.pop()
+                        }
+                        const toSend = mentions.join(" ").length > 1999 ? mentionsAgain.join(" ") + "..." : mentionsAgain.join(" ");
+                        return interaction.editReply({ embeds: [
+                            embed
+                                .setTitle(`${pinglist.charAt(0).toUpperCase() + pinglist.slice(1)} Pinglist`)
+                                .setDescription(`${toSend} - to join this pinglist, do \`/lping get ${pinglist}\` in bots.`)
+                                .addFields({ name: 'Total Pinglist Members Result:', value: users.size.toString(), inline: false })
+                        ]});
+                    })
+                    .catch(err => {
+                        logger.log('error', err);
+                        return interaction.editReply({ embeds: [failedEmbed.setDescription("Sorry, something went wrong when fetching this pinglist.")] });
+                    });
             });
         }
         else {

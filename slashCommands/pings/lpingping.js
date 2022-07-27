@@ -3,6 +3,7 @@ const { Constants, MessageEmbed, MessageActionRow, MessageButton } = require("di
 const { db } = require("../../models/db");
 const { isTrusted } = require("../../utilities/permissions");
 const { autocomplete } = require("../../slashCommandUtilities/lpingutilities");
+const { logger } = require("../../utilities/logging");
 
 class LPingPingCommand extends SlashCommand {
     constructor() {
@@ -33,6 +34,10 @@ class LPingPingCommand extends SlashCommand {
         const failedEmbed = new MessageEmbed()
             .setColor("RED");
 
+        const pleaseWaitEmbed = new MessageEmbed()
+            .setDescription(`${interaction.user.tag} (${interaction.user}) has requested the **${pinglist}** pinglist. Please wait while the pinglist generates...`)
+            .setColor('BLURPLE')
+
         const row = new MessageActionRow()
             .addComponents(
                 new MessageButton()
@@ -50,26 +55,27 @@ class LPingPingCommand extends SlashCommand {
             return result.length !== 0;
         }
 
-        function ping() {
+        async function ping() {
+            await interaction.editReply({ embeds: [pleaseWaitEmbed], components: [] })
             db.query("SELECT u.userID FROM User as u INNER JOIN UserPing as up ON u.userID = up.userID INNER JOIN Ping as p ON p.pingID = up.pingID WHERE p.guildID = ? AND p.name = ?", [interaction.guild.id, pinglist], async function(err, result) {
                 if (err) return;
-                if (result.length < 1) return interaction.editReply({ embeds: [failedEmbed.setDescription("It looks like nobody has this pinglist assigned. :confused:")], components: [] });
-                const users = [`${pinglist}`];
-                for (const rows of result.values()) {
-                    await interaction.guild.members.fetch({ user: rows.userID })
-                        .then(user => {
-                            users.push(user.user.toString());
-                        })
-                        .catch(() => console.error());
-                }
-                users.push(`- to join this pinglist, do \`/lping get ${pinglist}\` in bots.`);
-                if (users.length < 3) return interaction.editReply({ embeds: [failedEmbed.setDescription("It looks like nobody has this pinglist assigned. :confused:")], components: [] });
-                await interaction.deleteReply();
-                const sendList = users.join(" ").toString();
-                for (let i = 0; i < sendList.length; i += 1999) {
-                    const toSend = sendList.substring(i, Math.min(sendList.length, i + 1999));
-                    await interaction.followUp(toSend);
-                }
+                if (result.length < 1) return interaction.editReply({ embeds: [failedEmbed.setDescription("It looks like nobody has this pinglist assigned. :confused:")] });
+                const userIds = result.map(user => user.userID)
+                await interaction.guild.members.fetch({ user: userIds })
+                    .then(async users => {
+                        if (users.size < 1) return interaction.editReply({ embeds: [failedEmbed.setDescription("It looks like nobody has this pinglist assigned. :confused:")] });
+                        const mentions = users.map(user => user.user.toString())
+                        const sendList = `${pinglist} ${mentions.join(" ").trim()} - to join this pinglist, do \`/lping get ${pinglist}\` in bots.`
+                        await interaction.editReply({ embeds: [ pleaseWaitEmbed.setDescription(`${interaction.user.tag} (${interaction.user}) has requested the **${pinglist}** pinglist.`) ]})
+                        for (let i = 0; i < sendList.length; i += 1999) {
+                            const toSend = sendList.substring(i, Math.min(sendList.length, i + 1999));
+                            await interaction.followUp(toSend);
+                        }
+                    })
+                    .catch(err => {
+                        logger.log('error', err);
+                        interaction.editReply( { embeds: [failedEmbed.setDescription("Sorry, something went wrong when generating this pinglist.")] })
+                    });
             });
         }
 
@@ -93,14 +99,14 @@ class LPingPingCommand extends SlashCommand {
                         return i.user.id === interaction.user.id;
                     };
                     message.awaitMessageComponent({ filter, componentType: "BUTTON", time: 10000 })
-                        .then(i => {
+                        .then(async i => {
                             if (i.customId === "send") {
-                                ping();
+                                await ping();
                             } else {
                                 i.deleteReply();
                             }
                         })
-                        .catch(() => interaction.editReply({ components: [] }));
+                        .catch(() => interaction.deleteReply());
                 });
         }
         else {
