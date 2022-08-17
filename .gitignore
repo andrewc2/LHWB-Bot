@@ -5,3 +5,4 @@ authMusicMain.json
 models/red_bot.sql
 LICENSE.txt
 .eslintrc.json
+web/config.php

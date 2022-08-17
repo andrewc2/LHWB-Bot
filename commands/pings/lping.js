@@ -48,6 +48,10 @@ class LPingCommand extends Command {
 			.setColor("RED")
 			.setDescription(`Uh oh! Looks like you're not part of any lists.\nYou can set it by typing ${anyUsage(message.guild, message.client, "lping get [name]")} or \`/lping get [name]\``);
 
+		const depreciatedEmbed = new MessageEmbed()
+			.setColor("RED")
+			.setDescription(`Sorry the prefix command for this has been disabled.\nPlease use the enhanced slash command version: \`/lping ping pinglist:[name]\``);
+
 		const embed = new MessageEmbed()
 			.setAuthor({ name: message.author.tag, iconURL: message.author.displayAvatarURL({ dynamic: true, format: "png" }), url: message.author.displayAvatarURL({ dynamic: true, format: "png" }) })
 			.setColor("#FF69B4")
@@ -112,7 +116,8 @@ class LPingCommand extends Command {
 					.setColor("RED");
 				return message.channel.send({ embeds: [permsEmbed] });
 			}
-			const buttonEmbed = new MessageEmbed()
+			message.channel.send({ embeds: [depreciatedEmbed] });
+			/* const buttonEmbed = new MessageEmbed()
 				.setTitle(`Ping ${args.pinglist}?`)
 				.setDescription(`${message.author}, This command **WILL SEND a potential mass ping.** Are you sure you want to **PING** this ping list? This is **NOT** how you GET the list.\n${this.client.user.username} is not responsible for any potential consequences.`)
 				.setColor("YELLOW")
@@ -134,8 +139,8 @@ class LPingCommand extends Command {
 							}
 						})
 						.catch(() => interaction.edit({ components: [] }));
-				});
-		}
+				});*/
+		} 
 		else {
 			return message.channel.send({ embeds: [failedEmbed.setDescription(`Uh oh! Looks like this pinglist does not exist.\nYou can view available pinglists in this server by doing ${anyUsage(message.guild, message.client, "lping list")} or \`/lping list\``)] });
 		}

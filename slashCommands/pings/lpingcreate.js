@@ -16,7 +16,7 @@ class LPingCreateCommand extends SlashCommand {
             args: [
                 {
                     name: "pinglist",
-                    description: "The name of the pinglist to delete",
+                    description: "The name of the pinglist to be created",
                     type: Constants.ApplicationCommandOptionTypes.STRING,
                     required: true,
                 }

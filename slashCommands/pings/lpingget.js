@@ -16,7 +16,7 @@ class LPingGetCommand extends SlashCommand {
             args: [
                 {
                     name: "pinglist",
-                    description: "The name of the pinglist to join",
+                    description: "The name of the pinglist to get",
                     type: Constants.ApplicationCommandOptionTypes.STRING,
                     required: true,
                     autocomplete: true,
