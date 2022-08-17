@@ -4,6 +4,7 @@ const { db } = require("../../models/db");
 const { isTrusted } = require("../../utilities/permissions");
 const { autocomplete } = require("../../slashCommandUtilities/lpingutilities");
 const { logger } = require("../../utilities/logging");
+const { LPingGetCommand } = require("./lpingget");
 
 class LPingPingCommand extends SlashCommand {
     constructor() {
@@ -50,13 +51,35 @@ class LPingPingCommand extends SlashCommand {
                     .setStyle("SECONDARY"),
             );
 
+        const row2 = new MessageActionRow()
+            .addComponents(
+                new MessageButton()
+                    .setCustomId("getPing")
+                    .setLabel("Get Ping List")
+                    .setStyle("PRIMARY"),
+            );
+
         async function findPingList() {
             const [result] = await db.promise().query("SELECT `name`, `guildID` FROM Ping WHERE name = ? AND guildID = ?", [pinglist, interaction.guild.id]);
             return result.length !== 0;
         }
 
         async function ping() {
-            await interaction.editReply({ embeds: [pleaseWaitEmbed], components: [] })
+            await interaction.editReply({ embeds: [pleaseWaitEmbed], components: [row2] })
+                .then(message => {
+                    const filter = async i => {
+                        await i.deferUpdate();
+                        return i.user.id === interaction.user.id;
+                    };
+                    message.awaitMessageComponent({ filter, componentType: "BUTTON", time: 10000 })
+                        .then(async i => {
+                            if (i.customId === "getPing") {
+                                await LPingGetCommand(interaction);
+                            } else {
+                                i.deleteReply();
+                            }
+                        })
+                });
             db.query("SELECT u.userID FROM User as u INNER JOIN UserPing as up ON u.userID = up.userID INNER JOIN Ping as p ON p.pingID = up.pingID WHERE p.guildID = ? AND p.name = ?", [interaction.guild.id, pinglist], async function(err, result) {
                 if (err) return;
                 if (result.length < 1) return interaction.editReply({ embeds: [failedEmbed.setDescription("It looks like nobody has this pinglist assigned. :confused:")] });
