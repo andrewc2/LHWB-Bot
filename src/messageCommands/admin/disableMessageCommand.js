@@ -2,33 +2,33 @@ const { MessageCommand } = require('discord-akairo');
 const { commandUsage } = require('../../utilities/utilities');
 
 module.exports = class DisableMessageCommand extends MessageCommand {
-	constructor() {
-		super('disable', {
-			aliases: ['disable'],
-			category: 'bot',
-			ownerOnly: true,
-			channel: 'guild',
-			description: {
-				content: 'Disables a command globally.',
-				usage: 'disable [command]',
-				examples: [
-					'disable lyrics',
-				],
-			},
-			args: [
-				{
-					id: 'command',
-					type: 'commandAlias',
-					match: 'content',
-					otherwise: message => commandUsage(this.id, message.guild, message.client, this.description.usage),
-				},
-			],
-		});
-	}
+  constructor() {
+    super('disable', {
+      aliases: ['disable'],
+      category: 'bot',
+      ownerOnly: true,
+      channel: 'guild',
+      description: {
+        content: 'Disables a command globally.',
+        usage: 'disable [command]',
+        examples: [
+          'disable lyrics',
+        ],
+      },
+      args: [
+        {
+          id: 'command',
+          type: 'commandAlias',
+          match: 'content',
+          otherwise: message => commandUsage(this.id, message.guild, message.client, this.description.usage),
+        },
+      ],
+    });
+  }
 
-	exec(message) {
-		return message.channel.send('tbd');
-		/* const embed = this.client.util
+  exec(message) {
+    return message.channel.send('tbd');
+    /* const embed = this.client.util
 			.embed()
 			.setColor("GREEN");
 
@@ -59,5 +59,5 @@ module.exports = class DisableMessageCommand extends MessageCommand {
 			] },
 			);
 		}*/
-	}
+  }
 };

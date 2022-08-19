@@ -2,33 +2,33 @@ const { MessageCommand } = require('discord-akairo');
 const { commandUsage } = require('../../utilities/utilities');
 
 module.exports = class EnableMessageCommand extends MessageCommand {
-	constructor() {
-		super('enable', {
-			category: 'bot',
-			aliases: ['enable'],
-			ownerOnly: true,
-			channel: 'guild',
-			description: {
-				content: 'Enables a command globally.',
-				usage: 'enable [command]',
-				examples: [
-					'enable queue',
-				],
-			},
-			args: [
-				{
-					id: 'command',
-					type: 'commandAlias',
-					match: 'content',
-					otherwise: message => commandUsage(this.id, message.guild, message.client, this.description.usage),
-				},
-			],
-		});
-	}
+  constructor() {
+    super('enable', {
+      category: 'bot',
+      aliases: ['enable'],
+      ownerOnly: true,
+      channel: 'guild',
+      description: {
+        content: 'Enables a command globally.',
+        usage: 'enable [command]',
+        examples: [
+          'enable queue',
+        ],
+      },
+      args: [
+        {
+          id: 'command',
+          type: 'commandAlias',
+          match: 'content',
+          otherwise: message => commandUsage(this.id, message.guild, message.client, this.description.usage),
+        },
+      ],
+    });
+  }
 
-	exec(message) {
-		return message.channel.send('tbd');
-		/* const embed = this.client.util
+  exec(message) {
+    return message.channel.send('tbd');
+    /* const embed = this.client.util
 			.embed()
 			.setColor("GREEN");
 
@@ -49,5 +49,5 @@ module.exports = class EnableMessageCommand extends MessageCommand {
 			] },
 			);
 		}*/
-	}
+  }
 };

@@ -4,32 +4,32 @@ const { commandUsage } = require('../../utilities/utilities');
 // const { EmbedBuilder, Colors } = require('discord.js');
 
 module.exports = class BotBanMessageCommand extends MessageCommand {
-	constructor() {
-		super('botBan', {
-			aliases: ['botban', 'bban'],
-			category: 'admin',
-			ownerOnly: true,
-			description: {
-				content: 'Bans a user or server from using the bot.',
-				usage: 'botban <user|guild>',
-				examples: [
-					'botban iAndrewC',
-				],
-			},
-			args: [
-				{
-					id: 'user',
-					type: Argument.union('user', 'guild'),
-					otherwise: message => commandUsage(this.id, message.guild, message.client, this.description.usage),
-				},
-			],
-		});
-	}
+  constructor() {
+    super('botBan', {
+      aliases: ['botban', 'bban'],
+      category: 'admin',
+      ownerOnly: true,
+      description: {
+        content: 'Bans a user or server from using the bot.',
+        usage: 'botban <user|guild>',
+        examples: [
+          'botban iAndrewC',
+        ],
+      },
+      args: [
+        {
+          id: 'user',
+          type: Argument.union('user', 'guild'),
+          otherwise: message => commandUsage(this.id, message.guild, message.client, this.description.usage),
+        },
+      ],
+    });
+  }
 
-	exec(message) {
-		return message.channel.send('tbd');
+  exec(message) {
+    return message.channel.send('tbd');
 
-		/* const embed = new EmbedBuilder()
+    /* const embed = new EmbedBuilder()
 			.setColor(Colors.Green);
 
 		const protectedUsers = [this.client.ownerID, voiceServers.map(x => x.server_id).join(', '), this.client.user.id];
@@ -56,5 +56,5 @@ module.exports = class BotBanMessageCommand extends MessageCommand {
 			] },
 			);
 		}*/
-	}
+  }
 };

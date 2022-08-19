@@ -1,23 +1,23 @@
 const { MessageCommand } = require('discord-akairo');
 
 module.exports = class WtnyMessageCommand extends MessageCommand {
-	constructor() {
-		super('wtny', {
-			aliases: ['wtny'],
-			category: 'other',
-			cooldown: 30000,
-			ratelimit: 1,
-			description: {
-				content: 'Welcomes new users to the server.',
-				usage: 'wtny',
-				examples: [
-					'wtny',
-				],
-			},
-		});
-	}
+  constructor() {
+    super('wtny', {
+      aliases: ['wtny'],
+      category: 'other',
+      cooldown: 30000,
+      ratelimit: 1,
+      description: {
+        content: 'Welcomes new users to the server.',
+        usage: 'wtny',
+        examples: [
+          'wtny',
+        ],
+      },
+    });
+  }
 
-	exec(message) {
-		return message.channel.send({ files: ['https://i.imgur.com/02RxUF4.gif'] });
-	}
+  exec(message) {
+    return message.channel.send({ files: ['https://i.imgur.com/02RxUF4.gif'] });
+  }
 };
