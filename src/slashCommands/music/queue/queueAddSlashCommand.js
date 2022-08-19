@@ -37,7 +37,7 @@ module.exports = class QueueAddSlashCommand extends SlashCommand {
   async exec(interaction, message) {
     await interaction.deferReply();
     const track = interaction.options.getString('track', true);
-    const trackType = this.client.messsageCommandHandler.resolver.type('song');
+    const trackType = this.client.messageCommandHandler.resolver.type('song');
     const findTrack = await trackType(message, track);
 
     const failEmbed = new EmbedBuilder().setColor(Colors.Red);
