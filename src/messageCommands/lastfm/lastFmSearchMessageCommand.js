@@ -8,7 +8,7 @@ module.exports = class LastFmSearchMessageCommand extends MessageCommand {
 			aliases: ['lfm search'],
 			category: 'fm',
 			description: {
-				content: 'Sets your lastfm profile.',
+				content: 'Search for a lastfm profile to see what its last scrobble was.',
 				usage: 'lfm search [last.fm]',
 				examples: [
 					'lfm search iAndrewC',
