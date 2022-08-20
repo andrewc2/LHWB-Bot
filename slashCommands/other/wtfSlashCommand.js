@@ -9,8 +9,6 @@ module.exports = class wtnySlashCommand extends SlashCommand {
       name: 'wtf',
       prefixId: 'wtf',
       category: 'other',
-      cooldown: 15000,
-      ratelimit: 1,
       commandType: 'command',
       description: 'Displays a random saved or submitted !get wtf.',
     });
