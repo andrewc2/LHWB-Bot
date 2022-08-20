@@ -22,7 +22,7 @@ module.exports = class ReloadSlashCommand extends SlashCommand {
     });
   }
 
-  exec(interaction) {
+  async exec(interaction) {
     const commandOption = interaction.options.getString('command', true);
     const command = this.handler.modules.find(slashCommand => slashCommand.name === commandOption);
 
@@ -38,7 +38,7 @@ module.exports = class ReloadSlashCommand extends SlashCommand {
       });
     }
 
-    void command.reload();
+    await command.reload();
     return interaction.reply({
       embeds: [new EmbedBuilder()
         .setColor(Colors.Green)
