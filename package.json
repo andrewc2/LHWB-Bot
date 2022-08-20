@@ -7,7 +7,8 @@
     "start": "pm2 start index.js",
     "deploy": "node deploy.js",
     "start-dev": "node .",
-    "lint": "eslint . --ext .js --fix"
+    "lint": "eslint . --ext .js --fix",
+    "lint-show": "eslint . --ext .js"
   },
   "engines": {
     "node": ">=16.9.0"
