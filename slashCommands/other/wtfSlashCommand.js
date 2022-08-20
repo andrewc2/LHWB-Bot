@@ -15,15 +15,13 @@ module.exports = class WtfSlashCommand extends SlashCommand {
 
   async exec(interaction) {
     db.query('SELECT path, type FROM media WHERE type = \'wtf\' ORDER BY RAND() LIMIT 1', function(err, rows) {
-        const embed = new EmbedBuilder()
-          .setColor('#FF69B4')
-          .setImage(`${rows[0].path}`)
-          .setFooter({
-            text: 'Submit !get wtf\'s be added using: /request wtf [imgur url]',
-          });
-          return interaction.reply({ embeds: [embed] });
-      });
-
-    
+      const embed = new EmbedBuilder()
+        .setColor('#FF69B4')
+        .setImage(`${rows[0].path}`)
+        .setFooter({
+          text: 'Submit !get wtf\'s be added using: /request wtf [imgur url]',
+        });
+      return interaction.reply({ embeds: [embed] });
+    });
   }
 };

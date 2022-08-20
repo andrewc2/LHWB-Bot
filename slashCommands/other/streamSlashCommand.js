@@ -23,6 +23,6 @@ module.exports = class StreamSlashCommand extends SlashCommand {
       .setURL('https://speaknow.rocks:1989/player/')
       .setDescription('[HLS Stream Player](https://speaknow.rocks:1989/)\n\nStream will be at minimum 30sec behind from live\nIf you have issues please refresh your browser first or adjust the quality level.')
       .setFooter({ text: 'Please do not share this stream outside of this discord server, or this stream will not be able to be provided.' });
-        return interaction.reply({ embeds: [embed] });
+    return interaction.reply({ embeds: [embed] });
   }
 };
