@@ -6,8 +6,6 @@ module.exports = class wtnySlashCommand extends SlashCommand {
       name: 'wtny',
       prefixId: 'wtny',
       category: 'other',
-      cooldown: 30000,
-      ratelimit: 1,
       commandType: 'command',
       description: 'Welcomes new users to the server.',
     });
