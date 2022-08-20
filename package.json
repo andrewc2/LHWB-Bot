@@ -2,10 +2,10 @@
   "name": "lhwb",
   "version": "1.0.0",
   "description": "",
-  "main": "src/index.js",
+  "main": "index.js",
   "scripts": {
-    "start": "pm2 start src/index.js",
-    "deploy": "node src/deploy.js",
+    "start": "pm2 start index.js",
+    "deploy": "node deploy.js",
     "start-dev": "node .",
     "lint": "eslint . --ext .js --fix"
   },
