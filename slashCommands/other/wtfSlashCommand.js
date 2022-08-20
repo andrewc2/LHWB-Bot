@@ -1,9 +1,8 @@
 const { SlashCommand } = require('discord-akairo');
 const { EmbedBuilder } = require('discord.js');
 const { db } = require('../../models/db');
-const { anyUsageFooter } = require('../../utilities/utilities');
 
-module.exports = class wtnySlashCommand extends SlashCommand {
+module.exports = class WtfSlashCommand extends SlashCommand {
   constructor() {
     super('wtf', {
       name: 'wtf',

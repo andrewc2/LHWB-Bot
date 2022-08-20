@@ -2,7 +2,7 @@ const { SlashCommand } = require('discord-akairo');
 const { EmbedBuilder } = require('discord.js');
 const { db } = require('../../models/db');
 
-module.exports = class gifSlashCommand extends SlashCommand {
+module.exports = class GifSlashCommand extends SlashCommand {
   constructor() {
     super('gif', {
       name: 'gif',

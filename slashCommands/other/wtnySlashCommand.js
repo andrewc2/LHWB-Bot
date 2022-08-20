@@ -1,6 +1,6 @@
 const { SlashCommand } = require('discord-akairo');
 
-module.exports = class wtnySlashCommand extends SlashCommand {
+module.exports = class WtnySlashCommand extends SlashCommand {
   constructor() {
     super('wtny', {
       name: 'wtny',
