@@ -12,6 +12,7 @@ module.exports = class WtnySlashCommand extends SlashCommand {
   }
 
   async exec(interaction) {
-    return interaction.reply({ files: ['https://i.imgur.com/02RxUF4.gif'] });
+    await interaction.deferReply();
+    interaction.editReply({ files: ['https://i.imgur.com/02RxUF4.gif'] });
   }
 };
