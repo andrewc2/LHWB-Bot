@@ -36,7 +36,7 @@ module.exports = class ChannelDisableMessageCommand extends MessageCommand {
     const guildID = message.guild.id;
     const channelID = message.channel.id;
     const commandID = args.command.id;
-    const guardedCommands = ['channeldisable', 'channelenable', 'channel'];
+    const guardedCommands = ['channelDisable', 'channelEnable', 'channel'];
 
     if (guardedCommands.includes(commandID)) {
       return message.channel.send({ embeds: [failedEmbed.setDescription(`${commandID} cannot be disabled as it is an essential command. :sob:`)] });

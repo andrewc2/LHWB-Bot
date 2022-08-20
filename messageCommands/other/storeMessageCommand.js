@@ -29,12 +29,10 @@ module.exports = class StoreMessageCommand extends MessageCommand {
               .setTitle(item.title)
               .setURL(`https://store.taylorswift.com/products/${item.handle}`)
               .setImage(item.images[0].src)
-              .setTimestamp(item.published_at)
+              .setTimestamp(new Date(item.published_at))
               .setColor(Colors.Gold),
           );
-
         });
-
         await pagination(message, embedArray);
       })
       .catch(() => {
