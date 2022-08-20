@@ -6,6 +6,7 @@ module.exports = class ChannelSlashCommand extends SlashCommand {
     super('channel', {
       name: 'channel',
       commandType: 'command',
+      category: 'permissions',
       description: 'Enable and disable commands in a channel',
       slashOptions: [
         {

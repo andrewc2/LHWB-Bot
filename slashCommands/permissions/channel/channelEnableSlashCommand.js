@@ -7,6 +7,7 @@ module.exports = class ChannelEnableSlashCommand extends SlashCommand {
   constructor() {
     super('channelEnable', {
       name: 'channel enable',
+      category: 'permissions',
       commandType: 'sub',
       parentCommand: 'channel',
       shortName: 'enable',
