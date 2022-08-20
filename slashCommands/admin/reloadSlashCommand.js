@@ -1,5 +1,5 @@
 const { SlashCommand } = require('discord-akairo');
-const { EmbedBuilder, ApplicationCommandOptionType } = require('discord.js');
+const { EmbedBuilder, ApplicationCommandOptionType, Colors } = require('discord.js');
 
 module.exports = class ReloadSlashCommand extends SlashCommand {
   constructor() {
@@ -30,7 +30,7 @@ module.exports = class ReloadSlashCommand extends SlashCommand {
       return interaction.reply({
         embeds: [
           new EmbedBuilder()
-            .setColor('RED')
+            .setColor(Colors.Red)
             .setDescription(
               'Sorry, I couldn\'t find this command.',
             ),
@@ -41,7 +41,7 @@ module.exports = class ReloadSlashCommand extends SlashCommand {
     void command.reload();
     return interaction.reply({
       embeds: [new EmbedBuilder()
-        .setColor('GREEN')
+        .setColor(Colors.Green)
         .setDescription(`The **${command.name}** command has been reloaded. :relaxed:`)],
     });
   }
