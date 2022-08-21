@@ -10,7 +10,7 @@ module.exports = class StoreSlashCommand extends SlashCommand {
       prefixId: 'store',
       category: 'other',
       commandType: 'command',
-      description: 'View items available on Taylor Store.',
+      description: 'View items available on Taylor Store',
     });
   }
 

@@ -9,7 +9,7 @@ module.exports = class DebtCounterCommand extends SlashCommand {
       prefixId: 'debtCounter',
       category: 'other',
       commandType: 'command',
-      description: 'Displays the number of oof\'s from WetPatootie.',
+      description: 'Displays the number of oof\'s from WetPatootie',
     });
   }
 

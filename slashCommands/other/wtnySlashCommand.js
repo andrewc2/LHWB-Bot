@@ -7,7 +7,7 @@ module.exports = class WtnySlashCommand extends SlashCommand {
       prefixId: 'wtny',
       category: 'other',
       commandType: 'command',
-      description: 'Welcomes new users to the server.',
+      description: 'Welcomes new users to the server',
     });
   }
 

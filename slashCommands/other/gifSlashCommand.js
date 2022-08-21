@@ -9,7 +9,7 @@ module.exports = class GifSlashCommand extends SlashCommand {
       prefixId: 'gif',
       category: 'other',
       commandType: 'command',
-      description: 'Displays a random Taylor related gif.',
+      description: 'Displays a random Taylor related gif',
     });
   }
 

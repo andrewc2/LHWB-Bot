@@ -9,7 +9,7 @@ module.exports = class WtfSlashCommand extends SlashCommand {
       prefixId: 'wtf',
       category: 'other',
       commandType: 'command',
-      description: 'Displays a random saved or submitted !get wtf.',
+      description: 'Displays a random saved or submitted !get wtf',
     });
   }
 

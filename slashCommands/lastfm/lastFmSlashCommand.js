@@ -15,12 +15,12 @@ module.exports = class LastFmSlashCommand extends SlashCommand {
         },
         {
           name: 'search',
-          description: 'Search for a lastfm profile to see what its last scrobbled song was',
+          description: 'Search for a last.fm profile to see what its last scrobbled song was',
           type: ApplicationCommandOptionType.Subcommand,
         },
         {
           name: 'set',
-          description: 'Sets your lastfm profile',
+          description: 'Sets your last.fm profile',
           type: ApplicationCommandOptionType.Subcommand,
         },
         {

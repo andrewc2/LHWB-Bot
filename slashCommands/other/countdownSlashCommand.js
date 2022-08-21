@@ -11,7 +11,7 @@ module.exports = class CountdownSlashCommand extends SlashCommand {
       prefixId: 'countdown',
       category: 'other',
       commandType: 'command',
-      description: 'Display the current event countdowns.',
+      description: 'Display the current event countdowns',
     });
   }
 

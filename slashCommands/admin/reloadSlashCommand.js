@@ -9,7 +9,7 @@ module.exports = class ReloadSlashCommand extends SlashCommand {
       category: 'admin',
       commandType: 'command',
       ownerOnly: true,
-      description: 'Reload a command (Owner Only).',
+      description: 'Reload a command (Owner Only)',
       slashOptions: [
         {
           name: 'command',

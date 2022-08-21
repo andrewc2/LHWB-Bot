@@ -8,7 +8,7 @@ module.exports = class StreamSlashCommand extends SlashCommand {
       prefixId: 'livestream',
       category: 'other',
       commandType: 'command',
-      description: 'Displays information about live streams.',
+      description: 'Displays information about live streams',
     });
   }
 
