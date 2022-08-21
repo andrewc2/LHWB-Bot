@@ -13,6 +13,6 @@ module.exports = class ReadyListener extends Listener {
 
   exec() {
     logger.log('info', `Logged in as ${this.client.user.tag} (${this.client.user.id})`);
-    this.client.user.setActivity('Music', { type: ActivityType.Listening });
+    this.client.user.setActivity('Music', { type: ActivityType.Streaming });
   }
 };

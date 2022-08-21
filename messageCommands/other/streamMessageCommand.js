@@ -27,6 +27,6 @@ module.exports = class StreamMessageCommand extends MessageCommand {
       .setURL('https://speaknow.rocks:1989/player/')
       .setDescription('[HLS Stream Player](https://speaknow.rocks:1989/)\n\nStream will be minimum 30sec behind from live\nIf you have issues please refresh your browser first.')
       .setFooter({ text: 'Please do not share this stream outside of this discord server, or this stream will not be able to be provided.' });
-    message.channel.send({ embeds: [embed] });
+    message.channel.send({ embeds: [ embed] });
   }
 };
