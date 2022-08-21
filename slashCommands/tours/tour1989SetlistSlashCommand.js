@@ -1,15 +1,15 @@
 const { SlashCommand } = require('discord-akairo');
 const { EmbedBuilder } = require('discord.js');
 
-module.exports = class Tour1989SetlistSlashCommand extends SlashCommand {
+module.exports = class Tour1989SetListSlashCommand extends SlashCommand {
   constructor() {
-    super('1989-tour-setlist', {
+    super('tour1989SetList', {
       name: 'tour 1989-tour-setlist',
-      prefixId: '1989-tour-setlist',
+      prefixId: '1989setList',
       category: 'tours',
       commandType: 'sub',
       parentCommand: 'tour',
-      shortName: '1989-setlist',
+      shortName: '1989-tour-setlist',
     });
   }
 

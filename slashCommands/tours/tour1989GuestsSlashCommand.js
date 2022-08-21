@@ -4,13 +4,13 @@ const { pagination } = require('../../utilities/pagination');
 
 module.exports = class Tour1989GuestsSlashCommand extends SlashCommand {
   constructor() {
-    super('1989-tour-guests', {
+    super('tour1989Guests', {
       name: 'tour 1989-tour-guests',
-      prefixId: '1989-tour-guests',
+      prefixId: '1989guests',
       category: 'tours',
       commandType: 'sub',
       parentCommand: 'tour',
-      shortName: '1989-guests',
+      shortName: '1989-tour-guests',
     });
   }
 

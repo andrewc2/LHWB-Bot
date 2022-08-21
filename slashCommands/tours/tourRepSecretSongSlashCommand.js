@@ -4,13 +4,13 @@ const { pagination } = require('../../utilities/pagination');
 
 module.exports = class RepTourSecretSongSlashCommand extends SlashCommand {
   constructor() {
-    super('reputation-tour-secret-songs', {
+    super('repTourSecretSong', {
       name: 'tour reputation-tour-secret-songs',
-      prefixId: 'reputation-tour-secret-songs',
+      prefixId: 'repSecretSong',
       category: 'tours',
       commandType: 'sub',
       parentCommand: 'tour',
-      shortName: 'reputation-ss',
+      shortName: 'reputation-tour-secret-songs',
     });
   }
 

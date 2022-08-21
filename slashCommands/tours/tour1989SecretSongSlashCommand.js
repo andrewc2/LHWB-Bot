@@ -3,13 +3,13 @@ const { EmbedBuilder } = require('discord.js');
 
 module.exports = class Tour1989SecretSongSlashCommand extends SlashCommand {
   constructor() {
-    super('1989-tour-secret-songs', {
+    super('tour1989SecretSong', {
       name: 'tour 1989-tour-secret-songs',
-      prefixId: '1989-tour-secret-songs',
+      prefixId: '1989ss',
       category: 'tours',
       commandType: 'sub',
       parentCommand: 'tour',
-      shortName: '1989-ss',
+      shortName: '1989-tour-secret-songs',
     });
   }
 
