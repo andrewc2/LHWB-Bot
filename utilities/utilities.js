@@ -1,24 +1,12 @@
 const { EmbedBuilder, Colors } = require('discord.js');
-// const config = require('../config.json');
+const config = require('../config.json');
 
 function anyUsage(guild, client, text) {
-  if (guild) {
-    return 'tbd';
-    // return `\`${client.settings.get(guild.id, 'prefix', config.discord.prefix)}${text}\``;
-  }
-  else {
-    return `\`${text}\``;
-  }
+  return guild ? `\`${config.discord.prefix}${text}\`` : `\`${text}\``;
 }
 
 function anyUsageFooter(guild, client, text) {
-  if (guild) {
-    return 'tbd';
-    // return `${client.settings.get(guild.id, 'prefix', config.discord.prefix)}${text}`;
-  }
-  else {
-    return `${text}`;
-  }
+  return guild ? `${config.discord.prefix}${text}` : `${text}`;
 }
 
 function commandUsage(commandName, guild, client, text) {

@@ -6,7 +6,7 @@ const { GET_ALBUM, QUEUE_ALBUM, SEARCH_QUEUE } = require('../../models/musicQuer
 const { dequeue } = require('../../utilities/music');
 const config = require('../../config.json');
 const { isVoiceServerAndMod } = require('../../utilities/permissions');
-// const { commandUsage } = require('../../utilities/utilities');
+const { commandUsage } = require('../../utilities/utilities');
 
 module.exports = class QueueAlbumMessageCommand extends MessageCommand {
   constructor() {
@@ -23,7 +23,7 @@ module.exports = class QueueAlbumMessageCommand extends MessageCommand {
           id: 'album',
           type: 'lowercase',
           match: 'content',
-          otherwise: 'tbd',
+          otherwise: message => commandUsage(this.id, message.guild, message.client, this.description.usage),
         },
       ],
     });

@@ -1,7 +1,8 @@
 const { MessageCommand, Argument } = require('discord-akairo');
 const { EmbedBuilder, Colors, PermissionsBitField } = require('discord.js');
 const { db } = require('../../models/db');
-// const { commandUsage, anyUsage } = require("../../utilities/utilities");
+const { commandUsage, anyUsage } = require('../../utilities/utilities');
+
 
 module.exports = class LpingCreateMessageCommand extends MessageCommand {
   constructor() {
@@ -21,17 +22,16 @@ module.exports = class LpingCreateMessageCommand extends MessageCommand {
         {
           id: 'name',
           type: Argument.range('lowercase', 0, 45, true),
-          otherwise:'tbd',
+          otherwise: message => commandUsage(this.id, message.guild, message.client, this.description.usage),
         },
       ],
     });
   }
 
   exec(message, args) {
-    // Re-add Any Usage
     const failedEmbed = new EmbedBuilder()
       .setColor(Colors.Red)
-      .setDescription('Uh oh! Looks like this pinglist already exists.\nYou can view available pinglists in this server by doing or `/lping list`');
+      .setDescription(`Uh oh! Looks like this pinglist already exists.\nYou can view available pinglists in this server by doing ${anyUsage(message.guild, message.client, 'lping list')} or \`/lping list\``);
 
     const embed = new EmbedBuilder()
       .setColor('#FF69B4')

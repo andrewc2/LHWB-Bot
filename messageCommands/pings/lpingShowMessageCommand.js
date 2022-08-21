@@ -1,7 +1,8 @@
 const { MessageCommand } = require('discord-akairo');
 const { EmbedBuilder, Colors } = require('discord.js');
 const { db } = require('../../models/db');
-// const { commandUsage, anyUsage } = require("../../utilities/utilities");
+const { commandUsage, anyUsage } = require('../../utilities/utilities');
+
 const { isTrusted } = require('../../utilities/permissions');
 
 module.exports = class LpingShowMessageCommand extends MessageCommand {
@@ -21,17 +22,16 @@ module.exports = class LpingShowMessageCommand extends MessageCommand {
         {
           id: 'pinglist',
           type: 'lowercase',
-          otherwise: 'tbd',
+          otherwise: message => commandUsage(this.id, message.guild, message.client, this.description.usage),
         },
       ],
     });
   }
 
   async exec(message, args) {
-    // TBD: anyUsage
     const failedEmbed = new EmbedBuilder()
       .setColor(Colors.Red)
-      .setDescription('Uh oh! Looks like this pinglist does not exist.\nYou can view available pinglists in this server by doing ');
+      .setDescription(`Uh oh! Looks like this pinglist does not exist.\nYou can view available pinglists in this server by doing ${anyUsage(message.guild, message.client, 'lping list')}`);
 
     const embed = new EmbedBuilder()
       .setAuthor({ name: message.author.tag, iconURL: message.author.displayAvatarURL({ forceStatic: false, extension: 'png' }), url: message.author.displayAvatarURL({ forceStatic: false, extension: 'png' }) })
@@ -62,7 +62,7 @@ module.exports = class LpingShowMessageCommand extends MessageCommand {
             .catch(() => console.error());
         }
         // TBD: anyUsage
-        users.push('- to ping this pinglist, do ``.');
+        users.push(`- to ping this pinglist, do ${anyUsage(message.guild, message.client, `lping ${args.pinglist}`)}`);
         if (users.length < 3) return message.channel.send({ embeds: [failedEmbed.setDescription('It looks like nobody has this pinglist assigned. :confused:')] });
         const sendList = users.join(' ').toString();
         for (let i = 0; i < sendList.length; i += 4000) {
@@ -79,8 +79,7 @@ module.exports = class LpingShowMessageCommand extends MessageCommand {
       });
     }
     else {
-      // TBD: anyUsage
-      return message.channel.send({ embeds: [failedEmbed.setDescription('Uh oh! Looks like this pinglist does not exist.\nYou can view available pinglists in this server by doing  or `/lping list`')] });
+      return message.channel.send({ embeds: [failedEmbed.setDescription(`Uh oh! Looks like this pinglist does not exist.\nYou can view available pinglists in this server by doing ${anyUsage(message.guild, message.client, 'lping list')} or \`/lping list\``)] });
     }
   }
 };

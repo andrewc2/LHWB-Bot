@@ -1,7 +1,8 @@
 const { MessageCommand } = require('discord-akairo');
 const { EmbedBuilder, Colors } = require('discord.js');
 const { db } = require('../../models/db');
-// const { commandUsage, anyUsage } = require("../../utilities/utilities");
+const { commandUsage, anyUsage } = require('../../utilities/utilities');
+
 
 module.exports = class LpingGetMessageCommand extends MessageCommand {
   constructor() {
@@ -20,17 +21,16 @@ module.exports = class LpingGetMessageCommand extends MessageCommand {
         {
           id: 'name',
           type: 'lowercase',
-          otherwise: 'tbd',
+          otherwise: message => commandUsage(this.id, message.guild, message.client, this.description.usage),
         },
       ],
     });
   }
 
   exec(message, args) {
-    // TBD anyUsage
     const failedEmbed = new EmbedBuilder()
       .setColor(Colors.Red)
-      .setDescription('Uh oh! Looks like this pinglist does not exist.\nYou can view available pinglists in this server by doing  or `/lping list`');
+      .setDescription(`Uh oh! Looks like this pinglist does not exist.\nYou can view available pinglists in this server by doing ${anyUsage(message.guild, message.client, 'lping list')} or \`/lping list\``);
 
     const embed = new EmbedBuilder()
       .setAuthor({ name: message.author.tag, iconURL: message.author.displayAvatarURL({ forceStatic: false, extension: 'png' }), url: message.author.displayAvatarURL({ forceStatic: false, extension: 'png' }) })

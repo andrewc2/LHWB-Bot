@@ -6,7 +6,7 @@ const {
 } = require('../../models/musicQueries');
 const { dequeue } = require('../../utilities/music');
 const { cmdRestrictionsNoVC } = require('../../utilities/permissions');
-// const { commandUsage } = require('../../utilities/utilities');
+const { commandUsage } = require('../../utilities/utilities');
 
 module.exports = class DequeueMessageCommand extends MessageCommand {
   constructor() {
@@ -24,7 +24,8 @@ module.exports = class DequeueMessageCommand extends MessageCommand {
           id: 'song',
           type: 'song',
           match: 'content',
-          otherwise: message => message.channel.send('TBD'),
+          otherwise: message => commandUsage(this.id, message.guild, message.client, this.description.usage),
+
         },
       ],
     });

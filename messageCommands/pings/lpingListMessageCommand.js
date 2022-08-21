@@ -3,6 +3,7 @@ const { EmbedBuilder, Colors } = require('discord.js');
 const { db } = require('../../models/db');
 // const { anyUsage } = require("../../utilities/utilities");
 
+
 module.exports = class LpingListMessageCommand extends MessageCommand {
   constructor() {
     super('lpingList', {
