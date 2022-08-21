@@ -17,7 +17,7 @@ module.exports = class memberLeaveListener extends Listener {
     const joinDate = member.joinedAt;
     const now = new Date();
     const joinTime = (now.getTime() - joinDate.getTime()) / 1000;
-    if (joinTime < 300 && member.guild.id !== '115332333745340416') {
+    if (joinTime < 600 && member.guild.id !== '115332333745340416') {
       if (!member.guild.systemChannelId) return;
       member.guild.systemChannel.send({ embeds: [embed.setDescription(`${member.user.username} has already left us. <:osad:692120291798941887>`)] });
     }

@@ -23,7 +23,7 @@ module.exports = class WT1989GuestsMessageCommand extends MessageCommand {
     const successEmbed = new EmbedBuilder()
       .setColor(568027)
       .setAuthor({
-        name: '1989 World Tour: Secret Songs',
+        name: '1989 World Tour - Special Guests',
         iconURL: 'https://lhwb.dev/ts.png',
         url: 'https://en.wikipedia.org/wiki/The_1989_World_Tour#Shows',
       })

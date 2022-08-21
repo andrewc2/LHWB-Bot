@@ -20,7 +20,7 @@ module.exports = class RepGuestsMessageCommand extends MessageCommand {
     const embed = new EmbedBuilder()
       .setColor(568027)
       .setAuthor({
-        name: 'Special Guests',
+        name: 'reputation Stadium Tour - Special Guests',
         iconURL: 'https://lhwb.dev/ts.png',
         url: 'https://en.wikipedia.org/wiki/Taylor_Swift%27s_Reputation_Stadium_Tour#Shows',
       })
