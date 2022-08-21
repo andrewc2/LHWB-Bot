@@ -1,7 +1,8 @@
 const { MessageCommand, Argument } = require('discord-akairo');
+const { EmbedBuilder, Colors } = require('discord.js');
 const { commandUsage } = require('../../utilities/utilities');
-// const voiceServers = require('../../voice-servers.json');
-// const { EmbedBuilder, Colors } = require('discord.js');
+const { db } = require('../../models/db');
+const voiceServers = require('../../voice-servers.json');
 
 module.exports = class BotBanMessageCommand extends MessageCommand {
   constructor() {
@@ -18,7 +19,7 @@ module.exports = class BotBanMessageCommand extends MessageCommand {
       },
       args: [
         {
-          id: 'user',
+          id: 'entity',
           type: Argument.union('user', 'guild'),
           otherwise: message => commandUsage(this.id, message.guild, message.client, this.description.usage),
         },
@@ -26,35 +27,37 @@ module.exports = class BotBanMessageCommand extends MessageCommand {
     });
   }
 
-  exec(message) {
-    return message.channel.send('tbd');
+  async exec(message, { entity }) {
+    const protectedUsers = [this.client.ownerID, voiceServers.map(x => x.server_id).join(', '), this.client.user.id];
 
-    /* const embed = new EmbedBuilder()
-			.setColor(Colors.Green);
+    const embed = new EmbedBuilder()
+      .setColor(Colors.Green);
 
-		const protectedUsers = [this.client.ownerID, voiceServers.map(x => x.server_id).join(', '), this.client.user.id];
-		if (protectedUsers.includes(args.user.id)) {
-			return message.channel.send({ embeds: [
-				embed
-					.setDescription(`${args.user} cannot be bot banned as it is a protected property.`)
-					.setColor(Colors.Red),
-			] },
-			);
-		}
+    const failEmbed = new EmbedBuilder()
+      .setColor(Colors.Red);
 
-		const checkUser = this.client.settings.get(args.user.id, 'ban');
-		if (!checkUser) {
-			this.client.settings.set(args.user.id, 'ban', true);
+    if (protectedUsers.includes(entity.id)) {
+      return message.channel.send({
+        embeds: [
+          failEmbed
+            .setDescription(`${entity} cannot be bot banned as it is a protected property.`),
+        ],
+      });
+    }
 
-			return message.channel.send({ embeds: [embed.setDescription(`${args.user} has been bot banned.`)] });
-		}
-		else {
-			return message.channel.send({ embeds: [
-				embed
-					.setDescription(`${args.user} is already bot banned.`)
-					.setColor(Colors.Red),
-			] },
-			);
-		}*/
+    const isBanned = this.client.blacklist.has(entity.id);
+
+    if (isBanned) {
+      return message.channel.send({
+        embeds: [
+          failEmbed
+            .setDescription(`${entity} is already bot banned.`),
+        ],
+      });
+    }
+
+    this.client.blacklist.set(entity.id, entity.id);
+    db.query('INSERT INTO `blacklist` (entity) VALUES (?)', [entity.id]);
+    return message.channel.send({ embeds: [embed.setDescription(`${entity} has been bot banned.`)] });
   }
 };

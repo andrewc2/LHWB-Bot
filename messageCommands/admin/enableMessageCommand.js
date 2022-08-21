@@ -1,5 +1,7 @@
 const { MessageCommand } = require('discord-akairo');
+const { EmbedBuilder, Colors } = require('discord.js');
 const { commandUsage } = require('../../utilities/utilities');
+const { db } = require('../../models/db');
 
 module.exports = class EnableMessageCommand extends MessageCommand {
   constructor() {
@@ -26,28 +28,32 @@ module.exports = class EnableMessageCommand extends MessageCommand {
     });
   }
 
-  exec(message) {
-    return message.channel.send('tbd');
-    /* const embed = this.client.util
-			.embed()
-			.setColor("GREEN");
+  exec(message, { command }) {
+    const embed = new EmbedBuilder()
+      .setColor(Colors.Green);
 
-		const checkCommand = this.client.settings.get(args.command.id, "command");
-		if (checkCommand) {
-			this.client.settings.delete(args.command.id, "command");
-			return message.channel.send({ embeds: [
-				embed
-					.setDescription(`The \`${args.command.id}\` command has been enabled globally.`),
-			] },
-			);
-		}
-		else {
-			return message.channel.send({ embeds: [
-				embed
-					.setDescription(`The \`${args.command.id}\` command is currently not disabled globally.`)
-					.setColor("RED"),
-			] },
-			);
-		}*/
+    const failEmbed = new EmbedBuilder()
+      .setColor(Colors.Red);
+
+    const isDisabled = this.client.globalCommandDisable.has(command.id);
+
+    if (!isDisabled) {
+      return message.channel.send({
+        embeds: [
+          failEmbed
+            .setDescription(`The \`${command.id}\` command is currently not disabled globally.`),
+        ],
+      });
+    }
+
+    this.client.globalCommandDisable.delete(command.id);
+    db.query('DELETE FROM `globalCommandDisable` WHERE commandId = ?', [command.id]);
+    return message.channel.send({
+      embeds: [
+        embed
+          .setDescription(`The \`${command.id}\` command has been enabled globally.`),
+      ],
+    });
+    // db.query('INSERT INTO `globalCommandDisable` (commandId) VALUES (?)', [command.id])
   }
 };

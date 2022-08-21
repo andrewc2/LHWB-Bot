@@ -1,5 +1,5 @@
 const { AkairoClient, MessageCommandHandler, SlashCommandHandler, ListenerHandler, InhibitorHandler, Flag } = require('discord-akairo');
-const { GatewayIntentBits, Partials } = require('discord.js');
+const { GatewayIntentBits, Partials, Collection } = require('discord.js');
 const path = require('path');
 const config = require('./config.json');
 const { FETCH_ALL_QUEUEABLE_SONGS } = require('./models/musicQueries');
@@ -73,6 +73,9 @@ class Client extends AkairoClient {
       inhibitorHandler: this.inhibitorHandler,
       listenerHandler: this.listenerHandler,
     });
+
+    this.blacklist = new Collection();
+    this.globalCommandDisable = new Collection();
 
     this.messageCommandHandler.useListenerHandler(this.listenerHandler);
     this.messageCommandHandler.useInhibitorHandler(this.inhibitorHandler);

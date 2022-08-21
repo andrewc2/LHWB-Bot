@@ -1,5 +1,7 @@
 const { MessageCommand, Argument } = require('discord-akairo');
+const { EmbedBuilder, Colors } = require('discord.js');
 const { commandUsage } = require('../../utilities/utilities');
+const { db } = require('../../models/db');
 
 module.exports = class BotUnbanMessageCommand extends MessageCommand {
   constructor() {
@@ -16,7 +18,7 @@ module.exports = class BotUnbanMessageCommand extends MessageCommand {
       },
       args: [
         {
-          id: 'user',
+          id: 'entity',
           type: Argument.union('user', 'guild'),
           otherwise: message => commandUsage(this.id, message.guild, message.client, this.description.usage),
         },
@@ -24,27 +26,25 @@ module.exports = class BotUnbanMessageCommand extends MessageCommand {
     });
   }
 
-  exec(message) {
-    return message.channel.send('tbd');
-    /* const embed = new EmbedBuilder()
-			.setColor("GREEN");
+  exec(message, { entity }) {
+    const embed = new EmbedBuilder()
+      .setColor(Colors.Green);
 
-		const checkUser = this.client.settings.get(args.user.id, "ban");
-		if (checkUser) {
-			this.client.settings.delete(args.user.id, "ban");
-			return message.channel.send({ embeds: [
-				embed
-					.setDescription(`${args.user} has been bot unbanned.`),
-			] },
-			);
-		}
-		else {
-			return message.channel.send({ embeds: [
-				embed
-					.setDescription(`${args.user} is not bot banned.`)
-					.setColor("RED"),
-			] },
-			);
-		}*/
+    const failEmbed = new EmbedBuilder()
+      .setColor(Colors.Red);
+
+    const isBanned = this.client.blacklist.has(entity.id);
+
+    if (!isBanned) {
+      return message.channel.send({ embeds: [
+        failEmbed
+          .setDescription(`${entity} is not bot banned.`),
+      ] },
+      );
+    }
+
+    this.client.blacklist.delete(entity.id);
+    db.query('DELETE FROM `blacklist` WHERE entity = ?', [entity.id]);
+    return message.channel.send({ embeds: [embed.setDescription(`${entity} has been bot unbanned.`)] });
   }
 };

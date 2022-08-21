@@ -1,5 +1,7 @@
 const { MessageCommand } = require('discord-akairo');
 const { commandUsage } = require('../../utilities/utilities');
+const { EmbedBuilder, Colors } = require('discord.js');
+const { db } = require('../../models/db');
 
 module.exports = class DisableMessageCommand extends MessageCommand {
   constructor() {
@@ -12,7 +14,7 @@ module.exports = class DisableMessageCommand extends MessageCommand {
         content: 'Disables a command globally.',
         usage: 'disable [command]',
         examples: [
-          'disable lyrics',
+          'disable queue',
         ],
       },
       args: [
@@ -26,38 +28,42 @@ module.exports = class DisableMessageCommand extends MessageCommand {
     });
   }
 
-  exec(message) {
-    return message.channel.send('tbd');
-    /* const embed = this.client.util
-			.embed()
-			.setColor("GREEN");
+  exec(message, { command }) {
+    const embed = new EmbedBuilder()
+      .setColor(Colors.Green);
 
-		const guarded = ["botban", "botunban", "enable", "botdisable", "reload"];
-		if (guarded.includes(args.command.id)) {
-			return message.channel.send({ embeds: [
-				embed
-					.setDescription(`The \`${args.command.id}\` command cannot be disabled as it is an essential command.`)
-					.setColor("RED"),
-			] },
-			);
-		}
+    const failEmbed = new EmbedBuilder()
+      .setColor(Colors.Red);
 
-		const checkCommand = this.client.settings.get(args.command.id, "command");
-		if (!checkCommand) {
-			this.client.settings.set(args.command.id, "command", true);
-			return message.channel.send({ embeds: [
-				embed
-					.setDescription(`The \`${args.command.id}\` command has been disabled globally.`),
-			] },
-			);
-		}
-		else {
-			return message.channel.send({ embeds: [
-				embed
-					.setDescription(`The \`${args.command.id}\` command is already disabled globally.`)
-					.setColor("RED"),
-			] },
-			);
-		}*/
+    const guarded = ['botBan', 'botUnban', 'enable', 'disable', 'reload'];
+
+    if (guarded.includes(command.id)) {
+      return message.channel.send({
+        embeds: [
+          failEmbed
+            .setDescription(`The \`${command.id}\` command cannot be disabled as it is an essential command.`),
+        ],
+      });
+    }
+
+    const isDisabled = this.client.globalCommandDisable.has(command.id);
+
+    if (isDisabled) {
+      return message.channel.send({
+        embeds: [
+          failEmbed
+            .setDescription(`The \`${command.id}\` command is already disabled globally`),
+        ],
+      });
+    }
+
+    this.client.globalCommandDisable.set(command.id, command.id);
+    db.query('INSERT INTO `globalCommandDisable` (commandId) VALUES (?)', [command.id]);
+    return message.channel.send({
+      embeds: [
+        embed
+          .setDescription(`The \`${command.id}\` command has been disabled globally.`),
+      ],
+    });
   }
 };
