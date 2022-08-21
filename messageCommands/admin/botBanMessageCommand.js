@@ -57,7 +57,7 @@ module.exports = class BotBanMessageCommand extends MessageCommand {
     }
 
     this.client.blacklist.set(entity.id, entity.id);
-    db.query('INSERT INTO `blacklist` (entity) VALUES (?)', [entity.id]);
+    db.query('INSERT INTO botban_list (entity) VALUES (?)', [entity.id]);
     return message.channel.send({ embeds: [embed.setDescription(`${entity} has been bot banned.`)] });
   }
 };
