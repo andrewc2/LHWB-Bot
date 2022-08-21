@@ -4,7 +4,6 @@ module.exports = class UserBlacklistInhibitor extends Inhibitor {
   constructor() {
     super('userBlacklist', {
       reason: 'botBanned',
-      type: 'pre',
     });
   }
 

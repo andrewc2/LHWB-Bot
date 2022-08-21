@@ -4,7 +4,6 @@ module.exports = class GuildBlacklistInhibitor extends Inhibitor {
   constructor() {
     super('guildBlacklist', {
       reason: 'botBannedInServer',
-      type: 'all',
     });
   }
 

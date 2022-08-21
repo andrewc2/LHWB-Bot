@@ -13,7 +13,7 @@ module.exports = class MessageCommandBlockedListener extends Listener {
 
   exec(message, command, reason) {
     const embed = new EmbedBuilder()
-      .setDescription(`You cannot use the \`${command.aliases[0]}\` command at the moment.`)
+      .setDescription(`You cannot use the **${command.aliases[0]}** command at the moment.`)
       .setColor(Colors.Red);
 
     if (reason === 'sendMessagesPermissions') {
@@ -21,10 +21,6 @@ module.exports = class MessageCommandBlockedListener extends Listener {
     }
 
     switch (reason) {
-    case 'botBannedInServer':
-    case 'botBanned':
-      embed.setDescription(`You cannot use the **${command.aliases[0]}** command at the moment.`);
-      break;
     case 'guild':
       embed.setDescription(`You cannot use the **${command.aliases[0]}** command in DMs. Please try again in a server.`);
       break;
