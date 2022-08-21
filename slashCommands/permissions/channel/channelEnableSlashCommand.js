@@ -55,11 +55,11 @@ module.exports = class ChannelEnableSlashCommand extends SlashCommand {
     db.query('SELECT * FROM `command` WHERE `guildID` = ? AND `channelID` = ? AND `commandID` = ?', [guildID, channelID, commandID], function(err, result) {
       if (err) return;
       if (result.length < 1) {
-        return interaction.editReply({ embeds: [failedEmbed.setDescription(`**${commandName}** is not disabled. To disable a command, use the \`/channel disable\` command. :smiley:`)] });
+        return interaction.editReply({ embeds: [failedEmbed.setDescription(`**${command.aliases[0]}** is not disabled. To disable a command, use the \`/channel disable\` command. :smiley:`)] });
       }
       else {
         db.query('DELETE FROM `command` WHERE `guildID` = ? AND `channelID` = ? AND `commandID` = ?', [guildID, channelID, commandID]);
-        return interaction.editReply({ embeds: [embed.setDescription(`**${commandName}** has been enabled. To disable a command, use the \`/channel disable\` command. :smiley:`)] });
+        return interaction.editReply({ embeds: [embed.setDescription(`**${command.aliases[0]}** has been enabled. To disable a command, use the \`/channel disable\` command. :smiley:`)] });
       }
     });
   }

@@ -54,18 +54,18 @@ module.exports = class ChannelDisableSlashCommand extends SlashCommand {
     const guardedCommands = ['channelDisable', 'channelEnable', 'channel'];
 
     if (guardedCommands.includes(commandID)) {
-      return interaction.editReply({ embeds: [failedEmbed.setDescription(`**${commandName}** cannot be disabled as it is an essential command. :sob:`)] });
+      return interaction.editReply({ embeds: [failedEmbed.setDescription(`**${command.aliases[0]}** cannot be disabled as it is an essential command. :sob:`)] });
     }
 
     db.query('SELECT * FROM `command` WHERE `guildID` = ? AND `channelID` = ? AND `commandID` = ?', [guildID, channelID, commandID], function(err, result) {
       if (err) return;
       if (result.length > 0) {
-        return interaction.editReply({ embeds: [failedEmbed.setDescription(`**${commandName}** is already disabled. To enable a command, use the \`/channel enable\` command. :sob:`)] });
+        return interaction.editReply({ embeds: [failedEmbed.setDescription(`**${command.aliases[0]}** is already disabled. To enable a command, use the \`/channel enable\` command. :sob:`)] });
 
       }
       else {
         db.query('INSERT INTO `command` (`guildID`, `channelID`, `commandID`) VALUES (?,?,?)', [guildID, channelID, commandID]);
-        return interaction.editReply({ embeds: [embed.setDescription(`**${commandName}** has been disabled. To re-enable a command, use the \`/channel enable\` command. :sob:`)] });
+        return interaction.editReply({ embeds: [embed.setDescription(`**${command.aliases[0]}** has been disabled. To re-enable a command, use the \`/channel enable\` command. :sob:`)] });
       }
     });
   }
