@@ -39,10 +39,10 @@ module.exports = class LpingDeleteSlashCommand extends SlashCommand {
       .setColor('#FF69B4')
       .setDescription(`Successfully deleted the **${pinglist}** pinglist.`);
 
-    db.query('SELECT * FROM `Ping` WHERE `name` = ? AND `guildID` = ?', [pinglist, interaction.guild.id], function(err, result) {
+    db.query('SELECT * FROM pinglist WHERE `name` = ? AND `guildID` = ?', [pinglist, interaction.guild.id], function(err, result) {
       if (err) return;
       if (result.length < 1) return interaction.editReply({ embeds: [failedEmbed] });
-      db.query('DELETE FROM `Ping` WHERE name = ? AND guildID = ?', [pinglist, interaction.guild.id]);
+      db.query('DELETE FROM pinglist WHERE name = ? AND guildID = ?', [pinglist, interaction.guild.id]);
       return interaction.editReply({ embeds: [embed] });
     });
   }

@@ -30,7 +30,7 @@ module.exports = class LpingListMessageCommand extends MessageCommand {
       .setColor('#FF69B4')
       .setTitle('Server Pinglists');
 
-    db.query('SELECT `name` FROM Ping WHERE guildID = ?', [message.guild.id], function(err, result) {
+    db.query('SELECT `name` FROM pinglist WHERE guildID = ?', [message.guild.id], function(err, result) {
       if (err) return;
       if (result.length < 1) return message.channel.send({ embeds: [failedEmbed] });
       const pings = [];

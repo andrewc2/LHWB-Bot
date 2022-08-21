@@ -85,8 +85,8 @@ module.exports = class QueueAlbumSlashCommand extends SlashCommand {
     if (!interaction.guild) return interaction.respond([]);
     const input = interaction.options.getString('album', true).toLowerCase();
     const sql = input.length > 0
-      ? 'SELECT DISTINCT `album` FROM `song_detail` WHERE `is_album` = ? AND `album` LIKE ? LIMIT 10'
-      : 'SELECT DISTINCT `album` FROM `song_detail` WHERE `is_album` = ? ORDER BY `album` LIMIT 10';
+      ? 'SELECT DISTINCT `album` FROM songDetail WHERE `is_album` = ? AND `album` LIKE ? LIMIT 10'
+      : 'SELECT DISTINCT `album` FROM songDetail WHERE `is_album` = ? ORDER BY `album` LIMIT 10';
     const values = input.length > 0 ? [1, `${input}%`] : [1];
     const [row] = await db.promise().query(sql, values);
     const result = row.map((x) => ({

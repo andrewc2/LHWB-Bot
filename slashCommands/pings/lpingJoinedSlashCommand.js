@@ -25,7 +25,7 @@ module.exports = class LpingJoinedSlashCommand extends SlashCommand {
       .setColor('#FF69B4')
       .setTitle('Assigned Pings');
 
-    db.query('SELECT u.userID, p.pingID, p.name FROM User as u INNER JOIN UserPing as up ON u.userID = up.userID INNER JOIN Ping as p ON p.pingID = up.pingID WHERE p.guildID = ? AND up.userID = ?', [interaction.guild.id, interaction.user.id], function(err, result) {
+    db.query('SELECT u.userID, p.pingID, p.name FROM user as u INNER JOIN userPinglist as up ON u.userID = up.userID INNER JOIN pinglist as p ON p.pingID = up.pingID WHERE p.guildID = ? AND up.userID = ?', [interaction.guild.id, interaction.user.id], function(err, result) {
       if (err) return;
       if (result.length < 1) return interaction.editReply({ embeds: [failedEmbed] });
       const pings = result.map(i => i.name);

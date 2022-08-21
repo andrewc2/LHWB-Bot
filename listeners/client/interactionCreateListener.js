@@ -12,9 +12,9 @@ module.exports = class InteractionCreateListener extends Listener {
   }
 
   exec(interaction) {
-    db.query('SELECT * FROM `User` WHERE `userID` = ?', [interaction.user.id], function(err, result) {
+    db.query('SELECT * FROM user WHERE `userID` = ?', [interaction.user.id], function(err, result) {
       if (err) return;
-      if (result.length < 1) return db.query('INSERT INTO `User` (`userID`) VALUES (?)', [interaction.user.id]);
+      if (result.length < 1) return db.query('INSERT INTO user (`userID`) VALUES (?)', [interaction.user.id]);
     });
   }
 };

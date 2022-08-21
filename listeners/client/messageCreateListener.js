@@ -12,9 +12,9 @@ module.exports = class MessageAddListener extends Listener {
   }
 
   exec(message) {
-    db.query('SELECT * FROM `User` WHERE `userID` = ?', [message.author.id], function(err, result) {
+    db.query('SELECT * FROM user WHERE `userID` = ?', [message.author.id], function(err, result) {
       if (err) return;
-      if (result.length < 1) return db.query('INSERT INTO `User` (`userID`) VALUES (?)', [message.author.id]);
+      if (result.length < 1) return db.query('INSERT INTO user (`userID`) VALUES (?)', [message.author.id]);
     });
   }
 };

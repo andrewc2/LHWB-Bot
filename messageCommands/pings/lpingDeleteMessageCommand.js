@@ -37,10 +37,10 @@ module.exports = class LpingDeleteMessageCommand extends MessageCommand {
       .setColor('#FF69B4')
       .setDescription('Successfully deleted the pinglist.');
 
-    db.query('SELECT * FROM `Ping` WHERE `name` = ? AND `guildID` = ?', [args.name, message.guild.id], function(err, result) {
+    db.query('SELECT * FROM pinglist WHERE `name` = ? AND `guildID` = ?', [args.name, message.guild.id], function(err, result) {
       if (err) return;
       if (result.length < 1) return message.channel.send({ embeds: [failedEmbed] });
-      db.query('DELETE FROM `Ping` WHERE name = ? AND guildID = ?', [args.name, message.guild.id]);
+      db.query('DELETE FROM pinglist WHERE name = ? AND guildID = ?', [args.name, message.guild.id]);
       return message.channel.send({ embeds: [embed] });
     });
   }

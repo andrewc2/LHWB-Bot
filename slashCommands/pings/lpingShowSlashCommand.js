@@ -41,12 +41,12 @@ module.exports = class LpingShowSlashCommand extends SlashCommand {
       .setColor('#FF69B4');
 
     async function findPingList() {
-      const [result] = await db.promise().query('SELECT `name`, `guildID` FROM Ping WHERE name = ? AND guildID = ?', [pinglist, interaction.guild.id]);
+      const [result] = await db.promise().query('SELECT `name`, `guildID` FROM pinglist WHERE name = ? AND guildID = ?', [pinglist, interaction.guild.id]);
       return result.length !== 0;
     }
 
     if (await findPingList() === true) {
-      db.query('SELECT u.userID FROM User as u INNER JOIN UserPing as up ON u.userID = up.userID INNER JOIN Ping as p ON p.pingID = up.pingID WHERE p.guildID = ? AND p.name = ?', [interaction.guild.id, pinglist], async function(err, result) {
+      db.query('SELECT u.userID FROM user as u INNER JOIN userPinglist as up ON u.userID = up.userID INNER JOIN pinglist as p ON p.pingID = up.pingID WHERE p.guildID = ? AND p.name = ?', [interaction.guild.id, pinglist], async function(err, result) {
         if (err) return;
         const userIds = result.map(user => user.userID);
         await interaction.guild.members.fetch({ user: userIds })

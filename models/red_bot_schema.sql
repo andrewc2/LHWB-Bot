@@ -1139,7 +1139,7 @@ CREATE TABLE `song_detail` (
 -- Dumping data for table `song_detail`
 --
 
-INSERT INTO `song_detail` (`id`, `official_name`, `artist_name`, `path`, `autoplay`, `can_queue`, `play_count`, `album`, `is_album`, `track_number`, `album_art_url`, `old_play_count`) VALUES
+INSERT INTO songDetail (`id`, `official_name`, `artist_name`, `path`, `autoplay`, `can_queue`, `play_count`, `album`, `is_album`, `track_number`, `album_art_url`, `old_play_count`) VALUES
 (3, 'Viva La Vida', 'Taylor Swift', 'Viva La Vida.mp3', 1, 1, 96, 'Covers', 0, 1, 'https://i.imgur.com/Yv6xiKL.jpg', 1708),
 (4, 'Wildest Dreams Grammys', 'Taylor Swift', 'Wildest Dreams Grammys.mp3', 1, 1, 128, 'Grammy Museum', 0, 1, 'https://i.imgur.com/i1QDoZR.jpg', 1721),
 (5, 'Blank Space Grammys', 'Taylor Swift', 'Blank Space Grammys.mp3', 1, 1, 127, 'Grammy Museum', 0, 1, 'https://i.imgur.com/i1QDoZR.jpg', 1700),
@@ -1489,7 +1489,7 @@ INSERT INTO `song_detail` (`id`, `official_name`, `artist_name`, `path`, `autopl
 (394, 'So It Goes rep Live', 'Taylor Swift', 'So It Goes rep Live.m4a', 1, 1, 111, 'reputation Stadium Tour', 0, 1, 'https://i.imgur.com/D3RHbx6.jpg', 606),
 (395, 'Style Love Story You Belong With Me rep Live', 'Taylor Swift', 'Style Love Story You Belong With Me rep Live.m4a', 1, 1, 112, 'reputation Stadium Tour', 0, 1, 'https://i.imgur.com/D3RHbx6.jpg', 589),
 (396, 'We Are Never Ever Getting Back Together This Is Why We Can\'t Have Nice Things rep Live', 'Taylor Swift', 'We Are Never Ever Getting Back Together This Is Why We Can\'t Have Nice Things rep Live.m4a', 1, 1, 169, 'reputation Stadium Tour', 0, 1, 'https://i.imgur.com/D3RHbx6.jpg', 800);
-INSERT INTO `song_detail` (`id`, `official_name`, `artist_name`, `path`, `autoplay`, `can_queue`, `play_count`, `album`, `is_album`, `track_number`, `album_art_url`, `old_play_count`) VALUES
+INSERT INTO songDetail (`id`, `official_name`, `artist_name`, `path`, `autoplay`, `can_queue`, `play_count`, `album`, `is_album`, `track_number`, `album_art_url`, `old_play_count`) VALUES
 (398, 'Why She Disappeared rep Live', 'Taylor Swift', 'Why She Disappeared rep Live.m4a', 1, 1, 121, 'reputation Stadium Tour', 0, 1, 'https://i.imgur.com/D3RHbx6.jpg', 607),
 (399, 'Holy Ground F1 Live', 'Taylor Swift', 'Holy Ground F1 Live.mp3', 1, 1, 103, 'COTA Formula 1 Austin', 0, 1, 'https://i.imgur.com/9rBYl44.jpg', 568),
 (400, 'ME!', 'Taylor Swift', 'Lover/ME!.m4a', 1, 1, 157, 'Lover', 1, 16, 'https://i.imgur.com/cNnUR0M.jpg', 621),
@@ -1778,7 +1778,7 @@ INSERT INTO `song_detail` (`id`, `official_name`, `artist_name`, `path`, `autopl
 (778, 'Hey Stephen TV', 'Taylor Swift', '/fearlessv2/Hey Stephen.m4a', 1, 1, 85, 'Fearless (Taylor\'s Version)', 1, 4, 'https://i.imgur.com/2lDT0PV.jpg', 0),
 (779, 'White Horse TV', 'Taylor Swift', '/fearlessv2/White Horse.m4a', 1, 1, 106, 'Fearless (Taylor\'s Version)', 1, 5, 'https://i.imgur.com/2lDT0PV.jpg', 0),
 (780, 'You Belong With Me TV', 'Taylor Swift', '/fearlessv2/You Belong With Me.m4a', 1, 1, 92, 'Fearless (Taylor\'s Version)', 1, 6, 'https://i.imgur.com/2lDT0PV.jpg', 0);
-INSERT INTO `song_detail` (`id`, `official_name`, `artist_name`, `path`, `autoplay`, `can_queue`, `play_count`, `album`, `is_album`, `track_number`, `album_art_url`, `old_play_count`) VALUES
+INSERT INTO songDetail (`id`, `official_name`, `artist_name`, `path`, `autoplay`, `can_queue`, `play_count`, `album`, `is_album`, `track_number`, `album_art_url`, `old_play_count`) VALUES
 (781, 'Breathe TV', 'Taylor Swift', '/fearlessv2/Breathe.m4a', 1, 1, 87, 'Fearless (Taylor\'s Version)', 1, 7, 'https://i.imgur.com/2lDT0PV.jpg', 0),
 (782, 'Tell Me Why TV', 'Taylor Swift', '/fearlessv2/Tell Me Why.m4a', 1, 1, 109, 'Fearless (Taylor\'s Version)', 1, 8, 'https://i.imgur.com/2lDT0PV.jpg', 0),
 (783, 'You\'re Not Sorry TV', 'Taylor Swift', '/fearlessv2/You\'re Not Sorry.m4a', 1, 1, 84, 'Fearless (Taylor\'s Version)', 1, 9, 'https://i.imgur.com/2lDT0PV.jpg', 0),
@@ -1867,7 +1867,7 @@ CREATE TABLE `song_name` (
 -- Dumping data for table `song_name`
 --
 
-INSERT INTO `song_name` (`id`, `song_detail_id`, `song_name`) VALUES
+INSERT INTO songName (`id`, `song_detail_id`, `song_name`) VALUES
 (3, 3, 'Viva La Vida'),
 (4, 4, 'Wildest Dreams Grammys'),
 (5, 5, 'Blank Space Grammys'),
@@ -2753,20 +2753,20 @@ ALTER TABLE `permissions`
 --
 -- Indexes for table `Ping`
 --
-ALTER TABLE `Ping`
+ALTER TABLE pinglist
   ADD PRIMARY KEY (`pingID`);
 
 --
 -- Indexes for table `queue_new`
 --
-ALTER TABLE `queue_new`
+ALTER TABLE songQueue
   ADD PRIMARY KEY (`id`),
   ADD KEY `queue_song_detail_id_fk` (`song_detail_id`);
 
 --
 -- Indexes for table `recent_new`
 --
-ALTER TABLE `recent_new`
+ALTER TABLE songRecent
   ADD PRIMARY KEY (`id`),
   ADD KEY `recent_song_detail_id_fk` (`song_detail_id`);
 
@@ -2779,14 +2779,14 @@ ALTER TABLE `requested`
 --
 -- Indexes for table `song_detail`
 --
-ALTER TABLE `song_detail`
+ALTER TABLE songDetail
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `song_detail_path_uindex` (`path`);
 
 --
 -- Indexes for table `song_name`
 --
-ALTER TABLE `song_name`
+ALTER TABLE songName
   ADD PRIMARY KEY (`id`),
   ADD UNIQUE KEY `song_name_song_name_uindex` (`song_name`),
   ADD KEY `song_name_song_detail_id_fk` (`song_detail_id`);
@@ -2794,13 +2794,13 @@ ALTER TABLE `song_name`
 --
 -- Indexes for table `User`
 --
-ALTER TABLE `User`
+ALTER TABLE user
   ADD PRIMARY KEY (`userID`);
 
 --
 -- Indexes for table `UserPing`
 --
-ALTER TABLE `UserPing`
+ALTER TABLE userPinglist
   ADD UNIQUE KEY `UserPing_pk` (`userID`,`pingID`),
   ADD KEY `UserPing_Ping_pingID_fk` (`pingID`);
 
@@ -2842,17 +2842,17 @@ ALTER TABLE `permissions`
 --
 -- AUTO_INCREMENT for table `Ping`
 --
-ALTER TABLE `Ping`
+ALTER TABLE pinglist
   MODIFY `pingID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
 --
 -- AUTO_INCREMENT for table `queue_new`
 --
-ALTER TABLE `queue_new`
+ALTER TABLE songQueue
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2325;
 --
 -- AUTO_INCREMENT for table `recent_new`
 --
-ALTER TABLE `recent_new`
+ALTER TABLE songRecent
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=86917;
 --
 -- AUTO_INCREMENT for table `requested`
@@ -2862,12 +2862,12 @@ ALTER TABLE `requested`
 --
 -- AUTO_INCREMENT for table `song_detail`
 --
-ALTER TABLE `song_detail`
+ALTER TABLE songDetail
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4912;
 --
 -- AUTO_INCREMENT for table `song_name`
 --
-ALTER TABLE `song_name`
+ALTER TABLE songName
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=908;
 --
 -- AUTO_INCREMENT for table `version`
@@ -2881,27 +2881,27 @@ ALTER TABLE `version`
 --
 -- Constraints for table `queue_new`
 --
-ALTER TABLE `queue_new`
-  ADD CONSTRAINT `queue_song_detail_id_fk` FOREIGN KEY (`song_detail_id`) REFERENCES `song_detail` (`id`) ON DELETE CASCADE;
+ALTER TABLE songQueue
+  ADD CONSTRAINT `queue_song_detail_id_fk` FOREIGN KEY (`song_detail_id`) REFERENCES songDetail (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `recent_new`
 --
-ALTER TABLE `recent_new`
-  ADD CONSTRAINT `recent_song_detail_id_fk` FOREIGN KEY (`song_detail_id`) REFERENCES `song_detail` (`id`) ON DELETE CASCADE;
+ALTER TABLE songRecent
+  ADD CONSTRAINT `recent_song_detail_id_fk` FOREIGN KEY (`song_detail_id`) REFERENCES songDetail (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `song_name`
 --
-ALTER TABLE `song_name`
-  ADD CONSTRAINT `song_name_song_detail_id_fk` FOREIGN KEY (`song_detail_id`) REFERENCES `song_detail` (`id`) ON DELETE CASCADE;
+ALTER TABLE songName
+  ADD CONSTRAINT `song_name_song_detail_id_fk` FOREIGN KEY (`song_detail_id`) REFERENCES songDetail (`id`) ON DELETE CASCADE;
 
 --
 -- Constraints for table `UserPing`
 --
-ALTER TABLE `UserPing`
-  ADD CONSTRAINT `UserPing_Ping_pingID_fk` FOREIGN KEY (`pingID`) REFERENCES `Ping` (`pingID`) ON DELETE CASCADE,
-  ADD CONSTRAINT `UserPing_User_userID_fk` FOREIGN KEY (`userID`) REFERENCES `User` (`userID`) ON DELETE CASCADE;
+ALTER TABLE userPinglist
+  ADD CONSTRAINT `UserPing_Ping_pingID_fk` FOREIGN KEY (`pingID`) REFERENCES pinglist (`pingID`) ON DELETE CASCADE,
+  ADD CONSTRAINT `UserPing_User_userID_fk` FOREIGN KEY (`userID`) REFERENCES user (`userID`) ON DELETE CASCADE;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

@@ -22,7 +22,7 @@ module.exports = class QueueAlbumListSlashCommand extends SlashCommand {
 
   async exec(interaction) {
     await interaction.deferReply();
-    db.query('SELECT album FROM song_detail WHERE is_album = 1 GROUP BY album', function(err, result) {
+    db.query('SELECT album FROM songDetail WHERE is_album = 1 GROUP BY album', function(err, result) {
       const queueableAlbums = result.map((x, i = 0) =>
         `${i + 1}. ${x['album']}`,
       );

@@ -5,7 +5,7 @@ const autocomplete = async (interaction) => {
   const input = interaction.options.getString('track', true).toLowerCase();
   if (!input) return interaction.respond([]);
 
-  const sql = 'SELECT * FROM `song_name` INNER JOIN `song_detail` ON `song_name`.song_detail_id = `song_detail`.id WHERE `song_name`.song_name LIKE ? LIMIT 5';
+  const sql = 'SELECT * FROM songName INNER JOIN songDetail ON songName.song_detail_id = songDetail.id WHERE songName.song_name LIKE ? LIMIT 5';
   const [row] = await db.promise().query(sql, [`${input}%`]);
 
   const response = row.filter((value, index, self) =>

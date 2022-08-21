@@ -26,7 +26,7 @@ module.exports = class LpingListSlashCommand extends SlashCommand {
       .setColor('#FF69B4')
       .setTitle('Server Pinglists');
 
-    db.query('SELECT `name` FROM Ping WHERE guildID = ?', [interaction.guild.id], function(err, result) {
+    db.query('SELECT `name` FROM pinglist WHERE guildID = ?', [interaction.guild.id], function(err, result) {
       if (err) return;
       if (result.length < 1) return interaction.editReply({ embeds: [failedEmbed] });
       const pings = result.map(x => x.name);

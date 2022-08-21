@@ -39,10 +39,10 @@ module.exports = class LpingCreateSlashCommand extends SlashCommand {
       .setColor('#FF69B4')
       .setDescription(`Successfully created the **${pinglist}** pinglist.`);
 
-    db.query('SELECT * FROM `Ping` WHERE `name` = ? AND `guildID` = ?', [pinglist, interaction.guild.id], function(err, result) {
+    db.query('SELECT * FROM pinglist WHERE `name` = ? AND `guildID` = ?', [pinglist, interaction.guild.id], function(err, result) {
       if (err) return;
       if (result.find(ping => ping.name === pinglist)) return interaction.editReply({ embeds: [failedEmbed] });
-      db.query('INSERT INTO `Ping` (`name`, `guildID`) VALUES (?,?)', [pinglist, interaction.guild.id]);
+      db.query('INSERT INTO pinglist (`name`, `guildID`) VALUES (?,?)', [pinglist, interaction.guild.id]);
       return interaction.editReply({ embeds: [embed] });
     });
   }
