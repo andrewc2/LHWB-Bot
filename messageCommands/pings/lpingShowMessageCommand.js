@@ -61,7 +61,6 @@ module.exports = class LpingShowMessageCommand extends MessageCommand {
             })
             .catch(() => console.error());
         }
-        // TBD: anyUsage
         users.push(`- to ping this pinglist, do ${anyUsage(message.guild, message.client, `lping ${args.pinglist}`)}`);
         if (users.length < 3) return message.channel.send({ embeds: [failedEmbed.setDescription('It looks like nobody has this pinglist assigned. :confused:')] });
         const sendList = users.join(' ').toString();

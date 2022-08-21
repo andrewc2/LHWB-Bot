@@ -1,7 +1,7 @@
 const { MessageCommand } = require('discord-akairo');
 const { EmbedBuilder, Colors } = require('discord.js');
 const { db } = require('../../models/db');
-// const { anyUsage } = require("../../utilities/utilities");
+const { anyUsage } = require('../../utilities/utilities');
 
 
 module.exports = class LpingListMessageCommand extends MessageCommand {
@@ -24,7 +24,7 @@ module.exports = class LpingListMessageCommand extends MessageCommand {
     // TBD anyUsage
     const failedEmbed = new EmbedBuilder()
       .setColor(Colors.Red)
-      .setDescription('Uh oh! Looks like there are no ping lists in this server.\nYou can create one by typing  or `/lping create [name]`');
+      .setDescription(`Uh oh! Looks like there are no ping lists in this server.\nYou can create one by typing ${anyUsage(message.guild, message.client, 'lping create')} or \`/lping create [name]\``);
 
     const embed = new EmbedBuilder()
       .setAuthor({ name : message.author.tag, iconURL: message.author.displayAvatarURL({ forceStatic: false, extension: 'png' }), url: message.author.displayAvatarURL({ forceStatic: false, extension: 'png' }) })
@@ -38,8 +38,7 @@ module.exports = class LpingListMessageCommand extends MessageCommand {
       for (const rows of result.values()) {
         pings.push(rows.name);
       }
-      // TBD anyUsage
-      return message.channel.send({ embeds: [embed.setDescription(`Here are the pinglists available in this server. Use  or \`/lping get [name]\` to get one.\n\n \`${pings.join('` | `')}\``)] });
+      return message.channel.send({ embeds: [embed.setDescription(`Here are the pinglists available in this server. Use ${anyUsage(message.guild, message.client, 'lping get')} or \`/lping get [name]\` to get one.\n\n \`${pings.join('` | `')}\``)] });
     });
   }
 };

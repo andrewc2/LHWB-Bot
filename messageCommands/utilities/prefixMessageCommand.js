@@ -1,6 +1,6 @@
 const { MessageCommand } = require('discord-akairo');
 const { EmbedBuilder } = require('discord.js');
-// const config = require("../../config.json");
+const config = require('../../config.json');
 
 module.exports = class PrefixMessageCommand extends MessageCommand {
   constructor() {
@@ -20,11 +20,8 @@ module.exports = class PrefixMessageCommand extends MessageCommand {
 
   exec(message) {
     const embed = new EmbedBuilder()
-      .setDescription('TBD')
       .setColor(message.member.displayHexColor);
 
-    return message.channel.send({ embeds: [ embed ] });
-    // const prefix = this.client.settings.get(message.guild.id, "prefix", config.discord.prefix);
-    // return message.channel.send({ embeds: [embed.setDescription(`The command prefix is \`${prefix || "none set"}\`. To run commands, use \`${prefix}command\`.`)] });
+    return message.channel.send({ embeds: [embed.setDescription(`The command prefix is \`${config.discord.prefix}\`. To run commands, do \`${config.discord.prefix}<command>\``)] });
   }
 };
