@@ -44,7 +44,7 @@ module.exports = class BotUnbanMessageCommand extends MessageCommand {
     }
 
     this.client.blacklist.delete(entity.id);
-    db.query('DELETE FROM botban_list WHERE entity = ?', [entity.id]);
+    db.query('DELETE FROM botBanList WHERE entity = ?', [entity.id]);
     return message.channel.send({ embeds: [embed.setDescription(`${entity} has been bot unbanned.`)] });
   }
 };
