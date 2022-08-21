@@ -1,5 +1,5 @@
 const { Listener } = require('discord-akairo');
-const { Events, ActivityType } = require('discord.js');
+const { Events } = require('discord.js');
 const { joinVoiceChannel } = require('@discordjs/voice');
 const voiceServers = require('../../voice-servers.json');
 
@@ -27,7 +27,6 @@ module.exports = class VcDisconnectListener extends Listener {
         guildId: channel.guild.id,
         adapterCreator: channel.guild.voiceAdapterCreator,
       });
-      this.client.user.setActivity('Music', { type: ActivityType.Streaming });
       connection.state.subscription.player.unpause();
     }
   }

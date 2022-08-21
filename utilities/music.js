@@ -1,7 +1,8 @@
 const fs = require('fs');
+const { AudioPlayerStatus, createAudioPlayer, createAudioResource } = require('@discordjs/voice');
+const { ActivityType } = require('discord.js');
 const { db } = require('../models/db');
 const { DELETE_FROM_QUEUE, FIND_RANDOM_SONG, UPDATE_RECENT, SEARCH_QUEUE, UPDATE_PLAY_COUNT } = require('../models/musicQueries');
-const { AudioPlayerStatus, createAudioPlayer, createAudioResource } = require('@discordjs/voice');
 const { logger } = require('./winstonLogging');
 const config = require('../config.json');
 
@@ -54,6 +55,7 @@ function play(result, connection, client) {
       const vc = client.channels.cache.get(connection.joinConfig.channelId);
       if (vc.members.size > 1) updatePlayCount(result.id);
       if (result.queued_by !== null) dequeue(result.id, result.guild_id);
+      client.user.setActivity('Music', { type: ActivityType.Listening });
       setTimeout(async () => { play(await searchQueue(vc.guild) || await randomSong(vc.guild), connection, client); }, 1000);
     }
   });

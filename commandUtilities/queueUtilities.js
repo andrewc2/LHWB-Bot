@@ -3,16 +3,21 @@ const { db } = require('../models/db');
 const autocomplete = async (interaction) => {
   if (!interaction.guild) return interaction.respond([]);
   const input = interaction.options.getString('track', true).toLowerCase();
-  const sql = input.length > 0
-    ? 'SELECT `song_name` FROM `song_name` WHERE `song_name` LIKE ? LIMIT 10'
-    : 'SELECT `song_name` FROM `song_name` ORDER BY `song_name` LIMIT 10';
-  const values = input.length > 0 ? [`${input}%`] : [];
-  const [row] = await db.promise().query(sql, values);
-  const result = row.map((x) => ({
-    name: x.song_name,
-    value: x.song_name,
+  if (!input) return interaction.respond([]);
+
+  const sql = 'SELECT * FROM `song_name` INNER JOIN `song_detail` ON `song_name`.song_detail_id = `song_detail`.id WHERE `song_name`.song_name LIKE ? LIMIT 5';
+  const [row] = await db.promise().query(sql, [`${input}%`]);
+
+  const response = row.filter((value, index, self) =>
+    index === self.findIndex((t) => (
+      t['official_name'] === value['official_name']
+    )),
+  ).map((track) => ({
+    name: `${track['official_name']} - ${track['artist_name']}`,
+    value: track['song_name'],
   }));
-  await interaction.respond(result);
+
+  await interaction.respond(response);
 };
 
 module.exports = { autocomplete };

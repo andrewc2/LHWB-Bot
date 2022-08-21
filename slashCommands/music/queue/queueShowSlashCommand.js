@@ -29,7 +29,7 @@ module.exports = class QueueShowSlashCommand extends SlashCommand {
       .setURL('https://lhwb.dev/');
 
     function getSongs(array, songQueue) {
-      for (let num = 0; num < array.length; num++) {songQueue = songQueue + `${num + 1}. ${array[num]['official_name']}\n`;}
+      for (let num = 0; num < array.length; num++) {songQueue = songQueue + `${num + 1}. ${array[num]['official_name']} - ${array[num]['artist_name']}\n`;}
       return songQueue;
     }
 
