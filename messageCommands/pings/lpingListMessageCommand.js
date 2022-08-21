@@ -21,7 +21,6 @@ module.exports = class LpingListMessageCommand extends MessageCommand {
   }
 
   exec(message) {
-    // TBD anyUsage
     const failedEmbed = new EmbedBuilder()
       .setColor(Colors.Red)
       .setDescription(`Uh oh! Looks like there are no ping lists in this server.\nYou can create one by typing ${anyUsage(message.guild, message.client, 'lping create')} or \`/lping create [name]\``);
