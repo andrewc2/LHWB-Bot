@@ -9,7 +9,7 @@ module.exports = class VersionSlashCommand extends SlashCommand {
       commandType: 'command',
       prefixId: 'lversion',
       description: 'Displays version information for the bot',
-      category: 'other',
+      category: 'utilities',
     });
   }
 

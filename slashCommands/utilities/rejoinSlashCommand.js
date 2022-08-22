@@ -12,7 +12,7 @@ module.exports = class RejoinSlashCommand extends SlashCommand {
       commandType: 'command',
       prefixId: 'rejoin',
       description: 'Reconnect and resume playing music in default channel',
-      category: 'other',
+      category: 'utilities',
     });
   }
 

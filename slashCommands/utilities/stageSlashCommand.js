@@ -12,7 +12,7 @@ module.exports = class StageSlashCommand extends SlashCommand {
       commandType: 'command',
       prefixId: 'stage',
       description: 'Join the servers stage channel',
-      category: 'other',
+      category: 'utilities',
     });
   }
 
