@@ -1,15 +1,16 @@
 const { SlashCommand } = require('discord-akairo');
 const { EmbedBuilder, ApplicationCommandOptionType, Colors } = require('discord.js');
 
-module.exports = class ReloadSlashCommand extends SlashCommand {
+module.exports = class OwnerReloadSlashCommand extends SlashCommand {
   constructor() {
-    super('reload', {
-      name: 'reload',
+    super('ownerReload', {
+      name: 'owner reload',
       prefixId: 'reload',
       category: 'admin',
-      commandType: 'command',
+      commandType: 'sub',
       ownerOnly: true,
-      description: 'Reload a command (Owner Only)',
+      parentCommand: 'owner',
+      shortName: 'reload',
       slashOptions: [
         {
           name: 'command',
