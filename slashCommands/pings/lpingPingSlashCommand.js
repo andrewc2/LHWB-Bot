@@ -70,14 +70,14 @@ module.exports = class LpingPingSlashCommand extends SlashCommand {
       await interaction.editReply({ embeds: [pleaseWaitEmbed] });
       db.query('SELECT u.userID FROM user as u INNER JOIN userPinglist as up ON u.userID = up.userID INNER JOIN pinglist as p ON p.pingID = up.pingID WHERE p.guildID = ? AND p.name = ?', [interaction.guild.id, pinglist], async function(err, result) {
         if (err) return;
-        if (result.length < 1) return interaction.editReply({ embeds: [failedEmbed.setDescription('It looks like nobody has this pinglist assigned. :confused:')] });
+        if (result.length < 1) return interaction.editReply({ embeds: [failedEmbed.setDescription('It looks like nobody has this pinglist assigned. :confused:')], components: [] });
         const userIds = result.map(user => user.userID);
         await interaction.guild.members.fetch({ user: userIds })
           .then(async users => {
-            if (users.size < 1) return interaction.editReply({ embeds: [failedEmbed.setDescription('It looks like nobody has this pinglist assigned. :confused:')] });
+            if (users.size < 1) return interaction.editReply({ embeds: [failedEmbed.setDescription('It looks like nobody has this pinglist assigned. :confused:')], components: [] });
             const mentions = users.map(user => user.user.toString());
             const sendList = `${pinglist} ${mentions.join(' ').trim()} - to join this pinglist, do \`/lping get ${pinglist}\` in a spam channel.`;
-            await interaction.editReply({ embeds: [ pleaseWaitEmbed.setDescription(`${interaction.user.tag} (${interaction.user}) has requested the **${pinglist}** pinglist.`) ] });
+            await interaction.editReply({ embeds: [ pleaseWaitEmbed.setDescription(`${interaction.user.tag} (${interaction.user}) has requested the **${pinglist}** pinglist.`) ], components: [] });
             for (let i = 0; i < sendList.length; i += 1999) {
               const toSend = sendList.substring(i, Math.min(sendList.length, i + 1999));
               await interaction.followUp(toSend);
@@ -85,7 +85,7 @@ module.exports = class LpingPingSlashCommand extends SlashCommand {
           })
           .catch(err => {
             logger.log('error', err);
-            interaction.editReply({ embeds: [failedEmbed.setDescription('Sorry, something went wrong while generating this pinglist.')] });
+            interaction.editReply({ embeds: [failedEmbed.setDescription('Sorry, something went wrong while generating this pinglist.')], components: [] });
           });
       });
     }

@@ -5,7 +5,7 @@ const voiceServers = require('../../voice-servers.json');
 module.exports = class SlashCommandMissingPermissionListener extends Listener {
   constructor() {
     super('slashCommandMissingPermissionListener', {
-      event: 'missingPermissions',
+      event: 'slashMissingPermissions',
       category: 'slashCommandHandler',
       emitter: 'slashCommandHandler',
     });
