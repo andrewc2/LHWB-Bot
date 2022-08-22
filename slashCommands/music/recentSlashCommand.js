@@ -32,7 +32,7 @@ module.exports = class RecentSlashCommand extends SlashCommand {
 
       for (let num = 1; num < result.length; num++) {
         // starts with song 1 which was the most recent played before current
-        recentSongs = `${recentSongs} ${num}. ${result[num]['official_name']}\n`;
+        recentSongs = `${recentSongs} ${num}. ${result[num]['official_name']} - ${result[num]['artist_name']}\n`;
       }
 
       embed
