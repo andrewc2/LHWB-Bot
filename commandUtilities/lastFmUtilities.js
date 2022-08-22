@@ -22,6 +22,7 @@ const searchLastFm = async (username) => {
 
       const status = response['recenttracks']['track'][0]['@attr'] ? 'Now Playing' : 'Most Recent';
       const nowPlaying = response['recenttracks']['track'][0]['@attr'] ? 'Currently Scrobbling' : `Last scrobbled on: ${response['recenttracks']['track'][0]['date']['#text']} (UTC)`;
+      const thumbnail = response['recenttracks']['track'][0]['image'][3]['#text'];
       const userDetails = response['recenttracks']['@attr'];
 
       const embed = new EmbedBuilder()
@@ -38,7 +39,7 @@ const searchLastFm = async (username) => {
           { name: 'Previous Artist', value: `${response['recenttracks']['track'][1]['artist']['name']}`, inline: true },
           { name: '\u200b', value: '\u200b', inline: true },
         ])
-        .setThumbnail(`${response['recenttracks']['track'][0]['image'][3]['#text']}`)
+        .setThumbnail(thumbnail.length === 0 ? null : thumbnail)
         .setFooter({ text: `Total Scrobbles: ${userDetails['total']} - ${nowPlaying}` })
         .setColor('#FF69B4');
 
