@@ -8,6 +8,7 @@ module.exports = class ChannelSlashCommand extends SlashCommand {
       commandType: 'command',
       category: 'permissions',
       description: 'Enable and disable commands in a channel',
+      channel: 'guild',
       slashOptions: [
         {
           name: 'disable',

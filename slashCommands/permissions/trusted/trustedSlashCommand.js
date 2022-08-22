@@ -8,6 +8,7 @@ module.exports = class TrustedSlashCommand extends SlashCommand {
       commandType: 'command',
       category: 'permissions',
       description: 'Set, clear, and view the trusted role',
+      channel: 'guild',
       slashOptions: [
         {
           name: 'set',

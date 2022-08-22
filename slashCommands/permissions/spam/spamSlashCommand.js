@@ -8,6 +8,7 @@ module.exports = class SpamSlashCommand extends SlashCommand {
       commandType: 'command',
       category: 'permissions',
       description: 'Add, remove, and view all the spam channels',
+      channel: 'guild',
       slashOptions: [
         {
           name: 'add',

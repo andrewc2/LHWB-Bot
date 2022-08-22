@@ -7,6 +7,7 @@ module.exports = class LpingSlashCommand extends SlashCommand {
       commandType: 'command',
       name: 'lping',
       description: 'Join, leave, and control pinglists in a server',
+      channel: 'guild',
       slashOptions: [
         {
           name: 'ping',

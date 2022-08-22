@@ -7,6 +7,7 @@ module.exports = class QueueSlashCommand extends SlashCommand {
       commandType: 'command',
       name: 'queue',
       description: 'Control the music queue in a server',
+      channel: 'guild',
       slashOptions: [
         {
           name: 'add',

@@ -7,6 +7,7 @@ module.exports = class TrackSlashCommand extends SlashCommand {
       commandType: 'command',
       name: 'track',
       description: 'View information related to tracks',
+      channel: 'guild',
       slashOptions: [
         {
           name: 'list',

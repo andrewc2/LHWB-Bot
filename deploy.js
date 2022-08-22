@@ -73,6 +73,7 @@ const arrangeSlashCommand = async () => {
       name: command.name,
       description: command.description,
       options: command.slashOptions,
+      dm_permission: command.channel !== 'guild',
     }));
 
   const subCommands = slashCommands.filter(
