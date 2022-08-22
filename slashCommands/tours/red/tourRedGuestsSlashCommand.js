@@ -4,12 +4,12 @@ const { EmbedBuilder } = require('discord.js');
 module.exports = class RedTourGuestsSlashCommand extends SlashCommand {
   constructor() {
     super('redTourGuests', {
-      name: 'tour red-tour-guests',
+      name: 'tour red guests',
       prefixId: 'redGuests',
       category: 'tours',
       commandType: 'sub',
-      parentCommand: 'tour',
-      shortName: 'red-tour-guests',
+      parentCommand: 'red',
+      shortName: 'guests',
     });
   }
 

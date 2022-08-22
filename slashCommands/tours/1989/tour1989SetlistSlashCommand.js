@@ -4,12 +4,12 @@ const { EmbedBuilder } = require('discord.js');
 module.exports = class Tour1989SetListSlashCommand extends SlashCommand {
   constructor() {
     super('tour1989SetList', {
-      name: 'tour 1989-tour-setlist',
+      name: 'tour 1989 setlist',
       prefixId: '1989setList',
       category: 'tours',
       commandType: 'sub',
-      parentCommand: 'tour',
-      shortName: '1989-tour-setlist',
+      parentCommand: '1989',
+      shortName: 'setlist',
     });
   }
 

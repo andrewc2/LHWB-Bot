@@ -1,16 +1,16 @@
 const { SlashCommand } = require('discord-akairo');
 const { EmbedBuilder } = require('discord.js');
-const { pagination } = require('../../utilities/pagination');
+const { pagination } = require('../../../utilities/pagination');
 
 module.exports = class Tour1989GuestsSlashCommand extends SlashCommand {
   constructor() {
     super('tour1989Guests', {
-      name: 'tour 1989-tour-guests',
+      name: 'tour 1989 guests',
       prefixId: '1989guests',
       category: 'tours',
       commandType: 'sub',
-      parentCommand: 'tour',
-      shortName: '1989-tour-guests',
+      parentCommand: '1989',
+      shortName: 'guests',
     });
   }
 

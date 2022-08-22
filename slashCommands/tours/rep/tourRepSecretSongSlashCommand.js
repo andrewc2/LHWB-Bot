@@ -1,16 +1,16 @@
 const { SlashCommand } = require('discord-akairo');
 const { EmbedBuilder } = require('discord.js');
-const { pagination } = require('../../utilities/pagination');
+const { pagination } = require('../../../utilities/pagination');
 
 module.exports = class RepTourSecretSongSlashCommand extends SlashCommand {
   constructor() {
     super('repTourSecretSong', {
-      name: 'tour reputation-tour-secret-songs',
+      name: 'tour reputation secret-songs',
       prefixId: 'repSecretSong',
       category: 'tours',
       commandType: 'sub',
-      parentCommand: 'tour',
-      shortName: 'reputation-tour-secret-songs',
+      parentCommand: 'reputation',
+      shortName: 'secret-songs',
     });
   }
 
