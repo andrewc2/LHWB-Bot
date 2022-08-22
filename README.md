@@ -37,6 +37,7 @@ Edit `.bashrc` and add `export PATH="/usr/bin/ffmpeg:$PATH"` assuming ffmpeg was
 
 ### Running
 `node deploy.js` - to deploy slash commands
+
 `node index.js` - to run bot
 
 ### Extra Special Thanks to:
