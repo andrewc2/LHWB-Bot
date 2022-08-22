@@ -1,11 +1,9 @@
-const { REST } = require('@discordjs/rest');
-const { Routes } = require('discord-api-types/v10');
 const fs = require('fs');
 const path = require('path');
-const { Collection } = require('discord.js');
-const config = require('./config.json');
-const { ApplicationCommandOptionType } = require('discord.js');
+const { ApplicationCommandOptionType, Routes, Collection } = require('discord.js');
 const { SlashCommand } = require('discord-akairo');
+const { REST } = require('@discordjs/rest');
+const config = require('./config.json');
 
 const modules = new Collection();
 const clientId = config.slashConfig.env === 'DEV' ? config.slashConfig.dev_client_id : config.slashConfig.pro_client_id;
