@@ -54,6 +54,5 @@ module.exports = class EnableMessageCommand extends MessageCommand {
           .setDescription(`The \`${command.id}\` command has been enabled globally.`),
       ],
     });
-    // db.query('INSERT INTO `globalCommandDisable` (commandId) VALUES (?)', [command.id])
   }
 };
