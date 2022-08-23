@@ -37,12 +37,12 @@ module.exports = class HelpMessageCommand extends MessageCommand {
         { name: 'Music :musical_note:', value: 'albumlist, current, queue, queue album, dequeue, clearqueue, recent, skip, tracks, rankplays, trackinfo', inline: true },
         { name: 'Albums :cd:', value: 'debut, beautifuleyes, fearless, speaknow, red, 1989, reputation, lover, folklore, evermore', inline: true },
         { name: 'Tours :ticket:', value: 'redguests, redsetlist, 1989ss, 1989guests, 1989setlist, repss, repguests, repsetlist', inline: true },
-        { name: 'Other :wrench:', value: 'countdown, danc, debtcounter, eyeroll, gif, prefix, request, stream, taze, wtny', inline: true },
+        { name: 'Other :wrench:', value: 'countdown, debtcounter, gif, prefix, request, stream, wtny', inline: true },
         { name: 'Last.FM :notes:', value: 'lfm, lfm [user], lfm clear, lfm search [user], lfm set [user]', inline: true },
-        { name: 'Utilities :gear:', value: 'lrestart, lversion, lhelp, rejoin', inline: true },
+        { name: 'Utilities :gear:', value: 'lrestart, lversion, lhelp, rejoin, stage', inline: true },
         { name: 'Mod :boom:', value: 'botban, botunban, channel enable [cmd], channel disable [cmd], spam add [channel], spam remove [channel], trusted set [role], trusted clear, pause, resume', inline: true },
         { name: 'Owner :crown:', value: 'disable, enable, lavatar, lsay, nickname, reload', inline: true },
-        { name: 'Pinglists :rotating_light:', value: 'lping list, lping get [list name], lping drop [list name], lping (shows lists you\'re on), lping [list to ping], lping create [list name], lping delete [list name]', inline: true },
+        { name: 'Pinglists :rotating_light:', value: 'lping list, lping get [list name], lping drop [list name], lping (shows lists you\'re on), lping create [list name], lping delete [list name]', inline: true },
       ])
       .setColor('#FF69B4');
 

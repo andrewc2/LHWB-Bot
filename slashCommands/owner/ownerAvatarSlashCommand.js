@@ -1,5 +1,5 @@
 const { SlashCommand } = require('discord-akairo');
-const { ApplicationCommandOptionType, EmbedBuilder, Color } = require('discord.js');
+const { ApplicationCommandOptionType, EmbedBuilder, Colors } = require('discord.js');
 
 module.exports = class OwnerAvatarSlashCommand extends SlashCommand {
   constructor() {
@@ -39,7 +39,7 @@ module.exports = class OwnerAvatarSlashCommand extends SlashCommand {
   exec(interaction) {
     const avatar = interaction.options.getString('picture', true);
     const embed = new EmbedBuilder()
-      .setColor(Color.Green);
+      .setColor(Colors.Green);
 
     void this.client.user.setAvatar(avatar);
     return interaction.reply({ embeds: [embed.setDescription('The avatar has been updated')] });
