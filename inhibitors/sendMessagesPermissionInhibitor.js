@@ -10,6 +10,10 @@ module.exports = class SendMessagesPermissionInhibitor extends Inhibitor {
   }
 
   async exec(message) {
+    if (!message.interaction && message.inGuild() && !message.channel.parent) {
+      return true;
+    }
+
     if (!message.interaction && message.guild) {
       return !(message.channel)
         .permissionsFor(message.guild.members.me)
