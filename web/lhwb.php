@@ -16,7 +16,7 @@
                     </thead>
                     <tbody>
                         <?php
-                        $stmt = $db->prepare("SELECT official_name, artist_name, album, play_count FROM song_detail WHERE 1 ORDER BY official_name");
+                        $stmt = $db->prepare("SELECT official_name, artist_name, album, play_count FROM songDetail WHERE 1 ORDER BY official_name");
                         $stmt->execute();
                         $stmt->bind_result($name, $artist, $album, $playcount);
                         while ($stmt->fetch()) {
@@ -34,7 +34,6 @@
                 </table>
             </div>
         </div>
-        <script type="text/javascript" src="https://cdn.datatables.net/v/bs-3.3.7/jq-2.2.4/dt-1.10.13/datatables.min.js"></script>
         <script>
             $(document).ready(function() {
             $('#songList').DataTable({
