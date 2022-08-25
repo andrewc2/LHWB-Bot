@@ -16,8 +16,8 @@
 
                     <tbody>
                         <?php
-                        $stmt = $db->prepare("SELECT recent_new.id, recent_new.song_detail_id, recent_new.queued_by, song_detail.official_name, song_detail.album FROM recent_new
-                        INNER JOIN song_detail ON recent_new.song_detail_id = song_detail.id WHERE 1 AND guild_id = ? ORDER BY id DESC LIMIT 26");
+                        $stmt = $db->prepare("SELECT songRecent.id, songRecent.song_detail_id, songRecent.queued_by, songDetail.official_name, songDetail.album FROM songRecent
+                        INNER JOIN songDetail ON songRecent.song_detail_id = songDetail.id WHERE 1 AND guild_id = ? ORDER BY id DESC LIMIT 26");
                         $stmt->bind_param("s", $server);
                         $stmt->execute();
                         $stmt->bind_result($id, $detail_id, $queuedby, $name, $album);
@@ -28,6 +28,5 @@
                 </table>
             </div>
         </div>
-        <script type="text/javascript" src="https://cdn.datatables.net/v/bs-3.3.7/jq-2.2.4/dt-1.10.13/datatables.min.js"></script>
     </body>
 </html>
