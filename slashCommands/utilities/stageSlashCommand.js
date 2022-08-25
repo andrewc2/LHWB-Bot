@@ -1,5 +1,5 @@
 const { SlashCommand } = require('discord-akairo');
-const { EmbedBuilder } = require('discord.js');
+const { EmbedBuilder, PermissionsBitField } = require('discord.js');
 const { isVoiceServerAndMod } = require('../../utilities/permissions');
 const voiceServers = require('../../voice-servers.json');
 const { joinVoiceChannel } = require('@discordjs/voice');
@@ -23,6 +23,13 @@ module.exports = class StageSlashCommand extends SlashCommand {
   async exec(interaction) {
     await interaction.deferReply();
     const channel = interaction.client.channels.cache.get(voiceServers.find(x => x.server_id === interaction.guild.id).stage_channel_id);
+
+    if (!channel.permissionsFor(interaction.guild.members.me).has([PermissionsBitField.Flags.ManageChannels, PermissionsBitField.Flags.MuteMembers, PermissionsBitField.Flags.MoveMembers])) {
+      const failEmbed = new EmbedBuilder()
+        .setDescription(`I need to be a Stage Manager on ${channel.name} in order to switch to this stage channel.`);
+      return interaction.editReply({ embeds: [failEmbed] });
+    }
+
     const connection = joinVoiceChannel({
       channelId: channel.id,
       guildId: channel.guild.id,

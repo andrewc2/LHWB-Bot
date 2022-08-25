@@ -2,7 +2,15 @@ const fs = require('fs');
 const { AudioPlayerStatus, createAudioPlayer, createAudioResource } = require('@discordjs/voice');
 const { ActivityType } = require('discord.js');
 const { db } = require('../models/db');
-const { DELETE_FROM_QUEUE, FIND_RANDOM_SONG, UPDATE_RECENT, SEARCH_QUEUE, UPDATE_PLAY_COUNT } = require('../models/musicQueries');
+const {
+  DELETE_FROM_QUEUE,
+  FIND_RANDOM_SONG,
+  UPDATE_RECENT,
+  SEARCH_QUEUE,
+  UPDATE_PLAY_COUNT,
+  INSERT_INTO_SONG_USER_LISTEN,
+  INSERT_MANY_USERS,
+} = require('../models/musicQueries');
 const { logger } = require('./winstonLogging');
 const config = require('../config.json');
 
@@ -39,8 +47,13 @@ function updateRecent(songId, guildId, queuedBy) {
   db.query(UPDATE_RECENT, [songId, guildId, queuedBy]);
 }
 
-function updatePlayCount(id) {
-  db.query(UPDATE_PLAY_COUNT, [id]);
+async function updatePlayCount(trackId, members) {
+  db.query(UPDATE_PLAY_COUNT, [trackId]);
+  const memberIds = members.map(member => [member.user.id]);
+  const membersToInsert = members.map(member => [member.user.id, trackId]);
+  await db.promise().query(INSERT_MANY_USERS, [memberIds]);
+  await db.promise().query(INSERT_INTO_SONG_USER_LISTEN, [membersToInsert]);
+  logger.log('info', `Updated playcount for track id: ${trackId} and updated song user listens for: ${members.size} member(s)`);
 }
 
 function play(result, connection, client) {
@@ -53,7 +66,8 @@ function play(result, connection, client) {
     logger.log('info', `Audio player transitioned from ${oldState.status} to ${newState.status}`);
     if (newState.status === AudioPlayerStatus.Idle && oldState.status !== AudioPlayerStatus.Idle) {
       const vc = client.channels.cache.get(connection.joinConfig.channelId);
-      if (vc.members.size > 1) updatePlayCount(result.id);
+      const members = vc.members.filter(member => !member.voice.deaf);
+      if (members.size > 0) await updatePlayCount(result.id, members);
       if (result.queued_by !== null) dequeue(result.id, result.guild_id);
       client.user.setActivity('Music', { type: ActivityType.Listening });
       setTimeout(async () => { play(await searchQueue(vc.guild) || await randomSong(vc.guild), connection, client); }, 1000);
