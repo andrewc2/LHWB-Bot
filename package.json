@@ -4,25 +4,32 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "bot": "pm2 start index.js"
+    "start": "pm2 start index.js",
+    "deploy": "node deploy.js",
+    "start-dev": "node .",
+    "lint": "eslint . --ext .js --fix",
+    "lint-show": "eslint . --ext .js"
+  },
+  "engines": {
+    "node": ">=16.9.0"
   },
   "keywords": [],
   "author": "iandrewc",
   "license": "MIT",
   "dependencies": {
-    "@discordjs/opus": "^0.7.0",
-    "@discordjs/rest": "^0.5.0",
-    "@discordjs/voice": "^0.10.0",
-    "@vscode/sqlite3": "^5.0.8",
+    "@discordjs/opus": "^0.8.0",
+    "@discordjs/rest": "^1.1.0",
+    "@discordjs/voice": "^0.11.0",
     "discord-akairo": "github:username1307/discord-akairo",
-    "discord-api-types": "^0.34.0",
-    "discord.js": "^13.8.0",
-    "lastfmapi": "^0.1.1",
-    "luxon": "^2.4.0",
+    "discord-api-types": "^0.37.3",
+    "discord.js": "^14.3.0",
+    "luxon": "^3.0.1",
     "mysql2": "^2.3.3",
     "node-fetch": "^2.6.7",
     "sodium": "^3.0.2",
-    "sqlite": "^4.0.18",
-    "winston": "^3.7.2"
+    "winston": "^3.8.1"
+  },
+  "devDependencies": {
+    "eslint": "^8.22.0"
   }
 }
