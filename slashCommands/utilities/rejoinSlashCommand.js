@@ -11,6 +11,7 @@ module.exports = class RejoinSlashCommand extends SlashCommand {
       name: 'rejoin',
       commandType: 'command',
       prefixId: 'rejoin',
+      channel: 'guild',
       description: 'Reconnect and resume playing music in default channel',
       category: 'utilities',
     });

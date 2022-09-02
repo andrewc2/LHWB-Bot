@@ -1,8 +1,7 @@
 const fs = require('fs');
 const path = require('path');
-const { ApplicationCommandOptionType, Routes, Collection } = require('discord.js');
+const { ApplicationCommandOptionType, Routes, Collection, REST } = require('discord.js');
 const { SlashCommand } = require('discord-akairo');
-const { REST } = require('@discordjs/rest');
 const config = require('./config.json');
 
 const modules = new Collection();
@@ -71,6 +70,7 @@ const arrangeSlashCommand = async () => {
       name: command.name,
       description: command.description,
       options: command.slashOptions,
+      default_member_permissions: null,
       dm_permission: command.channel !== 'guild',
     }));
 

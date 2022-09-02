@@ -2,6 +2,7 @@
   {
     "server_id": "",
     "channel_id": "",
-    "stage_channel_id": ""
+    "stage_channel_id": "",
+    "companion_stage_channel_id": ""
   }
 ]

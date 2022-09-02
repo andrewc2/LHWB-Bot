@@ -11,6 +11,7 @@ module.exports = class StageSlashCommand extends SlashCommand {
       name: 'stage',
       commandType: 'command',
       prefixId: 'stage',
+      channel: 'guild',
       description: 'Join the servers stage channel',
       category: 'utilities',
     });

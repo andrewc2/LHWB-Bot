@@ -12,6 +12,7 @@ module.exports = class StageMessageCommand extends MessageCommand {
       category: 'utility',
       cooldown: 30000,
       ratelimit: 1,
+      channel: 'guild',
       description: {
         content: 'Join the servers stage channel.',
         usage: 'stage',

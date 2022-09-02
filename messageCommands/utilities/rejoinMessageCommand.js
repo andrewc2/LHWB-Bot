@@ -12,6 +12,7 @@ module.exports = class RejoinMessageCommand extends MessageCommand {
       category: 'utility',
       cooldown: 30000,
       ratelimit: 1,
+      channel: 'guild',
       description: {
         content: 'Reconnect and resume playing music in default channel.',
         usage: 'rejoin',
