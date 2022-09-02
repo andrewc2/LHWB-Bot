@@ -45,3 +45,6 @@ username13 without them this project wouldn't be nearly as good.
 
 ### Special Thanks to the previous contributors:
 FS(@swiftlyanerd), Adam (@louistio), Historicc (@richmoj3), and Donran (@Donran).
+
+### Spiritual successor to the original fork from
+https://github.com/richmoj3/Red-Bot
