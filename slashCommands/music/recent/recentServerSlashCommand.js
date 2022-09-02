@@ -1,18 +1,19 @@
 const { SlashCommand } = require('discord-akairo');
 const { EmbedBuilder } = require('discord.js');
-const { isMusicServer } = require('../../utilities/permissions');
-const { db } = require('../../models/db');
-const { GET_RECENT } = require('../../models/musicQueries');
+const { isMusicServer } = require('../../../utilities/permissions');
+const { db } = require('../../../models/db');
+const { GET_RECENT } = require('../../../models/musicQueries');
 
-module.exports = class RecentSlashCommand extends SlashCommand {
+module.exports = class RecentServerSlashCommand extends SlashCommand {
   constructor() {
-    super('recent', {
-      name: 'recent',
+    super('recentServer', {
+      name: 'recent server',
       prefixId: 'recent',
       category: 'music',
       channel: 'guild',
-      commandType: 'command',
-      description: 'Shows the 10 most recently played songs',
+      commandType: 'sub',
+      parentCommand: 'recent',
+      shortName: 'server',
     });
   }
 

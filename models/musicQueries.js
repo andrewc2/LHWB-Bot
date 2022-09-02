@@ -36,6 +36,9 @@ const QUEUE_ALBUM =
 const GET_RECENT =
     'SELECT * FROM songRecent INNER JOIN songDetail ON songRecent.song_detail_id = songDetail.id WHERE songRecent.guild_id = ? ORDER BY songRecent.id DESC LIMIT ?';
 
+const GET_HISTORY =
+    'SELECT * FROM songUserListen INNER JOIN songDetail ON songUserListen.song_detail_id = songDetail.id WHERE songUserListen.user_id = ? ORDER BY songUserListen.date DESC LIMIT ?';
+
 const RANK_PLAYS =
     'SELECT * FROM songDetail WHERE play_count > 0 ORDER BY play_count DESC LIMIT ?';
 
@@ -48,4 +51,4 @@ const INSERT_MANY_USERS =
 module.exports = { FIND_SONG, FETCH_ALL_QUEUEABLE_SONGS, ADD_TO_QUEUE,
   SEARCH_QUEUE, FIND_SONG_IN_QUEUE, FIND_RANDOM_SONG, DELETE_FROM_QUEUE,
   CLEAR_QUEUE, UPDATE_RECENT, UPDATE_PLAY_COUNT, GET_ALBUM, QUEUE_ALBUM,
-  GET_RECENT, RANK_PLAYS, INSERT_INTO_SONG_USER_LISTEN, INSERT_MANY_USERS };
+  GET_RECENT, GET_HISTORY, RANK_PLAYS, INSERT_INTO_SONG_USER_LISTEN, INSERT_MANY_USERS };
