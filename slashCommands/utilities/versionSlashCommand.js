@@ -25,7 +25,11 @@ module.exports = class VersionSlashCommand extends SlashCommand {
           iconURL: 'https://lhwb.dev/ts.png',
           url: 'https://github.com/andrewc2/LHWB-Bot/wiki/Change-Log',
         })
-        .setDescription(`${rows[0]['patchNotes']}`);
+        .setDescription(`${rows[0]['patchNotes']}`)
+        .setFooter({
+          text: 'Please let iAndrewC know of any issues/bugs.',
+          iconURL: interaction.client.user.displayAvatarURL({ forceStatic: false, extension: 'png' }),
+        });
       return interaction.editReply({ embeds: [embed] });
     });
   }
