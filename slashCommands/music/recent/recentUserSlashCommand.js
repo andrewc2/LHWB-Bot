@@ -47,7 +47,7 @@ module.exports = class RecentUserSlashCommand extends SlashCommand {
       const recentSongs = results.map((result, i) => `${i + 1}. ${result['official_name']} - ${result['artist_name']}`);
       embed
         .setAuthor({ name: user.tag, iconURL: user.displayAvatarURL({ extension: 'png', size: 128 }) })
-        .setTitle('Most Recently Listed To On LHWB')
+        .setTitle('Last 10 songs listened to on LHWB')
         .setDescription(`Recently Played:\n${recentSongs.join('\n')}`);
       return interaction.editReply({ embeds: [embed] });
     });
