@@ -58,6 +58,11 @@ module.exports = class AlbumSlashCommand extends SlashCommand {
           description: 'Displays the track list for Taylor Swift\'s album evermore',
           type: ApplicationCommandOptionType.Subcommand,
         },
+        {
+          name: 'midnights',
+          description: 'Displays the track list for Taylor Swift\'s album Midnights',
+          type: ApplicationCommandOptionType.Subcommand,
+        },
       ],
     });
   }
