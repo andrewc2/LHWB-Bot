@@ -32,6 +32,13 @@ module.exports = class LpingPingSlashCommand extends SlashCommand {
           autocomplete: true,
           max_length: 40,
         },
+        {
+          name: 'message',
+          description: 'The message to send along with the ping',
+          type: ApplicationCommandOptionType.String,
+          required: false,
+          max_length: 60,
+        },
       ],
     });
   }
@@ -41,6 +48,7 @@ module.exports = class LpingPingSlashCommand extends SlashCommand {
     const pinglist = interaction.options.getString('pinglist', true)
       .replace(/\s/g, '')
       .toLowerCase();
+    const pingMessage = interaction.options.getString('message');
 
     const failedEmbed = new EmbedBuilder()
       .setColor(Colors.Red);
@@ -61,6 +69,20 @@ module.exports = class LpingPingSlashCommand extends SlashCommand {
           .setStyle(ButtonStyle.Secondary),
       );
 
+    const joinPinglist = new ActionRowBuilder()
+      .addComponents(
+        new ButtonBuilder()
+          .setCustomId(JSON.stringify({ type: 'ping', id: pinglist }))
+          .setLabel('Join Pinglist')
+          .setEmoji('🔔')
+          .setStyle(ButtonStyle.Primary),
+        new ButtonBuilder()
+          .setCustomId(JSON.stringify({ type: 'drop', id: pinglist }))
+          .setLabel('Leave Pinglist')
+          .setEmoji('🚮')
+          .setStyle(ButtonStyle.Secondary),
+      );
+
     async function findPingList() {
       const [result] = await db.promise().query('SELECT `name`, `guildID` FROM pinglist WHERE name = ? AND guildID = ?', [pinglist, interaction.guild.id]);
       return result.length !== 0;
@@ -76,11 +98,12 @@ module.exports = class LpingPingSlashCommand extends SlashCommand {
           .then(async users => {
             if (users.size < 1) return interaction.editReply({ embeds: [failedEmbed.setDescription('It looks like nobody has this pinglist assigned. :confused:')], components: [] });
             const mentions = users.map(user => user.user.toString());
-            const sendList = `${pinglist} ${mentions.join(' ').trim()} - to join this pinglist, do \`/lping get ${pinglist}\` in a spam channel.`;
+            const sendList = `${pingMessage !== null ? `${pinglist}: ${pingMessage.toLowerCase()}` : pinglist} ${mentions.join(' ').trim()}`;
             await interaction.editReply({ embeds: [ pleaseWaitEmbed.setDescription(`${interaction.user.tag} (${interaction.user}) has requested the **${pinglist}** pinglist.`) ], components: [] });
             for (let i = 0; i < sendList.length; i += 1999) {
               const toSend = sendList.substring(i, Math.min(sendList.length, i + 1999));
-              await interaction.followUp(toSend);
+              const payload = i === 0 ? { content: toSend, components: [joinPinglist] } : { content: toSend };
+              await interaction.followUp(payload);
             }
           })
           .catch(err => {
@@ -100,8 +123,7 @@ module.exports = class LpingPingSlashCommand extends SlashCommand {
       const buttonEmbed = new EmbedBuilder()
         .setTitle(`Ping ${pinglist}?`)
         .setDescription(`${interaction.user}, This command **WILL SEND a potential mass ping.** Are you sure you want to **PING** this ping list? This is **NOT** how you GET the list.\n${this.client.user.username} is not responsible for any potential consequences.`)
-        .setColor(Colors.Yellow)
-        .setFooter({ text: 'To GET this pinglist, do /lping get in bots.' });
+        .setColor(Colors.Yellow);
 
       interaction.editReply({ embeds: [buttonEmbed], components: [row] })
         .then(message => {

@@ -1,36 +1,23 @@
-const { SlashCommand } = require('discord-akairo');
-const { ApplicationCommandOptionType, EmbedBuilder, Colors } = require('discord.js');
+const { Listener } = require('discord-akairo');
+const { EmbedBuilder, Colors, Events } = require('discord.js');
 const { db } = require('../../models/db');
-const { autocomplete } = require('../../commandUtilities/lpingUtilities');
 
-module.exports = class LpingDropSlashCommand extends SlashCommand {
+module.exports = class LpingDropPinglistListener extends Listener {
   constructor() {
-    super('lpingDrop', {
-      name: 'lping drop',
-      prefixId: 'lpingDrop',
-      category: 'ping',
-      channel: 'guild',
-      commandType: 'sub',
-      parentCommand: 'lping',
-      shortName: 'drop',
-      slashOptions: [
-        {
-          name: 'pinglist',
-          description: 'The name of the pinglist to drop',
-          type: ApplicationCommandOptionType.String,
-          required: true,
-          autocomplete: true,
-          max_length: 40,
-        },
-      ],
+    super('lpingDropPinglistListener', {
+      event: Events.InteractionCreate,
+      category: 'other',
+      emitter: 'client',
     });
   }
 
   async exec(interaction) {
-    await interaction.deferReply();
-    const pinglist = interaction.options.getString('pinglist', true)
-      .replace(/\s/g, '')
-      .toLowerCase();
+    if (!interaction.isButton() || !interaction.guild) return;
+    if (!interaction.customId.startsWith('{')) return;
+    const customId = JSON.parse(interaction.customId);
+    if (customId.type !== 'drop') return;
+    await interaction.deferReply({ ephemeral: true });
+    const pinglist = customId.id;
 
     const failedEmbed = new EmbedBuilder()
       .setColor(Colors.Red)
@@ -48,9 +35,5 @@ module.exports = class LpingDropSlashCommand extends SlashCommand {
         return interaction.editReply({ embeds: [embed.setDescription(`You have successfully been removed from the **${pinglist}** pinglist.`)] });
       });
     });
-  }
-
-  async autocomplete(interaction) {
-    await autocomplete(interaction);
   }
 };
