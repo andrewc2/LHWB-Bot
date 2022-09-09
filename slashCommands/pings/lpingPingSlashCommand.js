@@ -12,6 +12,7 @@ const { db } = require('../../models/db');
 const { isTrusted } = require('../../utilities/permissions');
 const { autocomplete } = require('../../commandUtilities/lpingUtilities');
 const { logger } = require('../../utilities/winstonLogging');
+const { getCommandMention } = require('../../utilities/utilities');
 
 module.exports = class LpingPingSlashCommand extends SlashCommand {
   constructor() {
@@ -144,7 +145,7 @@ module.exports = class LpingPingSlashCommand extends SlashCommand {
         });
     }
     else {
-      return interaction.editReply({ embeds: [failedEmbed.setDescription(`I couldn't find a pinglist with the name ${pinglist}. You can view available pinglists in this server by using the \`/lping list\` command.`)] });
+      return interaction.editReply({ embeds: [failedEmbed.setDescription(`I couldn't find a pinglist with the name ${pinglist}. You can view available pinglists in this server by using the ${getCommandMention(this.client, 'lping list')} command.`)] });
     }
   }
 

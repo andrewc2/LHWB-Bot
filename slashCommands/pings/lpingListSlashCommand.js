@@ -1,6 +1,7 @@
 const { SlashCommand } = require('discord-akairo');
 const { EmbedBuilder, Colors } = require('discord.js');
 const { db } = require('../../models/db');
+const { getCommandMention } = require('../../utilities/utilities');
 
 module.exports = class LpingListSlashCommand extends SlashCommand {
   constructor() {
@@ -17,10 +18,11 @@ module.exports = class LpingListSlashCommand extends SlashCommand {
 
   async exec(interaction) {
     await interaction.deferReply();
+    const client = this.client;
 
     const failedEmbed = new EmbedBuilder()
       .setColor(Colors.Red)
-      .setDescription('There are no pinglists in this server. You can create a pinglist by using the `/lping create` command.');
+      .setDescription(`There are no pinglists in this server. You can create a pinglist by using the ${getCommandMention(this.client, 'lping create')} command.`);
 
     const embed = new EmbedBuilder()
       .setColor('#FF69B4')
@@ -30,7 +32,7 @@ module.exports = class LpingListSlashCommand extends SlashCommand {
       if (err) return;
       if (result.length < 1) return interaction.editReply({ embeds: [failedEmbed] });
       const pings = result.map(x => x.name);
-      return interaction.editReply({ embeds: [embed.setDescription(`Here are all the pinglists available in this server. Use the \`/lping get\` command to join one.\n\n \`${pings.join('` | `')}\``)] });
+      return interaction.editReply({ embeds: [embed.setDescription(`Here are all the pinglists available in this server. Use the ${getCommandMention(client, 'lping get')} command to join one.\n\n \`${pings.join('` | `')}\``)] });
     });
   }
 };

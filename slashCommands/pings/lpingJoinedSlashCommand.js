@@ -1,6 +1,7 @@
 const { SlashCommand } = require('discord-akairo');
 const { EmbedBuilder, Colors } = require('discord.js');
 const { db } = require('../../models/db');
+const { getCommandMention } = require('../../utilities/utilities');
 
 module.exports = class LpingJoinedSlashCommand extends SlashCommand {
   constructor() {
@@ -19,7 +20,7 @@ module.exports = class LpingJoinedSlashCommand extends SlashCommand {
     await interaction.deferReply();
     const failedEmbed = new EmbedBuilder()
       .setColor(Colors.Red)
-      .setDescription('Uh oh! Looks like you\'ve not joined any pinglists in this server. You can view available pinglists in this server by using the `/lping list` command.');
+      .setDescription(`Uh oh! Looks like you've not joined any pinglists in this server. You can view available pinglists in this server by using the ${getCommandMention(this.client, 'lping list')} command.`);
 
     const embed = new EmbedBuilder()
       .setColor('#FF69B4')

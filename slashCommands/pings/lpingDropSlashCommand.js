@@ -2,6 +2,7 @@ const { SlashCommand } = require('discord-akairo');
 const { ApplicationCommandOptionType, EmbedBuilder, Colors } = require('discord.js');
 const { db } = require('../../models/db');
 const { autocomplete } = require('../../commandUtilities/lpingUtilities');
+const { getCommandMention } = require('../../utilities/utilities');
 
 module.exports = class LpingDropSlashCommand extends SlashCommand {
   constructor() {
@@ -34,7 +35,7 @@ module.exports = class LpingDropSlashCommand extends SlashCommand {
 
     const failedEmbed = new EmbedBuilder()
       .setColor(Colors.Red)
-      .setDescription(`I couldn't find a pinglist with the name ${pinglist}. You can view available pinglists in this server by using the \`/lping list\` command.`);
+      .setDescription(`I couldn't find a pinglist with the name ${pinglist}. You can view available pinglists in this server by using the ${getCommandMention(this.client, 'lping list')} command.`);
 
     const embed = new EmbedBuilder()
       .setColor('#FF69B4');

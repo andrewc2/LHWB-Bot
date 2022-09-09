@@ -3,6 +3,7 @@ const { ApplicationCommandOptionType, EmbedBuilder, Colors } = require('discord.
 const { db } = require('../../models/db');
 const { autocomplete } = require('../../commandUtilities/lpingUtilities');
 const { logger } = require('../../utilities/winstonLogging');
+const { getCommandMention } = require('../../utilities/utilities');
 
 module.exports = class LpingShowSlashCommand extends SlashCommand {
   constructor() {
@@ -28,6 +29,7 @@ module.exports = class LpingShowSlashCommand extends SlashCommand {
   }
 
   async exec(interaction) {
+    const client = this.client;
     await interaction.deferReply();
     const pinglist = interaction.options.getString('pinglist', true)
       .replace(/\s/g, '')
@@ -35,7 +37,7 @@ module.exports = class LpingShowSlashCommand extends SlashCommand {
 
     const failedEmbed = new EmbedBuilder()
       .setColor(Colors.Red)
-      .setDescription(`I couldn't find a pinglist with the name ${pinglist}. You can view available pinglists in this server by using the \`/lping list\` command.`);
+      .setDescription(`I couldn't find a pinglist with the name ${pinglist}. You can view available pinglists in this server by using the ${getCommandMention(this.client, 'lping list')} command.`);
 
     const embed = new EmbedBuilder()
       .setColor('#FF69B4');
@@ -61,7 +63,7 @@ module.exports = class LpingShowSlashCommand extends SlashCommand {
             return interaction.editReply({ embeds: [
               embed
                 .setTitle(`${pinglist.charAt(0).toUpperCase() + pinglist.slice(1)} Pinglist`)
-                .setDescription(`${toSend} - to join this pinglist, do \`/lping get ${pinglist}\` in bots.`)
+                .setDescription(`${toSend} - to join this pinglist, use the ${getCommandMention(client, 'lping get')} command in a spam channel.`)
                 .addFields([{ name: 'Total Pinglist Members Result:', value: users.size.toString(), inline: false }]),
             ] });
           })
