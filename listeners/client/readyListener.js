@@ -12,7 +12,7 @@ module.exports = class ReadyListener extends Listener {
   }
 
   async exec() {
-    this.apiCommands = await this.client.application.commands.fetch();
+    this.client.apiCommands = await this.client.application.commands.fetch();
     this.client.user.setActivity('Music', { type: ActivityType.Listening });
     logger.log('info', `Logged in as ${this.client.user.tag} (${this.client.user.id})`);
   }
