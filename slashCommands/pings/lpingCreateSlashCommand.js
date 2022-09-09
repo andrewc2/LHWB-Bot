@@ -1,6 +1,7 @@
 const { SlashCommand } = require('discord-akairo');
 const { ApplicationCommandOptionType, EmbedBuilder, Colors, PermissionsBitField } = require('discord.js');
 const { db } = require('../../models/db');
+const { getCommandMention } = require('../../utilities/utilities');
 
 module.exports = class LpingCreateSlashCommand extends SlashCommand {
   constructor() {
@@ -33,7 +34,7 @@ module.exports = class LpingCreateSlashCommand extends SlashCommand {
 
     const failedEmbed = new EmbedBuilder()
       .setColor(Colors.Red)
-      .setDescription('Uh oh! Looks like this pinglist already exists with this name. You can view available pinglists in this server by using the `/lping list` command.');
+      .setDescription(`Uh oh! Looks like this pinglist already exists with this name. You can view available pinglists in this server by using the ${getCommandMention(this.client, 'lping list')} command.`);
 
     const embed = new EmbedBuilder()
       .setColor('#FF69B4')

@@ -16,4 +16,11 @@ function commandUsage(commandName, guild, client, text) {
   return { embeds: [embed] };
 }
 
-module.exports = { anyUsage, anyUsageFooter, commandUsage };
+function getCommandMention(client, commandName) {
+  if (config.slashConfig.env === 'DEV') return `\`/${commandName}\``;
+  const command = client.apiCommands.find(apiCommand => apiCommand.name === commandName.split(' ')[0].trim());
+  if (!command) return `\`/${commandName}\``;
+  return `</${commandName}:${command.id}>`;
+}
+
+module.exports = { anyUsage, anyUsageFooter, commandUsage, getCommandMention };

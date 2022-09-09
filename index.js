@@ -76,6 +76,7 @@ class Client extends AkairoClient {
 
     this.blacklist = new Collection();
     this.globalCommandDisable = new Collection();
+    this.apiCommands = new Collection() | undefined;
 
     this.messageCommandHandler.useListenerHandler(this.listenerHandler);
     this.messageCommandHandler.useInhibitorHandler(this.inhibitorHandler);
