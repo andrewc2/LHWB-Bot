@@ -51,7 +51,7 @@ module.exports = class QueueClearSlashCommand extends SlashCommand {
             message.awaitMessageComponent({ filter, componentType: ComponentType.Button, time: 10000 })
               .then(i => {
                 if (i.customId === 'clear') {
-                  db.query(CLEAR_QUEUE, [interaction.user.id]);
+                  db.query(CLEAR_QUEUE, [interaction.guild.id]);
                   i.editReply({ embeds: [embed.setDescription('The queue has been cleared 🧹')], components: [] });
                 }
                 else {
