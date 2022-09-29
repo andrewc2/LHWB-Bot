@@ -18,6 +18,6 @@ module.exports = class WtnyMessageCommand extends MessageCommand {
   }
 
   exec(message) {
-    return message.channel.send({ files: ['https://i.imgur.com/02RxUF4.gif'] });
+    return message.channel.send({ files: ['https://lhwb.dev/rTSWTNY.gif'] });
   }
 };
