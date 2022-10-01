@@ -22,7 +22,7 @@ module.exports = class AlbumMidnightsSlashCommand extends SlashCommand {
         url: 'https://en.wikipedia.org/wiki/Midnights',
       })
       .setThumbnail('https://i.imgur.com/8swRZ5l.png')
-      .setDescription('**Midnights** will be released on __October 21, 2022__ \n\n1. Track One\n2. Track Two\n3. Track Three\n4. Track Four\n5. Track Five\n6. Midnight Rain\n7. Question...?\n8. Vigilante Shit\n9. Track Nine\n10. Track Ten\n11. Track Eleven\n12. Track Twelve\n13. Mastermind');
+      .setDescription('**Midnights** will be released on __October 21, 2022__ \n\n1. Track One\n2. Maroon\n3. Track Three\n4. Track Four\n5. Track Five\n6. Midnight Rain\n7. Question...?\n8. Vigilante Shit\n9. Track Nine\n10. Track Ten\n11. Track Eleven\n12. Track Twelve\n13. Mastermind');
 
     return interaction.reply({ embeds: [embed] });
   }
