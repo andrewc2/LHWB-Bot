@@ -13,6 +13,7 @@ const {
 } = require('../models/musicQueries');
 const { logger } = require('./winstonLogging');
 const config = require('../config.json');
+const voiceServers = require('../voice-servers.json');
 
 async function searchQueue(guild) {
   const [result] = await db.promise().query(SEARCH_QUEUE, [guild.id]);
@@ -25,7 +26,8 @@ async function searchQueue(guild) {
 }
 
 async function randomSong(guild) {
-  const [result] = await db.promise().query(FIND_RANDOM_SONG, [config.music.main_artist]);
+  const server = voiceServers.find(voiceServer => voiceServer.server_id === guild.id);
+  const [result] = await db.promise().query(FIND_RANDOM_SONG, [server.primary_artist]);
   if (result.length > 0) {
     fs.access(`${config.music.filepath}${result[0].path}`, fs.constants.F_OK, async (err) => {
       if (err) {

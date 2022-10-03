@@ -22,7 +22,6 @@
     "lfmAPISecret": ""
   },
   "music": {
-    "main_artist": "",
     "filepath": ""
   },
   "mySQL": {
