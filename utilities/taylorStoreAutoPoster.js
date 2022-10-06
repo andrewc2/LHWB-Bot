@@ -13,6 +13,7 @@ const autopostHandler = (client) => {
       const products = new Collection();
       response.products.map(product =>
         products.set(product.id, {
+          id: product.id,
           vendor: product.vendor,
           title: product.title,
           handle: product.handle,
@@ -21,8 +22,8 @@ const autopostHandler = (client) => {
         }),
       );
 
-      if (products.size > cachedItems.size) {
-        const newProducts = products.filter(product => !cachedItems.has(product.key));
+      const newProducts = products.filter(product => !cachedItems.has(product.id));
+      if (newProducts.size > 0) {
         newProducts.forEach(product => channel.send({
           content: `**Potential New Merch** ${whoToPing.join(' ')}`,
           embeds: [
