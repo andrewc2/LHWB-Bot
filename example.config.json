@@ -17,6 +17,10 @@
       "ignore_channels": []
     }
   },
+  "storeAutopost": {
+    "channel_id": "",
+    "who_to_ping_id": []
+  },
   "lastfm": {
     "lfmAPIKey": "",
     "lfmAPISecret": ""
