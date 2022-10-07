@@ -11,21 +11,23 @@ const autopostHandler = (client) => {
     .then((response) => response.json())
     .then((response) => {
       const products = new Collection();
-      response.products.map(product =>
-        products.set(product.id, {
-          id: product.id,
-          vendor: product.vendor,
-          title: product.title,
-          handle: product.handle,
-          image: product.images[0].src,
-          publishedAt: product.published_at,
-        }),
-      );
+      response.products
+        .filter(product => product.variants[0].available)
+        .map(product =>
+          products.set(product.id, {
+            id: product.id,
+            vendor: product.vendor,
+            title: product.title,
+            handle: product.handle,
+            image: product.images[0].src,
+            publishedAt: product.published_at,
+          }),
+        );
 
       const newProducts = products.filter(product => !cachedItems.has(product.id));
       if (newProducts.size > 0) {
         newProducts.forEach(product => channel.send({
-          content: `**Potential New Merch** ${whoToPing.join(' ')}`,
+          content: `**Potential New/Restocked Item** ${whoToPing.join(' ')}`,
           embeds: [
             new EmbedBuilder()
               .setAuthor({ name: product.vendor })
@@ -48,7 +50,9 @@ const autopostHandler = (client) => {
       }
 
       client.taylorStore.clear();
-      response.products.map(product => client.taylorStore.set(product.id, product.title));
+      response.products
+        .filter(product => product.variants[0].available)
+        .map(product => client.taylorStore.set(product.id, product.title));
     });
 };
 

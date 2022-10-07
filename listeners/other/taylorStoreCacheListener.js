@@ -16,9 +16,9 @@ module.exports = class TaylorStoreCacheListener extends Listener {
     fetch('https://store.taylorswift.com/products.json')
       .then((response) => response.json())
       .then((response) => {
-        response.products.map(product =>
-          this.client.taylorStore.set(product.id, product.title),
-        );
+        response.products
+          .filter(product => product.variants[0].available)
+          .map(product => this.client.taylorStore.set(product.id, product.title));
         logger.log('info', 'Taylor Store Items Cached');
       });
   }
