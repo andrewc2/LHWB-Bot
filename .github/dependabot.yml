@@ -12,3 +12,7 @@ updates:
 # Specify labels for npm pull requests
     labels:
       - "dependencies"
+    ignore:
+          - dependency-name: "node-fetch"
+            # For node-fetch, ignore all updates for version 3
+            versions: ["3.x"]
