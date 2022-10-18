@@ -22,7 +22,8 @@ module.exports = class AlbumMidnightsSlashCommand extends SlashCommand {
         url: 'https://en.wikipedia.org/wiki/Midnights',
       })
       .setThumbnail('https://i.imgur.com/8swRZ5l.png')
-      .setDescription('**Midnights** will be released on __October 21, 2022__ \n\n1. Lavender Haze\n2. Maroon\n3. Anti-Hero\n4. Snow On The Beach Feat. Lana Del Rey\n5. You\'re On Your Own, Kid\n6. Midnight Rain\n7. Question...?\n8. Vigilante Shit\n9. Bejeweled\n10. Labyrinth\n11. Karma\n12. Sweet Nothing\n13. Mastermind\n\n__Deluxe Version__\n14. Bonus Track One\n15. Bonus Track Two (Remix)\n16. Bonus Track Three (Remix)');
+      .setFooter({ text: 'Total Runtime: 44:02' })
+      .setDescription('**Midnights** will be released on __October 21, 2022__\n\n1. Lavender Haze (3:22)\n2. Maroon (3:38)\n3. Anti-Hero (3:20)\n4. Snow On The Beach Feat. Lana Del Rey (4:16)\n5. You\'re On Your Own, Kid (3:14)\n6. Midnight Rain (2:54)\n7. Question...? (3:30)\n8. Vigilante Shit (2:44)\n9. Bejeweled (3:14)\n10. Labyrinth (4:07)\n11. Karma (3:24)\n12. Sweet Nothing (3:08)\n13. Mastermind (3:11)\n\n__Deluxe Version__\n14. Hits Different\n15. You\'re On Your Own Kid (Strings Remix)\n16. Sweet Nothing (Piano Remix)');
 
     return interaction.reply({ embeds: [embed] });
   }
