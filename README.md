@@ -36,6 +36,8 @@ Edit `.bashrc` and add `export PATH="/usr/bin/ffmpeg:$PATH"` assuming ffmpeg was
 `source .bashrc` to save PATH
 
 ### Running
+Rename `example.config.json` and `example.voice-servers.json` to remove the `example.` and fill in your information.
+
 `node deploy.js` - to deploy slash commands
 
 `node index.js` - to run bot
