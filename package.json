@@ -21,15 +21,15 @@
     "@discordjs/rest": "^1.2.0",
     "@discordjs/voice": "^0.13.0",
     "discord-akairo": "github:username1307/discord-akairo",
-    "discord-api-types": "^0.37.11",
+    "discord-api-types": "^0.37.17",
     "discord.js": "^14.5.0",
-    "luxon": "^3.0.4",
+    "luxon": "^3.1.0",
     "mysql2": "^2.3.3",
     "node-fetch": "^2.6.7",
     "sodium": "^3.0.2",
     "winston": "^3.8.2"
   },
   "devDependencies": {
-    "eslint": "^8.24.0"
+    "eslint": "^8.27.0"
   }
 }
