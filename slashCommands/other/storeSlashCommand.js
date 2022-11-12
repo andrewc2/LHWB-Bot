@@ -1,5 +1,5 @@
 const { SlashCommand } = require('discord-akairo');
-const { EmbedBuilder, Colors } = require('discord.js');
+const { EmbedBuilder, Colors, ApplicationCommandOptionType } = require('discord.js');
 const fetch = require('node-fetch');
 const { pagination } = require('../../utilities/pagination');
 
@@ -11,14 +11,22 @@ module.exports = class StoreSlashCommand extends SlashCommand {
       category: 'other',
       commandType: 'command',
       description: 'View items available on Taylor Store',
+      slashOptions: [{
+        name: 'limit',
+        description: 'The number to limit the products to',
+        type: ApplicationCommandOptionType.Integer,
+        min_value: 5,
+        max_value: 250,
+      }],
     });
   }
 
   async exec(interaction, message) {
     await interaction.deferReply({ fetchReply: true });
     const embedArray = [];
+    const limit = interaction.options.getInteger('limit') ?? 30;
 
-    fetch('https://store.taylorswift.com/products.json')
+    fetch(`https://store.taylorswift.com/products.json?limit=${limit}`)
       .then((response) => response.json())
       .then(async (response) => {
         response.products.forEach((item) => {

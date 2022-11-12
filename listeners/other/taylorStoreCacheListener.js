@@ -13,7 +13,7 @@ module.exports = class TaylorStoreCacheListener extends Listener {
   }
 
   async exec() {
-    fetch('https://store.taylorswift.com/products.json')
+    fetch('https://store.taylorswift.com/products.json?limit=250')
       .then((response) => response.json())
       .then((response) => {
         response.products

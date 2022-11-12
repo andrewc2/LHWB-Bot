@@ -7,7 +7,7 @@ const autopostHandler = (client) => {
   const channel = client.channels.cache.get(config.storeAutopost.channel_id);
   const whoToPing = config.storeAutopost.who_to_ping_id.map(id => `<@${id}>`);
 
-  fetch('https://store.taylorswift.com/products.json')
+  fetch('https://store.taylorswift.com/products.json?limit=250')
     .then((response) => response.json())
     .then((response) => {
       const products = new Collection();
@@ -27,7 +27,7 @@ const autopostHandler = (client) => {
       const newProducts = products.filter(product => !cachedItems.has(product.id));
       if (newProducts.size > 0) {
         newProducts.forEach(product => channel.send({
-          content: `**Potential New/Restocked Item** ${whoToPing.join(' ')}`,
+          content: `${product.title} - **Potential New/Restocked Item** ${whoToPing.join(' ')}`,
           embeds: [
             new EmbedBuilder()
               .setAuthor({ name: product.vendor })
