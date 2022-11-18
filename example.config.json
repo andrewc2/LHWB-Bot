@@ -4,7 +4,8 @@
     "pro_client_id": "",
     "dev_client_id": "",
     "test_guild_id": "",
-    "slash_filepath": ""
+    "slash_filepath": "",
+    "limited_guilds": [""]
   },
   "discord": {
     "prefix": "",
@@ -19,7 +20,8 @@
   },
   "storeAutopost": {
     "channel_id": "",
-    "who_to_ping_id": []
+    "who_to_ping_id": [],
+    "role": ""
   },
   "lastfm": {
     "lfmAPIKey": "",

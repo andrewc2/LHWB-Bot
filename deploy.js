@@ -63,9 +63,9 @@ const commandDetails = async (commands) => {
   }
 };
 
-const arrangeSlashCommand = async () => {
+const arrangeSlashCommand = async (getLimitedCommands = false) => {
   const topLevelCommands = slashCommands
-    .filter((command) => command.commandType === 'command')
+    .filter((command) => command.commandType === 'command' && command.slashLimitDeploy === getLimitedCommands)
     .map((command) => ({
       name: command.name,
       description: command.description,
@@ -140,9 +140,11 @@ const arrangeSlashCommand = async () => {
   try {
     await commandDetails(findCommands(config.slashConfig.slash_filepath));
     const formattedSlashCommands = await arrangeSlashCommand();
+    const limitedSlashCommands = await arrangeSlashCommand(true);
+
     if (config.slashConfig.env === 'DEV') {
       await rest.put(Routes.applicationGuildCommands(clientId, guildId), {
-        body: formattedSlashCommands,
+        body: Object.assign(formattedSlashCommands, limitedSlashCommands),
       });
       console.log('Refreshed & Deployed Guild Application Commands.');
     }
@@ -151,6 +153,12 @@ const arrangeSlashCommand = async () => {
         body: formattedSlashCommands,
       });
       console.log('Refreshed & Deployed Global Application Commands.');
+      for (let i = 0; i < config.slashConfig.limited_guilds.length; i++) {
+        await rest.put(Routes.applicationGuildCommands(clientId, config.slashConfig.limited_guilds[i]), {
+          body: limitedSlashCommands,
+        });
+        console.log('Refreshed & Deployed Limited Application Commands.');
+      }
     }
     process.exit();
   }
