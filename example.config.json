@@ -12,6 +12,7 @@
     "discord_token": "",
     "owner": "",
     "ignore_perms": [],
+    "modRoleId": "",
     "patootie": {
       "patootie_id": "",
       "guild_id": "",
