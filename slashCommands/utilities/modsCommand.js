@@ -19,7 +19,7 @@ module.exports = class ModsSlashCommand extends SlashCommand {
   async exec(interaction) {
     const activeEmbed = new EmbedBuilder()
       .setDescription('This command can only be used by members who have joined more than 2 weeks ago.')
-      .setColor(Colors.Blurple);
+      .setColor(Colors.Red);
 
     const noRoleErrorEmbed = new EmbedBuilder()
       .setDescription('Error: I can\'t find the defined mods role.')
