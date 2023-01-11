@@ -3,16 +3,20 @@ const {
   ApplicationCommandOptionType,
   EmbedBuilder,
   Colors,
-  ActionRowBuilder,
-  ButtonBuilder,
-  ButtonStyle,
   ComponentType,
 } = require('discord.js');
 const { db } = require('../../models/db');
 const { isTrusted } = require('../../utilities/permissions');
-const { autocomplete } = require('../../commandUtilities/lpingUtilities');
+const {
+  autocomplete,
+  checkPinglistExists,
+  pingPinglistButton,
+  joinPinglistButton,
+  NO_MEMBERS,
+  API_MEMBER_FETCH_ERROR,
+  PINGLIST_NOT_FOUND,
+} = require('../../commandUtilities/lpingUtilities');
 const { logger } = require('../../utilities/winstonLogging');
-const { getCommandMention } = require('../../utilities/utilities');
 
 module.exports = class LpingPingSlashCommand extends SlashCommand {
   constructor() {
@@ -51,102 +55,77 @@ module.exports = class LpingPingSlashCommand extends SlashCommand {
       .toLowerCase();
     const pingMessage = interaction.options.getString('message');
 
+    const MAX_CHARACTER_LENGTH = 1930;
+
     const failedEmbed = new EmbedBuilder()
       .setColor(Colors.Red);
 
-    const pleaseWaitEmbed = new EmbedBuilder()
+    const generatingPinglistEmbed = new EmbedBuilder()
       .setDescription(`${interaction.user.tag} (${interaction.user}) has requested the **${pinglist}** pinglist. Please wait while the pinglist generates...`)
       .setColor(Colors.Blurple);
 
-    const row = new ActionRowBuilder()
-      .addComponents(
-        new ButtonBuilder()
-          .setCustomId('send')
-          .setLabel('PING MANY PEOPLE')
-          .setStyle(ButtonStyle.Danger),
-        new ButtonBuilder()
-          .setCustomId('cancel')
-          .setLabel('CANCEL PING')
-          .setStyle(ButtonStyle.Secondary),
-      );
+    const doesPinglistExist = await checkPinglistExists(pinglist, interaction);
 
-    const joinPinglist = new ActionRowBuilder()
-      .addComponents(
-        new ButtonBuilder()
-          .setCustomId(JSON.stringify({ type: 'ping', id: pinglist }))
-          .setLabel('Join Pinglist')
-          .setEmoji('🔔')
-          .setStyle(ButtonStyle.Primary),
-        new ButtonBuilder()
-          .setCustomId(JSON.stringify({ type: 'drop', id: pinglist }))
-          .setLabel('Leave Pinglist')
-          .setEmoji('🚮')
-          .setStyle(ButtonStyle.Secondary),
-      );
+    const handlePing = async () => {
+      await interaction.editReply({ embeds: [generatingPinglistEmbed] });
+      const [result] = await db.promise().query('SELECT u.userID FROM user as u INNER JOIN userPinglist as up ON u.userID = up.userID INNER JOIN pinglist as p ON p.pingID = up.pingID WHERE p.guildID = ? AND p.name = ?', [interaction.guild.id, pinglist]);
+      if (result.length < 1) return interaction.editReply({ embeds: [failedEmbed.setDescription(NO_MEMBERS)], components: [] });
+      await interaction.guild.members.fetch({ user: result.map(user => user.userID) })
+        .then(async (member) => {
+          if (member.size < 1) return interaction.editReply({ embeds: [failedEmbed.setDescription(NO_MEMBERS)], components: [] });
+          await interaction.editReply({ embeds: [generatingPinglistEmbed.setDescription(`${interaction.user.tag} (${interaction.user}) has requested the **${pinglist}** pinglist.`)], components: [] });
+          const mentions = member.map(user => user.user.toString());
+          const sendList = [];
+          const chunksRequired = Math.ceil(mentions.toString().length / MAX_CHARACTER_LENGTH);
+          for (let i = chunksRequired; i > 0; i--) {
+            sendList.push(mentions.splice(0, Math.ceil(mentions.length / i)));
+          }
+          sendList.forEach((list, i) => {
+            if (list.length < 1) return;
+            const content = `${pingMessage !== null ? `${pinglist}: ${pingMessage.toLowerCase()}` : pinglist} ${list.join('').trim()}`;
+            const payload = i === 0 ? { content: content, components: [joinPinglistButton(pinglist)] } : { content: content };
+            interaction.followUp(payload);
+          });
+        })
+        .catch((err) => {
+          logger.log('error', err);
+          interaction.editReply({ embeds: [failedEmbed.setDescription(API_MEMBER_FETCH_ERROR)], components: [] });
+        });
+    };
 
-    async function findPingList() {
-      const [result] = await db.promise().query('SELECT `name`, `guildID` FROM pinglist WHERE name = ? AND guildID = ?', [pinglist, interaction.guild.id]);
-      return result.length !== 0;
+    if (!doesPinglistExist) {
+      return interaction.editReply({ embeds: [failedEmbed.setDescription(PINGLIST_NOT_FOUND(pinglist, this.client))] });
     }
 
-    async function ping() {
-      await interaction.editReply({ embeds: [pleaseWaitEmbed] });
-      db.query('SELECT u.userID FROM user as u INNER JOIN userPinglist as up ON u.userID = up.userID INNER JOIN pinglist as p ON p.pingID = up.pingID WHERE p.guildID = ? AND p.name = ?', [interaction.guild.id, pinglist], async function(err, result) {
-        if (err) return;
-        if (result.length < 1) return interaction.editReply({ embeds: [failedEmbed.setDescription('It looks like nobody has this pinglist assigned. :confused:')], components: [] });
-        const userIds = result.map(user => user.userID);
-        await interaction.guild.members.fetch({ user: userIds })
-          .then(async users => {
-            if (users.size < 1) return interaction.editReply({ embeds: [failedEmbed.setDescription('It looks like nobody has this pinglist assigned. :confused:')], components: [] });
-            const mentions = users.map(user => user.user.toString());
-            const sendList = `${pingMessage !== null ? `${pinglist}: ${pingMessage.toLowerCase()}` : pinglist} ${mentions.join(' ').trim()}`;
-            await interaction.editReply({ embeds: [ pleaseWaitEmbed.setDescription(`${interaction.user.tag} (${interaction.user}) has requested the **${pinglist}** pinglist.`) ], components: [] });
-            for (let i = 0; i < sendList.length; i += 1999) {
-              const toSend = sendList.substring(i, Math.min(sendList.length, i + 1999));
-              const payload = i === 0 ? { content: toSend, components: [joinPinglist] } : { content: toSend };
-              await interaction.followUp(payload);
+    if (await isTrusted(interaction.member)) {
+      const permsEmbed = new EmbedBuilder()
+        .setDescription('Sorry, you don\'t have the correct permissions to ping a pinglist.')
+        .setColor(Colors.Red);
+      return interaction.editReply({ embeds: [permsEmbed] });
+    }
+
+    const buttonEmbed = new EmbedBuilder()
+      .setTitle(`Ping ${pinglist}?`)
+      .setDescription(`${interaction.user}, This command **WILL SEND a potential mass ping.** Are you sure you want to **PING** this ping list? This is **NOT** how you GET the list.\n${this.client.user.username} is not responsible for any potential consequences.`)
+      .setColor(Colors.Yellow);
+
+    interaction.editReply({ embeds: [buttonEmbed], components: [pingPinglistButton] })
+      .then(message => {
+        const filter = async i => {
+          await i.deferUpdate();
+          return i.user.id === interaction.user.id;
+        };
+        message.awaitMessageComponent({ filter, componentType: ComponentType.Button, time: 10000 })
+          .then(async i => {
+            if (i.customId === 'send') {
+              await handlePing();
+            }
+            else {
+              i.deleteReply();
             }
           })
-          .catch(err => {
-            logger.log('error', err);
-            interaction.editReply({ embeds: [failedEmbed.setDescription('Sorry, something went wrong while generating this pinglist.')], components: [] });
-          });
+          .catch(() => interaction.deleteReply());
       });
-    }
-
-    if (await findPingList() === true) {
-      if (await isTrusted(interaction.member)) {
-        const permsEmbed = new EmbedBuilder()
-          .setDescription('Sorry, you don\'t have the correct permissions to ping a pinglist.')
-          .setColor(Colors.Red);
-        return interaction.editReply({ embeds: [permsEmbed] });
-      }
-      const buttonEmbed = new EmbedBuilder()
-        .setTitle(`Ping ${pinglist}?`)
-        .setDescription(`${interaction.user}, This command **WILL SEND a potential mass ping.** Are you sure you want to **PING** this ping list? This is **NOT** how you GET the list.\n${this.client.user.username} is not responsible for any potential consequences.`)
-        .setColor(Colors.Yellow);
-
-      interaction.editReply({ embeds: [buttonEmbed], components: [row] })
-        .then(message => {
-          const filter = async i => {
-            await i.deferUpdate();
-            return i.user.id === interaction.user.id;
-          };
-          message.awaitMessageComponent({ filter, componentType: ComponentType.Button, time: 10000 })
-            .then(async i => {
-              if (i.customId === 'send') {
-                await ping();
-              }
-              else {
-                i.deleteReply();
-              }
-            })
-            .catch(() => interaction.deleteReply());
-        });
-    }
-    else {
-      return interaction.editReply({ embeds: [failedEmbed.setDescription(`I couldn't find a pinglist with the name ${pinglist}. You can view available pinglists in this server by using the ${getCommandMention(this.client, 'lping list')} command.`)] });
-    }
   }
 
   async autocomplete(interaction) {
