@@ -9,7 +9,7 @@ const findLastFmUser = async (user) => {
   return row[0].lastfmUsername;
 };
 
-const searchLastFm = async (username) => {
+const searchLastFm = async (username, user) => {
   return fetch(`https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&extended=1&user=${username}&limit=2&api_key=${config.lastfm.lfmAPIKey}&format=json`)
     .then(response => response.json())
     .then(response => {
@@ -28,8 +28,8 @@ const searchLastFm = async (username) => {
       const embed = new EmbedBuilder()
         .setAuthor({
           name: userDetails['user'],
+          iconURL: user.displayAvatarURL({ forceStatic: false, extension: 'png' }),
           url: `https://www.last.fm/user/${userDetails['user']}`,
-          iconUrl: 'https://i.imgur.com/x5AhTlq.png',
         })
         .addFields([
           { name: `${status} Song`, value: `${response['recenttracks']['track'][0]['name']}`, inline: true },

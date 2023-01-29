@@ -48,6 +48,6 @@ module.exports = class LastFmMessageCommand extends MessageCommand {
         embeds: [ embed ],
       });
     }
-    return message.channel.send(await searchLastFm(lastFmUsername));
+    return message.channel.send(await searchLastFm(lastFmUsername, args.user));
   }
 };

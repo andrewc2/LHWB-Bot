@@ -32,6 +32,6 @@ module.exports = class LastFmCurrentSlashCommand extends SlashCommand {
     if (!lastFmUsername) {
       return interaction.editReply({ embeds: [ embed ] });
     }
-    return interaction.editReply(await searchLastFm(lastFmUsername));
+    return interaction.editReply(await searchLastFm(lastFmUsername, user));
   }
 };
