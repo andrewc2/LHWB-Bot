@@ -19,13 +19,6 @@ luxon for countdown, winston for logging, lastfmapi for last fm commands
 ### Usage
 Uses mysql for storage of song information and playcount data, as well as recently played songs, and queues.
 
-### Install Music Bot (using Ubuntu)
-`apt-get install libtool-bin libtool autoconf automake` - if sodium fails to install
-
-`npm install fs`
-
-`npm install` for most other dependencies
-
 ### Install FFMPEG
 
 `apt-get install ffmpeg`
@@ -34,6 +27,17 @@ Uses mysql for storage of song information and playcount data, as well as recent
 Edit `.bashrc` and add `export PATH="/usr/bin/ffmpeg:$PATH"` assuming ffmpeg was installed in the default location
 
 `source .bashrc` to save PATH
+
+### Install Music Bot (using Ubuntu)
+`apt-get install libtool-bin libtool autoconf automake npm`
+
+`npm install -g n` to install node
+
+`npm install fs`
+
+`npm install pm2 -g`
+
+`npm install` for most other dependencies
 
 ### Running
 Rename `example.config.json` and `example.voice-servers.json` to remove the `example.` and fill in your information.
