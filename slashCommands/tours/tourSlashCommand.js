@@ -23,6 +23,11 @@ module.exports = class TourSlashCommand extends SlashCommand {
           description: 'Displays information about Taylor Swift\'s reputation Stadium Tour',
           type: ApplicationCommandOptionType.SubcommandGroup,
         },
+        {
+          name: 'eras',
+          description: 'Displays information about Taylor Swift\'s The Eras Tour',
+          type: ApplicationCommandOptionType.SubcommandGroup,
+        },
       ],
     });
   }
