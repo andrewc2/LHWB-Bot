@@ -14,6 +14,7 @@ module.exports = class ActiveRoleListener extends Listener {
   }
 
   exec(message) {
+    if (message.webhookId) return;
     if (message.channel.guild.id === config.slashConfig.limited_guilds[0] && !hasRole(message.member, message.channel.guild)) {
       const joinDate = message.member.joinedAt;
       const now = new Date();
