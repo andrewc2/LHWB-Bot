@@ -19,7 +19,7 @@ module.exports = class ErasTourSecretSongSlashCommand extends SlashCommand {
     await interaction.deferReply({ fetchReply: true });
 
     const allSecretSongs = [], embeds = [];
-    const [rows] = await db.promise().query('SELECT * FROM `tour`');
+    const [rows] = await db.promise().query('SELECT * FROM `tour` ORDER BY `id` DESC');
 
     for (const event of rows.values()) {
       allSecretSongs.push(`${event.erasSetlist}\n`);
