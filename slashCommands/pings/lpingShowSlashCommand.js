@@ -1,7 +1,7 @@
 const { SlashCommand } = require('discord-akairo');
 const { ApplicationCommandOptionType, EmbedBuilder, Colors } = require('discord.js');
 const { db } = require('../../models/db');
-const { autocomplete } = require('../../commandUtilities/lpingUtilities');
+const { joinPinglistButton, autocomplete } = require('../../commandUtilities/lpingUtilities');
 const { logger } = require('../../utilities/winstonLogging');
 const { getCommandMention } = require('../../utilities/utilities');
 
@@ -53,7 +53,7 @@ module.exports = class LpingShowSlashCommand extends SlashCommand {
         const userIds = result.map(user => user.userID);
         await interaction.guild.members.fetch({ user: userIds })
           .then(async users => {
-            if (users.size < 1) return interaction.editReply({ embeds: [failedEmbed.setDescription('It looks like nobody has this pinglist assigned. :confused:')] });
+            if (users.size < 1) return interaction.editReply({ embeds: [failedEmbed.setDescription('It looks like nobody has this pinglist assigned. :confused:')], components: [joinPinglistButton(pinglist)] });
             const mentions = users.map(user => user.user.toString());
             const mentionsAgain = mentions;
             while (mentionsAgain.join(' ').length > 1999) {
@@ -65,7 +65,7 @@ module.exports = class LpingShowSlashCommand extends SlashCommand {
                 .setTitle(`${pinglist.charAt(0).toUpperCase() + pinglist.slice(1)} Pinglist`)
                 .setDescription(`${toSend} - to join this pinglist, use the ${getCommandMention(client, 'lping get')} command in a spam channel.`)
                 .addFields([{ name: 'Total Pinglist Members Result:', value: users.size.toString(), inline: false }]),
-            ] });
+            ], components: [joinPinglistButton(pinglist)] });
           })
           .catch(err => {
             logger.log('error', err);

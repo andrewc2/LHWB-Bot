@@ -1,6 +1,7 @@
 const { SlashCommand } = require('discord-akairo');
 const { ApplicationCommandOptionType, EmbedBuilder, Colors, PermissionsBitField } = require('discord.js');
 const { db } = require('../../models/db');
+const { joinPinglistButton } = require('../../commandUtilities/lpingUtilities');
 const { getCommandMention } = require('../../utilities/utilities');
 
 module.exports = class LpingCreateSlashCommand extends SlashCommand {
@@ -44,7 +45,7 @@ module.exports = class LpingCreateSlashCommand extends SlashCommand {
       if (err) return;
       if (result.find(ping => ping.name === pinglist)) return interaction.editReply({ embeds: [failedEmbed] });
       db.query('INSERT INTO pinglist (`name`, `guildID`) VALUES (?,?)', [pinglist, interaction.guild.id]);
-      return interaction.editReply({ embeds: [embed] });
+      return interaction.editReply({ embeds: [embed], components: [joinPinglistButton(pinglist)] });
     });
   }
 };

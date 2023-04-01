@@ -12,17 +12,17 @@ module.exports = class TourErasSlashCommand extends SlashCommand {
       slashOptions: [
         {
           name: 'setlist',
-          description: 'Displays the setlist for Taylor Swift\'s The Eras Tour',
+          description: 'Displays the setlist for Taylor Swift The Eras Tour',
+          type: ApplicationCommandOptionType.Subcommand,
+        },
+        {
+          name: 'secret-songs',
+          description: 'Displays the secret songs from Taylor Swift The Eras Tour',
           type: ApplicationCommandOptionType.Subcommand,
         },
         /* {
           name: 'guests',
           description: 'Displays the guest list on Taylor Swift\'s reputation Stadium Tour',
-          type: ApplicationCommandOptionType.Subcommand,
-        },
-        {
-          name: 'secret-songs',
-          description: 'Displays the secret songs from Taylor Swift\'s reputation Stadium Tour',
           type: ApplicationCommandOptionType.Subcommand,
         }, */
       ],
