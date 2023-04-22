@@ -1,8 +1,8 @@
 const { Listener } = require('discord-akairo');
 const { Events } = require('discord.js');
 const config = require('../../config.json');
-// 3 hours
-const activeLength = 10800000;
+// 30 min
+const activeLength = 1800000;
 
 module.exports = class ActiveRoleListener extends Listener {
   constructor() {

@@ -41,7 +41,7 @@ module.exports = class ErasTourSecretSongSlashCommand extends SlashCommand {
         })
         .setThumbnail('https://i.imgur.com/v0Vl7WK.png')
         .setDescription(event.join(''))
-        .setFooter({ text: `Page ${i + 1}/${result.length}` })
+        .setFooter({ text: `Page ${i + 1} of ${result.length} - (a) is played acoustic (p) is played on piano` })
         .setColor(0x586891),
       );
     });
