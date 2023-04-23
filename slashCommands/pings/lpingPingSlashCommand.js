@@ -13,7 +13,6 @@ const {
   pingPinglistButton,
   joinPinglistButton,
   NO_MEMBERS,
-  API_MEMBER_FETCH_ERROR,
   PINGLIST_NOT_FOUND,
 } = require('../../commandUtilities/lpingUtilities');
 const { logger } = require('../../utilities/winstonLogging');
@@ -67,30 +66,41 @@ module.exports = class LpingPingSlashCommand extends SlashCommand {
     const doesPinglistExist = await checkPinglistExists(pinglist, interaction);
 
     const handlePing = async () => {
-      await interaction.editReply({ embeds: [generatingPinglistEmbed] });
+      await interaction.editReply({ embeds: [generatingPinglistEmbed], components: [] });
       const [result] = await db.promise().query('SELECT u.userID FROM user as u INNER JOIN userPinglist as up ON u.userID = up.userID INNER JOIN pinglist as p ON p.pingID = up.pingID WHERE p.guildID = ? AND p.name = ?', [interaction.guild.id, pinglist]);
       if (result.length < 1) return interaction.editReply({ embeds: [failedEmbed.setDescription(NO_MEMBERS)], components: [] });
-      await interaction.guild.members.fetch({ user: result.map(user => user.userID) })
-        .then(async (member) => {
-          if (member.size < 1) return interaction.editReply({ embeds: [failedEmbed.setDescription(NO_MEMBERS)], components: [] });
-          await interaction.editReply({ embeds: [generatingPinglistEmbed.setDescription(`${interaction.user.tag} (${interaction.user}) has requested the **${pinglist}** pinglist.`)], components: [] });
-          const mentions = member.map(user => user.user.toString());
-          const sendList = [];
-          const chunksRequired = Math.ceil(mentions.toString().length / MAX_CHARACTER_LENGTH);
-          for (let i = chunksRequired; i > 0; i--) {
-            sendList.push(mentions.splice(0, Math.ceil(mentions.length / i)));
-          }
-          sendList.forEach((list, i) => {
-            if (list.length < 1) return;
-            const content = `${pingMessage !== null ? `${pinglist}: ${pingMessage.toLowerCase()}` : pinglist} ${list.join('').trim()}`;
-            const payload = i === 0 ? { content: content, components: [joinPinglistButton(pinglist)] } : { content: content };
-            interaction.followUp(payload);
-          });
-        })
-        .catch((err) => {
-          logger.log('error', err);
-          interaction.editReply({ embeds: [failedEmbed.setDescription(API_MEMBER_FETCH_ERROR)], components: [] });
-        });
+
+      // Because <guild>.members.fetch() has a limit of 100 users at a time, a weird workaround will have to be used
+      const mentions = [];
+      const resultChunk = result.reduce((resultArray, item, index) => {
+        const chunkIndex = Math.floor(index / 99);
+        if (!resultArray[chunkIndex]) {
+          resultArray[chunkIndex] = [];
+        }
+        resultArray[chunkIndex].push(item);
+        return resultArray;
+      }, []);
+      for (let i = 0; i < resultChunk.length; i++) {
+        const users = resultChunk[i].map(user => user.userID);
+        await interaction.guild.members.fetch({ user: users })
+          .then((user) => mentions.push(...user.map(u => u.user.toString())))
+          .catch((err) => logger.log('warn', err));
+      }
+
+
+      if (mentions.size < 1) return interaction.editReply({ embeds: [failedEmbed.setDescription(NO_MEMBERS)], components: [] });
+      await interaction.editReply({ embeds: [generatingPinglistEmbed.setDescription(`${interaction.user.tag} (${interaction.user}) has requested the **${pinglist}** pinglist.`)], components: [] });
+      const sendList = [];
+      const chunksRequired = Math.ceil(mentions.toString().length / MAX_CHARACTER_LENGTH);
+      for (let i = chunksRequired; i > 0; i--) {
+        sendList.push(mentions.splice(0, Math.ceil(mentions.length / i)));
+      }
+      sendList.forEach((list, i) => {
+        if (list.length < 1) return;
+        const content = `${pingMessage !== null ? `${pinglist}: ${pingMessage.toLowerCase()}` : pinglist} ${list.join('').trim()}`;
+        const payload = i === 0 ? { content: content, components: [joinPinglistButton(pinglist)] } : { content: content };
+        interaction.followUp(payload);
+      });
     };
 
     if (!doesPinglistExist) {
