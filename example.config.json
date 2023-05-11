@@ -14,6 +14,7 @@
     "ignore_perms": [],
     "modRoleId": "",
     "defaultRoleId": "",
+    "autoroleTime": 1800000,
     "patootie": {
       "patootie_id": "",
       "guild_id": "",

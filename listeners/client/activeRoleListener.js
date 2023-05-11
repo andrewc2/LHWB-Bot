@@ -1,8 +1,6 @@
 const { Listener } = require('discord-akairo');
 const { Events } = require('discord.js');
 const config = require('../../config.json');
-// 30 min
-const activeLength = 1800000;
 
 module.exports = class ActiveRoleListener extends Listener {
   constructor() {
@@ -14,12 +12,11 @@ module.exports = class ActiveRoleListener extends Listener {
   }
 
   exec(message) {
-    if (message.webhookId) return;
-    if (message.channel.guild.id === config.slashConfig.limited_guilds[0] && !hasRole(message.member, message.channel.guild)) {
+    if (message.inGuild() && message.member && message.channel.guild.id === config.slashConfig.limited_guilds[0] && !hasRole(message.member, message.channel.guild)) {
       const joinDate = message.member.joinedAt;
       const now = new Date();
       const joinTime = now.getTime() - joinDate.getTime();
-      if (joinTime > activeLength) {
+      if (joinTime > config.discord.autoroleTime) {
         const role = message.channel.guild.roles.cache.get(config.discord.defaultRoleId);
         message.member.roles
           .add(role)

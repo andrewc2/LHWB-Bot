@@ -37,7 +37,7 @@ module.exports = class ErasTourSetListSlashCommand extends SlashCommand {
       })
       .setThumbnail('https://i.imgur.com/v0Vl7WK.png')
       .setFooter({ text: 'Page 2 of 4' })
-      .setDescription('**reputation Era**\n15. ...Ready for It? (Extended intro, skipped some lyrics)\n16. Delicate\n17. Don\'t Blame Me (Acoustic intro; extended outro)\n18. Look What You Made Me Do\n\n**Speak Now Era**\n19. Enchanted (Extended intro)\n\n**Red Era**\nRed - Intro (Contains elements of "State of Grace", "Everything Has Changed / Holy Ground" and "Red")\n20. 22\n21. We Are Never Ever Getting Back Together\n22. I Knew You Were Trouble (Shortened)\n23. All Too Well (10 Minute Version) (Spoken intro)');
+      .setDescription('**reputation Era**\n15. ...Ready for It? (Extended intro, skipped some lyrics)\n16. Delicate\n17. Don\'t Blame Me (Acoustic intro; extended outro)\n18. Look What You Made Me Do\n\n**Speak Now Era**\n19. Enchanted (Extended intro)\n\n**Red Era**\nRed - Intro (Contains elements of "State of Grace", "Everything Has Changed / Holy Ground" and "Red")\n20. 22\n21. We Are Never Ever Getting Back Together\n22. I Knew You Were Trouble (Shortened)\n23a. Nothing New (On Shows with Phoebe Bridgers)\n23b. All Too Well (10 Minute Version) (Spoken intro)');
 
     const embedP3 = new EmbedBuilder()
       .setColor(0x586891)
@@ -48,7 +48,7 @@ module.exports = class ErasTourSetListSlashCommand extends SlashCommand {
       })
       .setThumbnail('https://i.imgur.com/v0Vl7WK.png')
       .setFooter({ text: 'Page 3 of 4' })
-      .setDescription('**folklore Era**\nseven (Spoken word version)\n24. invisible string (Glendale/Vegas) / the one (Arlington on)\n25. betty (spoken intro)\n26. the last great american dynasty\n27. august\n28. illicit affairs (shortened)\n29. my tears ricochet\n30. cardigan (Extended outro)\n\n**1989 Era**\n31. Style (Shortened)\n32. Blank Space\n33. Shake It Off (Extended outro)\n34. Wildest Dreams (Shortened)\n35. Bad Blood (Shortened; extended outro)\n\n36 and 37. **Surprise Acoustic Songs**');
+      .setDescription('**folklore Era**\nseven (Spoken word version)\n24a. invisible string (Glendale/Vegas/Nashville N2)\n24b. the one (Arlington on)\n25. betty (spoken intro)\n26. the last great american dynasty\n27. august\n28. illicit affairs (shortened)\n29. my tears ricochet\n30. cardigan (Extended outro)\n\n**1989 Era**\n31. Style (Shortened)\n32. Blank Space\n33. Shake It Off (Extended outro)\n34. Wildest Dreams (Shortened)\n35. Bad Blood (Shortened; extended outro)\n\n36 and 37. **Surprise Acoustic Songs**');
 
     const embedP4 = new EmbedBuilder()
       .setColor(0x586891)

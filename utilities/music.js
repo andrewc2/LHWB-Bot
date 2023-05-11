@@ -64,6 +64,7 @@ function play(result, connection, client) {
   const resource = createAudioResource(result.full_path);
   player.play(resource);
   connection.subscribe(player);
+
   player.on('stateChange', async (oldState, newState) => {
     logger.log('info', `Audio player transitioned from ${oldState.status} to ${newState.status}`);
     if (newState.status === AudioPlayerStatus.Idle && oldState.status !== AudioPlayerStatus.Idle) {

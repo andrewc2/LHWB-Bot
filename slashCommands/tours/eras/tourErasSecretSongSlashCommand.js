@@ -25,7 +25,7 @@ module.exports = class ErasTourSecretSongSlashCommand extends SlashCommand {
       allSecretSongs.push(`${event.erasSetlist}\n`);
     }
 
-    const perChunk = 10;
+    const perChunk = 6;
     const result = allSecretSongs.reduce((all, one, i) => {
       const ch = Math.floor(i / perChunk);
       all[ch] = [].concat((all[ch] || []), one);
@@ -41,7 +41,7 @@ module.exports = class ErasTourSecretSongSlashCommand extends SlashCommand {
         })
         .setThumbnail('https://i.imgur.com/v0Vl7WK.png')
         .setDescription(event.join(''))
-        .setFooter({ text: `Page ${i + 1} of ${result.length} - (a) is played acoustic (p) is played on piano` })
+        .setFooter({ text: `Page ${i + 1} of ${result.length} - (a) is played acoustic (p) is played on piano (m) was "messed up"` })
         .setColor(0x586891),
       );
     });
