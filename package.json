@@ -27,7 +27,7 @@
     "mysql2": "^3.3.3",
     "node-fetch": "^2.6.11",
     "sodium": "^3.0.2",
-    "winston": "^3.8.2"
+    "winston": "^3.9.0"
   },
   "devDependencies": {
     "eslint": "^8.41.0"
