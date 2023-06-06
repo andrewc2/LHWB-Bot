@@ -1,7 +1,6 @@
 const { Listener } = require('discord-akairo');
 const { Events } = require('discord.js');
-const fetch = require('node-fetch');
-const { logger } = require('../../utilities/winstonLogging');
+const { UnitedStatesStore, UnitedKingdomStore, AustraliaStore, CanadaStore } = require('../../utilities/taylorStore');
 
 module.exports = class TaylorStoreCacheListener extends Listener {
   constructor() {
@@ -13,13 +12,9 @@ module.exports = class TaylorStoreCacheListener extends Listener {
   }
 
   async exec() {
-    fetch('https://store.taylorswift.com/products.json?limit=250')
-      .then((response) => response.json())
-      .then((response) => {
-        response.products
-          .filter(product => product.variants[0].available)
-          .map(product => this.client.taylorStore.set(product.id, product.title));
-        logger.log('info', 'Taylor Store Items Cached');
-      });
+    await UnitedStatesStore(this.client).cache();
+    await UnitedKingdomStore(this.client).cache();
+    await AustraliaStore(this.client).cache();
+    await CanadaStore(this.client).cache();
   }
 };

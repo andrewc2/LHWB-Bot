@@ -77,7 +77,12 @@ class Client extends AkairoClient {
     this.blacklist = new Collection();
     this.globalCommandDisable = new Collection();
     this.apiCommands = new Collection() | undefined;
-    this.taylorStore = new Collection();
+
+    // Taylor Store Caches
+    this.taylorStoreUS = new Collection();
+    this.taylorStoreUK = new Collection();
+    this.taylorStoreAU = new Collection();
+    this.taylorStoreCA = new Collection();
 
     this.messageCommandHandler.useListenerHandler(this.listenerHandler);
     this.messageCommandHandler.useInhibitorHandler(this.inhibitorHandler);
