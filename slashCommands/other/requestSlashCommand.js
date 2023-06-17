@@ -51,7 +51,7 @@ module.exports = class RequestSlashCommand extends SlashCommand {
     await interaction.deferReply();
     const type = interaction.options.getString('type', true);
     const feature = interaction.options.getString('feature', true);
-    db.query('INSERT INTO requested (user, request) VALUES (?,?)', [interaction.user.tag, `${type} - ${feature}`]);
+    db.query('INSERT INTO requested (user, request) VALUES (?,?)', [interaction.user.username, `${type} - ${feature}`]);
     const embed = new EmbedBuilder()
       .setColor('#FF69B4')
       .setDescription('Request Submitted!');

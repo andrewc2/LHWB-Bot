@@ -46,7 +46,7 @@ module.exports = class LastFmSetSlashCommand extends SlashCommand {
         return interaction.editReply({ embeds: [embed] });
       }
       else {
-        db.query('INSERT INTO lastfm (lastfmUsername, discordTag, discordID) VALUES (?,?,?) ', [username, interaction.user.tag, interaction.user.id]);
+        db.query('INSERT INTO lastfm (lastfmUsername, discordTag, discordID) VALUES (?,?,?) ', [username, interaction.user.username, interaction.user.id]);
         embed
           .setColor('#FF69B4')
           .setDescription(`Your last.fm username has been set to ${username}.`);

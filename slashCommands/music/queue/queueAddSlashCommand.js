@@ -65,7 +65,7 @@ module.exports = class QueueAddSlashCommand extends SlashCommand {
             ],
           });
         }
-        db.query(ADD_TO_QUEUE, [findTrack['song_detail_id'], interaction.guild.id, interaction.user.tag]);
+        db.query(ADD_TO_QUEUE, [findTrack['song_detail_id'], interaction.guild.id, interaction.user.username]);
         return interaction.editReply({
           embeds: [
             successEmbed.setDescription(`${findTrack['official_name']} by ${findTrack['artist_name']} has been added to the queue.`),

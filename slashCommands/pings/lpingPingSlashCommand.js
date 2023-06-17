@@ -60,7 +60,7 @@ module.exports = class LpingPingSlashCommand extends SlashCommand {
       .setColor(Colors.Red);
 
     const generatingPinglistEmbed = new EmbedBuilder()
-      .setDescription(`${interaction.user.tag} (${interaction.user}) has requested the **${pinglist}** pinglist. Please wait while the pinglist generates...`)
+      .setDescription(`${interaction.user.username} (${interaction.user}) has requested the **${pinglist}** pinglist. Please wait while the pinglist generates...`)
       .setColor(Colors.Blurple);
 
     const doesPinglistExist = await checkPinglistExists(pinglist, interaction);
@@ -89,7 +89,7 @@ module.exports = class LpingPingSlashCommand extends SlashCommand {
 
 
       if (mentions.size < 1) return interaction.editReply({ embeds: [failedEmbed.setDescription(NO_MEMBERS)], components: [] });
-      await interaction.editReply({ embeds: [generatingPinglistEmbed.setDescription(`${interaction.user.tag} (${interaction.user}) has requested the **${pinglist}** pinglist.`)], components: [] });
+      await interaction.editReply({ embeds: [generatingPinglistEmbed.setDescription(`${interaction.user.username} (${interaction.user}) has requested the **${pinglist}** pinglist.`)], components: [] });
       const sendList = [];
       const chunksRequired = Math.ceil(mentions.toString().length / MAX_CHARACTER_LENGTH);
       for (let i = chunksRequired; i > 0; i--) {

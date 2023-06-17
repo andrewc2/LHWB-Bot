@@ -38,15 +38,16 @@ module.exports = class RecentUserSlashCommand extends SlashCommand {
 
     db.query(GET_HISTORY, [user.id, 10], function(err, results) {
       if (!results || results.length === 0) {
-        embed.setDescription(`${user.tag} hasn't listened to any songs yet :pleading_face:`)
+        embed.setDescription(`${user.username} hasn't listened to any songs yet :pleading_face:`)
           .setURL(null)
           .setColor(Colors.Red);
         return interaction.editReply({ embeds: [embed] });
       }
 
-      const recentSongs = results.map((result, i) => `${i + 1}. ${result['official_name']} - ${result['artist_name']}`);
+      // eslint-disable-next-line no-useless-escape
+      const recentSongs = results.map((result, i) => `${i + 1}\. ${result['official_name']} - ${result['artist_name']}`);
       embed
-        .setAuthor({ name: user.tag, iconURL: user.displayAvatarURL({ extension: 'png', size: 128 }) })
+        .setAuthor({ name: user.username, iconURL: user.displayAvatarURL({ extension: 'png', size: 128 }) })
         .setTitle('Last 10 songs listened to on LHWB')
         .setDescription(`Recently Played:\n${recentSongs.join('\n')}`);
       return interaction.editReply({ embeds: [embed] });

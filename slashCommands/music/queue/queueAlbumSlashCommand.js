@@ -61,7 +61,7 @@ module.exports = class QueueAlbumSlashCommand extends SlashCommand {
     result.forEach((song) => {
       const exists = fs.existsSync(`${config.music.filepath}${song.path}`);
       if (exists) {
-        playableSongs.push([song.id, interaction.guild.id, interaction.user.tag]);
+        playableSongs.push([song.id, interaction.guild.id, interaction.user.username]);
       }
     });
 
