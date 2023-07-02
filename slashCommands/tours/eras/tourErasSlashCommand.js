@@ -20,11 +20,11 @@ module.exports = class TourErasSlashCommand extends SlashCommand {
           description: 'Displays the secret songs from Taylor Swift The Eras Tour',
           type: ApplicationCommandOptionType.Subcommand,
         },
-        /* {
-          name: 'guests',
-          description: 'Displays the guest list on Taylor Swift\'s reputation Stadium Tour',
+        {
+          name: 'countdown',
+          description: 'Displays the upcoming shows for Taylor Swift\'s The Eras Tour',
           type: ApplicationCommandOptionType.Subcommand,
-        }, */
+        },
       ],
     });
   }
