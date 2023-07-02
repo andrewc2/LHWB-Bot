@@ -21,7 +21,7 @@
     "@discordjs/rest": "^1.7.1",
     "@discordjs/voice": "^0.16.0",
     "discord-akairo": "github:username1307/discord-akairo",
-    "discord-api-types": "^0.37.46",
+    "discord-api-types": "^0.37.47",
     "discord.js": "^14.11.0",
     "luxon": "^3.3.0",
     "mysql2": "^3.4.2",
