@@ -6,15 +6,13 @@ I do not guarantee stability when used on any other server, though it should wor
 ### Requirements
 node.js
 
-Discord.js + Custom Akairo + DiscordJS/Opus + DiscordJS/voice
+Discord.js + Custom Akairo (for mixed prefix/slash support) + DiscordJS/Opus, voice, rest, api-types
 
 ffmpeg for music
 
 mysql2 for songs, queues, etc.
 
-sqlite + sqlite3 for bot settings
-
-luxon for countdown, winston for logging, lastfmapi for last fm commands
+luxon for countdown, winston for logging
 
 ### Usage
 Uses mysql for storage of song information and playcount data, as well as recently played songs, and queues.
