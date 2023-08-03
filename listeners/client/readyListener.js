@@ -1,7 +1,7 @@
 const { Listener } = require('discord-akairo');
 const { Events, ActivityType } = require('discord.js');
 const { logger } = require('../../utilities/winstonLogging');
-const { UnitedKingdomStore, UnitedStatesStore, AustraliaStore, CanadaStore } = require('../../utilities/taylorStore');
+const { UnitedKingdomStore, UnitedStatesStore, AustraliaStore, CanadaStore, SigridStore, OliviaRodrigoStore } = require('../../utilities/taylorStore');
 
 module.exports = class ReadyListener extends Listener {
   constructor() {
@@ -20,7 +20,9 @@ module.exports = class ReadyListener extends Listener {
     setInterval(async () => await UnitedStatesStore(this.client).post(), 20000);
     setInterval(async () => await UnitedKingdomStore(this.client).post(), 20000);
     setInterval(async () => await AustraliaStore(this.client).post(), 20000);
-    setInterval(async () => await CanadaStore(this.client).post(), 20000);
+    // setInterval(async () => await CanadaStore(this.client).post(), 20000);
+    // setInterval(async () => await SigridStore(this.client).post(), 20000);
+    // setInterval(async () => await OliviaRodrigoStore(this.client).post(), 20000);
 
     logger.log('info', `Logged in as ${this.client.user.tag} (${this.client.user.id})`);
   }

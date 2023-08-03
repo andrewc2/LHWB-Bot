@@ -40,7 +40,7 @@ class TaylorStoreAutoPoster {
             content: `${product.title} - **Potential New/Restocked Item** ${role}`,
             embeds: [
               new EmbedBuilder()
-                .setAuthor({ name: `Taylor Swift Official ${this.countryCode} Store` })
+                .setAuthor({ name: `Official ${this.countryCode} Store` })
                 .setTitle(product.title)
                 .setURL(`${this.url}/products/${product.handle}`)
                 .setImage(product.image)
@@ -73,7 +73,7 @@ class TaylorStoreAutoPoster {
         response.products
           .filter(product => product.variants[0].available)
           .map(product => this.client[`taylorStore${this.countryCode}`].set(product.id, product.title));
-        logger.log('info', `${this.countryCode} Taylor Store Items Cached`);
+        logger.log('info', `${this.countryCode} Store Items Cached`);
       });
   }
 }
