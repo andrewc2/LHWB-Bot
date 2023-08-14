@@ -23,7 +23,7 @@
     "discord-akairo": "github:username1307/discord-akairo",
     "discord-api-types": "^0.37.51",
     "discord.js": "^14.12.1",
-    "luxon": "^3.3.0",
+    "luxon": "^3.4.0",
     "mysql2": "^3.5.2",
     "node-fetch": "^2.6.12",
     "sodium": "^3.0.2",
