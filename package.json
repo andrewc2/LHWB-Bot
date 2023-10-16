@@ -24,7 +24,7 @@
     "discord-api-types": "^0.37.58",
     "discord.js": "^14.13.0",
     "luxon": "^3.4.3",
-    "mysql2": "^3.6.1",
+    "mysql2": "^3.6.2",
     "node-fetch": "^2.7.0",
     "sodium": "^3.0.2",
     "winston": "^3.10.0"
