@@ -21,11 +21,19 @@
       "ignore_channels": []
     }
   },
-  "storeAutopost": {
-    "channel_id": "",
-    "who_to_ping_id": [],
-    "role": ""
-  },
+  "store_details": [
+    {
+      "store_name": "",
+      "store_name_short": "",
+      "store_url": "",
+      "channel_id": "",
+      "role_id": "",
+      "currency_symbol": "£",
+      "enable_cart": false,
+      "enable_buy_now": false,
+      "fast_fetch": false
+    }
+  ],
   "lastfm": {
     "lfmAPIKey": "",
     "lfmAPISecret": ""

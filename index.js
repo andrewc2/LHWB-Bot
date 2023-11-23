@@ -5,6 +5,7 @@ const config = require('./config.json');
 const { FETCH_ALL_QUEUEABLE_SONGS } = require('./models/musicQueries');
 const { editDistance } = require('./utilities/fuzzySearch');
 const { db } = require('./models/db');
+const ShopifyStore = require('./utilities/ShopifyStore');
 
 class Client extends AkairoClient {
   constructor() {
@@ -78,11 +79,19 @@ class Client extends AkairoClient {
     this.globalCommandDisable = new Collection();
     this.apiCommands = new Collection() | undefined;
 
-    // Taylor Store Caches
-    this.taylorStoreUS = new Collection();
-    this.taylorStoreUK = new Collection();
-    this.taylorStoreAU = new Collection();
-    this.taylorStoreCA = new Collection();
+    this.cart = new Collection();
+    this.stores = config['store_details'].map((store) => new ShopifyStore(
+      this,
+      store['store_name'],
+      store['store_name_short'],
+      store['store_url'],
+      store['channel_id'],
+      store['role_id'],
+      store['currency_symbol'],
+      store['enable_cart'],
+      store['enable_buy_now'],
+      store['fast_fetch'],
+    ));
 
     this.messageCommandHandler.useListenerHandler(this.listenerHandler);
     this.messageCommandHandler.useInhibitorHandler(this.inhibitorHandler);

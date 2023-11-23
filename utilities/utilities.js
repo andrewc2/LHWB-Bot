@@ -22,5 +22,34 @@ function getCommandMention(client, commandName) {
   if (!command) return `\`/${commandName}\``;
   return `</${commandName}:${command.id}>`;
 }
+function fastFetchStore(stores) {
+  const fastFetchStores = stores.filter((store) =>
+    store.isFastFetchEnabled(),
+  );
+  fastFetchStores.forEach(async (store) => await store.post());
+}
 
-module.exports = { anyUsage, anyUsageFooter, commandUsage, getCommandMention };
+function slowFetchStore(stores) {
+  const slowFetchStores = stores.filter(
+    (store) => !store.isFastFetchEnabled(),
+  );
+  slowFetchStores.forEach(async (store) => await store.post());
+}
+
+function enableStores(stores) {
+  const disabledStores = stores.filter((store) => !store.isReady());
+  disabledStores.filter((store) => setTimeout(() => store.enableStore(), 10000));
+}
+
+function isJSON(string) {
+  let check = true;
+  try {
+    JSON.parse(string);
+  }
+  catch (e) {
+    check = false;
+  }
+  return check;
+}
+
+module.exports = { anyUsage, anyUsageFooter, commandUsage, getCommandMention, fastFetchStore, slowFetchStore, isJSON, enableStores };
