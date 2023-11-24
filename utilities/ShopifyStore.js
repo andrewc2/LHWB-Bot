@@ -205,7 +205,7 @@ module.exports = class ShopifyStore {
    */
   createProductEmbed(product) {
     return new EmbedBuilder()
-      .setAuthor({ name: this.storeName })
+      .setAuthor({ name: this.storeName, url: this.storeUrl })
       .setTitle(product.title)
       .setURL(`${this.storeUrl}/products/${product.handle}`)
       .setFields([
