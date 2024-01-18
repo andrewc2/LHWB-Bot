@@ -27,6 +27,6 @@ module.exports = class LastFmSearchSlashCommand extends SlashCommand {
   async exec(interaction) {
     await interaction.deferReply();
     const username = interaction.options.getString('username', true);
-    return interaction.editReply(await searchLastFm(username));
+    return interaction.editReply(await searchLastFm(username, interaction.user));
   }
 };
