@@ -1,8 +1,11 @@
 # Project exclude paths
 /node_modules/
-authMusicTest.json
-authMusicMain.json
-models/red_bot.sql
+/.vscode/
+config.testing.json
+config.production.json
+voice-servers.production.json
+voice-servers.testing.json
+models/lhwb_schema.sql
 LICENSE.txt
 .eslintrc.json
 config.json
@@ -47,3 +50,8 @@ web/includes/images/ms-icon-70x70.png
 web/sg.png
 web/TaylorSwiftHandwriting.ttf
 web/ts.png
+web/rTSWTNY.gif
+web/SwiftiesWTNY.gif
+web/ts.png.midnights
+web/ts.png.old
+web/ts.png.speaknow
