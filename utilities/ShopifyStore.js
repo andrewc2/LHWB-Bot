@@ -185,9 +185,7 @@ module.exports = class ShopifyStore {
     channel,
     whatsNew,
   ) {
-    const messageContent = `${
-      product.title
-    } - **${whatsNew}** ${roleMention(this.roleId)}`;
+    const messageContent = `__${this.storeName}__: ${product.title} - **${whatsNew}** ${roleMention(this.roleId)}`;
     const embed = this.createProductEmbed(product);
     const components = this.createComponents(product);
 
