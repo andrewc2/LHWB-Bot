@@ -14,13 +14,13 @@
                     If you have additional questions or require more information about our Privacy Policy, do not hesitate to ask by joining the bots support server.
                 </p>
 
-                <h5>Consent</h5>
+                <h4>Consent</h4>
 
                 <p style="text-align:justify">
                     By using LosingHimWasBlue, you hereby consent to our Privacy Policy and agree to its terms.
                 </p>
 
-                <h5>Information we collect</h5>
+                <h4>Information we collect</h4>
 
                 <p style="text-align:justify">
                     The personal information that you are asked to provide, and the reasons why you are asked to provide it,
@@ -31,7 +31,7 @@
                     Other information may be collected through certain commands but this is optional.
                 </p>
 
-                <h5>How we use your information</h5>
+                <h4>How we use your information</h4>
                 <p>
                     We use the information we collect in various ways, including to:
                 </p>
@@ -49,7 +49,7 @@
                     and the date's the command was used.
                 </p>
 
-                <h5>Third Party Privacy Policies</h5>
+                <h4>Third Party Privacy Policies</h4>
 
                 <p style="text-align:justify">
                     LosingHimWasBlue's Privacy Policy does not apply to Discord as a whole or any third party API's that the bot may use. Third party API's include: Last.fm, Genius, top.gg, and Reddit. 
@@ -58,7 +58,7 @@
                     Discord for more detailed information. It may include their practices and instructions about how to opt-out of certain options.
                 </p>
                 
-                <h5>CCPA Privacy Rights (Do Not Sell My Personal Information)</h5>
+                <h4>CCPA Privacy Rights (Do Not Sell My Personal Information)</h4>
 
                 <p>
                     Under the CCPA, among other rights, California consumers have the right to:
@@ -74,7 +74,7 @@
                     If you make a request, we have one month to respond to you. If you would like to exercise any of these rights, please contact us.
                 </p>
 
-                <h5>GDPR Data Protection Rights</h5>
+                <h4>GDPR Data Protection Rights</h4>
 
                 <ul>
                     <li>The right to access – You have the right to request copies of your personal data.</li>
@@ -90,7 +90,7 @@
                     </li>
                 </ul>
 
-                <h5>Children's Information</h5>
+                <h4>Children's Information</h4>
 
                 <p>
                     Another part of our priority is adding protection for children while using the internet.

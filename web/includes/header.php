@@ -95,6 +95,7 @@
                                 <li><a href="lhwb.php">Song List</a></li>
                                 <li><a href="recent.php">Recently Played Songs</a></li>
                                 <li><a href="privacy.php">Privacy Policy</a></li>
+                                <li><a href="tos.php">Terms of Service</a></li>
                                 <li><a href="https://github.com/andrewc2/Red-Bot">Github</a></li>
                             </ul>
                         </div><!-- /.navbar-collapse -->
