@@ -20,22 +20,22 @@ module.exports = class AlbumSlashCommand extends SlashCommand {
         },
         {
           name: 'fearless',
-          description: 'Displays the track list for Taylor Swift\'s album Fearless',
+          description: 'Displays the track list for Taylor Swift\'s album Fearless and Fearless (Taylor\'s Version)',
           type: ApplicationCommandOptionType.Subcommand,
         },
         {
           name: 'speak-now',
-          description: 'Displays the track list for Taylor Swift\'s album Speak Now',
+          description: 'Displays the track list for Taylor Swift\'s album Speak Now and Speak Now (Taylor\'s Version)',
           type: ApplicationCommandOptionType.Subcommand,
         },
         {
           name: 'red',
-          description: 'Displays the track list for Taylor Swift\'s album Red',
+          description: 'Displays the track list for Taylor Swift\'s album Red and Red (Taylor\'s Version)',
           type: ApplicationCommandOptionType.Subcommand,
         },
         {
           name: '1989',
-          description: 'Displays the track list for Taylor Swift\'s album 1989',
+          description: 'Displays the track list for Taylor Swift\'s album 1989 and 1989 (Taylor\'s Version)',
           type: ApplicationCommandOptionType.Subcommand,
         },
         {
@@ -61,6 +61,11 @@ module.exports = class AlbumSlashCommand extends SlashCommand {
         {
           name: 'midnights',
           description: 'Displays the track list for Taylor Swift\'s album Midnights',
+          type: ApplicationCommandOptionType.Subcommand,
+        },
+        {
+          name: 'the-tortured-poets-department',
+          description: 'Displays the track list for Taylor Swift\'s album The Tortured Poets Department',
           type: ApplicationCommandOptionType.Subcommand,
         },
       ],
