@@ -37,7 +37,7 @@ module.exports = class AlbumMidnightsSlashCommand extends SlashCommand {
       })
       .setThumbnail('https://i.imgur.com/piAIXwA.jpeg')
       .setFooter({ text: 'Page 2 of 2' })
-      .setDescription(escapeNumberedList('**The Tortured Poets Department** will be released on __April 19, 2024__\n\n\n10. Who\'s Afraid of Little Old Me? (:)\n11. I Can Fix Him (No Really I Can) (3:24)\n12. loml (:)\n13. I Can Do It With a Broken Heart (:)\n14. The Smallest Man Who Ever Lived (:)\n15. The Alchemy (:)\n16. Clara Bow (:)\n17. The Manuscript (:)\n'));
+      .setDescription(escapeNumberedList('**The Tortured Poets Department** will be released on __April 19, 2024__\n\n10. Who\'s Afraid of Little Old Me? (:)\n11. I Can Fix Him (No Really I Can) (:)\n12. loml (:)\n13. I Can Do It With a Broken Heart (:)\n14. The Smallest Man Who Ever Lived (:)\n15. The Alchemy (:)\n16. Clara Bow (:)\n17a. The Manuscript (:)\n17b. The Bolter (:)\n17c. The Albatross (:)'));
 
     const embedArray = [embed1, embed2];
 

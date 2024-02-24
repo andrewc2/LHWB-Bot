@@ -3,30 +3,30 @@ const { EmbedBuilder } = require('discord.js');
 const { db } = require('../../../models/db');
 const { pagination } = require('../../../utilities/pagination');
 
-module.exports = class ErasTourSecretSongSlashCommand extends SlashCommand {
+module.exports = class ErasTourSurpriseSongSlashCommand extends SlashCommand {
   constructor() {
-    super('erasTourSecretSong', {
-      name: 'tour eras secret-songs',
-      prefixId: 'ErasSecretSong',
+    super('erasTourSurpriseSong', {
+      name: 'tour eras surprise-songs',
+      prefixId: 'ErasSurpriseSong',
       category: 'tours',
       commandType: 'sub',
       parentCommand: 'eras',
-      shortName: 'secret-songs',
+      shortName: 'surprise-songs',
     });
   }
 
   async exec(interaction, message) {
     await interaction.deferReply({ fetchReply: true });
 
-    const allSecretSongs = [], embeds = [];
+    const allSurpriseSongs = [], embeds = [];
     const [rows] = await db.promise().query('SELECT * FROM `tour` ORDER BY `id` DESC');
 
     for (const event of rows.values()) {
-      allSecretSongs.push(`- ${event.erasSetlist}\n`);
+      allSurpriseSongs.push(`- ${event.erasSetlist}\n`);
     }
 
     const perChunk = 6;
-    const result = allSecretSongs.reduce((all, one, i) => {
+    const result = allSurpriseSongs.reduce((all, one, i) => {
       const ch = Math.floor(i / perChunk);
       all[ch] = [].concat((all[ch] || []), one);
       return all;

@@ -21,6 +21,11 @@ module.exports = class TourErasSlashCommand extends SlashCommand {
           type: ApplicationCommandOptionType.Subcommand,
         },
         {
+          name: 'surprise-songs',
+          description: 'Displays the surprise songs from Taylor Swift The Eras Tour',
+          type: ApplicationCommandOptionType.Subcommand,
+        },
+        {
           name: 'countdown',
           description: 'Displays the upcoming shows for Taylor Swift\'s The Eras Tour',
           type: ApplicationCommandOptionType.Subcommand,
