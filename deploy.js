@@ -1,169 +1,174 @@
-const fs = require('fs');
-const path = require('path');
-const { ApplicationCommandOptionType, Routes, Collection, REST } = require('discord.js');
-const { SlashCommand } = require('discord-akairo');
-const config = require('./config.json');
+import { dirname, join, extname, resolve } from 'path';
+import { fileURLToPath, pathToFileURL } from 'url';
+import { ApplicationCommandOptionType, Collection, PermissionsBitField, REST, Routes } from 'discord.js';
+import Handler from './structure/Handler.js';
+import Command from './structure/commands/Command.js';
+import Logger from './utilities/Logger.js';
+import Utilities from './utilities/Utilities.js';
+const config = await Utilities.loadJSON('../config.json');
+const voiceServers = await Utilities.loadJSON('../voice-servers.json');
 
-const modules = new Collection();
-const clientId = config.slashConfig.env === 'DEV' ? config.slashConfig.dev_client_id : config.slashConfig.pro_client_id;
-const guildId = config.slashConfig.test_guild_id;
-const slashCommands = [];
+const path = join(dirname(fileURLToPath(import.meta.url)), '.', 'commands');
+const clientId = config.command_deployment.client_id;
+const limitedServers = config.command_deployment.limited_guilds;
+let musicServers = voiceServers.map((server) => server.guild_id);
+
 const rest = new REST({ version: '10' }).setToken(config.discord.discord_token);
 
-function getCommands(directory) {
-  const result = [];
-  (function read(dir) {
-    const files = fs.readdirSync(dir);
-    for (const file of files) {
-      const filepath = path.join(dir, file);
-      if (fs.statSync(filepath).isDirectory()) {
-        read(filepath);
-      }
-      else {
-        result.push(filepath);
-      }
-    }
-  })(directory);
-  return result;
-}
-
-async function getCommandDetails(thing, classToHandle) {
+const load = async (thing) => {
+  const modules = new Collection();
   const isClass = typeof thing === 'function';
   const extensions = ['.js', '.json', '.ts'];
-  if (!isClass && !extensions.includes(path.extname(thing))) return undefined;
+
+  if (!isClass && !extensions.includes(extname(thing))) {
+    return undefined;
+  }
 
   let mod = isClass
     ? thing
     : function findExport(m) {
       if (!m) return null;
-      if (m.prototype instanceof classToHandle) return m;
+      if (m.prototype instanceof Command) return m;
       return m.default ? findExport.call(this, m.default) : null;
-    }.call(this, require(thing));
+    }.call(
+      this,
+      await eval(
+        `import(${JSON.stringify(
+          pathToFileURL(thing).toString(),
+        )})`,
+      ),
+    );
 
-  if (mod && mod.prototype instanceof classToHandle) {
+  if (mod && mod.prototype instanceof Command) {
     mod = new mod(this);
   }
   else {
-    if (!isClass) delete require.cache[require.resolve(thing)];
+    if (!isClass) {delete require.cache[require.resolve(thing)];}
     return undefined;
   }
 
   if (modules.has(mod.id)) throw new Error('ALREADY LOADED');
   return mod;
-}
-
-const findCommands = (directory) =>
-  getCommands(directory).filter((file) => file.endsWith('.js'));
-
-const commandDetails = async (commands) => {
-  for (const command of commands.values()) {
-    const details = await getCommandDetails(command, SlashCommand);
-    if (details === undefined) return;
-    slashCommands.push(details);
-  }
 };
 
-const arrangeSlashCommand = async (getLimitedCommands = false) => {
-  const topLevelCommands = slashCommands
-    .filter((command) => command.commandType === 'command' && command.slashLimitDeploy === getLimitedCommands)
+const loadAll = async (directory, filter = () => true) => {
+  const filepaths = Handler.readdirRecursive(directory);
+
+  const promises = [];
+  for (let filepath of filepaths) {
+    filepath = resolve(filepath);
+    if (filter(filepath)) promises.push(await load(filepath));
+  }
+
+  await Promise.all(promises);
+  return promises;
+};
+
+const getMemberPermissions = (userPermissions) => {
+  if (!userPermissions) return null;
+  if (typeof userPermissions === 'function') {
+    return null;
+  }
+  return PermissionsBitField.resolve(userPermissions).toString();
+};
+
+const formatSubCommands = (option, command) => {
+  return subCommands
+    .filter((subCommand) => subCommand.deploymentDetails.shortName === option.name && subCommand.deploymentDetails.parentCommand === command.name)
+    .map((subCommand) => subCommand.options);
+};
+
+const organiseOptions = (command) => {
+  if (command.options.length === 0) return;
+  command.options.forEach((option) => {
+    if (option.type === ApplicationCommandOptionType.Subcommand) {
+      option.options = formatSubCommands(option, command);
+      option.options = option.options.flat();
+    }
+    else if (option.type === ApplicationCommandOptionType.SubcommandGroup) {
+      subGroupCommands.forEach((subGroupCommand) => {
+        subGroupCommand.options.forEach((subGroupOption) => {
+          subGroupOption.options = formatSubCommands(subGroupOption, subGroupCommand);
+          subGroupOption.options = subGroupOption.options.flat();
+        });
+      });
+      option.options = subGroupCommands
+        .filter(
+          (subGroupCommand) =>
+            subGroupCommand.deploymentDetails.shortName === option.name &&
+                        subGroupCommand.deploymentDetails.parentCommand === command.name,
+        )
+        .map((subCommand) => subCommand.options);
+      option.options = option.options.flat();
+    }
+  });
+};
+
+const commands = await loadAll(path);
+
+const topLevelCommands = (musicServer, limited) =>
+  commands
+    .filter((command) =>
+      command.deploymentDetails.commandType === 'command' &&
+            (musicServer ? command.deploymentDetails.musicServer : !command.deploymentDetails.musicServer) &&
+            (limited ? command.deploymentDetails.limited : !command.deploymentDetails.limited),
+    )
     .map((command) => ({
       name: command.name,
       description: command.description,
-      options: command.slashOptions,
-      default_member_permissions: null,
-      dm_permission: command.channel !== 'guild',
+      options: command.options,
+      default_member_permissions: getMemberPermissions(command.userPermissions),
+      dm_permission: !command.guildOnly,
     }));
 
-  const subCommands = slashCommands.filter(
-    (command) => command.commandType === 'sub',
-  );
+const globalCommands = topLevelCommands(false, false);
+const musicCommands = topLevelCommands(true, false);
+const limitedCommands = topLevelCommands(false, true);
 
-  const subCommandGroups = slashCommands.filter(
-    (command) => command.commandType === 'group',
-  );
+const subGroupCommands = commands
+  .filter((command) => command.deploymentDetails.commandType === 'group');
 
-  topLevelCommands.forEach((command) => {
-    if (command.options === undefined) return;
+const subCommands = commands
+  .filter((command) => command.deploymentDetails.commandType === 'sub');
 
-    command.options.forEach((option) => {
-      if (
-        option.type ===
-                ApplicationCommandOptionType.Subcommand
-      ) {
-        option.options = subCommands
-          .filter(
-            (subCommand) =>
-              subCommand.shortName === option.name &&
-                            subCommand.parentCommand === command.name,
-          )
-          .map((subCommand) => subCommand.slashOptions);
-        option.options = option.options.flat();
-      }
-      else if (
-        option.type ===
-				ApplicationCommandOptionType.SubcommandGroup
-      ) {
-        subCommandGroups.forEach((subCommandGroup) => {
-          subCommandGroup.slashOptions.forEach(
-            (groupOptions) => {
-              groupOptions.options = subCommands
-                .filter(
-                  // eslint-disable-next-line max-nested-callbacks
-                  (subCommand) =>
-                    subCommand.shortName ===
-                                        groupOptions.name &&
-                                        subCommand.parentCommand ===
-                                        subCommandGroup.shortName,
-                )
-              // eslint-disable-next-line max-nested-callbacks
-                .map((subCommand) => subCommand.slashOptions);
-              groupOptions.options = groupOptions.options.flat();
-            },
-          );
-        });
-        option.options = subCommandGroups
-          .filter(
-            (subCommandGroup) =>
-              subCommandGroup.shortName === option.name &&
-                            subCommandGroup.parentCommand === command.name,
-          )
-          .map((subCommand) => subCommand.slashOptions);
-        option.options = option.options.flat();
-      }
-    });
-  });
+globalCommands.forEach((command) => organiseOptions(command));
+musicCommands.forEach((command) => organiseOptions(command));
+limitedCommands.forEach((command) => organiseOptions(command));
 
-  return topLevelCommands;
-};
 
 (async () => {
   try {
-    await commandDetails(findCommands(config.slashConfig.slash_filepath));
-    const formattedSlashCommands = await arrangeSlashCommand();
-    const limitedSlashCommands = await arrangeSlashCommand(true);
+    await rest.put(Routes.applicationCommands(clientId), {
+      body: globalCommands,
+    });
+    Logger.info('Refreshed and Deployed Global Commands');
 
-    if (config.slashConfig.env === 'DEV') {
-      await rest.put(Routes.applicationGuildCommands(clientId, guildId), {
-        body: Object.assign(formattedSlashCommands, limitedSlashCommands),
-      });
-      console.log('Refreshed & Deployed Guild Application Commands.');
-    }
-    else {
-      await rest.put(Routes.applicationCommands(clientId), {
-        body: formattedSlashCommands,
-      });
-      console.log('Refreshed & Deployed Global Application Commands.');
-      for (let i = 0; i < config.slashConfig.limited_guilds.length; i++) {
-        await rest.put(Routes.applicationGuildCommands(clientId, config.slashConfig.limited_guilds[i]), {
-          body: limitedSlashCommands,
+    for (const server of limitedServers) {
+      if (musicServers.includes(server)) {
+        await rest.put(Routes.applicationGuildCommands(clientId, server), {
+          body: [...limitedCommands, ...musicCommands],
         });
-        console.log('Refreshed & Deployed Limited Application Commands.');
+        musicServers = musicServers.filter(e => e !== server);
+        Logger.info(`Refreshed and Deployed Music and Limited commands for ${server}`);
       }
+      else {
+        await rest.put(Routes.applicationGuildCommands(clientId, server), {
+          body: limitedCommands,
+        });
+        Logger.info(`Refreshed and Deployed Limited commands for ${server}`);
+      }
+    }
+
+    for (const server of musicServers) {
+      await rest.put(Routes.applicationGuildCommands(clientId, server), {
+        body: musicCommands,
+      });
+      Logger.info(`Refreshed and Deployed Music commands for ${server}`);
     }
     process.exit();
   }
-  catch (error) {
-    console.error(error);
+  catch (e) {
+    Logger.error(e);
     process.exit();
   }
 })();

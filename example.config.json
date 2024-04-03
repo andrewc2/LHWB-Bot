@@ -1,25 +1,13 @@
 {
-  "slashConfig": {
-    "env": "DEV",
-    "pro_client_id": "",
-    "dev_client_id": "",
-    "test_guild_id": "",
-    "slash_filepath": "",
+  "command_deployment": {
+    "client_id": "",
     "limited_guilds": [""]
   },
   "discord": {
-    "prefix": "",
     "discord_token": "",
     "owner": "",
-    "ignore_perms": [],
-    "modRoleId": "",
-    "defaultRoleId": "",
-    "autoroleTime": 1800000,
-    "patootie": {
-      "patootie_id": "",
-      "guild_id": "",
-      "ignore_channels": []
-    }
+    "ignore_perms": [""],
+    "mod_role_id": ""
   },
   "store_details": [
     {
@@ -35,13 +23,10 @@
     }
   ],
   "lastfm": {
-    "lfmAPIKey": "",
-    "lfmAPISecret": ""
+    "api_key": "",
+    "api_secret": ""
   },
-  "music": {
-    "filepath": ""
-  },
-  "mySQL": {
+  "mysql": {
     "database_host": "",
     "database_username": "",
     "database_password": "",

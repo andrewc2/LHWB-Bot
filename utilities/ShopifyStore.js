@@ -1,5 +1,5 @@
-const fetch = require('node-fetch');
-const {
+import fetch from 'node-fetch';
+import {
   ActionRowBuilder,
   bold,
   ButtonBuilder,
@@ -11,12 +11,12 @@ const {
   roleMention,
   strikethrough,
   StringSelectMenuBuilder,
-  StringSelectMenuOptionBuilder,
-} = require('discord.js');
-const { diff } = require('deep-object-diff');
-const { logger } = require('./winstonLogging');
+  StringSelectMenuOptionBuilder, underscore,
+} from 'discord.js';
+import { diff } from 'deep-object-diff';
+import Logger from './Logger.js';
 
-module.exports = class ShopifyStore {
+export default class ShopifyStore {
   /**
    * Creates a new instance of a Shopify Store.
    * @param client Discord.js client
@@ -65,8 +65,8 @@ module.exports = class ShopifyStore {
     await this.fetchProductData()
       .then((products) => {
         this.updateCollection(this.collection, products);
-        logger.log('info', `${this.storeName} Has Been Cached (${this.collection.size} Products)`);
-      }).then(() => (this.ready = true)).catch(() => logger.error('error', `Error caching ${this.storeName}`));
+        Logger.info(`${this.storeName} Has Been Cached (${this.collection.size} Products)`);
+      }).then(() => (this.ready = true)).catch(() => Logger.warn(`Error caching ${this.storeName}`));
   }
 
   /**
@@ -104,7 +104,7 @@ module.exports = class ShopifyStore {
     }
     catch (error) {
       this.disableStore();
-      logger.log('error', this.storeName, error);
+      Logger.warn(`${this.storeName} ${error}`);
     }
   }
 
@@ -185,7 +185,7 @@ module.exports = class ShopifyStore {
     channel,
     whatsNew,
   ) {
-    const messageContent = `__${this.storeName}__: ${product.title} - **${whatsNew}** ${roleMention(this.roleId)}`;
+    const messageContent = `${underscore(this.storeName)}: ${product.title} - ${bold(whatsNew)} ${roleMention(this.roleId)}`;
     const embed = this.createProductEmbed(product);
     const components = this.createComponents(product);
 
@@ -383,4 +383,4 @@ module.exports = class ShopifyStore {
   disableStore() {
     this.ready = false;
   }
-};
+}

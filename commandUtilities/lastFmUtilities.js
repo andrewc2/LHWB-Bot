@@ -1,16 +1,17 @@
-const { EmbedBuilder, Colors } = require('discord.js');
-const fetch = require('node-fetch');
-const { db } = require('../models/db');
-const config = require('../config.json');
+import { EmbedBuilder, Colors } from 'discord.js';
+import fetch from 'node-fetch';
+import { database } from '../models/database.js';
+import Utilities from '../utilities/Utilities.js';
+const config = await Utilities.loadJSON('../config.json');
 
-const findLastFmUser = async (user) => {
-  const [row] = await db.promise().query('SELECT * FROM lastfm WHERE discordID = ?', [user.id]);
+export const findLastFmUser = async (user) => {
+  const [row] = await database.promise().query('SELECT * FROM lastfm WHERE discordID = ?', [user.id]);
   if (row.length === 0) return null;
   return row[0].lastfmUsername;
 };
 
-const searchLastFm = async (username, user) => {
-  return fetch(`https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&extended=1&user=${username}&limit=2&api_key=${config.lastfm.lfmAPIKey}&format=json`)
+export const searchLastFm = async (username, user) => {
+  return fetch(`https://ws.audioscrobbler.com/2.0/?method=user.getrecenttracks&extended=1&user=${username}&limit=2&api_key=${config.lastfm.api_key}&format=json`)
     .then(response => response.json())
     .then(response => {
       if (Object.prototype.hasOwnProperty.call(response, 'error')) {
@@ -28,7 +29,7 @@ const searchLastFm = async (username, user) => {
       const embed = new EmbedBuilder()
         .setAuthor({
           name: userDetails['user'],
-          iconURL: user.displayAvatarURL({ forceStatic: false, extension: 'png' }),
+          iconURL: user?.displayAvatarURL({ forceStatic: false, extension: 'png' }) ?? null,
           url: `https://www.last.fm/user/${userDetails['user']}`,
         })
         .addFields([
@@ -47,7 +48,7 @@ const searchLastFm = async (username, user) => {
     });
 };
 
-const lastFmErrorHelper = (error) => {
+export const lastFmErrorHelper = (error) => {
   const embed = new EmbedBuilder()
     .setDescription(
       `Last.fm returned an error: **${error}**\nThe site might be down. Please try again later.`,
@@ -55,5 +56,3 @@ const lastFmErrorHelper = (error) => {
     .setColor(Colors.Red);
   return { embeds: [embed] };
 };
-
-module.exports = { findLastFmUser, searchLastFm };

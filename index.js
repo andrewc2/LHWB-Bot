@@ -1,16 +1,20 @@
-const { AkairoClient, MessageCommandHandler, SlashCommandHandler, ListenerHandler, InhibitorHandler, Flag } = require('discord-akairo');
-const { GatewayIntentBits, Partials, Collection } = require('discord.js');
-const path = require('path');
-const config = require('./config.json');
-const { FETCH_ALL_QUEUEABLE_SONGS } = require('./models/musicQueries');
-const { editDistance } = require('./utilities/fuzzySearch');
-const { db } = require('./models/db');
-const ShopifyStore = require('./utilities/ShopifyStore');
+import { GatewayIntentBits, Partials, Collection } from 'discord.js';
+import { dirname, join } from 'path';
+import { fileURLToPath } from 'url';
+import Client from './structure/Client.js';
+import CommandHandler from './structure/commands/CommandHandler.js';
+import ListenerHandler from './structure/listeners/ListenerHandler.js';
+import InhibitorHandler from './structure/inhibitors/InhibitorHandler.js';
+import ShopifyStore from './utilities/ShopifyStore.js';
+import VoiceServer from './utilities/VoiceServer.js';
+import Utilities from './utilities/Utilities.js';
+const config = await Utilities.loadJSON('../config.json');
+const voiceServers = await Utilities.loadJSON('../voice-servers.json');
 
-class Client extends AkairoClient {
+class LosingHimWasBlueClient extends Client {
   constructor() {
     super({
-      ownerID: config.discord.owner,
+      ownerId: config.discord.owner,
       allowedMentions: { parse: ['users', 'roles'], repliedUser: true },
       intents: [
         GatewayIntentBits.Guilds,
@@ -24,59 +28,38 @@ class Client extends AkairoClient {
       partials: [Partials.Channel],
     });
 
-    this.messageCommandHandler = new MessageCommandHandler(this, {
-      directory: path.join(__dirname, 'messageCommands'),
-      prefix: config.discord.prefix,
-      ignorePermissions: [config.discord.owner, config.discord.ignore_perms.join(', ')],
-      allowMention: true,
-      commandUtil: true,
-      commandUtilLifetime: 10000,
-      handleEdits: true,
+    this.commandHandler = new CommandHandler(this, {
+      directory: join(dirname(fileURLToPath(import.meta.url)), '.', 'commands'),
       blockBots: true,
       blockClient: true,
       automateCategories: true,
-    });
-
-    this.messageCommandHandler.resolver.addType('song', async (message, phrase) => {
-      if (!phrase) return Flag.fail(phrase);
-      const maxEditDist = 5;
-      let res, minEditDist = maxEditDist;
-      const [result] = await db.promise().query(FETCH_ALL_QUEUEABLE_SONGS);
-      for (let i = 0; i < result.length; i++) {
-        editDistance(phrase.toLowerCase(), result[i]['song_name'].toLowerCase(), function(tempDist) {
-          if (tempDist < minEditDist && tempDist <= maxEditDist) {
-            minEditDist = tempDist;
-            res = result[i];
-          }
-        });
-      }
-      if (res === undefined) return null;
-      return res;
-    });
-
-    this.slashCommandHandler = new SlashCommandHandler(this, {
-      directory: path.join(__dirname, 'slashCommands'),
       ignorePermissions: [config.discord.owner, config.discord.ignore_perms.join(', ')],
-      automateCategories: true,
     });
 
     this.listenerHandler = new ListenerHandler(this, {
-      directory: path.join(__dirname, 'listeners'),
+      directory: join(dirname(fileURLToPath(import.meta.url)), '.', 'listeners'),
     });
 
     this.inhibitorHandler = new InhibitorHandler(this, {
-      directory: path.join(__dirname, 'inhibitors'),
+      directory: join(dirname(fileURLToPath(import.meta.url)), '.', 'inhibitors'),
     });
 
     this.listenerHandler.setEmitters({
-      messageCommandHandler: this.messageCommandHandler,
-      slashCommandHandler: this.slashCommandHandler,
+      commandHandler: this.commandHandler,
       inhibitorHandler: this.inhibitorHandler,
       listenerHandler: this.listenerHandler,
     });
 
-    this.blacklist = new Collection();
-    this.globalCommandDisable = new Collection();
+    this.voiceServers = voiceServers.map((voiceServer) => new VoiceServer(
+      this,
+      voiceServer['filepath'],
+      voiceServer['primary_artist'],
+      voiceServer['channel_id'],
+      voiceServer['stage_channel_id'],
+      voiceServer['guild_id'],
+    ));
+
+    this.botBanned = new Collection();
     this.apiCommands = new Collection() | undefined;
 
     this.cart = new Collection();
@@ -93,16 +76,13 @@ class Client extends AkairoClient {
       store['fast_fetch'],
     ));
 
-    this.messageCommandHandler.useListenerHandler(this.listenerHandler);
-    this.messageCommandHandler.useInhibitorHandler(this.inhibitorHandler);
-    this.slashCommandHandler.useListenerHandler(this.listenerHandler);
-    this.slashCommandHandler.useInhibitorHandler(this.inhibitorHandler);
+    this.commandHandler.useListenerHandler(this.listenerHandler);
+    this.commandHandler.useInhibitorHandler(this.inhibitorHandler);
     void this.inhibitorHandler.loadAll();
     void this.listenerHandler.loadAll();
-    void this.messageCommandHandler.loadAll();
-    void this.slashCommandHandler.loadAll();
+    void this.commandHandler.loadAll();
   }
 }
 
-const client = new Client();
+const client = new LosingHimWasBlueClient();
 void client.login(config.discord.discord_token);

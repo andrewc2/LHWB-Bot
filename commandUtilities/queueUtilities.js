@@ -1,12 +1,12 @@
-const { db } = require('../models/db');
+import { database } from '../models/database.js';
+import { ALBUM_AUTOCOMPLETE, FIND_TRACK, TRACK_AUTOCOMPLETE } from '../models/musicQueries.js';
 
-const autocomplete = async (interaction) => {
+export const autocomplete = async (interaction) => {
   if (!interaction.guild) return interaction.respond([]);
   const input = interaction.options.getString('track', true).toLowerCase();
   if (!input) return interaction.respond([]);
 
-  const sql = 'SELECT * FROM songName INNER JOIN songDetail ON songName.song_detail_id = songDetail.id WHERE songName.song_name LIKE ? LIMIT 5';
-  const [row] = await db.promise().query(sql, [`${input}%`]);
+  const [row] = await database.promise().query(TRACK_AUTOCOMPLETE, [`${input}%`]);
 
   const response = row.filter((value, index, self) =>
     index === self.findIndex((t) => (
@@ -14,10 +14,28 @@ const autocomplete = async (interaction) => {
     )),
   ).map((track) => ({
     name: `${track['official_name']} - ${track['artist_name']}`,
-    value: track['song_name'],
+    value: track['official_name'],
   }));
 
   await interaction.respond(response);
 };
 
-module.exports = { autocomplete };
+export const findTrack = async (trackName) => {
+  const [row] = await database.promise().query(FIND_TRACK, [trackName]);
+  return row[0];
+};
+
+export const albumAutocomplete = async (interaction) => {
+  if (!interaction.guild) return interaction.respond([]);
+  const input = interaction.options.getString('album', true).toLowerCase();
+  if (!input) return interaction.respond([]);
+
+  const [row] = await database.promise().query(ALBUM_AUTOCOMPLETE, [1, `${input}%`]);
+
+  const result = row.map((track) => ({
+    name: `${track['album']} - ${track['artist_name']}`,
+    value: track['album'],
+  }));
+
+  await interaction.respond(result);
+};

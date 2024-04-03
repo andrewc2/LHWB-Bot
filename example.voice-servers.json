@@ -1,9 +1,9 @@
 [
   {
-    "server_id": "",
+    "guild_id": "",
     "channel_id": "",
     "stage_channel_id": "",
-    "companion_stage_channel_id": "",
-    "primary_artist": ""
+    "primary_artist": "",
+    "filepath":  ""
   }
 ]
