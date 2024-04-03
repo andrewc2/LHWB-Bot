@@ -6,15 +6,9 @@ I do not guarantee stability when used on any other server, though it should wor
 ### Requirements
 node.js
 
-Discord.js + DiscordJS/Opus, voice, rest, api-types
+discordjs, discordjs/opus, discordjs/voice, discordjs/rest, discord-api-types
 
-ffmpeg for music
-
-mysql2 for songs, queues, etc.
-
-luxon for countdown
-
-winston for logging
+sodium, cron-schedule, node-fetch, ffmpeg, mysql2, luxon, winston
 
 ### Usage
 Uses mysql for storage of song information and playcount data, as well as recently played songs, and queues.
