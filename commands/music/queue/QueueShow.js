@@ -1,6 +1,6 @@
 import Command from '../../../structure/commands/Command.js';
-import { Colors, EmbedBuilder, escapeNumberedList } from 'discord.js';
 import Utilities from '../../../utilities/Utilities.js';
+import Paginator from '../../../utilities/Paginator.js';
 
 export default class QueueShow extends Command {
   constructor() {
@@ -16,57 +16,28 @@ export default class QueueShow extends Command {
   }
 
   async exec(interaction) {
-    await interaction.deferReply();
+    await interaction.deferReply({ fetchReply: true });
     const server = Utilities.getVoiceServer(this.client, interaction.guildId);
-
-    const failEmbed = new EmbedBuilder().setColor(Colors.Red);
-    const queueEmbed = new EmbedBuilder()
-      .setColor('#FF69B4')
-      .setURL('https://lhwb.dev/');
 
     const recent = (await server.getRecent(1))[0];
     const queue = await server.getQueue();
 
-    const formatSongs = (songQueue) => {
-      return escapeNumberedList(songQueue.map((song, i) => `${i + 1}. ${song['official_name']} - ${song['artist_name']}`).join('\n'));
-    };
+    const alreadyQueued = queue.length > 0 && recent['queued_by'] !== null && recent['official_name'] === queue[0]['official_name'];
+    const songs = queue.map((song, i) => `${i + 1}. ${song['official_name']} - ${song['artist_name']}\n`);
+    if (alreadyQueued) songs.shift();
+    const description = songs.length === 0 ? 'There\'s nothing else queued at the moment...' : 'Queued for play:\n';
 
-    if (queue.length > 0 && recent['queued_by'] !== null && recent['official_name'] === queue[0]['official_name']) {
-      queueEmbed.setTitle(`Currently Playing: ${recent['official_name']} (Queued)`);
-      queue.shift();
-      const formattedQueue = formatSongs(queue);
-      if (formattedQueue.length === 0) {
-        return interaction.editReply({
-          embeds: [
-            queueEmbed.setDescription('There\'s nothing else queued at the moment...'),
-          ],
-        });
-      }
-      else {
-        return interaction.editReply({
-          embeds: [
-            queueEmbed.setDescription(`Queued for play:\n${formattedQueue}`),
-          ],
-        });
-      }
-    }
-    else if (queue.length > 0) {
-      const formattedQueue = formatSongs(queue);
-      return interaction.editReply({
-        embeds: [
-          queueEmbed
-            .setTitle(`Currently Playing: ${recent['official_name']}`)
-            .setDescription(`Queued for play:\n${formattedQueue}`),
-        ],
-      });
-    }
-    else {
-      return interaction.editReply({
-        embeds: [
-          failEmbed.setDescription('There\'s nothing queued at the moment...'),
-        ],
-      });
-    }
-
+    const embedArray = Paginator.createEmbeds(
+      queue.length === 0 ? [] : [description, ...songs],
+      alreadyQueued ? `Currently Playing: ${recent['official_name']} (Queued)` : `Currently Playing: ${recent['official_name']}`,
+      '#FF69B4',
+      null,
+      null,
+      null,
+      'https://lhwb.dev',
+      10,
+    );
+    const paginator = new Paginator(interaction, embedArray, false, 'There\'s nothing queued at the moment...');
+    return await paginator.send();
   }
 }

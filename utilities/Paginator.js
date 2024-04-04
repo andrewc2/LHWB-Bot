@@ -1,5 +1,15 @@
-import { ActionRowBuilder, ButtonBuilder, EmbedBuilder, Colors, ButtonStyle, ComponentType } from 'discord.js';
+import {
+  ActionRowBuilder,
+  ButtonBuilder,
+  EmbedBuilder,
+  Colors,
+  ButtonStyle,
+  ComponentType,
+  escapeNumberedList,
+} from 'discord.js';
 import Logger from './Logger.js';
+
+const noEmbedsString = 'There is not enough information for this command to work right now. Try again later.';
 
 export default class Paginator {
   /**
@@ -7,11 +17,13 @@ export default class Paginator {
    * @param interaction An instance of ChatInputInteraction
    * @param embedArray An array of EmbedBuilder that will be used to build the pagination
    * @param deletable Whether the paginated response should be user deletable
+   * @param noEmbedErrorString Custom description that will be sent whenever the embedArray is empty
    */
-  constructor(interaction, embedArray, deletable = true) {
+  constructor(interaction, embedArray, deletable = true, noEmbedErrorString = noEmbedsString) {
     this.interaction = interaction;
     this.embedArray = embedArray;
     this.deletable = deletable;
+    this.noEmbedErrorString = noEmbedErrorString;
   }
 
   /**
@@ -53,7 +65,7 @@ export default class Paginator {
   /**
    * Creates the payload based on the size of the embed array and if delete message is enabled
    * @private
-   * @returns {{components: ActionRowBuilder<ButtonBuilder>[], embeds: EmbedBuilder[]}|{embeds: EmbedBuilder[]}|{components: ActionRowBuilder<ButtonBuilder>[], embeds: EmbedBuilder[]}|{components: ActionRowBuilder<ButtonBuilder>[], embeds: EmbedBuilder[]}}
+   * @returns {{components: ActionRowBuilder<ButtonBuilder>[], embeds: EmbedBuilder[]} | {embeds: EmbedBuilder[]}}
    */
   createPayload() {
     return this.embedArray.length === 1 ?
@@ -116,7 +128,7 @@ export default class Paginator {
   async send() {
     if (this.embedArray.length === 0) {
       return this.interaction.editReply({ embeds: [new EmbedBuilder()
-        .setDescription('There is not enough information for this command to work right now. Try again later.')
+        .setDescription(this.noEmbedErrorString)
         .setColor(Colors.Red)] });
     }
     await this.interaction.editReply(this.createPayload())
@@ -132,7 +144,7 @@ export default class Paginator {
    * @param author The data that should be shown in the author field (please make sure this follows discord.js EmbedAuthorData interface https://discord.js.org/docs/packages/discord.js/main/EmbedAuthorData:Interface)
    * @param footer The data that should be shown in the author field (this should be a string)
    * @param thumbnail The image url that will be displayed in the embed thumbnail
-   * @param url The url that will be added to the title in the embed
+   * @param url The url to add to the embed title
    * @param chunk How many rows from the data that should be displayed on one embed
    * @returns {EmbedBuilder[]}
    */
@@ -149,7 +161,7 @@ export default class Paginator {
         new EmbedBuilder()
           .setTitle(embedTitle)
           .setAuthor(author)
-          .setDescription(result.join(''))
+          .setDescription(escapeNumberedList(result.join('')))
           .setThumbnail(thumbnail)
           .setURL(url)
           .setFooter({ text: `Page ${i + 1}/${results.length} ${footer ? footer : ''}`.trim() })
