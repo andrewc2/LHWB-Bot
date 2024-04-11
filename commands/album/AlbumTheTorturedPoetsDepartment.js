@@ -38,7 +38,7 @@ export default class AlbumTheTorturedPoetsDepartment extends Command {
       })
       .setThumbnail('https://cdn.lhwb.dev/i/TTPD.png')
       .setFooter({ text: 'Page 2 of 2' })
-      .setDescription(escapeNumberedList('**The Tortured Poets Department** will be released on __April 19, 2024__\n\n10. Who\'s Afraid of Little Old Me? (5:34)\n11. I Can Fix Him (No Really I Can) (2:36)\n12. loml (4:37)\n13. I Can Do It With a Broken Heart (3:38)\n14. The Smallest Man Who Ever Lived (4:05)\n15. The Alchemy (3:16)\n16. Clara Bow (3:36)\n17a. The Manuscript (:)\n17b. The Bolter (:)\n17c. The Albatross (:)\n17d. The Black Dog (:)'));
+      .setDescription(escapeNumberedList('**The Tortured Poets Department** will be released on __April 19, 2024__\n\n10. Who\'s Afraid of Little Old Me? (5:34)\n11. I Can Fix Him (No Really I Can) (2:36)\n12. loml (4:37)\n13. I Can Do It With a Broken Heart (3:38)\n14. The Smallest Man Who Ever Lived (4:05)\n15. The Alchemy (3:16)\n16. Clara Bow (3:36)\n\n__Physical Exclusives:__\n17a. The Manuscript (:)\n17b. The Bolter (:)\n17c. The Albatross (:)\n17d. The Black Dog (:)'));
 
     const embedArray = [embed1, embed2];
     const paginator = new Paginator(interaction, embedArray, false);
