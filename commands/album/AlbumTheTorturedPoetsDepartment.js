@@ -26,7 +26,7 @@ export default class AlbumTheTorturedPoetsDepartment extends Command {
         url: 'https://en.wikipedia.org/wiki/The_Tortured_Poets_Department',
       })
       .setThumbnail('https://cdn.lhwb.dev/i/TTPD.png')
-      .setFooter({ text: 'Page 1 of 2 - Main Album Total Runtime: tbd' })
+      .setFooter({ text: 'Page 1 of 2 - Main Album Total Runtime: 65:08' })
       .setDescription(escapeNumberedList('**The Tortured Poets Department** will be released on __April 19, 2024__\n\n1. Fortnight (feat Post Malone) (3:48)\n2. The Tortured Poets Department (4:53)\n3. My Boy Only Breaks His Favorite Toys (3:23)\n4. Down Bad (4:21)\n5. So Long, London (4:22)\n6. But Daddy I Love Him (5:40)\n7. Fresh Out the Slammer (3:30)\n8. Florida!!! (feat Florence + The Machine) (3:35)\n9. Guilt as Sin? (4:14)'));
 
     const embed2 = new EmbedBuilder()
