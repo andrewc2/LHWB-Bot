@@ -27,7 +27,7 @@ export default class AlbumTheTorturedPoetsDepartment extends Command {
       })
       .setThumbnail('https://cdn.lhwb.dev/i/TTPD.png')
       .setFooter({ text: 'Page 1 of 2 - Main Album Total Runtime: tbd' })
-      .setDescription(escapeNumberedList('**The Tortured Poets Department** will be released on __April 19, 2024__\n\n1. Fortnight (feat Post Malone) (:)\n2. The Tortured Poets Department (:)\n3. My Boy Only Breaks His Favorite Toys (:)\n4. Down Bad (:)\n5. So Long, London (:)\n6. But Daddy I Love Him (:)\n7. Fresh Out the Slammer (:)\n8. Florida!!! (feat Florene + The Machine) (:)\n9. Guilt as Sin? (:)'));
+      .setDescription(escapeNumberedList('**The Tortured Poets Department** will be released on __April 19, 2024__\n\n1. Fortnight (feat Post Malone) (3:48)\n2. The Tortured Poets Department (4:53)\n3. My Boy Only Breaks His Favorite Toys (3:23)\n4. Down Bad (4:21)\n5. So Long, London (4:22)\n6. But Daddy I Love Him (5:40)\n7. Fresh Out the Slammer (3:30)\n8. Florida!!! (feat Florence + The Machine) (3:35)\n9. Guilt as Sin? (4:14)'));
 
     const embed2 = new EmbedBuilder()
       .setColor(7379373)
@@ -38,7 +38,7 @@ export default class AlbumTheTorturedPoetsDepartment extends Command {
       })
       .setThumbnail('https://cdn.lhwb.dev/i/TTPD.png')
       .setFooter({ text: 'Page 2 of 2' })
-      .setDescription(escapeNumberedList('**The Tortured Poets Department** will be released on __April 19, 2024__\n\n10. Who\'s Afraid of Little Old Me? (:)\n11. I Can Fix Him (No Really I Can) (:)\n12. loml (:)\n13. I Can Do It With a Broken Heart (:)\n14. The Smallest Man Who Ever Lived (:)\n15. The Alchemy (:)\n16. Clara Bow (:)\n17a. The Manuscript (:)\n17b. The Bolter (:)\n17c. The Albatross (:)\n17d. The Black Dog (:)'));
+      .setDescription(escapeNumberedList('**The Tortured Poets Department** will be released on __April 19, 2024__\n\n10. Who\'s Afraid of Little Old Me? (5:34)\n11. I Can Fix Him (No Really I Can) (2:36)\n12. loml (4:37)\n13. I Can Do It With a Broken Heart (3:38)\n14. The Smallest Man Who Ever Lived (4:05)\n15. The Alchemy (3:16)\n16. Clara Bow (3:36)\n17a. The Manuscript (:)\n17b. The Bolter (:)\n17c. The Albatross (:)\n17d. The Black Dog (:)'));
 
     const embedArray = [embed1, embed2];
     const paginator = new Paginator(interaction, embedArray, false);

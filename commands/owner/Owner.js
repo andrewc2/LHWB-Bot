@@ -32,6 +32,11 @@ export default class Owner extends Command {
           description: 'Change the bots nickname',
           type: ApplicationCommandOptionType.Subcommand,
         },
+        {
+          name: 'restart',
+          description: 'Restarts the bot',
+          type: ApplicationCommandOptionType.Subcommand,
+        },
       ],
       deploymentDetails: {
         commandType: 'command',

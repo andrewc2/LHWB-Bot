@@ -16,7 +16,7 @@
   "type": "module",
   "keywords": [],
   "author": "iandrewc",
-  "license": "MIT",
+  "license": "GPL-3.0-only",
   "dependencies": {
     "@discordjs/opus": "^0.9.0",
     "@discordjs/rest": "^2.2.0",
