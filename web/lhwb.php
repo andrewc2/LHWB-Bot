@@ -16,7 +16,8 @@
                     </thead>
                     <tbody>
                         <?php
-                        $stmt = $db->prepare("SELECT official_name, artist_name, album, play_count FROM songDetail WHERE 1 ORDER BY official_name");
+                        //$stmt = $db->prepare("SELECT official_name, artist_name, album, play_count FROM songDetail WHERE 1 ORDER BY official_name");
+                        $stmt = $db->prepare("SELECT official_name, artist_name, album, play_count FROM songDetail WHERE id >= 3 ORDER BY official_name");
                         $stmt->execute();
                         $stmt->bind_result($name, $artist, $album, $playcount);
                         while ($stmt->fetch()) {
