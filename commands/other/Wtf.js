@@ -10,6 +10,8 @@ export default class Wtf extends Command {
       description: 'Displays a random saved or submitted !get wtf',
       deploymentDetails: {
         commandType: 'command',
+        integrationTypes: [0, 1],
+        contexts: [0, 1, 2],
       },
     });
   }

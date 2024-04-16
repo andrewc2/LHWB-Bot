@@ -10,6 +10,8 @@ export default class Version extends Command {
       category: 'utilities',
       deploymentDetails: {
         commandType: 'command',
+        integrationTypes: [0, 1],
+        contexts: [0, 1, 2],
       },
     });
   }

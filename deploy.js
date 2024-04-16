@@ -119,6 +119,8 @@ const topLevelCommands = (musicServer, limited) =>
       options: command.options,
       default_member_permissions: getMemberPermissions(command.userPermissions),
       dm_permission: !command.guildOnly,
+      integration_types: command.deploymentDetails.integrationTypes,
+      contexts: command.deploymentDetails.contexts,
     }));
 
 const globalCommands = topLevelCommands(false, false);

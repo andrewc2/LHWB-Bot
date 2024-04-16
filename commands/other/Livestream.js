@@ -9,6 +9,7 @@ export default class Livestream extends Command {
       description: 'Displays information about live streams',
       deploymentDetails: {
         commandType: 'command',
+        musicServer: true,
       },
     });
   }

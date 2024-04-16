@@ -81,16 +81,16 @@ export default class Paginator {
   /**
    * Handles the interaction logic of changing pages when the component buttons are pressed
    * @private
-   * @param sentInteraction An instance of ChatInputInteraction
+   * @param message An instance of Message
    */
-  handler(sentInteraction) {
+  handler(message) {
     let i = 0;
     const filter = async (interaction) => {
       await interaction.deferUpdate();
       return interaction.user.id === this.interaction.user.id;
     };
 
-    const collector = sentInteraction.createMessageComponentCollector({ filter, componentType: ComponentType.Button, idle: 20000 });
+    const collector = message.createMessageComponentCollector({ filter, componentType: ComponentType.Button, idle: 20000 });
 
     collector.on('collect', (interaction) => {
       if (interaction.customId === 'deleteButton') {
@@ -113,7 +113,7 @@ export default class Paginator {
     });
 
     collector.on('end', () => {
-      sentInteraction.edit({ components: [] })
+      message.edit({ components: [] })
         .catch((err) => {
           Logger.warn(err);
         });
@@ -132,7 +132,7 @@ export default class Paginator {
         .setColor(Colors.Red)] });
     }
     await this.interaction.editReply(this.createPayload())
-      .then((interaction) => this.handler(interaction));
+      .then((message) => this.handler(message));
   }
 
   /**

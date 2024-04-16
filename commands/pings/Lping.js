@@ -51,6 +51,8 @@ export default class Lping extends Command {
       ],
       deploymentDetails: {
         commandType: 'command',
+        integrationTypes: [0],
+        contexts: [0],
       },
     });
   }

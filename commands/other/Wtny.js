@@ -9,6 +9,7 @@ export default class Wtny extends Command {
       guildOnly: true,
       deploymentDetails: {
         commandType: 'command',
+        musicServer: true,
       },
     });
   }

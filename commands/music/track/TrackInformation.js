@@ -12,8 +12,8 @@ export default class TrackInformation extends Command {
         {
           name: 'track',
           type: ApplicationCommandOptionType.String,
-          description: 'The name of the track to view information for',
-          required: true,
+          description: 'The name of the track to view information for (defaults to the current song)',
+          required: false,
           autocomplete: true,
         },
       ],
@@ -27,7 +27,8 @@ export default class TrackInformation extends Command {
 
   async exec(interaction) {
     await interaction.deferReply();
-    const name = interaction.options.getString('track', true);
+    const server = Utilities.getVoiceServer(this.client, interaction.guildId);
+    const name = interaction.options.getString('track') ?? (await server.getRecent(1))[0]['official_name'];
     const track = await findTrack(name);
 
     if (!track) {
@@ -41,16 +42,14 @@ export default class TrackInformation extends Command {
     }
 
     const embed = new EmbedBuilder()
-      .setTitle('Track Information')
-      .setThumbnail(track.album_art_url.toString())
-      .addFields([
-        { name: 'Name', value: track.official_name.toString(), inline: true },
-        { name: 'Album', value: track.album.toString(), inline: true },
-        { name: 'Artist', value: track.artist_name.toString(), inline: true },
-        { name: 'Track Number', value: track.track_number.toString(), inline: true },
-        { name: 'Play Count', value: track.play_count.toString(), inline: true },
-      ])
-      .setColor(Colors.Green);
+        .setTitle(`${track.official_name} - ${track.artist_name}`)
+        .setThumbnail(track.album_art_url.toString())
+        .addFields([
+          { name: 'Album', value: track.album.toString(), inline: true },
+          { name: 'Track Number', value: track.track_number.toString(), inline: true },
+          { name: 'Play Count', value: track.play_count.toString(), inline: true },
+        ])
+        .setColor('#FF69B4')
 
     return interaction.editReply({ embeds: [embed] });
   }

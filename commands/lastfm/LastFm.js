@@ -30,6 +30,8 @@ export default class LastFm extends Command {
       ],
       deploymentDetails: {
         commandType: 'command',
+        integrationTypes: [0, 1],
+        contexts: [0, 1, 2],
       },
     });
   }

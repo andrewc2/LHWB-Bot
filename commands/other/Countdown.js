@@ -12,6 +12,8 @@ export default class Countdown extends Command {
       description: 'Display the current event countdowns',
       deploymentDetails: {
         commandType: 'command',
+        integrationTypes: [0, 1],
+        contexts: [0, 1, 2],
       },
     });
   }

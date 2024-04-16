@@ -10,6 +10,8 @@ export default class Gif extends Command {
       description: 'Displays a random Taylor related gif',
       deploymentDetails: {
         commandType: 'command',
+        integrationTypes: [0, 1],
+        contexts: [0, 1, 2],
       },
     });
   }

@@ -1,5 +1,5 @@
 import Command from '../../structure/commands/Command.js';
-import { EmbedBuilder, PermissionsBitField } from 'discord.js';
+import { EmbedBuilder } from 'discord.js';
 import Logger from '../../utilities/Logger.js';
 
 export default class Restart extends Command {
