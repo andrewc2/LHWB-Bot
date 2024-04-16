@@ -21,7 +21,7 @@ export default class Ready extends Listener {
     const stores = this.client.stores;
     stores.forEach((store) => store.cache());
     setInterval(() => Utilities.fastFetchStore(stores), 10000);
-    setInterval(() => Utilities.slowFetchStore(stores), 60000);
+    setInterval(() => Utilities.slowFetchStore(stores), 30000);
 
     scheduler.setInterval(
       parseCronExpression('*/30 * * * *'),
