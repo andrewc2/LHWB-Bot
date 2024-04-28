@@ -6,7 +6,7 @@
 
             <div id="dataDisplay">
                 <h3>LosingHimWasBlue [Bot] Terms of Service</h1>
-                <p>Last updated: 18 January, 2024</p></br>
+                <p>Last updated: 27 April, 2024</p></br>
 
                 <p style="text-align:justify">
                     This Terms of Service constitute a legally binding agreement made between you, whether personally or on behalf of an entity and LosingHimWasBlue [Bot].
@@ -15,13 +15,13 @@
                     IF YOU DO NOT AGREE WITH ALL OF THESE TERMS, THEN YOU ARE EXPRESSLY PROHIBITED FROM USING THE BOT AND YOU MUST DISCONTINUE USE IMMEDIATELY.
                 </p>
 
-                <!-- <h4>Intellectual Property Rights</h4>
+                <h4>Intellectual Property Rights</h4>
 
                 <p style="text-align:justify">
                     Unless otherwise indicated, the bot, logo, and all bot source code are owned by us, and are protected by copyright and trademark laws and various
                     other intellectual property rights. Provided that you are eligible to use this website, you are granted access to download or print a copy of any
                     portion of the Content to which you have properly gained access solely for your personal use.
-                </p> -->
+                </p>
 
                 <h4>User Representations</h4>
 
