@@ -23,7 +23,7 @@
     "@discordjs/voice": "^0.16.1",
     "cron-schedule": "^4.0.0",
     "deep-object-diff": "^1.1.9",
-    "discord-api-types": "^0.37.80",
+    "discord-api-types": "^0.37.83",
     "discord.js": "^14.14.1",
     "luxon": "^3.4.4",
     "mysql2": "^3.9.7",
