@@ -8,14 +8,10 @@ updates:
   - package-ecosystem: "npm" # See documentation for possible values
     directory: "/" # Location of package manifests
     schedule:
-      interval: "weekly"
+      interval: "daily"
 # Specify labels for npm pull requests
     labels:
       - "dependencies"
-    ignore:
-          - dependency-name: "node-fetch"
-            # For node-fetch, ignore all updates for version 3
-            versions: ["3.x"]
 # Always increase the version requirement
 # to match the new version.
     versioning-strategy: increase
