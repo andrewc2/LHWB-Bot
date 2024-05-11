@@ -1,5 +1,5 @@
 import Command from '../../../structure/commands/Command.js';
-import { EmbedBuilder, escapeNumberedList } from 'discord.js';
+import { ApplicationCommandOptionType, EmbedBuilder, escapeNumberedList } from 'discord.js';
 import Paginator from '../../../utilities/Paginator.js';
 
 export default class TourErasSetList extends Command {
@@ -7,6 +7,25 @@ export default class TourErasSetList extends Command {
     super('tourErasSetList', {
       name: 'tour eras setlist',
       category: 'tours',
+      description: 'Eras Tour setlists',
+      options: [
+        {
+          name: 'version',
+          description: 'Which version of tour?',
+          type: ApplicationCommandOptionType.String,
+          required: true,
+          choices: [
+            {
+              name: 'Eras I (NA 2023/LATAM/AS/AU)',
+              value: 'ogEra',
+            },
+            {
+              name: 'Eras II (EU+)',
+              value: 'newEra',
+            }
+          ]
+        }
+      ],
       deploymentDetails: {
         commandType: 'sub',
         parentCommand: 'eras',
@@ -17,6 +36,8 @@ export default class TourErasSetList extends Command {
 
   async exec(interaction) {
     await interaction.deferReply({ fetchReply: true });
+
+    const version = interaction.options.getString('version', true);
 
     const embedP1 = new EmbedBuilder()
       .setColor(0x586891)
@@ -62,8 +83,60 @@ export default class TourErasSetList extends Command {
       .setFooter({ text: 'Page 4 of 4' })
       .setDescription(escapeNumberedList('**Midnights Era**\n39. Lavender Haze (Extended intro)\n40. Anti‐Hero\n41. Midnight Rain\n42. Vigilante Shit\n43. Bejeweled\n44. Mastermind\n45. Karma (Extended outro)'));
 
-    const embedArray = [embedP1, embedP2, embedP3, embedP4];
-    const pagination = new Paginator(interaction, embedArray, true);
-    return await pagination.send();
+    const embedArrayOld = [embedP1, embedP2, embedP3, embedP4];
+
+    const embedNP1 = new EmbedBuilder()
+      .setColor(0x586891)
+      .setAuthor({
+        name: 'Typical The Eras Tour Setlist',
+        iconURL: 'https://cdn.lhwb.dev/i/ts.png',
+        url: 'https://www.setlist.fm/stats/average-setlist/taylor-swift-3bd6bc5c.html?tour=6bde5e4e',
+      })
+      .setThumbnail('https://cdn.lhwb.dev/i/TheErasTour.png')
+      .setFooter({ text: 'Page 1 of 4' })
+      .setDescription(escapeNumberedList('Countdown\nIntro (contains elements from prior tours)\n\n**Lover Era**\n1. Miss Americana & the Heartbreak Prince (Shortened)\n2. Cruel Summer\n3. The Man\n4. You Need to Calm Down (Shortened)\n5. Lover\n\n**Fearless Era**\n6. Fearless (Electric version, shortened)\n7. You Belong With Me\n8. Love Story\n\n**Red Era**\nRed - Intro (Contains elements of "State of Grace", "Holy Ground" and "Red")\n9. 22\n10. We Are Never Ever Getting Back Together\n11. I Knew You Were Trouble (Shortened)\n12. All Too Well (10 Minute Version) (Spoken intro)'));
+
+    const embedNP2 = new EmbedBuilder()
+      .setColor(0x586891)
+      .setAuthor({
+        name: 'Typical The Eras Tour Setlist',
+        iconURL: 'https://cdn.lhwb.dev/i/ts.png',
+        url: 'https://www.setlist.fm/stats/average-setlist/taylor-swift-3bd6bc5c.html?tour=6bde5e4e',
+      })
+      .setThumbnail('https://cdn.lhwb.dev/i/TheErasTour.png')
+      .setFooter({ text: 'Page 2 of 4' })
+      .setDescription(escapeNumberedList('**Speak Now Era**\n13. Enchanted (Extended intro / Shortened)\n\n**reputation Era**\n14. ...Ready for It? (Extended intro, skipped some lyrics)\n15. Delicate\n16. Don\'t Blame Me (Acoustic intro; extended outro)\n17. Look What You Made Me Do\n\n**folkmore Era**\n18. cardigan (Extended Intro)\n19. betty (spoken intro)\n20. champagne problems (Spoken intro)\n21. august\n22. illicit affairs (shortened)\n23. my tears ricochet\n24. marjorie (shortened)\n25. willow'));
+
+    const embedNP3 = new EmbedBuilder()
+      .setColor(0x586891)
+      .setAuthor({
+        name: 'Typical The Eras Tour Setlist',
+        iconURL: 'https://cdn.lhwb.dev/i/ts.png',
+        url: 'https://www.setlist.fm/stats/average-setlist/taylor-swift-3bd6bc5c.html?tour=6bde5e4e',
+      })
+      .setThumbnail('https://cdn.lhwb.dev/i/TheErasTour.png')
+      .setFooter({ text: 'Page 3 of 4' })
+      .setDescription(escapeNumberedList('**1989 Era**\n26. Style (Shortened)\n27. Blank Space\n28. Shake It Off (Extended outro)\n29. Wildest Dreams (Shortened)\n30. Bad Blood (Shortened; extended outro)\n\n**THE TORTURED POETS DEPARTMENT Era**\n31. But Daddy I Love Him (shortened)\n32. So High School (bridge)\n33. Who\'s Afraid of Little Old Me?\n34. Down Bad (Shortened)\n35. Fortnight\n36. The Smallest Man Who Ever Lived (Shortened)\n37. I Can Do It With a Broken Heart (Stage Act)'));
+
+    const embedNP4 = new EmbedBuilder()
+      .setColor(0x586891)
+      .setAuthor({
+        name: 'Typical The Eras Tour Setlist',
+        iconURL: 'https://cdn.lhwb.dev/i/ts.png',
+        url: 'https://www.setlist.fm/stats/average-setlist/taylor-swift-3bd6bc5c.html?tour=6bde5e4e',
+      })
+      .setThumbnail('https://cdn.lhwb.dev/i/TheErasTour.png')
+      .setFooter({ text: 'Page 4 of 4' })
+      .setDescription(escapeNumberedList('38 and 39. **Surprise Acoustic Songs**\n\n**Midnights Era**\n40. Lavender Haze (Extended intro)\n41. Anti‐Hero\n42. Midnight Rain\n43. Vigilante Shit\n44. Bejeweled\n45. Mastermind\n46. Karma (Extended outro)'));
+
+    const embedArrayNew = [embedNP1, embedNP2, embedNP3, embedNP4];
+
+    if ( version === 'ogEra') {
+      const pagination = new Paginator(interaction, embedArrayOld, true);
+      return await pagination.send();
+    } else {
+      const pagination = new Paginator(interaction, embedArrayNew, true);
+      return await pagination.send();
+    }
   }
 }

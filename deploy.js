@@ -72,9 +72,9 @@ const getMemberPermissions = (userPermissions) => {
   return PermissionsBitField.resolve(userPermissions).toString();
 };
 
-const formatSubCommands = (option, command) => {
+const formatSubCommands = (option, name) => {
   return subCommands
-    .filter((subCommand) => subCommand.deploymentDetails.shortName === option.name && subCommand.deploymentDetails.parentCommand === command.name)
+    .filter((subCommand) => subCommand.deploymentDetails.shortName === option.name && subCommand.deploymentDetails.parentCommand === name)
     .map((subCommand) => subCommand.options);
 };
 
@@ -82,13 +82,13 @@ const organiseOptions = (command) => {
   if (command.options.length === 0) return;
   command.options.forEach((option) => {
     if (option.type === ApplicationCommandOptionType.Subcommand) {
-      option.options = formatSubCommands(option, command);
+      option.options = formatSubCommands(option, command.name);
       option.options = option.options.flat();
     }
     else if (option.type === ApplicationCommandOptionType.SubcommandGroup) {
       subGroupCommands.forEach((subGroupCommand) => {
         subGroupCommand.options.forEach((subGroupOption) => {
-          subGroupOption.options = formatSubCommands(subGroupOption, subGroupCommand);
+          subGroupOption.options = formatSubCommands(subGroupOption, subGroupCommand.deploymentDetails.shortName);
           subGroupOption.options = subGroupOption.options.flat();
         });
       });
@@ -136,7 +136,6 @@ const subCommands = commands
 globalCommands.forEach((command) => organiseOptions(command));
 musicCommands.forEach((command) => organiseOptions(command));
 limitedCommands.forEach((command) => organiseOptions(command));
-
 
 (async () => {
   try {
