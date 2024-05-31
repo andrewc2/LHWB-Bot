@@ -1,17 +1,20 @@
 import fetch from 'node-fetch';
 import {
-  ActionRowBuilder,
-  bold,
-  ButtonBuilder,
-  ButtonStyle,
-  Collection,
-  Colors,
-  EmbedBuilder,
-  hyperlink,
-  roleMention,
-  strikethrough,
-  StringSelectMenuBuilder,
-  StringSelectMenuOptionBuilder, underscore,
+    ActionRowBuilder,
+    bold,
+    ButtonBuilder,
+    ButtonStyle,
+    Collection,
+    Colors,
+    EmbedBuilder,
+    hyperlink,
+    inlineCode,
+    roleMention,
+    strikethrough,
+    StringSelectMenuBuilder,
+    StringSelectMenuOptionBuilder,
+    underscore,
+    WebhookClient,
 } from 'discord.js';
 import { diff } from 'deep-object-diff';
 import Logger from './Logger.js';
@@ -26,9 +29,10 @@ export default class ShopifyStore {
    * @param channelId The channel ID of the Discord channel to send the update to
    * @param roleId The ID of the role to ping when an update is sent to a Discord channel
    * @param currencySymbol The currency prefix of the Shopify store (e.g £)
+   * @param webhookUrl URL to send webhook error updates to
    * @param enableCart Whether cart/basket functionality should be enabled for this Shopify store
    * @param enableBuyNow Whether "buy now" functionality should be enabled for this Shopify store
-   * @param fastFetch Whether "fast fetch" functionality should be enabled for this Shopify store. Fast fetch will check the store for new products every 10 seconds
+   * @param interval How often to search the Shopify store for new products (in milliseconds)
    */
   constructor(
     client,
@@ -38,9 +42,10 @@ export default class ShopifyStore {
     channelId,
     roleId,
     currencySymbol,
+    webhookUrl,
     enableCart,
     enableBuyNow,
-    fastFetch,
+    interval,
   ) {
     this.client = client;
     this.storeName = storeName;
@@ -53,8 +58,9 @@ export default class ShopifyStore {
     this.currencySymbol = currencySymbol;
     this.enableCart = enableCart;
     this.enableBuyNow = enableBuyNow;
-    this.fastFetch = fastFetch;
+    this.interval = interval;
     this.productFetchLimit = 250;
+    this.webhookClient = new WebhookClient({ url: webhookUrl })
   }
 
   /**
@@ -66,7 +72,10 @@ export default class ShopifyStore {
       .then((products) => {
         this.updateCollection(this.collection, products);
         Logger.info(`${this.storeName} Has Been Cached (${this.collection.size} Products)`);
-      }).then(() => (this.ready = true)).catch(() => Logger.warn(`Error caching ${this.storeName}`));
+      })
+      .then(() => (this.ready = true))
+      .then(() => setInterval(async () => await this.post(), this.interval))
+      .catch(() => Logger.warn(`Error caching ${this.storeName}`));
   }
 
   /**
@@ -104,6 +113,7 @@ export default class ShopifyStore {
     }
     catch (error) {
       this.disableStore();
+      await this.errorAlert(error.toString());
       Logger.warn(`${this.storeName} ${error}`);
     }
   }
@@ -355,11 +365,20 @@ export default class ShopifyStore {
       : false;
   }
 
-  /**
-   * Used to filter out ShopifyStores that do not have fast fetch enabled.
-   */
-  isFastFetchEnabled() {
-    return this.fastFetch;
+
+    /**
+     * Sends a message via webhook whenever a store error occurs.
+     * @param error The error message
+     * @returns {Promise<APIMessage>}
+     */
+  async errorAlert(error) {
+      const embed = new EmbedBuilder()
+          .setTitle(`Alert: Error for ${this.storeName}`)
+          .setDescription(`${inlineCode(error)}`)
+          .setTimestamp()
+          .setColor(Colors.Red);
+
+      return this.webhookClient.send({ embeds: [embed] });
   }
 
   /**

@@ -71,9 +71,10 @@ class LosingHimWasBlueClient extends Client {
       store['channel_id'],
       store['role_id'],
       store['currency_symbol'],
+      store['webhook_url'],
       store['enable_cart'],
       store['enable_buy_now'],
-      store['fast_fetch'],
+      store['interval'],
     ));
 
     this.commandHandler.useListenerHandler(this.listenerHandler);

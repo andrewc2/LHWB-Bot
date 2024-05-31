@@ -17,9 +17,10 @@
       "channel_id": "",
       "role_id": "",
       "currency_symbol": "£",
+      "webhook_url": "",
       "enable_cart": false,
       "enable_buy_now": false,
-      "fast_fetch": false
+      "interval": 30000
     }
   ],
   "lastfm": {

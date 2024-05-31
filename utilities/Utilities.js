@@ -7,20 +7,6 @@ export default class Utilities {
     return `</${commandName}:${command.id}>`;
   }
 
-  static fastFetchStore(stores) {
-    const fastFetchStores = stores.filter((store) =>
-      store.isFastFetchEnabled(),
-    );
-    fastFetchStores.forEach(async (store) => await store.post());
-  }
-
-  static slowFetchStore(stores) {
-    const slowFetchStores = stores.filter(
-      (store) => !store.isFastFetchEnabled(),
-    );
-    slowFetchStores.forEach(async (store) => await store.post());
-  }
-
   static enableStores(stores) {
     const disabledStores = stores.filter((store) => !store.isReady());
     disabledStores.filter((store) => setTimeout(() => store.enableStore(), 10000));
