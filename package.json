@@ -24,7 +24,7 @@
     "cron-schedule": "^4.0.0",
     "deep-object-diff": "^1.1.9",
     "discord-api-types": "^0.37.103",
-    "discord.js": "^14.16.2",
+    "discord.js": "^14.16.3",
     "luxon": "^3.5.0",
     "mysql2": "^3.11.3",
     "node-fetch": "^3.3.2",
