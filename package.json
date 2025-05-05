@@ -32,6 +32,6 @@
     "winston": "^3.17.0"
   },
   "devDependencies": {
-    "eslint": "^9.25.1"
+    "eslint": "^9.26.0"
   }
 }
