@@ -67,6 +67,11 @@ export default class Album extends Command {
           description: 'Displays the track list for Taylor Swift\'s album The Tortured Poets Department',
           type: ApplicationCommandOptionType.Subcommand,
         },
+        {
+          name: 'the-life-of-a-showgirl',
+          description: 'Displays the track list for Taylor Swift\'s album The Life of a Showgirl',
+          type: ApplicationCommandOptionType.Subcommand,
+        },
       ],
       deploymentDetails: {
         commandType: 'command',
