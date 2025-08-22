@@ -19,7 +19,7 @@
   "license": "GPL-3.0-only",
   "dependencies": {
     "@discordjs/opus": "^0.10.0",
-    "@discordjs/rest": "^2.5.1",
+    "@discordjs/rest": "^2.6.0",
     "@discordjs/voice": "^0.19.0",
     "cron-schedule": "^4.0.0",
     "deep-object-diff": "^1.1.9",
