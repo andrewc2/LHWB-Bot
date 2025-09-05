@@ -25,7 +25,7 @@
     "deep-object-diff": "^1.1.9",
     "discord-api-types": "^0.38.22",
     "discord.js": "^14.22.1",
-    "luxon": "^3.7.1",
+    "luxon": "^3.7.2",
     "mysql2": "^3.14.3",
     "node-fetch": "^3.3.2",
     "sodium": "^3.0.2",
