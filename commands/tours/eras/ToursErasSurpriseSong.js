@@ -32,9 +32,9 @@ export default class TourErasSecretSong extends Command {
       {
         name: 'The Eras Tour: Surprise Songs',
         iconURL:'https://cdn.lhwb.dev/i/ts.png',
-        url: 'https://docs.google.com/spreadsheets/d/1isbSEIwagJrX97rdZhdYsPBQ4Agw09VIdYj8SqkEjxA/edit#gid=1760751628',
+        url: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSbpOLgnmNTCADiUalKW_SnfMBcxeixvolce_k6iO9EYgXT_nFpl1VAUbQJGpXff5AkivyUrPahJL3N/pubhtml',
       },
-      '(a/g) guitar (p) piano (m) "messed up" (r/yy) repeat/year of repeat',
+      '(g) guitar (p) piano',
       'https://cdn.lhwb.dev/i/TheErasTour.png',
       null,
       6);
