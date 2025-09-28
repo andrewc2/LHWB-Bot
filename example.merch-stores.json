@@ -1,0 +1,18 @@
+ [
+  {
+    "store_name": "",
+    "store_name_short": "",
+    "store_url": "",
+    "discord_information": [
+      {
+        "channel_id": "",
+        "role_id": ""
+      }
+    ],
+    "currency_symbol": "£",
+    "enable_cart": true,
+    "enable_buy_now": true,
+    "interval": 10000,
+    "mass_ping_limit": 10
+  }
+]

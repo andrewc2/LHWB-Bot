@@ -1,0 +1,15 @@
+{
+  "files.exclude": {
+    "node_modules": false,
+  },
+  "editor.formatOnSave": true,
+  "editor.defaultFormatter": "dbaeumer.vscode-eslint",
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "files.autoSave": "afterDelay",
+  "files.autoSaveDelay": 1000,
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "typescript.updateImportsOnFileMove.enabled": "always"
+}

@@ -1,0 +1,6 @@
+{
+  "name": "gif",
+  "description": "Displays a random Taylor related gif",
+  "integration_types": [0, 1],
+  "contexts": [0, 1, 2]
+}

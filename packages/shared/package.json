@@ -1,0 +1,19 @@
+{
+  "name": "@lhwb/shared",
+  "version": "1.0.0",
+  "description": "Shared functions to be used across workspace",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "scripts": {
+    "build": "tsc -b",
+    "clean": "rimraf dist"
+  },
+  "dependencies": {
+    "discord.js": "^14.22.1",
+    "mysql2": "^3.15.1",
+    "redis": "^5.8.2",
+    "umzug": "^3.8.2",
+    "winston": "^3.17.0"
+  }
+}

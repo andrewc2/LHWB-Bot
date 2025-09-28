@@ -1,0 +1,6 @@
+{
+  "name": "mods",
+  "description": "Enables the mods ping in emergencies (unneeded pings could result in a timeout)",
+  "integration_types": [0],
+  "contexts": [0]
+}

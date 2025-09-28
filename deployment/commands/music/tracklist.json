@@ -1,0 +1,6 @@
+{
+  "name": "tracklist",
+  "description": "View the available songs to queue",
+  "integration_types": [0],
+  "contexts": [0]
+}

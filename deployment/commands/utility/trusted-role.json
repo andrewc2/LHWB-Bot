@@ -1,0 +1,32 @@
+{
+  "name": "trusted-role",
+  "description": "Add, remove, and view the trusted role in the server",
+  "default_member_permissions": "1099511627776",
+  "integration_types": [0],
+  "contexts": [0],
+  "options": [
+    {
+      "name": "set",
+      "description": "Set the trusted role in the server",
+      "type": 1,
+      "options": [
+        {
+          "name": "role",
+          "description": "The role to set as trusted",
+          "type": 8,
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "clear",
+      "description": "Clear the trusted role in the server",
+      "type": 1
+    },
+    {
+      "name": "view",
+      "description": "View the trusted role in the server",
+      "type": 1
+    }
+  ]
+}

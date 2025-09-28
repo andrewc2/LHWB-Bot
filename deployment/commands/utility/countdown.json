@@ -1,0 +1,6 @@
+{
+  "name": "countdown",
+  "description": "Display the current event countdowns",
+  "integration_types": [0, 1],
+  "contexts": [0, 1, 2]
+}

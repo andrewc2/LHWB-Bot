@@ -1,0 +1,17 @@
+{
+  "name": "@lhwb/utility-bot",
+  "version": "1.0.0",
+  "description": "Utility commands bot for Discord",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node ."
+  },
+  "dependencies": {
+    "@lhwb/framework": "*",
+    "@lhwb/shared": "*",
+    "discord-api-types": "^0.38.26",
+    "discord.js": "^14.22.1",
+    "luxon": "^3.7.2"
+  }
+}

@@ -1,0 +1,15 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "module": "ES2022",
+    "moduleResolution": "Node",
+    "outDir": "dist",
+    "rootDir": "src",
+    "composite": true,
+  },
+  "include": ["src"],
+  "references": [
+    { "path": "../framework"},
+    { "path": "../shared"}
+  ]
+}

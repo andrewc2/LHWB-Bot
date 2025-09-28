@@ -1,0 +1,19 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "module": "ES2022",
+    "moduleResolution": "Node",
+    "outDir": "dist",
+    "rootDir": "src",
+    "composite": true,
+    "paths": {
+      "cron-schedule/schedulers/timer-based.js": [
+        "../../node_modules/cron-schedule/dist/schedulers/timer-based.d.ts",
+      ]
+    }
+  },
+  "include": ["src"],
+  "references": [
+    { "path": "../shared"}
+  ]
+}

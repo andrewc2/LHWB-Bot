@@ -1,0 +1,21 @@
+{
+  "files": [],
+  "references": [
+    { "path": "./packages/framework"},
+    { "path": "./packages/shared"},
+    { "path": "./packages/music-bot"},
+    { "path": "./packages/merch-bot"}
+  ],
+  "compilerOptions": {
+    "target": "ESNext",
+    "strict": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "allowSyntheticDefaultImports": true,
+    "skipLibCheck": true,
+    "resolveJsonModule": true,
+    "declaration": true,
+    "declarationMap": true,
+    "sourceMap": true
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "name": "recent",
+  "description": "View recent songs for a server or user",
+  "integration_types": [0],
+  "contexts": [0],
+  "options": [
+    {
+      "name": "server",
+      "type": 1,
+      "description": "Shows the 10 most recently played songs on the server"
+    },
+    {
+      "name": "user",
+      "type": 1,
+      "description": "Shows the 10 most recently listened to songs by user",
+      "options": [
+        {
+          "name": "user",
+          "type": 6,
+          "description": "The name of the user to view recent songs for (defaults to you)",
+          "required": false
+        }
+      ]
+    }
+  ]
+}

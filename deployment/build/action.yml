@@ -1,0 +1,25 @@
+name: 'deploy'
+description: 'Deploy LHWB Slash Commands'
+inputs:
+  client-id:
+    description: 'client id of the bot to deploy to'
+    required: true
+  token:
+    description: 'bot token for bot'
+    required: true
+  limited-servers:
+    description: 'comma-separated guild IDs for limited commands'
+    required: true
+  music-servers:
+    description: 'comma-separated guild IDs for music commands'
+    required: true
+  dry-run:
+    description: 'If true, skip actual deploy'
+    required: false
+    default: 'false'
+outputs:
+  response:
+    description: 'response from discord api'
+runs:
+  using: 'node20'
+  main: 'dist/index.js'

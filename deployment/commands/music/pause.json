@@ -1,0 +1,7 @@
+{
+  "name": "pause",
+  "description": "Pauses music on the bot",
+  "default_member_permissions": "1099511627776",
+  "integration_types": [0],
+  "contexts": [0]
+}

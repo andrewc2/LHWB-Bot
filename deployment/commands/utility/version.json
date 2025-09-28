@@ -1,0 +1,6 @@
+{
+  "name": "version",
+  "description": "Displays version information about the bot",
+  "integration_types": [0, 1],
+  "contexts": [0, 1, 2]
+}

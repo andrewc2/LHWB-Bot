@@ -1,0 +1,55 @@
+{
+  "name": "lastfm",
+  "description": "Retrieve data from last.fm about a users scrobbling history",
+  "integration_types": [0, 1],
+  "contexts": [0, 1, 2],
+  "options": [
+    {
+      "name": "current",
+      "description": "Returns yours or another users last scrobbled song",
+      "type": 1,
+      "options": [
+        {
+          "name": "user",
+          "description": "The user to receive scrobble information for (defaults to you)",
+          "type": 6
+        }
+      ]
+    },
+    {
+      "name": "search",
+      "description": "Search for a last.fm profile to see what its last scrobbled song was",
+      "type": 1,
+      "options": [
+        {
+          "name": "username",
+          "description": "The last.fm username you'd like to search",
+          "type": 3,
+          "required": true,
+          "min_length": 2,
+          "max_length": 15
+        }
+      ]
+    },
+    {
+      "name": "set",
+      "description": "Sets your last.fm profile",
+      "type": 1,
+      "options": [
+        {
+          "name": "username",
+          "description": "The last.fm username you'd like to set",
+          "type": 3,
+          "required": true,
+          "min_length": 2,
+          "max_length": 15
+        }
+      ]
+    },
+    {
+      "name": "clear",
+      "description": "Clears your last.fm username from the database",
+      "type": 1
+    }
+  ]
+}

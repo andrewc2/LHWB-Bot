@@ -1,0 +1,20 @@
+{
+  "name": "@lhwb/merch-bot",
+  "version": "1.0.0",
+  "description": "A bot to ping a channel in Discord when an item is refreshed on a Shopify store",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "scripts": {
+    "build": "tsc -b",
+    "start": "node .",
+    "clean": "rimraf dist"
+  },
+  "dependencies": {
+    "cron-schedule": "^5.0.4",
+    "deep-object-diff": "^1.1.9",
+    "discord-api-types": "^0.38.26",
+    "discord.js": "^14.22.1",
+    "@lhwb/shared": "*"
+  }
+}

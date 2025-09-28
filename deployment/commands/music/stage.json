@@ -1,0 +1,7 @@
+{
+  "name": "stage",
+  "description": "Join the servers stage channel",
+  "default_member_permissions": "1099511627776",
+  "integration_types": [0],
+  "contexts": [0]
+}

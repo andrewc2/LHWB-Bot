@@ -1,0 +1,73 @@
+{
+  "name": "album",
+  "description": "View information about Taylor Swift's albums",
+  "integration_types": [0, 1],
+  "contexts": [0, 1, 2],
+  "options": [
+    {
+      "name": "debut",
+      "description": "Displays the track-list for Taylor Swift's album Taylor Swift",
+      "type": 1
+    },
+    {
+      "name": "beautiful-eyes",
+      "description": "Displays the track-list for Taylor Swift's EP Beautiful Eyes",
+      "type": 1
+    },
+    {
+      "name": "fearless",
+      "description": "Displays the track list for Taylor Swift's album Fearless",
+      "type": 1
+    },
+    {
+      "name": "speak-now",
+      "description": "Displays the track-list for Taylor Swift's album Speak Now",
+      "type": 1
+    },
+    {
+      "name": "red",
+      "description": "Displays the track-list for Taylor Swift's album Red",
+      "type": 1
+    },
+    {
+      "name": "1989",
+      "description": "Displays the track-list for Taylor Swift's album 1989",
+      "type": 1
+    },
+    {
+      "name": "reputation",
+      "description": "Displays the track-list for Taylor Swift's album reputation",
+      "type": 1
+    },
+    {
+      "name": "lover",
+      "description": "Displays the track-list for Taylor Swift's album Lover",
+      "type": 1
+    },
+    {
+      "name": "folklore",
+      "description": "Displays the track-list for Taylor Swift's album folklore",
+      "type": 1
+    },
+    {
+      "name": "evermore",
+      "description": "Displays the track-list for Taylor Swift's album evermore",
+      "type": 1
+    },
+    {
+      "name": "midnights",
+      "description": "Displays the track-list for Taylor Swift's album Midnights",
+      "type": 1
+    },
+    {
+      "name": "the-tortured-poets-department",
+      "description": "Displays the track-list for Taylor Swift's album The Tortured Poets Department",
+      "type": 1
+    },
+    {
+      "name": "the-life-of-a-showgirl",
+      "description": "Displays the track-list for Taylor Swift's album The Life of a Showgirl",
+      "type": 1
+    }
+  ]
+}

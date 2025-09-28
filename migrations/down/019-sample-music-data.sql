@@ -1,0 +1,1 @@
+DELETE FROM `song` WHERE `albumName` = 'Fearless' AND `artistName` = 'Taylor Swift';
