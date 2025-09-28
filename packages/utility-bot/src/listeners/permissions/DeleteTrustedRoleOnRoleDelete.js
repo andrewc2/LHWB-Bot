@@ -1,5 +1,5 @@
 import { Listener } from '@lhwb/framework';
-import { Events, Role } from 'discord.js';
+import { Events } from 'discord.js';
 
 export default class DeleteTrustedRoleOnRoleDelete extends Listener {
   constructor() {
@@ -10,7 +10,7 @@ export default class DeleteTrustedRoleOnRoleDelete extends Listener {
     });
   }
 
-  async exec(role: Role) {
+  async exec(role) {
     await this.client.database.guild.clearGuildTrustedRoleByRoleId(role.id);
   }
 }
