@@ -8,4 +8,5 @@ merch-stores.json
 music-servers.json
 config.json
 log
+web/config.php
 !deployment/build/dist
