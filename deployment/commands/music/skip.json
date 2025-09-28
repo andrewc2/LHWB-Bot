@@ -1,0 +1,15 @@
+{
+  "name": "rank-play",
+  "description": "Shows a ranking of the most played songs",
+  "integration_types": [0],
+  "contexts": [0],
+  "options": [
+    {
+      "name": "limit",
+      "type": 4,
+      "description": "The number to limit the rank at",
+      "min_value": 5,
+      "max_value": 25
+    }
+  ]
+}

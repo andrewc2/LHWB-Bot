@@ -1,0 +1,40 @@
+{
+  "name": "request",
+  "description": "Request something be added to the bot",
+  "integration_types": [0, 1],
+  "contexts": [0, 1, 2],
+  "options": [
+    {
+      "name": "type",
+      "description": "The type of request",
+      "type": 3,
+      "required": true,
+      "choices": [
+        {
+          "name": "song",
+          "value": "song"
+        },
+        {
+          "name": "gif",
+          "value": "gif"
+        },
+        {
+          "name": "wtf",
+          "value": "wtf"
+        },
+        {
+          "name": "other",
+          "value": "other"
+        }
+      ]
+    },
+    {
+      "name": "feature",
+      "description": "The feature you'd like to request",
+      "type": 3,
+      "required": true,
+      "min_length": 5,
+      "max_length": 200
+    }
+  ]
+}

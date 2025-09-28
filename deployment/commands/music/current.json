@@ -1,0 +1,6 @@
+{
+  "name": "current",
+  "description": "Shows what song is currently playing",
+  "integration_types": [0],
+  "contexts": [0]
+}

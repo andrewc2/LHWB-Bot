@@ -1,0 +1,96 @@
+{
+  "name": "owner",
+  "description": "Owner only bot commands",
+  "integration_types": [0, 1],
+  "contexts": [0, 1, 2],
+  "options": [
+    {
+      "name": "ban",
+      "description": "Ban a user from the bot",
+      "type": 1,
+      "options": [
+        {
+          "name": "user",
+          "description": "The user to bot ban",
+          "type": 6,
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "unban",
+      "description": "Unban a user from the bot",
+      "type": 1,
+      "options": [
+        {
+          "name": "user",
+          "description": "The user to bot unban",
+          "type": 6,
+          "required": true
+        }
+      ]
+    },
+    {
+      "name": "avatar",
+      "description": "Change the bots avatar",
+      "type": 1,
+      "options": [
+        {
+          "name": "picture",
+          "description": "The picture to change the bots avatar to",
+          "type": 3,
+          "required": true,
+          "choices": [
+            {
+              "name": "selena",
+              "value": "https://cdn.lhwb.dev/i/SelenaAvatar.png"
+            },
+            {
+              "name": "taylor",
+              "value": "https://cdn.lhwb.dev/i/TaylorAvatar.png"
+            },
+            {
+              "name": "test",
+              "value": "https://cdn.lhwb.dev/i/TestBotAvatar.png"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "say",
+      "description": "Speak as the bot",
+      "type": 1,
+      "options": [
+        {
+          "name": "channel-id",
+          "description": "The channel id to send the message to",
+          "type": 3,
+          "required": true,
+          "max_length": 20
+        },
+        {
+          "name": "text",
+          "description": "The message to send",
+          "type": 3,
+          "required": true,
+          "max_length": 1000
+        }
+      ]
+    },
+    {
+      "name": "nickname",
+      "description": "Change the bots nickname",
+      "type": 1,
+      "options": [
+        {
+          "name": "nickname",
+          "description": "The nickname to change the bot to",
+          "type": 3,
+          "required": true,
+          "max_length": 20
+        }
+      ]
+    }
+  ]
+}

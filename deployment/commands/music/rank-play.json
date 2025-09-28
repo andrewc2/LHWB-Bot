@@ -1,0 +1,6 @@
+{
+  "name": "skip",
+  "description": "Skips the current song",
+  "integration_types": [0],
+  "contexts": [0]
+}

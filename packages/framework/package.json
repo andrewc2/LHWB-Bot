@@ -1,0 +1,16 @@
+{
+  "name": "@lhwb/framework",
+  "version": "1.0.0",
+  "description": "Command framework used for bots",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "scripts": {
+    "build": "tsc -b",
+    "clean": "rimraf dist"
+  },
+  "dependencies": {
+    "discord-api-types": "^0.38.26",
+    "discord.js": "^14.22.1"
+  }
+}

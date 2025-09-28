@@ -1,0 +1,66 @@
+{
+  "name": "queue",
+  "description": "Add, remove, view, and clear the queue",
+  "integration_types": [0],
+  "contexts": [0],
+  "options": [
+    {
+      "name": "add",
+      "type": 1,
+      "description": "Add a song to the queue",
+      "options": [
+        {
+          "name": "song-name",
+          "type": 3,
+          "description": "The name of the song to queue",
+          "required": true,
+          "autocomplete": true,
+          "min_length": 1,
+          "max_length": 220
+        }
+      ]
+    },
+    {
+      "name": "album",
+      "type": 1,
+      "description": "Add an album to the queue",
+      "options": [
+        {
+          "name": "album-name",
+          "type": 3,
+          "description": "The name of the album to add to the queue",
+          "required": true,
+          "autocomplete": true,
+          "min_length": 1,
+          "max_length": 220
+        }
+      ]
+    },
+    {
+      "name": "clear",
+      "type": 1,
+      "description": "Clear the queue"
+    },
+    {
+      "name": "remove",
+      "type": 1,
+      "description": "Remove a song from the queue",
+      "options": [
+        {
+          "name": "song-name",
+          "type": 3,
+          "description": "The name of the song to remove from the queue",
+          "required": true,
+          "autocomplete": true,
+          "min_length": 1,
+          "max_length": 220
+        }
+      ]
+    },
+    {
+      "name": "show",
+      "type": 1,
+      "description": "View which songs are currently in the queue"
+    }
+  ]
+}

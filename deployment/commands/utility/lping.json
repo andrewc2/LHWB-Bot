@@ -1,0 +1,113 @@
+{
+  "name": "lping",
+  "description": "Join, leave, and control pinglist's in a server",
+  "integration_types": [0],
+  "contexts": [0],
+  "options": [
+    {
+      "name": "ping",
+      "description": "Ping a pinglist",
+      "type": 1,
+      "options": [
+        {
+          "name": "pinglist",
+          "description": "The name of the pinglist to ping",
+          "type": 3,
+          "required": true,
+          "autocomplete": true,
+          "max_length": 40
+        },
+        {
+          "name": "message",
+          "description": "The message to send along with the ping",
+          "type": 3,
+          "required": false,
+          "max_length": 60
+        }
+      ]
+    },
+    {
+      "name": "create",
+      "description": "Create a pinglist",
+      "type": 1,
+      "options": [
+        {
+          "name": "pinglist",
+          "description": "The name of the pinglist to be created",
+          "type": 3,
+          "required": true,
+          "max_length": 40
+        }
+      ]
+    },
+    {
+      "name": "delete",
+      "description": "Delete a pinglist",
+      "type": 1,
+      "options": [
+        {
+          "name": "pinglist",
+          "description": "The pinglist to delete",
+          "type": 3,
+          "required": true,
+          "max_length": 40
+        }
+      ]
+    },
+    {
+      "name": "drop",
+      "description": "Remove yourself from a pinglist",
+      "type": 1,
+      "options": [
+        {
+          "name": "pinglist",
+          "description": "The pinglist to drop",
+          "type": 3,
+          "required": true,
+          "autocomplete": true,
+          "max_length": 40
+        }
+      ]
+    },
+    {
+      "name": "joined",
+      "description": "See a list of pinglist's you've joined",
+      "type": 1
+    },
+    {
+      "name": "list",
+      "description": "See a list of all the pinglist's in this server",
+      "type": 1
+    },
+    {
+      "name": "get",
+      "description": "Join a pinglist",
+      "type": 1,
+      "options": [
+        {
+          "name": "pinglist",
+          "description": "The name of the pinglist to get",
+          "type": 3,
+          "required": true,
+          "autocomplete": true,
+          "max_length": 40
+        }
+      ]
+    },
+    {
+      "name": "show",
+      "description": "Get a list of everyone who's in a pinglist",
+      "type": 1,
+      "options": [
+        {
+          "name": "pinglist",
+          "description": "The name of the pinglist to show",
+          "type": 3,
+          "required": true,
+          "autocomplete": true,
+          "max_length": 40
+        }
+      ]
+    }
+  ]
+}

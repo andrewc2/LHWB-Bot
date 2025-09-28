@@ -1,37 +1,58 @@
 {
   "name": "lhwb",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "start": "pm2 start index.js",
-    "deploy": "node deploy.js",
-    "start-dev": "node .",
-    "lint": "eslint . --ext .js --fix",
-    "lint-show": "eslint . --ext .js"
-  },
-  "engines": {
-    "node": ">=16.9.0"
-  },
-  "type": "module",
-  "keywords": [],
+  "description": "A Discord bot for Taylor Swift music.",
+  "keywords": [
+    "discord",
+    "music",
+    "merch",
+    "utility"
+  ],
   "author": "iandrewc",
+  "bugs": {
+    "url": "https://github.com/andrewc2/LHWB-Bot/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/andrewc2/LHWB-Bot.git"
+  },
+  "homepage": "https://github.com/andrewc2/LHWB-Bot#readme",
   "license": "GPL-3.0-only",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": "^22.18.0"
+  },
+  "workspaces": [
+    "packages/framework",
+    "packages/shared",
+    "packages/music-bot",
+    "packages/merch-bot",
+    "packages/utility-bot"
+  ],
+  "scripts": {
+    "build": "tsc -b tsconfig.build.json",
+    "rebuild": "tsc -b --clean tsconfig.build.json && tsc -b tsconfig.build.json",
+    "start": "pm2 start ecosystem.config.cjs",
+    "start:music": "npm --prefix ./packages/music-bot start",
+    "start:merch": "npm --prefix ./packages/merch-bot start",
+    "start:utility": "npm --prefix ./packages/utility-bot start",
+    "deploy:local": "cd deployment/build && npm install && npm run local",
+    "lint": "eslint . --ext .ts,.js",
+    "lint:fix": "eslint . --ext .ts,.js --fix"
+  },
   "dependencies": {
-    "@discordjs/opus": "^0.10.0",
-    "@discordjs/rest": "^2.6.0",
-    "@discordjs/voice": "^0.19.0",
-    "cron-schedule": "^4.0.0",
-    "deep-object-diff": "^1.1.9",
-    "discord-api-types": "^0.38.26",
-    "discord.js": "^14.22.1",
-    "luxon": "^3.7.2",
-    "mysql2": "^3.15.1",
-    "node-fetch": "^3.3.2",
-    "sodium": "^3.0.2",
-    "winston": "^3.17.0"
+    "@snazzah/davey": "^0.1.6"
   },
   "devDependencies": {
-    "eslint": "^9.36.0"
+    "@eslint/js": "^9.36.0",
+    "eslint": "^9.36.0",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-prettier": "^5.5.4",
+    "globals": "^16.4.0",
+    "prettier": "^3.6.2",
+    "typescript": "^5.9.2",
+    "typescript-eslint": "^8.44.1"
   }
 }

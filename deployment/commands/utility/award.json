@@ -1,0 +1,59 @@
+{
+  "name": "award",
+  "description": "Add, view, and remove member awards",
+  "integration_types": [0],
+  "contexts": [0],
+  "options": [
+    {
+      "name": "view",
+      "description": "View a members awards",
+      "type": 1,
+      "options": [
+        {
+          "name": "user",
+          "description": "The user whose awards to view (defaults to you)",
+          "type": 6
+        }
+      ]
+    },
+    {
+      "name": "add",
+      "description": "Add an award to a member",
+      "type": 1,
+      "options": [
+        {
+          "name": "user",
+          "description": "The user to add an award to",
+          "type": 6,
+          "required": true
+        },
+        {
+          "name": "award",
+          "description": "The description of the award to add",
+          "type": 3,
+          "required": true,
+          "max_length": 100
+        }
+      ]
+    },
+    {
+      "name": "remove",
+      "description": "Remove an award from a member",
+      "type": 1,
+      "options": [
+        {
+          "name": "user",
+          "description": "The user to remove an award from",
+          "type": 6,
+          "required": true
+        },
+        {
+          "name": "award-id",
+          "description": "The id of the award to remove (leave blank to view the IDs of a users awards)",
+          "type": 4,
+          "min_value": 0
+        }
+      ]
+    }
+  ]
+}

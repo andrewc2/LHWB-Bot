@@ -1,0 +1,13 @@
+{
+  "files": [],
+  "references": [
+    { "path": "packages/framework" },
+    { "path": "packages/shared" },
+    { "path": "packages/music-bot" },
+    { "path": "packages/merch-bot" }
+  ],
+  "exclude": [
+    "node_modules",
+    "deployment/build"
+  ]
+}

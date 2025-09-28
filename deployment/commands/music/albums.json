@@ -1,0 +1,6 @@
+{
+  "name": "albums",
+  "description": "View which albums are queueable",
+  "integration_types": [0],
+  "contexts": [0]
+}

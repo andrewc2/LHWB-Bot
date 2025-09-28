@@ -1,0 +1,23 @@
+{
+  "name": "@lhwb/music-bot",
+  "version": "1.0.0",
+  "description": "Music bot for Discord",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "type": "module",
+  "scripts": {
+    "build": "tsc -b",
+    "start": "node .",
+    "clean": "rimraf dist"
+  },
+  "dependencies": {
+    "@discordjs/opus": "^0.10.0",
+    "@discordjs/voice": "^0.19.0",
+    "@lhwb/framework": "*",
+    "@lhwb/shared": "*",
+    "discord-api-types": "^0.38.26",
+    "discord.js": "^14.22.1",
+    "sodium": "^3.0.2",
+    "winston": "^3.17.0"
+  }
+}

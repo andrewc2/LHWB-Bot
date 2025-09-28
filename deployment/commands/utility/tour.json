@@ -1,0 +1,109 @@
+{
+  "name": "tour",
+  "description": "View information about Taylor Swift's tours",
+  "integration_types": [0, 1],
+  "contexts": [0, 1, 2],
+  "options": [
+    {
+      "name": "schedule",
+      "description": "Displays a schedule for upcoming Taylor Swift shows",
+      "type": 1
+    },
+    {
+      "name": "red",
+      "description": "Displays information about Taylor Swift's Red Stadium Tour",
+      "type": 2,
+      "options": [
+        {
+          "name": "setlist",
+          "description": "Displays the setlist for Taylor Swift's Red Tour",
+          "type": 1
+        },
+        {
+          "name": "guests",
+          "description": "Displays the guest list on Taylor Swift's Red Tour",
+          "type": 1
+        }
+      ]
+    },
+    {
+      "name": "1989",
+      "description": "Displays information about Taylor Swift's 1989 Stadium Tour",
+      "type": 2,
+      "options": [
+        {
+          "name": "setlist",
+          "description": "Displays the setlist for Taylor Swift's 1989 World Tour",
+          "type": 1
+        },
+        {
+          "name": "guests",
+          "description": "Displays the guest list on Taylor Swift's 1989 World Tour",
+          "type": 1
+        },
+        {
+          "name": "surprise-songs",
+          "description": "Displays the surprise songs from Taylor Swift's 1989 World Tour",
+          "type": 1
+        }
+      ]
+    },
+    {
+      "name": "reputation",
+      "description": "Displays information about Taylor Swift's reputation Stadium Tour",
+      "type": 2,
+      "options": [
+        {
+          "name": "setlist",
+          "description": "Displays the setlist for Taylor Swift's reputation Stadium Tour",
+          "type": 1
+        },
+        {
+          "name": "guests",
+          "description": "Displays the guest list on Taylor Swift's reputation Stadium Tour",
+          "type": 1
+        },
+        {
+          "name": "surprise-songs",
+          "description": "Displays the surprise songs from Taylor Swift's reputation Stadium Tour",
+          "type": 1
+        }
+      ]
+    },
+    {
+      "name": "eras",
+      "description": "Displays information about Taylor Swift's The Eras Tour",
+      "type": 2,
+      "options": [
+        {
+          "name": "setlist",
+          "description": "Displays the setlist for Taylor Swift The Eras Tour",
+          "type": 1,
+          "options": [
+            {
+              "name": "version",
+              "description": "Which version of tour?",
+              "type": 3,
+              "required": true,
+              "choices": [
+                {
+                  "name": "Eras I (NA 2023/LATAM/AS/AU)",
+                  "value": "ogEra"
+                },
+                {
+                  "name": "Eras II (EU/NA 2024)",
+                  "value": "newEra"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "name": "surprise-songs",
+          "description": "Displays the surprise songs from Taylor Swift The Eras Tour",
+          "type": 1
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,7 @@
+{
+  "name": "voice",
+  "description": "Join the servers voice channel",
+  "default_member_permissions": "1099511627776",
+  "integration_types": [0],
+  "contexts": [0]
+}

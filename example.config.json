@@ -1,36 +1,24 @@
 {
-  "command_deployment": {
-    "client_id": "",
-    "limited_guilds": [""]
-  },
   "discord": {
-    "discord_token": "",
-    "owner": "",
-    "ignore_perms": [""],
+    "token": "",
+    "owner_id": "",
+    "client_id": "",
     "mod_role_id": ""
   },
-  "store_details": [
-    {
-      "store_name": "",
-      "store_name_short": "",
-      "store_url": "",
-      "channel_id": "",
-      "role_id": "",
-      "currency_symbol": "£",
-      "webhook_url": "",
-      "enable_cart": false,
-      "enable_buy_now": false,
-      "interval": 30000
-    }
-  ],
   "lastfm": {
     "api_key": "",
     "api_secret": ""
   },
   "mysql": {
-    "database_host": "",
-    "database_username": "",
-    "database_password": "",
-    "database_name": ""
+    "host": "localhost",
+    "username": "",
+    "password": "",
+    "port": "3306",
+    "database": ""
+  },
+  "redis": {
+    "host": "localhost",
+    "port": "6379",
+    "password": ""
   }
 }
