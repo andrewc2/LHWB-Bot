@@ -24,7 +24,7 @@ export default class AlbumTheLifeOfAShowgirl extends Command {
       .setFooter({ text: 'Page 1 of 2 - Total Runtime: 41:40' })
       .setDescription(
         escapeNumberedList(
-          '**The Life of a Showgirl** will be released on __October 3, 2025__\n\n1. The Fate of Ophelia (3:46)\n2. Elizabeth Taylor (3:28)\n3. Opalite (3:55)\n4. Father Figure (3:32)\n5. Eldest Daughter (4:06)\n6. Ruin The Friendship (3:40)',
+          '**The Life of a Showgirl** was released on __October 3, 2025__\n\n1. The Fate of Ophelia (3:46)\n2. Elizabeth Taylor (3:28)\n3. Opalite (3:55)\n4. Father Figure (3:32)\n5. Eldest Daughter (4:06)\n6. Ruin The Friendship (3:40)',
         ),
       );
 
@@ -39,7 +39,7 @@ export default class AlbumTheLifeOfAShowgirl extends Command {
       .setFooter({ text: 'Page 2 of 2 - Total Runtime: 41:40' })
       .setDescription(
         escapeNumberedList(
-          '**The Life of a Showgirl** will be released on __October 3, 2025__\n\n7. Actually Romantic (2:43)\n8. Wi$h Li$t (3:27)\n9. Wood (2:30)\n10. CANCELLED! (3:31)\n11. Honey (3:01)\n12. The Life of a Showgirl (feat. Sabrina Carpenter) (4:01)',
+          '**The Life of a Showgirl** was be released on __October 3, 2025__\n\n7. Actually Romantic (2:43)\n8. Wi$h Li$t (3:27)\n9. Wood (2:30)\n10. CANCELLED! (3:31)\n11. Honey (3:01)\n12. The Life of a Showgirl (feat. Sabrina Carpenter) (4:01)',
         ),
       );
 

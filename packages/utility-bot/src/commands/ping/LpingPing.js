@@ -28,7 +28,7 @@ export default class LpingPing extends Command {
           description: 'The message to send along with the ping',
           type: ApplicationCommandOptionType.String,
           required: false,
-          max_length: 60,
+          max_length: 40,
         },
       ],
     });
