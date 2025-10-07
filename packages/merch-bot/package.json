@@ -13,7 +13,7 @@
   "dependencies": {
     "cron-schedule": "^5.0.4",
     "deep-object-diff": "^1.1.9",
-    "discord-api-types": "^0.38.26",
+    "discord-api-types": "^0.38.28",
     "discord.js": "^14.22.1",
     "@lhwb/shared": "*"
   }
