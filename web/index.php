@@ -1,15 +1,5 @@
 <?php require_once('includes/header.php'); ?>
             <style>
-                @font-face {
-                  font-family: tswift;
-                  src: url(TaylorSwiftHandwriting.ttf);
-                }
-                .nowplaying {
-                    color:#ffffff;
-                    font-size: 22px;
-                    font-family: tswift, arial, sans-serif;
-                    display: inline;
-                }
                 h4 {
                     text-align: center;
                 }
@@ -25,10 +15,33 @@
                 #dataStore {
                     margin-bottom: 10px; float: none; margin: 0 auto; text-align: center;
                 }
+                #ad {
+                    width: 250px;
+                }
+                .adBox {
+                    display: flex;
+                    justify-content: space-around;
+                }
+                .item {
+                    padding: 10px;
+                    background-color: #63377f;
+                    margin: 5px;
+                    border-radius: 5px;
+                }
             </style>
 
             <div class="container-fluid">
                 <div id="commands">
+                    <div class="adBox">
+                        <div class="item">
+                            <a href="https://termius.com/"><img src="/includes/images/termius-icon-64.png" alt="Termius Logo"></a>
+                            <h4><a href="https://termius.com/">Termius</a> provides a secure, reliable, and collaborative SSH client.</h4>
+                        </div>
+                        <div class="item">
+                            <a href="https://www.benjibot.xyz/"><img src="/includes/images/benji.png" alt="BenjiBot Logo" width="64px"></a>
+                            <h4><a href="https://www.benjibot.xyz/">BenjiBot</a> A multi-purpose Discord bot designed to help improve your server with moderation, saves, last.fm, and more.</h4>
+                        </div>
+                    </div>
                     <h4><u>Album Commands</u></h4>
                     <ul>
                         <li>/album debut: Displays the track listing for Taylor Swift's Debut album.</li>
@@ -42,21 +55,22 @@
                         <li>/album folklore: Displays the track listing for folklore.</li>
                         <li>/album evermore: Displays the track listing for evermore.</li>
                         <li>/album midnights: Displays the track listing for Midnights.</li>
-                        <li>/album the-tortured-poets-department: Displays the track listing for<br>THE TORTURED POETS DEPARTMENT: THE ANTHOLOGY.</li>
+                        <li>/album the-tortured-poets-department: Displays the track listing for The Tortured Poets Department.</li>
+                        <li>/album the-life-of-a-showgirl: Displays the track listing for The Life of a Showgirl.</li>
                     
                         <h4><u>Tour Commands</u></h4>
                     
                         <li>/tour red guests: Displays the special guests on The Red Tour.</li>
-                        <li>/tour 1989 guests: Displays the special guests on the 1989 World Tour.</li>
-                        <li>/tour reputation guests: Displays the special guests on the reputation Stadium Tour.</li>
                         <li>/tour red setlist: Displays The Red Tour typical set list.</li>
+                        <li>/tour 1989 guests: Displays the special guests on the 1989 World Tour.</li>
                         <li>/tour 1989 setlist: Displays the 1989 World Tour typical set list.</li>
+                        <li>/tour 1989 surprise-songs: Displays the complete list of 1989 World Tour surprise songs.</li>
+                        <li>/tour reputation guests: Displays the special guests on the reputation Stadium Tour.</li>
                         <li>/tour reputation setlist: Displays the reputation Stadium Tour typical set list.</li>
-                        <li>/tour 1989 secret-songs: Displays the complete list of 1989 World Tour secret songs.</li>
-                        <li>/tour reputation secret-songs: Displays the complete list of reputation Stadium Tour secret songs.</li>
+                        <li>/tour reputation surprise-songs: Displays the complete list of reputation Stadium Tour surprise songs.</li>
                         <li>/tour eras surprise-songs: Displays the complete list of The Eras Tour surprise songs.</li>
                         <li>/tour eras setlist: Displays The Eras Tour typical set list.</li>
-                        <li>/tour eras countdown: Displays the upcoming The Eras Tour shows.</li>
+                        <li>/tour schedule: Displays the upcoming tour shows.</li>
                     
                         <h4><u>Misc Commands</u></h4>
                     
@@ -65,7 +79,6 @@
                         <li>/version: current version of the bot.</li>
                         <li>/request [type] [feature]: Logs a user's request for a bot feature or song/gif etc.</li>
                         <li>/wtf: replies with a random !g wtf[#].</li>
-                        <li>/wtny: sends the welcome to discord skyline gif.</li>
                     
                         <h4><u>Last FM Commands</u></h4>
                     
@@ -85,43 +98,6 @@
                         <li>/lping show [pinglist]: Displays an embed with all members of a pinglist [mod only]</li>
                         <li>/lping create [pinglist]: Creates a pinglist that users can join [mod only]</li>
                         <li>/lping delete [pinglist]: Deletes a pinglist entirely [mod only]</li>
-                    
-                        <!-- <h4><u>Music Commands</u></h4>
-                        <li>/queue show: Displays the current song queue [Bots Channel Only]</li>
-                        <li>/queue add [song]: Adds a song to the current queue [Bots Channel Only]</li>
-                        <li>/queue album [album]: Adds an entire album to the current queue [Mods Only]</li>
-                        <li>/queue album-list: Displays the albums which are queueable [Bots Channel Only]</li>
-                        <li>/current: Displays the current song name along side the user who queued it</li>
-                        <li>/rank-play [num]: Displays a list of length 'num' order by most played (default is 5, max of 25)</li>
-                        <li>/recent [server/user]: Displays the 10 most recently played songs for the server or specified user</li>
-                        <li>/track list: Returns a link with all songs available on LHWB</li>
-                        <li>/track information [song]: View information about a track</li>
-                        
-                        <li>/queue remove [song]: Removes a song from the queue [Trusted Role Only]</li>
-                        <li>/queue clear: Removes all songs from the current queue [Trusted Role Only]</li>
-                        <li>/rejoin: Put's the bot back in it's default voice channel [Trusted Role Only]</li>
-                        <li>/skip: Skips the current song [Trusted Role Only]</li>
-                        <li>/pause: Tells the bot to start playing music [Mod Only]</li>
-                        <li>/resume: Tells the bot to stop playing music [Mod Only]</li>
-                        <li>/stage: Put's the bot in server's stage channel [Mod Only]</li> -->
-
-                        <h4><u>Mod Commands</u></h4>
-                        
-                        <li>/spam add [channel]: Make a channel a spam channel</li>
-                        <li>/spam remove [channel]: Remove a channel from being a spam channel</li>
-                        <li>/spam view: View all added spam channels</li>
-                        <li>/trusted set option:[role]: Make a role trusted by the bot for limited access commands</li>
-                        <li>/trusted clear: Clear the trusted role</li>
-                        <li>/trusted view: View the trusted role</li>
-                        <li>/restart: Restarts the bot</li>
-
-                        <h4><u>Owner Commands</u></h4>
-
-                        <li>/owner ban [user]: Bans a user from the bot</li>
-                        <li>/owner unban [user]: Un-Bans a user from the bot</li>
-                        <li>/owner avatar [name]: Changes the bot's avatar</li>
-                        <li>/owner say [channeId] [name]: Sends messages to chat as the bot</li>
-                        <li>/owner nickname [name]: Changes the bot's nickname</li>
                     </ul>
                 </div>
             </div>

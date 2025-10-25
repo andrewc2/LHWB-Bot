@@ -17,8 +17,8 @@
 
                     <tbody>
                         <?php
-                        $stmt = $db->prepare("SELECT songUserListen.id, songUserListen.song_detail_id, songUserListen.date, songDetail.official_name, songDetail.artist_name, songDetail.album FROM songUserListen
-                        INNER JOIN songDetail ON songUserListen.song_detail_id = songDetail.id WHERE 1 AND user_id = ? ORDER BY id DESC");
+                        $stmt = $db->prepare("SELECT songUserHistory.id, songUserHistory.songId, songUserHistory.date, song.officialName, song.artistName, song.albumName FROM songUserHistory
+                        INNER JOIN song ON songUserHistory.songId = song.id WHERE 1 AND userId = ? ORDER BY id DESC");
                         $stmt->bind_param("s", $user);
                         $stmt->execute();
                         $stmt->bind_result($id, $detail_id, $listen_date, $name, $artist, $album);

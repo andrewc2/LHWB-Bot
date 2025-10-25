@@ -26,17 +26,17 @@
 
             <!-- Open Graph / Facebook -->
             <meta property="og:type" content="website">
-            <meta property="og:url" content="https://lhwb.dev/lhwb.php">
+            <meta property="og:url" content="https://lhwb.dev/">
             <meta property="og:title" content="<?php echo isset($title) ? $title : "LosingHimWasBlue [Bot] - Discord Bot"; ?>">
             <meta property="og:description" content="<?php echo isset($desc) ? $desc : "LosingHimWasBlue | A multi-purpose music and utility Discord bot for Taylor Swift related servers, with user joinable pinglists, last.fm, and album metadata."; ?>">
-            <meta property="og:image" content="https://i.imgur.com/NxrK0v4.jpeg">
+            <meta property="og:image" content="/images/Banner.png">
 
             <!-- Twitter -->
             <meta property="twitter:card" content="summary_large_image">
-            <meta property="twitter:url" content="https://lhwb.dev/lhwb.php">
+            <meta property="twitter:url" content="https://lhwb.dev/">
             <meta property="twitter:title" content="<?php echo isset($title) ? $title : "LosingHimWasBlue [Bot] - Discord Bot"; ?>">
             <meta property="twitter:description" content="<?php echo isset($desc) ? $desc : "LosingHimWasBlue | A multi-purpose music and utility Discord bot for Taylor Swift related servers, with user joinable pinglists, last.fm, and album metadata."; ?>">
-            <meta property="twitter:image" content="https://i.imgur.com/NxrK0v4.jpeg">
+            <meta property="twitter:image" content="/images/Banner.png">
 
             <!-- Global site tag (gtag.js) - Google Analytics -->
             <script async src="https://www.googletagmanager.com/gtag/js?id=G-EJ2HKNBZ1B"></script>
@@ -92,11 +92,10 @@
                         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
                             <ul class="nav navbar-nav">
                                 <li><a href="index.php">Home</a></li>
-                                <li><a href="lhwb.php">Song List</a></li>
-                                <li><a href="recent.php">Recently Played Songs</a></li>
+                                <li><a href="https://lhwb.dev/support">Support Server</a></li>
                                 <li><a href="privacy.php">Privacy Policy</a></li>
                                 <li><a href="tos.php">Terms of Service</a></li>
-                                <li><a href="https://github.com/andrewc2/Red-Bot">Github</a></li>
+                                <li><a href="https://github.com/andrewc2/LHWB-Bot">Github</a></li>
                             </ul>
                         </div><!-- /.navbar-collapse -->
                     </div><!-- /.container-fluid -->

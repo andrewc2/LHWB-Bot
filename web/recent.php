@@ -16,8 +16,8 @@
 
                     <tbody>
                         <?php
-                        $stmt = $db->prepare("SELECT songRecent.id, songRecent.song_detail_id, songRecent.queued_by, songDetail.official_name, songDetail.album FROM songRecent
-                        INNER JOIN songDetail ON songRecent.song_detail_id = songDetail.id WHERE 1 AND guild_id = ? ORDER BY id DESC LIMIT 26");
+                        $stmt = $db->prepare("SELECT songGuildHistory.id, songGuildHistory.songId, songGuildHistory.queuedBy, song.officialName, song.albumName FROM songGuildHistory
+                        INNER JOIN song ON songGuildHistory.songId = song.id WHERE 1 AND guildId = ? ORDER BY id DESC LIMIT 26");
                         $stmt->bind_param("s", $server);
                         $stmt->execute();
                         $stmt->bind_result($id, $detail_id, $queuedby, $name, $album);
