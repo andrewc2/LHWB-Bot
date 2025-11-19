@@ -42,7 +42,7 @@
     "lint:fix": "eslint . --ext .ts,.js --fix"
   },
   "dependencies": {
-    "@snazzah/davey": "^0.1.6"
+    "@snazzah/davey": "^0.1.8"
   },
   "devDependencies": {
     "@eslint/js": "^9.37.0",
