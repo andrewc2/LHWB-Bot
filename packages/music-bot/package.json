@@ -16,7 +16,7 @@
     "@lhwb/framework": "*",
     "@lhwb/shared": "*",
     "discord-api-types": "^0.38.28",
-    "discord.js": "^14.25.0",
+    "discord.js": "^14.25.1",
     "sodium": "^3.0.2",
     "winston": "^3.18.3"
   }

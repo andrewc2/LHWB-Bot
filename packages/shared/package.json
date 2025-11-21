@@ -10,7 +10,7 @@
     "clean": "rimraf dist"
   },
   "dependencies": {
-    "discord.js": "^14.25.0",
+    "discord.js": "^14.25.1",
     "mysql2": "^3.15.3",
     "redis": "^5.8.3",
     "umzug": "^3.8.2",
