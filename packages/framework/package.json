@@ -11,6 +11,6 @@
   },
   "dependencies": {
     "discord-api-types": "^0.38.28",
-    "discord.js": "^14.25.0"
+    "discord.js": "^14.25.1"
   }
 }
