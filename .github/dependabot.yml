@@ -15,3 +15,4 @@ updates:
 # Always increase the version requirement
 # to match the new version.
     versioning-strategy: increase
+    open-pull-requests-limit: 10
