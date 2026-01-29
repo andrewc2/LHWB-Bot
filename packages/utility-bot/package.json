@@ -10,7 +10,7 @@
   "dependencies": {
     "@lhwb/framework": "*",
     "@lhwb/shared": "*",
-    "discord-api-types": "^0.38.37",
+    "discord-api-types": "^0.38.38",
     "discord.js": "^14.25.1",
     "luxon": "^3.7.2"
   }
