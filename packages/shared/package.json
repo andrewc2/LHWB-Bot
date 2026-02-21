@@ -12,7 +12,7 @@
   "dependencies": {
     "discord.js": "^14.25.1",
     "mysql2": "^3.17.4",
-    "redis": "^5.10.0",
+    "redis": "^5.11.0",
     "umzug": "^3.8.2",
     "winston": "^3.19.0"
   }
