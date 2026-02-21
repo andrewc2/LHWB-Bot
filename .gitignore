@@ -10,3 +10,6 @@ config.json
 log
 web/config.php
 !deployment/build/dist
+/music-servers.json.dev
+/merch-stores.json.dev
+/config.json.dev
