@@ -22,21 +22,20 @@
             <meta name="apple-mobile-web-app-capable" content="yes">
             <meta name="apple-mobile-web-app-status-bar-style" content="black">
             <meta name="application-name" content="LHWB [Bot]">
-            <!-- <link rel="shortcut icon" type="image/jpg" href="favicon.ico"/> -->
-
+            
             <!-- Open Graph / Facebook -->
             <meta property="og:type" content="website">
             <meta property="og:url" content="https://lhwb.dev/">
             <meta property="og:title" content="<?php echo isset($title) ? $title : "LosingHimWasBlue [Bot] - Discord Bot"; ?>">
             <meta property="og:description" content="<?php echo isset($desc) ? $desc : "LosingHimWasBlue | A multi-purpose music and utility Discord bot for Taylor Swift related servers, with user joinable pinglists, last.fm, and album metadata."; ?>">
-            <meta property="og:image" content="/images/Banner.png">
+            <meta property="og:image" content="https://cdn.lhwb.dev/i/Banner.png">
 
             <!-- Twitter -->
             <meta property="twitter:card" content="summary_large_image">
             <meta property="twitter:url" content="https://lhwb.dev/">
             <meta property="twitter:title" content="<?php echo isset($title) ? $title : "LosingHimWasBlue [Bot] - Discord Bot"; ?>">
             <meta property="twitter:description" content="<?php echo isset($desc) ? $desc : "LosingHimWasBlue | A multi-purpose music and utility Discord bot for Taylor Swift related servers, with user joinable pinglists, last.fm, and album metadata."; ?>">
-            <meta property="twitter:image" content="/images/Banner.png">
+            <meta property="twitter:image" content="https://cdn.lhwb.dev/i/Banner.png">
 
             <!-- Global site tag (gtag.js) - Google Analytics -->
             <script async src="https://www.googletagmanager.com/gtag/js?id=G-EJ2HKNBZ1B"></script>
