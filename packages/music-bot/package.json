@@ -15,7 +15,7 @@
     "@discordjs/voice": "^0.19.2",
     "@lhwb/framework": "*",
     "@lhwb/shared": "*",
-    "discord-api-types": "^0.38.43",
+    "discord-api-types": "^0.38.44",
     "discord.js": "^14.26.0",
     "sodium": "^3.0.2",
     "winston": "^3.19.0"
