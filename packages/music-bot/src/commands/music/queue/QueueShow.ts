@@ -2,6 +2,7 @@ import { Command } from '@lhwb/framework';
 import { EmbedFormatter, Paginator } from '@lhwb/shared';
 import { ChatInputCommandInteraction, PermissionsBitField } from 'discord.js';
 
+import MusicServer from '../../../modules/music/MusicServer.js';
 import Utilities from '../../../modules/tool/Utilities.js';
 
 export default class QueueShow extends Command {
@@ -15,7 +16,10 @@ export default class QueueShow extends Command {
   }
 
   async exec(interaction: ChatInputCommandInteraction) {
-    const server = Utilities.getMusicServer(this.client, interaction.guildId!);
+    const server = Utilities.getMusicServer(
+      this.client,
+      interaction.guildId!,
+    ) as MusicServer;
 
     if (!server) {
       return interaction.editReply({

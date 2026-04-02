@@ -10,7 +10,7 @@ import {
   Snowflake,
 } from 'discord.js';
 
-import { StoreConfigInterface } from './interface/storeConfigInterface';
+import { StoreConfigInterface } from './interface/storeConfigInterface.js';
 import ShopifyStore from './ShopifyStore.js';
 import { logger } from './utilities.js';
 

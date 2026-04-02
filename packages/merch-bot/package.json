@@ -11,7 +11,7 @@
     "clean": "rimraf dist"
   },
   "dependencies": {
-    "cron-schedule": "^5.0.4",
+    "cron-schedule": "^6.0.0",
     "deep-object-diff": "^1.1.9",
     "discord-api-types": "^0.38.44",
     "discord.js": "^14.26.0",

@@ -8,11 +8,11 @@
     "local": "node local.js"
   },
   "dependencies": {
-    "@actions/core": "^1.11.1",
-    "@actions/github": "^6.0.1",
-    "discord-api-types": "^0.38.24",
-    "discord.js": "^14.22.1",
-    "glob": "^11.1.0",
-    "lodash": "^4.17.23"
+    "@actions/core": "^3.0.0",
+    "@actions/github": "^9.0.0",
+    "discord-api-types": "^0.38.44",
+    "discord.js": "^14.26.0",
+    "glob": "^13.0.6",
+    "lodash": "^4.18.1"
   }
 }

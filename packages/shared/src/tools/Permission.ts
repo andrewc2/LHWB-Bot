@@ -1,6 +1,6 @@
 import { GuildMember, PermissionsBitField } from 'discord.js';
 
-import { MySQLDriver } from '../database/MySQLDriver';
+import { MySQLDriver } from '../database/MySQLDriver.js';
 
 const modRole = PermissionsBitField.Flags.ModerateMembers;
 

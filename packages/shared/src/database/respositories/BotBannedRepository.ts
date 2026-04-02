@@ -1,7 +1,7 @@
 import { Snowflake } from 'discord.js';
 import { Pool } from 'mysql2/promise';
 
-import { LoggerTool } from '../../tools/Logging';
+import { LoggerTool } from '../../tools/Logging.js';
 
 export class BotBannedRepository {
   private readonly database: Pool;

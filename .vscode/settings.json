@@ -10,6 +10,11 @@
   "files.autoSaveDelay": 1000,
   "files.insertFinalNewline": true,
   "files.trimTrailingWhitespace": true,
-  "javascript.updateImportsOnFileMove.enabled": "always",
-  "typescript.updateImportsOnFileMove.enabled": "always"
+  "js/ts.updateImportsOnFileMove.enabled": "always",
+  "files.associations": {
+    "config.json": "text"
+  },
+  "github.copilot.enable": {
+    "text": false,
+  }
 }

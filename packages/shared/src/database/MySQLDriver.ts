@@ -135,12 +135,12 @@ export class MySQLDriver {
     await this.umzug.up();
   }
 
-  public async query<
-    T extends RowDataPacket[],
-    P extends readonly unknown[] = [],
-  >(sql: string, params?: P): Promise<T> {
+  public async query<T extends RowDataPacket[], P extends unknown[] = []>(
+    sql: string,
+    params?: P,
+  ): Promise<T> {
     try {
-      const [rows] = await this.database.query<T>(sql, params ?? []);
+      const [rows] = await this.database.query<T>(sql, params);
       return rows;
     } catch (e) {
       this.logger.error(`Database query failed: ${sql}`);
