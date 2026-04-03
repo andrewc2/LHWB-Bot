@@ -11,6 +11,9 @@ export default class Album1989 extends Command {
     });
   }
 
+  /**
+   * @param {import('discord.js').ChatInputCommandInteraction} interaction
+   */
   async exec(interaction) {
     const embedTV = new EmbedBuilder()
       .setColor(7706804)

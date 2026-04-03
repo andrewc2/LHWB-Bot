@@ -10,6 +10,9 @@ export default class Wtny extends Command {
     });
   }
 
+  /**
+   * @param {import('discord.js').ChatInputCommandInteraction} interaction
+   */
   async exec(interaction) {
     if (interaction.guildId === '115332333745340416') {
       return interaction.editReply({

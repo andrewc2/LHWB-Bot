@@ -21,6 +21,9 @@ export default class LastFmCurrent extends Command {
     });
   }
 
+  /**
+   * @param {import('discord.js').ChatInputCommandInteraction} interaction
+   */
   async exec(interaction) {
     const user = interaction.options.getUser('user') ?? interaction.user;
 

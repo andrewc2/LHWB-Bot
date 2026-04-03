@@ -29,6 +29,9 @@ export default class OwnerSay extends Command {
     });
   }
 
+  /**
+   * @param {import('discord.js').ChatInputCommandInteraction} interaction
+   */
   async exec(interaction) {
     const channelId = interaction.options.getString('channel-id', true);
     const text = interaction.options.getString('text', true);
@@ -42,9 +45,9 @@ export default class OwnerSay extends Command {
 
     const channel = await this.client.channels.cache.get(channelId);
 
-    if (!channel.isSendable()) {
+    if (!channel?.isSendable()) {
       return interaction.editReply({
-        embed: [failEmbed],
+        embeds: [failEmbed],
       });
     }
 

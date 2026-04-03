@@ -11,9 +11,14 @@ export default class CommandError extends Listener {
     });
   }
 
+  /**
+   * @param {Error} err
+   * @param {import('discord.js').ChatInputCommandInteraction} interaction
+   * @param {import('@lhwb/framework').Command | undefined} command
+   */
   async exec(err, interaction, command) {
     this.client.logger.error(
-      `CommandHandler Error: ${err} With Command: ${command.id}`,
+      `CommandHandler Error: ${err} With Command: ${command?.id ?? 'unknown'}`,
     );
 
     const embed = EmbedFormatter.standardErrorEmbed().setDescription(

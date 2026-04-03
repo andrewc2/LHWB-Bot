@@ -34,7 +34,20 @@ export default class LpingPing extends Command {
     });
   }
 
+  /**
+   * @param {import('discord.js').ChatInputCommandInteraction} interaction
+   */
   async exec(interaction) {
+    if (!interaction.inCachedGuild()) {
+      return interaction.editReply({
+        embeds: [
+          EmbedFormatter.standardErrorEmbed().setDescription(
+            'This command can only be used in a server.',
+          ),
+        ],
+      });
+    }
+
     const name = interaction.options
       .getString('pinglist', true)
       .replace(/\s/g, '')
@@ -85,6 +98,7 @@ export default class LpingPing extends Command {
         components: [Ping.pinglistWarningButton()],
       });
 
+      /** @param {import('discord.js').ButtonInteraction} i */
       const filter = async (i) => {
         await i.deferUpdate();
         return i.user.id === interaction.user.id;
@@ -106,6 +120,9 @@ export default class LpingPing extends Command {
     }
   }
 
+  /**
+   * @param {import('discord.js').AutocompleteInteraction} interaction
+   */
   async autocomplete(interaction) {
     await Ping.pingAutocomplete(interaction, this.client);
   }

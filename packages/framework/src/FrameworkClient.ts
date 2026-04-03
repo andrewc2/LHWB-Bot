@@ -12,9 +12,10 @@ import { CommandHandler } from './commands/CommandHandler.js';
 
 import type { ClientEvents } from './types/events.js';
 
-export class FrameworkClient<
-  Ready extends boolean = boolean,
-> extends DiscordClient<Ready> {
+export class FrameworkClient<Ready extends boolean = boolean>
+  extends DiscordClient<Ready>
+  implements FrameworkClientEventOverloads<Ready>
+{
   declare public commandHandler: CommandHandler;
   declare public ownerId: Snowflake | Snowflake[];
   declare public apiCommands:
@@ -47,15 +48,16 @@ export class FrameworkClient<
 
 type Events = ClientEvents;
 
-export interface FrameworkClient<Ready extends boolean = boolean>
-  extends DiscordClient<Ready> {
+export interface FrameworkClientEventOverloads<
+  Ready extends boolean = boolean,
+> extends DiscordClient<Ready> {
   on<K extends keyof Events>(
     event: K,
     listener: (...args: Events[K]) => Awaitable<void>,
   ): this;
   on<S extends string | symbol>(
     event: Exclude<S, keyof Events>,
-    listener: (...args: any[]) => Awaitable<void>,
+    listener: (...args: unknown[]) => Awaitable<void>,
   ): this;
 
   once<K extends keyof Events>(
@@ -64,7 +66,7 @@ export interface FrameworkClient<Ready extends boolean = boolean>
   ): this;
   once<S extends string | symbol>(
     event: Exclude<S, keyof Events>,
-    listener: (...args: any[]) => Awaitable<void>,
+    listener: (...args: unknown[]) => Awaitable<void>,
   ): this;
 
   emit<K extends keyof Events>(event: K, ...args: Events[K]): boolean;
@@ -79,7 +81,7 @@ export interface FrameworkClient<Ready extends boolean = boolean>
   ): this;
   off<S extends string | symbol>(
     event: Exclude<S, keyof Events>,
-    listener: (...args: any[]) => Awaitable<void>,
+    listener: (...args: unknown[]) => Awaitable<void>,
   ): this;
 
   removeAllListeners<K extends keyof Events>(event?: K): this;

@@ -43,6 +43,8 @@ export class Inhibitor extends FrameworkModule<InhibitorHandler, Inhibitor> {
     interaction: ChatInputCommandInteraction,
     command?: Command,
   ): boolean | Promise<boolean> {
+    void interaction;
+    void command;
     throw new FrameworkError('NOT_IMPLEMENTED', this.constructor.name, 'exec');
   }
 }

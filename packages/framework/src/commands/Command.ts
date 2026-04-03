@@ -9,6 +9,7 @@ import {
 import { FrameworkClient } from '../FrameworkClient.js';
 import { FrameworkModule, ModuleOptions } from '../FrameworkModule.js';
 import { CommandHandler } from './CommandHandler.js';
+import { FrameworkError } from '../utilities/FrameworkError.js';
 
 export class Command extends FrameworkModule<CommandHandler, Command> {
   declare public guildOnly?: boolean;
@@ -65,14 +66,33 @@ export class Command extends FrameworkModule<CommandHandler, Command> {
         : userPermissions;
   }
 
-  public before(interaction: ContextMenuCommandInteraction): any {}
-  public exec(interaction: ChatInputCommandInteraction): any {}
-  public autocomplete(interaction: AutocompleteInteraction): any {}
+  public before(interaction: ContextMenuCommandInteraction): unknown {
+    void interaction;
+    throw new FrameworkError(
+      'NOT_IMPLEMENTED',
+      this.constructor.name,
+      'before',
+    );
+  }
+
+  public exec(interaction: ChatInputCommandInteraction): unknown {
+    void interaction;
+    throw new FrameworkError('NOT_IMPLEMENTED', this.constructor.name, 'exec');
+  }
+
+  public autocomplete(interaction: AutocompleteInteraction): unknown {
+    void interaction;
+    throw new FrameworkError(
+      'NOT_IMPLEMENTED',
+      this.constructor.name,
+      'autocomplete',
+    );
+  }
 }
 
 export type MissingPermissionSupplier = (
   interaction: ChatInputCommandInteraction,
-) => Promise<any> | any;
+) => Promise<unknown> | unknown;
 
 export interface CommandOptions extends ModuleOptions {
   guildOnly?: boolean;

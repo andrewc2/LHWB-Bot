@@ -10,7 +10,20 @@ export default class LpingJoined extends Command {
     });
   }
 
+  /**
+   * @param {import('discord.js').ChatInputCommandInteraction} interaction
+   */
   async exec(interaction) {
+    if (!interaction.inCachedGuild()) {
+      return interaction.editReply({
+        embeds: [
+          EmbedFormatter.standardErrorEmbed().setDescription(
+            'This command can only be used in a server.',
+          ),
+        ],
+      });
+    }
+
     const pings = await this.client.database.query(
       'SELECT u.userId, p.id, p.name FROM user as u INNER JOIN userPinglist as up ON u.userId = up.userId INNER JOIN pinglist as p ON p.id = up.pinglistId WHERE p.guildId = ? AND up.userId = ?',
       [interaction.guild.id, interaction.user.id],

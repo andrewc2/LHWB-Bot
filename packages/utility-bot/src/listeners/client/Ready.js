@@ -11,6 +11,7 @@ export default class Ready extends Listener {
   }
 
   async exec() {
+    if (!this.client.application) return;
     this.client.apiCommands = await this.client.application.commands.fetch();
     this.client.logger.info(`@lhwb/utility-bot has logged in`);
   }

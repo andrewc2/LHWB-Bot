@@ -13,6 +13,9 @@ export default class LpingJoinPinglist extends Listener {
     });
   }
 
+  /**
+   * @param {import('discord.js').Interaction} interaction
+   */
   async exec(interaction) {
     if (!interaction.isButton() || !interaction.guild) return;
     const customId = interaction.customId;

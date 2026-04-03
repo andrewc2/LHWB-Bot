@@ -33,6 +33,9 @@ export default class TourErasSetList extends Command {
     });
   }
 
+  /**
+   * @param {import('discord.js').ChatInputCommandInteraction} interaction
+   */
   async exec(interaction) {
     const version = interaction.options.getString('version', true);
 

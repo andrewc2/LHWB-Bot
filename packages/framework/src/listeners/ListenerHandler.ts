@@ -12,10 +12,10 @@ import { FrameworkError } from '../utilities/FrameworkError.js';
 import type { ListenerHandlerEvents } from '../types/events.js';
 import type EventEmitter from 'events';
 
-export class ListenerHandler extends FrameworkHandler<
-  Listener,
-  ListenerHandler
-> {
+export class ListenerHandler
+  extends FrameworkHandler<Listener, ListenerHandler>
+  implements ListenerHandlerEventOverloads
+{
   declare public categories: Collection<string, Category<string, Listener>>;
   declare public classToHandle: typeof Listener;
   declare public client: FrameworkClient;
@@ -88,7 +88,7 @@ export class ListenerHandler extends FrameworkHandler<
     return listener;
   }
 
-  public setEmitters(emitters: any): ListenerHandler {
+  public setEmitters(emitters: Record<string, unknown>): ListenerHandler {
     for (const [key, value] of Object.entries(emitters)) {
       if (!this.isEventEmitter(value))
         throw new FrameworkError('INVALID_TYPE', key, 'EventEmitter', true);
@@ -98,19 +98,18 @@ export class ListenerHandler extends FrameworkHandler<
     return this;
   }
 
-  public isEventEmitter(value: any): value is EventEmitter {
+  public isEventEmitter(value: unknown): value is EventEmitter {
+    if (!value || typeof value !== 'object') return false;
+    const candidate = value as { on?: unknown; emit?: unknown };
     return (
-      value &&
-      typeof value.on === 'function' &&
-      typeof value.emit === 'function'
+      typeof candidate.on === 'function' && typeof candidate.emit === 'function'
     );
   }
 }
 
 type Events = ListenerHandlerEvents;
 
-export interface ListenerHandler
-  extends FrameworkHandler<Listener, ListenerHandler> {
+export interface ListenerHandlerEventOverloads {
   on<K extends keyof Events>(
     event: K,
     listener: (...args: Events[K]) => Awaitable<void>,

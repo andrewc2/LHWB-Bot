@@ -45,6 +45,9 @@ export default class Request extends Command {
     });
   }
 
+  /**
+   * @param {import('discord.js').ChatInputCommandInteraction} interaction
+   */
   async exec(interaction) {
     const type = interaction.options.getString('type', true);
     const feature = interaction.options.getString('feature', true);

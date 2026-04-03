@@ -10,6 +10,9 @@ export default class InteractionCreate extends Listener {
     });
   }
 
+  /**
+   * @param {import('discord.js').Interaction} interaction
+   */
   async exec(interaction) {
     await this.client.database.query(
       'INSERT IGNORE INTO user (`userID`) VALUES (?)',

@@ -13,7 +13,20 @@ export default class TrustedRoleView extends Command {
     });
   }
 
+  /**
+   * @param {import('discord.js').ChatInputCommandInteraction} interaction
+   */
   async exec(interaction) {
+    if (!interaction.inCachedGuild()) {
+      return interaction.editReply({
+        embeds: [
+          EmbedFormatter.standardErrorEmbed().setDescription(
+            'This command can only be used in a server.',
+          ),
+        ],
+      });
+    }
+
     const trustedRoleId = await this.client.database.guild.getGuildTrustedRole(
       interaction.guildId,
     );
@@ -30,12 +43,22 @@ export default class TrustedRoleView extends Command {
 
     const trustedRole = interaction.guild?.roles.cache.get(trustedRoleId);
 
+    if (!trustedRole) {
+      return interaction.editReply({
+        embeds: [
+          EmbedFormatter.standardErrorEmbed().setDescription(
+            'The trusted role set in this server no longer exists.',
+          ),
+        ],
+      });
+    }
+
     return interaction.editReply({
       embeds: [
         EmbedFormatter.standardSuccessEmbed()
           .setTitle('Trusted Role')
           .setDescription(
-            `The trusted role in this server is currently set to ${trustedRole?.name} (${trustedRole}).`,
+            `The trusted role in this server is currently set to ${trustedRole.name} (${trustedRole}).`,
           ),
       ],
     });

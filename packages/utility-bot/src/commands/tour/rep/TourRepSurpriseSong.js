@@ -12,6 +12,9 @@ export default class TourRepSurpriseSong extends Command {
     });
   }
 
+  /**
+   * @param {import('discord.js').ChatInputCommandInteraction} interaction
+   */
   async exec(interaction) {
     const embedP1 = new EmbedBuilder()
       .setColor(568027)

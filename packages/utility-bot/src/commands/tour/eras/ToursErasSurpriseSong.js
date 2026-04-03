@@ -11,6 +11,9 @@ export default class TourErasSurpriseSong extends Command {
     });
   }
 
+  /**
+   * @param {import('discord.js').ChatInputCommandInteraction} interaction
+   */
   async exec(interaction) {
     const allSurpriseSongs = (
       await this.client.database.query(
@@ -20,6 +23,7 @@ export default class TourErasSurpriseSong extends Command {
 
     const embedArray = Paginator.createEmbeds(
       allSurpriseSongs,
+      // @ts-expect-error Null assertion as we do not want a title to be set on the embed
       null,
       0x586891,
       {

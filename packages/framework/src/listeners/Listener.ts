@@ -1,4 +1,5 @@
 import { FrameworkModule, ModuleOptions } from '../FrameworkModule.js';
+import { FrameworkError } from '../utilities/FrameworkError.js';
 
 import type { FrameworkClient } from '../FrameworkClient.js';
 import type { ListenerHandler } from './ListenerHandler.js';
@@ -21,7 +22,10 @@ export class Listener extends FrameworkModule<ListenerHandler, Listener> {
     this.type = type;
   }
 
-  public exec(...args: any[]): any {}
+  public exec(...args: unknown[]): unknown {
+    void args;
+    throw new FrameworkError('NOT_IMPLEMENTED', this.constructor.name, 'exec');
+  }
 }
 
 export interface ListenerOptions extends ModuleOptions {

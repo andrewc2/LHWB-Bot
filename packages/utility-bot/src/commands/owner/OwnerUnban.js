@@ -20,8 +20,11 @@ export default class OwnerUnban extends Command {
     });
   }
 
+  /**
+   * @param {import('discord.js').ChatInputCommandInteraction} interaction
+   */
   async exec(interaction) {
-    const user = interaction.options.getUser('user');
+    const user = interaction.options.getUser('user', true);
 
     const isBanned = await this.client.cache.botBanned.isBanned(user.id);
 

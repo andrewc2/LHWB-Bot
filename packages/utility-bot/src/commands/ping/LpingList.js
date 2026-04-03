@@ -10,7 +10,20 @@ export default class LpingList extends Command {
     });
   }
 
+  /**
+   * @param {import('discord.js').ChatInputCommandInteraction} interaction
+   */
   async exec(interaction) {
+    if (!interaction.inCachedGuild()) {
+      return interaction.editReply({
+        embeds: [
+          EmbedFormatter.standardErrorEmbed().setDescription(
+            'This command can only be used in a server.',
+          ),
+        ],
+      });
+    }
+
     const guildPinglists = await this.client.database.query(
       'SELECT `name` FROM pinglist WHERE guildId = ?',
       [interaction.guild.id],

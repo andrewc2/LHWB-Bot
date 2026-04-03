@@ -3,6 +3,11 @@ import { stringify } from 'querystring';
 import { EmbedFormatter } from '@lhwb/shared';
 
 export default class LastFm {
+  /**
+   * @param {string} username
+   * @param {string} token
+   * @param {import('discord.js').User | null} [user]
+   */
   static async searchLastFm(username, token, user) {
     const res = await fetch(
       `https://ws.audioscrobbler.com/2.0/?${stringify({
@@ -38,7 +43,7 @@ export default class LastFm {
         name: userDetails['user'],
         iconURL:
           user?.displayAvatarURL({ forceStatic: false, extension: 'png' }) ??
-          null,
+          undefined,
         url: `https://www.last.fm/user/${userDetails['user']}`,
       })
       .addFields([
@@ -73,6 +78,10 @@ export default class LastFm {
     return { embeds: [embed] };
   }
 
+  /**
+   * @param {string} userId
+   * @param {import('@lhwb/framework').FrameworkClient} client
+   */
   static async getLastFmUsername(userId, client) {
     const result = await client.database.query(
       'SELECT * FROM lastfm WHERE userId = ?',
@@ -83,6 +92,9 @@ export default class LastFm {
     return result[0].username;
   }
 
+  /**
+   * @param {string} error
+   */
   static lastFmError(error) {
     const embed = EmbedFormatter.standardErrorEmbed().setDescription(
       `Last.fm returned an error: **${error}**\nThe site might be down. Please try again later.`,
