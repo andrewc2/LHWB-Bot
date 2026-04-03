@@ -18,14 +18,6 @@ export const CommandHandlerEvents = Object.freeze({
   MISSING_PERMISSIONS: 'missingPermissions',
 } as const);
 
-Object.freeze({
-  ERROR: 'error',
-  FINISHED: 'finished',
-  NOT_FOUND: 'notFound',
-  STARTED: 'started',
-  BLOCKED: 'blocked',
-} as const);
-
 export const BuiltInReasons = Object.freeze({
   CLIENT: 'client',
   BOT: 'bot',
