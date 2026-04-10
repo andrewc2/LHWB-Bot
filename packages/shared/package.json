@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "discord.js": "^14.26.0",
-    "mysql2": "^3.20.0",
+    "mysql2": "^3.22.0",
     "redis": "^5.11.0",
     "umzug": "^3.8.2",
     "winston": "^3.19.0"
