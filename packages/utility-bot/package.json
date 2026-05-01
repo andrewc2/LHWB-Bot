@@ -11,7 +11,7 @@
     "@lhwb/framework": "*",
     "@lhwb/shared": "*",
     "discord-api-types": "^0.38.44",
-    "discord.js": "^14.26.0",
+    "discord.js": "^14.26.4",
     "luxon": "^3.7.2"
   }
 }
