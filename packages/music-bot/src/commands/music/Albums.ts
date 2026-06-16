@@ -15,7 +15,7 @@ export default class Albums extends Command {
   async exec(interaction: ChatInputCommandInteraction) {
     const albums = await this.client.database.song.getAvailableAlbums();
     const albumList = albums.map(
-      (album, i) => `${i + 1}. ${album.albumName} - ${album.artistName}`,
+      (album, i) => `${i + 1}. ${album.albumName} - ${album.artistName}\n`,
     );
 
     const embedArray = Paginator.createEmbeds(
