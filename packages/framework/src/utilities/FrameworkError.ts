@@ -40,7 +40,7 @@ export class FrameworkError<K extends keyof typeof Messages> extends Error {
       throw new TypeError(`Error key '${key}' does not exist`);
     const message =
       typeof Messages[key] === 'function'
-        ? (Messages[key] as (...a: any[]) => any)(...args)
+        ? (Messages[key] as (...a: unknown[]) => string)(...args)
         : Messages[key];
 
     super(message);

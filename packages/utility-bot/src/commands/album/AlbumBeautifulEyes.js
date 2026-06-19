@@ -12,6 +12,9 @@ export default class AlbumBeautifulEyes extends Command {
     });
   }
 
+  /**
+   * @param {import('discord.js').ChatInputCommandInteraction} interaction
+   */
   async exec(interaction) {
     const embed1 = new EmbedBuilder()
       .setColor(0xe78234)

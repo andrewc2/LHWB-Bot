@@ -1,10 +1,4 @@
-import { CommandHandler } from '../commands/CommandHandler.js';
-import { FrameworkHandler } from '../FrameworkHandler.js';
-import { InhibitorHandler } from '../inhibitors/InhibitorHandler.js';
-import { ListenerHandler } from '../listeners/ListenerHandler.js';
-
 import type { Command } from '../commands/Command.js';
-import type { FrameworkModule } from '../FrameworkModule.js';
 import type { Inhibitor } from '../inhibitors/Inhibitor.js';
 import type { Listener } from '../listeners/Listener.js';
 import type {
@@ -13,16 +7,12 @@ import type {
   Message,
 } from 'discord.js';
 
-export interface FrameworkHandlerEvents<
-  Module extends FrameworkModule<Handler, Module>,
-  Handler extends FrameworkHandler<Module, Handler>,
-> {
+export interface FrameworkHandlerEvents<Module> {
   load: [mod: Module, isReload: boolean];
   remove: [mod: Module];
 }
 
-export interface CommandHandlerEvents
-  extends FrameworkHandlerEvents<Command, CommandHandler> {
+export interface CommandHandlerEvents extends FrameworkHandlerEvents<Command> {
   commandBlocked: [
     interaction: ChatInputCommandInteraction,
     command: Command,
@@ -31,11 +21,11 @@ export interface CommandHandlerEvents
   commandFinished: [
     interaction: ChatInputCommandInteraction,
     command: Command,
-    args: any,
-    returnValue: any,
+    args: unknown,
+    returnValue: unknown,
   ];
   commandLocked: [message: Message, command: Command];
-  commandStarted: [message: Message, command: Command, args: any];
+  commandStarted: [message: Message, command: Command, args: unknown];
   commandNotFound: [interaction: ChatInputCommandInteraction];
   error: [
     error: Error,
@@ -51,17 +41,15 @@ export interface CommandHandlerEvents
     interaction: ChatInputCommandInteraction,
     command: Command,
     type: 'user' | 'client',
-    missing?: any,
+    missing?: unknown,
   ];
   remove: [command: Command];
 }
 
-export interface InhibitorHandlerEvents
-  extends FrameworkHandlerEvents<Inhibitor, InhibitorHandler> {}
+export type InhibitorHandlerEvents = FrameworkHandlerEvents<Inhibitor>;
 
-export interface ListenerHandlerEvents
-  extends FrameworkHandlerEvents<Listener, ListenerHandler> {}
+export type ListenerHandlerEvents = FrameworkHandlerEvents<Listener>;
 
 export interface ClientEvents extends DiscordClientEvents {
-  handlerDebug: [message: string, ...other: any[]];
+  handlerDebug: [message: string, ...other: unknown[]];
 }

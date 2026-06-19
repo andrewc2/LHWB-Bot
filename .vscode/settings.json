@@ -16,5 +16,8 @@
   },
   "github.copilot.enable": {
     "text": false,
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "vscode.typescript-language-features"
   }
 }

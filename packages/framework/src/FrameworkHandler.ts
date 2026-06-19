@@ -12,7 +12,7 @@ import { FrameworkModule } from './FrameworkModule.js';
 import { HandlerEvents } from './utilities/constants.js';
 import { FrameworkError } from './utilities/FrameworkError.js';
 
-export type Class<T> = abstract new (...args: any[]) => T;
+export type Class<T> = abstract new (...args: never[]) => T;
 
 const require = createRequire(import.meta.url);
 
@@ -66,15 +66,20 @@ export class FrameworkHandler<
     if (!isClass && !this.extensions.has(extname(thing as string) as Extension))
       return undefined;
 
-    let mod = isClass
+    type ModuleConstructor = new (handler: Handler) => Module;
+    const moduleClass = isClass
       ? thing
       : function findExport(
           this: FrameworkHandler<Module, Handler>,
-          m: any,
-        ): any {
+          m: unknown,
+        ): ModuleConstructor | null {
           if (!m) return null;
-          if (m.prototype instanceof this.classToHandle) return m;
-          return m.default ? findExport.call(this, m.default) : null;
+          const candidate = m as { prototype?: unknown; default?: unknown };
+          if (candidate.prototype instanceof this.classToHandle)
+            return m as ModuleConstructor;
+          return candidate.default
+            ? findExport.call(this, candidate.default)
+            : null;
         }.call(
           this,
           await eval(
@@ -82,22 +87,22 @@ export class FrameworkHandler<
           ),
         );
 
-    if (mod && mod.prototype instanceof this.classToHandle) {
-      mod = new mod(this);
+    if (moduleClass && moduleClass.prototype instanceof this.classToHandle) {
+      const mod = new moduleClass(this as unknown as Handler);
+
+      if (this.modules.has(mod.id))
+        throw new FrameworkError(
+          'ALREADY_LOADED',
+          this.classToHandle.name,
+          mod.id,
+        );
+      this.register(mod, isClass ? null! : (thing as string));
+      this.emit(HandlerEvents.LOAD, mod, isReload);
+      return mod;
     } else {
       if (!isClass) delete require.cache[require.resolve(thing as string)];
       return undefined;
     }
-
-    if (this.modules.has(mod.id))
-      throw new FrameworkError(
-        'ALREADY_LOADED',
-        this.classToHandle.name,
-        mod.id,
-      );
-    this.register(mod, isClass ? null! : (thing as string));
-    this.emit(HandlerEvents.LOAD, mod, isReload);
-    return mod;
   }
 
   public async loadAll(

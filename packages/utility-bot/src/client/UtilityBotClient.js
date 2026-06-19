@@ -11,28 +11,18 @@ import { LoggerTool, MySQLDriver, RedisDriver } from '@lhwb/shared';
 import { GatewayIntentBits, Partials } from 'discord.js';
 
 export default class UtilityBotClient extends FrameworkClient {
-  commandHandler = new CommandHandler(this, {
-    directory: join(dirname(fileURLToPath(import.meta.url)), '..', 'commands'),
-    extensions: ['.js'],
-    blockBots: true,
-    blockClient: true,
-    automateCategories: true,
-  });
+  /** @type {import('@lhwb/framework').CommandHandler} */
+  commandHandler;
 
-  listenerHandler = new ListenerHandler(this, {
-    extensions: ['.js'],
-    directory: join(dirname(fileURLToPath(import.meta.url)), '..', 'listeners'),
-  });
+  /** @type {import('@lhwb/framework').ListenerHandler} */
+  listenerHandler;
 
-  inhibitorHandler = new InhibitorHandler(this, {
-    extensions: ['.js'],
-    directory: join(
-      dirname(fileURLToPath(import.meta.url)),
-      '..',
-      'inhibitors',
-    ),
-  });
+  /** @type {import('@lhwb/framework').InhibitorHandler} */
+  inhibitorHandler;
 
+  /**
+   * @param {import('@lhwb/shared').ConfigInterface} config
+   */
   constructor(config) {
     super({
       ownerId: config.discord.owner_id,
@@ -47,11 +37,29 @@ export default class UtilityBotClient extends FrameworkClient {
       partials: [Partials.Channel],
     });
 
+    const baseDir = dirname(fileURLToPath(import.meta.url));
+    this.commandHandler = new CommandHandler(this, {
+      directory: join(baseDir, '..', 'commands'),
+      extensions: ['.js'],
+      blockBots: true,
+      blockClient: true,
+      automateCategories: true,
+    });
+
+    this.listenerHandler = new ListenerHandler(this, {
+      extensions: ['.js'],
+      directory: join(baseDir, '..', 'listeners'),
+    });
+
+    this.inhibitorHandler = new InhibitorHandler(this, {
+      extensions: ['.js'],
+      directory: join(baseDir, '..', 'inhibitors'),
+    });
+
     this.config = config;
     this.logger = new LoggerTool('@lhwb/utility-bot');
     this.database = new MySQLDriver(this.logger);
     this.cache = new RedisDriver(this.logger, this.database);
-    this.apiCommands = undefined;
   }
 
   async _init() {

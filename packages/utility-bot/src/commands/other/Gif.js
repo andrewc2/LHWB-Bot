@@ -10,6 +10,9 @@ export default class Gif extends Command {
     });
   }
 
+  /**
+   * @param {import('discord.js').ChatInputCommandInteraction} interaction
+   */
   async exec(interaction) {
     const gifs = await this.client.database.query(
       "SELECT url, type FROM media WHERE type = 'gif' ORDER BY RAND() LIMIT 1",

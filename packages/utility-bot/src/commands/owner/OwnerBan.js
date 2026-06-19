@@ -20,10 +20,16 @@ export default class OwnerBan extends Command {
     });
   }
 
+  /**
+   * @param {import('discord.js').ChatInputCommandInteraction} interaction
+   */
   async exec(interaction) {
-    const user = interaction.options.getUser('user');
-
-    const protectedUsers = [this.client.ownerId, this.client.user.id];
+    const user = interaction.options.getUser('user', true);
+    const botUser = this.client.user;
+    const ownerIds = Array.isArray(this.client.ownerId)
+      ? this.client.ownerId
+      : [this.client.ownerId];
+    const protectedUsers = botUser ? [...ownerIds, botUser.id] : ownerIds;
 
     const isProtectedEmbed = EmbedFormatter.standardErrorEmbed().setDescription(
       `${DiscordUtil.formatAsUserAndMention(user)} cannot be banned as they are protected.`,

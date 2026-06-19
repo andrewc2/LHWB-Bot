@@ -10,6 +10,9 @@ export default class AlbumEvermore extends Command {
     });
   }
 
+  /**
+   * @param {import('discord.js').ChatInputCommandInteraction} interaction
+   */
   async exec(interaction) {
     const embed = new EmbedBuilder()
       .setColor(12040119)

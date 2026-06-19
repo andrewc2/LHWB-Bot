@@ -12,6 +12,9 @@ export default class Restart extends Command {
     });
   }
 
+  /**
+   * @param {import('discord.js').ChatInputCommandInteraction} interaction
+   */
   async exec(interaction) {
     this.client.logger.info(
       `Restart has been requested by ${DiscordUtil.formatAsUserAndId(interaction.user)}`,

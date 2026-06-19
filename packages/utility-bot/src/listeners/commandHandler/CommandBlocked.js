@@ -10,6 +10,11 @@ export default class CommandBlocked extends Listener {
     });
   }
 
+  /**
+   * @param {import('discord.js').ChatInputCommandInteraction} interaction
+   * @param {import('@lhwb/framework').Command} command
+   * @param {string} reason
+   */
   async exec(interaction, command, reason) {
     const commandName = command.name;
     const embed = EmbedFormatter.standardErrorEmbed().setDescription(

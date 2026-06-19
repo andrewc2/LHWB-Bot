@@ -34,8 +34,21 @@ export default class OwnerAvatar extends Command {
     });
   }
 
+  /**
+   * @param {import('discord.js').ChatInputCommandInteraction} interaction
+   */
   async exec(interaction) {
     const avatar = interaction.options.getString('picture', true);
+
+    if (!this.client.user) {
+      return interaction.editReply({
+        embeds: [
+          EmbedFormatter.standardErrorEmbed().setDescription(
+            'The bot user is not available yet. Please try again in a moment.',
+          ),
+        ],
+      });
+    }
 
     const embed = EmbedFormatter.standardSuccessEmbed().setDescription(
       'The avatar has been updated',

@@ -23,6 +23,9 @@ export default class LastFmSearch extends Command {
     });
   }
 
+  /**
+   * @param {import('discord.js').ChatInputCommandInteraction} interaction
+   */
   async exec(interaction) {
     const username = interaction.options.getString('username', true);
     const apiKey = this.client.config.lastfm.api_key;

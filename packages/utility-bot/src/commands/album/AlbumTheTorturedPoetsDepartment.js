@@ -12,6 +12,9 @@ export default class AlbumTheTorturedPoetsDepartment extends Command {
     });
   }
 
+  /**
+   * @param {import('discord.js').ChatInputCommandInteraction} interaction
+   */
   async exec(interaction) {
     const embed1 = new EmbedBuilder()
       .setColor(7379373)

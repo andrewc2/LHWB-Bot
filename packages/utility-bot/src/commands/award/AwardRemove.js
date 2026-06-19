@@ -33,6 +33,9 @@ export default class AwardRemove extends Command {
     });
   }
 
+  /**
+   * @param {import('discord.js').ChatInputCommandInteraction} interaction
+   */
   async exec(interaction) {
     const user = interaction.options.getUser('user', true);
     const awardId = interaction.options.getInteger('award-id', false);

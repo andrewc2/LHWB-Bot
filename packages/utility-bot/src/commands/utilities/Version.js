@@ -10,6 +10,9 @@ export default class Version extends Command {
     });
   }
 
+  /**
+   * @param {import('discord.js').ChatInputCommandInteraction} interaction
+   */
   async exec(interaction) {
     const versionHistory = await this.client.database.query(
       'SELECT * FROM version',

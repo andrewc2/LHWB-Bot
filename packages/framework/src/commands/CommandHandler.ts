@@ -152,8 +152,12 @@ export class CommandHandler extends FrameworkHandler<Command, CommandHandler> {
         this.emit(CommandHandlerEvents.ERROR, e, interaction, commandModule);
         return false;
       }
-    } catch (e: any) {
-      this.emitError(e, interaction, commandModule);
+    } catch (e: unknown) {
+      this.emitError(
+        e instanceof Error ? e : new Error(String(e)),
+        interaction,
+        commandModule,
+      );
       return null;
     }
   }
@@ -358,11 +362,12 @@ export class CommandHandler extends FrameworkHandler<Command, CommandHandler> {
     return this.modules.get(this.names.get(name.toLowerCase())!)!;
   }
 
-  public isPromise(value: Promise<any>) {
+  public isPromise(value: unknown): value is Promise<unknown> {
+    if (!value || typeof value !== 'object') return false;
+    const candidate = value as { then?: unknown; catch?: unknown };
     return (
-      value &&
-      typeof value.then === 'function' &&
-      typeof value.catch === 'function'
+      typeof candidate.then === 'function' &&
+      typeof candidate.catch === 'function'
     );
   }
 
@@ -378,8 +383,10 @@ export class CommandHandler extends FrameworkHandler<Command, CommandHandler> {
   }
 }
 
-interface CommandHandlerOptions
-  extends FrameworkHandlerOptions<Command, CommandHandler> {
+interface CommandHandlerOptions extends FrameworkHandlerOptions<
+  Command,
+  CommandHandler
+> {
   blockBots?: boolean;
   blockClient?: boolean;
   ignorePermissions?: Snowflake | Snowflake[];

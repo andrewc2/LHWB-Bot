@@ -13,10 +13,10 @@ import type { Command } from '../commands/Command.js';
 import type { FrameworkClient } from '../FrameworkClient.js';
 import type { Awaitable, Collection } from 'discord.js';
 
-export class InhibitorHandler extends FrameworkHandler<
-  Inhibitor,
-  InhibitorHandler
-> {
+export class InhibitorHandler
+  extends FrameworkHandler<Inhibitor, InhibitorHandler>
+  implements InhibitorHandlerEventOverloads
+{
   declare public categories: Collection<string, Category<string, Inhibitor>>;
   declare public classToHandle: typeof Inhibitor;
   declare public client: FrameworkClient;
@@ -84,19 +84,19 @@ export class InhibitorHandler extends FrameworkHandler<
     return inhibitedInhibitors[0].reason;
   }
 
-  public isPromise(value: any): value is Promise<any> {
+  public isPromise(value: unknown): value is Promise<unknown> {
+    if (!value || typeof value !== 'object') return false;
+    const candidate = value as { then?: unknown; catch?: unknown };
     return (
-      value &&
-      typeof value.then === 'function' &&
-      typeof value.catch === 'function'
+      typeof candidate.then === 'function' &&
+      typeof candidate.catch === 'function'
     );
   }
 }
 
 type Events = InhibitorHandlerEvents;
 
-export interface InhibitorHandler
-  extends FrameworkHandler<Inhibitor, InhibitorHandler> {
+export interface InhibitorHandlerEventOverloads {
   on<K extends keyof Events>(
     event: K,
     listener: (...args: Events[K]) => Awaitable<void>,

@@ -12,6 +12,9 @@ export default class LastFmClear extends Command {
     });
   }
 
+  /**
+   * @param {import('discord.js').ChatInputCommandInteraction} interaction
+   */
   async exec(interaction) {
     const existingUsername = await LastFm.getLastFmUsername(
       interaction.user.id,

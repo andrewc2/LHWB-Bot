@@ -1,10 +1,9 @@
 {
   "compilerOptions": {
-    "module": "ES2022",
-    "moduleResolution": "Node",
+    "module": "node16",
+    "moduleResolution": "node16",
     "checkJs": true,
-    "allowJs": true,
-    "baseUrl": "./src"
+    "allowJs": true
   },
   "include": ["src/**/*"],
   "exclude": ["node_modules", "dist"]

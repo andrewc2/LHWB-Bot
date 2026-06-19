@@ -11,6 +11,9 @@ export default class AlbumSpeakNow extends Command {
     });
   }
 
+  /**
+   * @param {import('discord.js').ChatInputCommandInteraction} interaction
+   */
   async exec(interaction) {
     const embedTV = new EmbedBuilder()
       .setColor(6892915)

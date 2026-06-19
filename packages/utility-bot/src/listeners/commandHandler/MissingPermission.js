@@ -10,12 +10,19 @@ export default class MissingPermission extends Listener {
     });
   }
 
+  /**
+   * @param {import('discord.js').ChatInputCommandInteraction} interaction
+   * @param {import('@lhwb/framework').Command} command
+   * @param {'user' | 'client'} type
+   * @param {string[] | undefined} missing
+   */
   exec(interaction, command, type, missing) {
     const embed = EmbedFormatter.standardErrorEmbed();
 
     if (type === 'client') {
+      const missingPermissions = missing ?? [];
       embed.setDescription(
-        `I cannot use the **${command.name}** command in this server as I am missing the \`${missing.join(', ')}\` permission. Try again later.`,
+        `I cannot use the **${command.name}** command in this server as I am missing the \`${missingPermissions.join(', ')}\` permission. Try again later.`,
       );
     } else {
       embed.setDescription(

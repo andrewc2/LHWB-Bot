@@ -10,10 +10,18 @@ const MAX_CHARACTER_LENGTH = 1930;
 
 export const NO_MEMBERS =
   'It looks like nobody has this pinglist assigned. :confused:';
+/**
+ * @param {string} name
+ * @param {import('@lhwb/framework').FrameworkClient} client
+ */
 export const PINGLIST_NOT_FOUND = (name, client) =>
   `I couldn't find a pinglist with the name ${name}. You can view available pinglist's in this server by using the ${DiscordUtil.formatCommandAsMention('lping list', client)} command.`;
 
 export default class Ping {
+  /**
+   * @param {import('discord.js').AutocompleteInteraction} interaction
+   * @param {import('@lhwb/framework').FrameworkClient} client
+   */
   static async pingAutocomplete(interaction, client) {
     if (!interaction.guild) return interaction.respond([]);
     const input = interaction.options.getString('pinglist', true).toLowerCase();
@@ -36,6 +44,11 @@ export default class Ping {
     await interaction.respond(result);
   }
 
+  /**
+   * @param {string} name
+   * @param {string} guildId
+   * @param {import('@lhwb/framework').FrameworkClient} client
+   */
   static async pinglistExists(name, guildId, client) {
     const row = await client.database.query(
       'SELECT `name`, `guildId` FROM pinglist WHERE name = ? AND guildId = ?',
@@ -44,8 +57,11 @@ export default class Ping {
     return row.length !== 0;
   }
 
+  /**
+   * @returns {import('discord.js').ActionRowBuilder<import('discord.js').ButtonBuilder>}
+   */
   static pinglistWarningButton() {
-    return new ActionRowBuilder().addComponents(
+    const row = new ActionRowBuilder().addComponents(
       new ButtonBuilder()
         .setCustomId('send')
         .setLabel('PING MANY PEOPLE')
@@ -55,10 +71,17 @@ export default class Ping {
         .setLabel('CANCEL PING')
         .setStyle(ButtonStyle.Secondary),
     );
+    return /** @type {import('discord.js').ActionRowBuilder<import('discord.js').ButtonBuilder>} */ (
+      row
+    );
   }
 
+  /**
+   * @param {string} name
+   * @returns {import('discord.js').ActionRowBuilder<import('discord.js').ButtonBuilder>}
+   */
   static pinglistJoinButton(name) {
-    return new ActionRowBuilder().addComponents(
+    const row = new ActionRowBuilder().addComponents(
       new ButtonBuilder()
         .setCustomId(JSON.stringify({ type: 'join', id: name }))
         .setLabel('Join Pinglist')
@@ -70,15 +93,30 @@ export default class Ping {
         .setEmoji('🚮')
         .setStyle(ButtonStyle.Secondary),
     );
+    return /** @type {import('discord.js').ActionRowBuilder<import('discord.js').ButtonBuilder>} */ (
+      row
+    );
   }
 
+  /**
+   * @param {string} name
+   * @param {import('discord.js').ChatInputCommandInteraction} interaction
+   */
   static requestPinglistEmbed(name, interaction) {
     return EmbedFormatter.plainEmbed(Colors.Blurple).setDescription(
       `${DiscordUtil.formatAsUserAndMention(interaction.user)} has requested the **${name}** pinglist. Please wait while this pinglist generates...`,
     );
   }
 
+  /**
+   * @param {string} name
+   * @param {string | null} message
+   * @param {import('discord.js').ChatInputCommandInteraction} interaction
+   * @param {import('@lhwb/framework').FrameworkClient} client
+   */
   static async pingFollowup(name, message, interaction, client) {
+    if (!interaction.inCachedGuild()) return;
+
     const sendNoMembers = () =>
       interaction.editReply({
         embeds: [
@@ -87,6 +125,12 @@ export default class Ping {
         components: [],
       });
 
+    /**
+     * @template T
+     * @param {T[]} array
+     * @param {number} size
+     * @returns {T[][]}
+     */
     const chunk = (array, size) => {
       const chunks = [];
       for (let i = 0; i < array.length; i += size) {
@@ -111,6 +155,7 @@ export default class Ping {
 
     // Fetch mentions in chunks of 99
     const resultChunks = chunk(row, 99);
+    /** @type {string[]} */
     let mentions = [];
 
     try {
@@ -125,7 +170,7 @@ export default class Ping {
         )
       ).flat();
     } catch (err) {
-      client.logger.warn(err);
+      client.logger.warn(String(err));
     }
 
     if (!mentions.length) return sendNoMembers();

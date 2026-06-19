@@ -13,7 +13,20 @@ export default class Mods extends Command {
     });
   }
 
+  /**
+   * @param {import('discord.js').ChatInputCommandInteraction} interaction
+   */
   async exec(interaction) {
+    if (!interaction.inCachedGuild()) {
+      return interaction.editReply({
+        embeds: [
+          EmbedFormatter.standardErrorEmbed().setDescription(
+            'This command can only be used in a server.',
+          ),
+        ],
+      });
+    }
+
     const roleId = this.client.config.discord.mod_role_id;
     const modsRole = interaction.guild.roles.cache.get(roleId);
 
@@ -42,6 +55,9 @@ export default class Mods extends Command {
       );
 
     const joinDate = interaction.member.joinedAt;
+    if (!joinDate) {
+      return interaction.editReply({ embeds: [newUserErrorEmbed] });
+    }
     const now = new Date();
     const joinTime = (now.getTime() - joinDate.getTime()) / 1000;
 

@@ -13,6 +13,9 @@ export default class TourSchedule extends Command {
     });
   }
 
+  /**
+   * @param {import('discord.js').ChatInputCommandInteraction} interaction
+   */
   async exec(interaction) {
     const currentDate = DateTime.local().setZone(TIME_ZONE);
 

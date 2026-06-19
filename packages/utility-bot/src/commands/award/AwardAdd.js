@@ -31,7 +31,11 @@ export default class AwardAdd extends Command {
     });
   }
 
+  /**
+   * @param {import('discord.js').ChatInputCommandInteraction} interaction
+   */
   async exec(interaction) {
+    const user = interaction.options.getUser('user', true);
     const member = interaction.options.getMember('user');
     const award = escapeMarkdown(interaction.options.getString('award', true));
 
@@ -47,13 +51,13 @@ export default class AwardAdd extends Command {
 
     await this.client.database.query(
       'INSERT INTO userAward (userId, guildId, description) VALUES (?,?,?)',
-      [member.user.id, member.guild.id, award],
+      [user.id, interaction.guildId, award],
     );
 
     return interaction.editReply({
       embeds: [
         EmbedFormatter.standardSuccessEmbed().setDescription(
-          `The award "${award}" has been added successfully to ${DiscordUtil.formatAsUserAndMention(member.user)}`,
+          `The award "${award}" has been added successfully to ${DiscordUtil.formatAsUserAndMention(user)}`,
         ),
       ],
     });

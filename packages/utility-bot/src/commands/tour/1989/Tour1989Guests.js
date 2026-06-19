@@ -11,6 +11,9 @@ export default class Tour1989Guests extends Command {
     });
   }
 
+  /**
+   * @param {import('discord.js').ChatInputCommandInteraction} interaction
+   */
   async exec(interaction) {
     const embedL2 = new EmbedBuilder()
       .setColor(568027)

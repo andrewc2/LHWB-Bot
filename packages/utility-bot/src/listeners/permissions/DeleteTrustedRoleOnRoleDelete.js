@@ -10,6 +10,9 @@ export default class DeleteTrustedRoleOnRoleDelete extends Listener {
     });
   }
 
+  /**
+   * @param {import('discord.js').Role} role
+   */
   async exec(role) {
     await this.client.database.guild.clearGuildTrustedRoleByRoleId(role.id);
   }

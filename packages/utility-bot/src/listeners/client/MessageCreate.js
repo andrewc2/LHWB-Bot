@@ -10,6 +10,9 @@ export default class MessageCreate extends Listener {
     });
   }
 
+  /**
+   * @param {import('discord.js').Message} message
+   */
   async exec(message) {
     await this.client.database.query(
       'INSERT IGNORE INTO user (`userID`) VALUES (?)',
