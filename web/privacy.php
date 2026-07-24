@@ -1,5 +1,5 @@
 <?php
-    $title = "LosingHimWasBlue [Bot] Privacy Policy";
+    $title = "Privacy Policy - LosingHimWasBlue [Bot]";
     $desc = "Privacy Policy for LosingHimWasBlue.";
     require_once('includes/header.php');
 ?>

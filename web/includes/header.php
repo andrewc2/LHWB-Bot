@@ -69,6 +69,7 @@
             <meta http-equiv="content-type" content="text/html; charset=UTF-8">
             <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs-3.3.7/jq-2.2.4/dt-1.10.13/datatables.min.css"/>
             <link rel="stylesheet" type="text/css" href="darkly.css"/>
+            <link rel="stylesheet" type="text/css" href="style.css"/>
         <script type="text/javascript" src="https://cdn.datatables.net/v/bs-3.3.7/jq-2.2.4/dt-1.10.13/datatables.min.js"></script>
 
         </head>
@@ -94,6 +95,7 @@
                                 <li><a href="https://lhwb.dev/support">Support Server</a></li>
                                 <li><a href="privacy.php">Privacy Policy</a></li>
                                 <li><a href="tos.php">Terms of Service</a></li>
+                                <li><a href="sponsors.php">Sponsors</a></li>
                                 <li><a href="https://github.com/andrewc2/LHWB-Bot">Github</a></li>
                             </ul>
                         </div><!-- /.navbar-collapse -->

@@ -1,34 +1,4 @@
 <?php require_once('includes/header.php'); ?>
-            <style>
-                h4 {
-                    text-align: center;
-                }
-                ul {
-                    display: inline-block;
-                    text-align: left;
-                    list-style-type: square;
-                }
-                #commands {
-                    text-align: center;
-                    padding: 10px 0 20px 0;
-                }
-                #dataStore {
-                    margin-bottom: 10px; float: none; margin: 0 auto; text-align: center;
-                }
-                #ad {
-                    width: 250px;
-                }
-                .adBox {
-                    display: flex;
-                    justify-content: space-around;
-                }
-                .item {
-                    padding: 10px;
-                    background-color: #63377f;
-                    margin: 5px;
-                    border-radius: 5px;
-                }
-            </style>
 
             <div class="container-fluid">
                 <div id="commands">
