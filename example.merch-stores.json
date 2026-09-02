@@ -13,6 +13,7 @@
     "enable_cart": true,
     "enable_buy_now": true,
     "interval": 10000,
-    "mass_ping_limit": 10
+    "mass_ping_limit": 10,
+    "webhook-url": ""
   }
 ]
