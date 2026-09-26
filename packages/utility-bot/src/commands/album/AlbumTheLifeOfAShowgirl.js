@@ -57,7 +57,7 @@ export default class AlbumTheLifeOfAShowgirl extends Command {
       .setFooter({ text: 'Page 3 of 3 - Total Runtime: 55:40' })
       .setDescription(
         escapeNumberedList(
-          '**The Life of a Showgirl: The Encore** was be released on __September 25, 2026__\n\nDisc Two\n1. Patient Zero (3:45)\n2. Cleveland! (3:26)\n3. Pink Clouding (3:10)\n4. Babylon (3:39)',
+          '**The Life of a Showgirl: The Encore** was released on __September 25, 2026__\n\nDisc Two\n1. Patient Zero (3:45)\n2. Cleveland! (3:26)\n3. Pink Clouding (3:10)\n4. Babylon (3:39)',
         ),
       );
 
